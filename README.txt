@@ -30,7 +30,7 @@ information regarding these requirements see the INSTALL.txt file in this folder
 
   2. Search the web carefully about Baïkal Server
 
-  3. Mail me (Jérôme Schneider) at mail§jeromeschneider.fr <= replace § with @.
+  3. Mail me (Jérôme Schneider) at mail@jeromeschneider.fr
 
      When mailing, see the following guidelines...
        - Be polite
@@ -49,4 +49,4 @@ information regarding these requirements see the INSTALL.txt file in this folder
 
 Please see the INSTALL.txt in this folder.
 
--- Jérôme Schneider <mail§jeromeschneider.fr>  Wed, 22 Feb 2012 21:46:00 +0100
+-- Jérôme Schneider <mail@jeromeschneider.fr>  Wed, 22 Feb 2012 21:46:00 +0100
