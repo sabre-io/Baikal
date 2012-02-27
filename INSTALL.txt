@@ -71,7 +71,7 @@ the Baïkal files. In our example, we will suppose the linux username/usergroup
 running Apache is www-data:www-data
 
 	# e. Change permissions on the files
-	$ root:/var/www> chown www-data:www-data dav.mydomain.com -Rf
+	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
 
 ===============================================================================
 03 - Installation > Installing virtualhost
@@ -197,7 +197,7 @@ Troubleshooting
 ===============================================================================
 
 For troubleshooting read the FAQ below. If your problem is not listed, contact
-me after reading INSTALL.txt
+me after reading README.txt
 
 ===============================================================================
 FAQ
