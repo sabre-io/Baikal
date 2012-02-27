@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+
+	DocumentRoot /var/www/dav.mydomain.com/html
+	ServerName dav.mydomain.com
+
+	<Directory "/var/www/dav.mydomain.com/html">
+		Options None
+		Options +FollowSymlinks
+		AllowOverride None
+	</Directory>
+
+</VirtualHost>
