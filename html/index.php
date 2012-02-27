@@ -1,1 +1,0 @@
-../Core/WWWRoot/index.php
