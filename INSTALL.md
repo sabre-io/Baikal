@@ -1,6 +1,4 @@
-*******************************************************************************
-INSTALLING Baïkal Server
-*******************************************************************************
+# INSTALLING Baïkal Server
 
 This document is a part of the Baïkal Server project. Baïkal Server is an open
 source lightweight CalDAV and CardDAV server released under the GNU GPL. Baïkal
@@ -9,10 +7,7 @@ is copyright (c) 2012 by Jérôme Schneider.
 This document describes the system requirements for Baïkal Server and the
 installation routine.
 
-
-===============================================================================
-0 - System requirements
-===============================================================================
+# 0 - System requirements
 
 Baïkal Server is based on PHP5.2.0, and uses a SQLite3 with PHP PDO. This
 document does not cover the installation of these requirements.
@@ -32,16 +27,12 @@ The following configuration is the minimum required:
 - 30 MB of disk space
 - Apache configuration that activates "FollowSymlinks"
 
-===============================================================================
-1 - Obtaining Baïkal Server
-===============================================================================
+# 1 - Obtaining Baïkal Server
 
 To get Baïkal Server, navigate to the following location:
 	http://baikal.codr.fr/
 
-===============================================================================
-02 - Installation > Installing files
-===============================================================================
+# 2 - Installation > Installing files
 
 To install Baïkal Server, unpack the source package outside of the web site root
 directory on your server. The location must be accessible to the web server.
@@ -73,9 +64,7 @@ running Apache is www-data:www-data
 	# e. Change permissions on the files
 	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
 
-===============================================================================
-03 - Installation > Installing virtualhost
-===============================================================================
+# 3 - Installation > Installing virtualhost
 
 Baïkal Server must be bound to a domain/subdomain in order to run properly.
 This package provides a default virtualhost configuration file for Apache 2 in
@@ -108,9 +97,7 @@ In our example, we will assume that the apache2 configuration directory is:
 	# h. Restart apache
 	$ root:/etc/apache2/sites-enabled> /etc/init.d/apache2 restart
 
-===============================================================================
-04 - Installation > Setting up Baïkal Server
-===============================================================================
+# 4 - Installation > Setting up Baïkal Server
 
 To set up Baïkal Server, you have to modify the content of the file
 	Specific/config.php
@@ -122,10 +109,8 @@ There are 2 configurations you have to configure:
 
 	# WEB absolute URI
 	define("BAIKAL_BASEURI", "http://dav.mydomain.com/");
-
-===============================================================================
-05 - Checking that Baïkal is properly configured
-===============================================================================
+	
+# 5 - Checking that Baïkal is properly configured
 
 You may now navigate to your domain URL using your favorite web browser. You should see something like:
 
@@ -135,10 +120,8 @@ You may now navigate to your domain URL using your favorite web browser. You sho
 In not, there's a problem somewhere. Take a deep breath, and try to understand
 what's going on. Checking out the apache log might also
 be useful (tail -f /var/log/apache2/error.log)
-	
-===============================================================================
-06 - Installation > Creating your first user
-===============================================================================
+
+# 6 - Installation > Creating your first user
 
 Baïkal won't run before you create at least one user.
 To do so, run the script Core/Scripts/adduser.php like this (replace username
@@ -158,9 +141,7 @@ You'll have to add the execution right to the script before running it:
 
 Note: there's also a moduser.php script that'll allow you to modify users.
 
-===============================================================================
-07 - Checking that Baïkal is reading to fly
-===============================================================================
+# 7 - Checking that Baïkal is reading to fly
 
 You may now navigate to your domain URL using your favorite web browser. You should see something like:
 
@@ -170,38 +151,31 @@ In not, there's a problem somewhere. Take a deep breath, and try to understand
 what's going on. Checking out the apache log might also
 be useful (tail -f /var/log/apache2/error.log)
 
-===============================================================================
-08 - Connecting your CalDAV / CardDAV client to Baïkal Server
-===============================================================================
+# 8 - Connecting your CalDAV / CardDAV client to Baïkal Server
 
-# Apple iCal:
+## Apple iCal:
 Add a new CalDAV account
 	* username: the username you just created (in our example, jerome)
 	* password: the password you just defined
 	* In server address: http://dav.mydomain.com/cal.php/principals/jerome
 
-# Apple Address Book:
+## Apple Address Book:
 Add a new CardDAV account:
 	* username: the username you just created (in our example, jerome)
 	* password: the password you just defined
 	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default
 
-===============================================================================
-09 - You're done
-===============================================================================
+# 9 - You're done
 
 You may now create new calendars, new events, new visit cards :) Enjoy.
 
-===============================================================================
-Troubleshooting
-===============================================================================
+
+# 10 - Troubleshooting
 
 For troubleshooting read the FAQ below. If your problem is not listed, contact
-me after reading README.txt
+me after reading README.md
 
-===============================================================================
-FAQ
-===============================================================================
+# 11 - FAQ
 
 Q:	Why is the Baïkal logo a fish ?
 A:	The fish is an Omul. According to Wikipedia
