@@ -14,28 +14,28 @@ document does not cover the installation of these requirements.
 
 The following configuration is the minimum required:
 - an Apache2 web server capable of running PHP, and accessible thru a
- dedicated subdomain (something like "dav.mydomainname.com")
+ dedicated subdomain (something like "dav.mydomainname.com") 
 	NOTE: this document only covers sub-domain based installations. Other
-	installations modes are possible, though not documented (yet).
-- root access to a command line on this server
+	installations modes are possible, though not documented (yet). 
+- root access to a command line on this server 
 	NOTE: tools to create and manage users are command line only. Web-based
-	interfaces will be produced in the future.
-- PHP 5.2.0 or newer with the following extensions:
-	- PDO and SQLite3
+	interfaces will be produced in the future. 
+- PHP 5.2.0 or newer with the following extensions: 
+	- PDO and SQLite3 
 	Some extensions can be optionally compiled into PHP. A list of loaded
-	extensions can be checked using the phpinfo() function.
-- 30 MB of disk space
-- Apache configuration that activates "FollowSymlinks"
+	extensions can be checked using the phpinfo() function. 
+- 30 MB of disk space 
+- Apache configuration that activates "FollowSymlinks" 
 
 # 1 - Obtaining Baïkal Server
 
-To get Baïkal Server, navigate to the following location:
+To get Baïkal Server, navigate to the following location: 
 	http://baikal.codr.fr/
 
 # 2 - Installation > Installing files
 
 To install Baïkal Server, unpack the source package outside of the web site root
-directory on your server. The location must be accessible to the web server.
+directory on your server. The location must be accessible to the web server. 
 Usually, it will be something like /var/www/
 
 	# a. Enter the directory where the websites are stored
@@ -66,14 +66,14 @@ running Apache is www-data:www-data
 
 # 3 - Installation > Installing virtualhost
 
-Baïkal Server must be bound to a domain/subdomain in order to run properly.
+Baïkal Server must be bound to a domain/subdomain in order to run properly. 
 This package provides a default virtualhost configuration file for Apache 2 in
 	Specific/virtualhosts/baikal.apache2
 
 To enable your host to run Baïkal, you'll have to add the Baïkal virtualhost
 to your Apache environment.
 
-In our example, we will assume that the apache2 configuration directory is:
+In our example, we will assume that the apache2 configuration directory is: 
 	/etc/apache2
 
 	# a. Enter the Apache2 configuration directory
@@ -99,7 +99,7 @@ In our example, we will assume that the apache2 configuration directory is:
 
 # 4 - Installation > Setting up Baïkal Server
 
-To set up Baïkal Server, you have to modify the content of the file
+To set up Baïkal Server, you have to modify the content of the file 
 	Specific/config.php
 
 There are 2 configurations you have to configure:
@@ -123,7 +123,7 @@ be useful (tail -f /var/log/apache2/error.log)
 
 # 6 - Installation > Creating your first user
 
-Baïkal won't run before you create at least one user.
+Baïkal won't run before you create at least one user. 
 To do so, run the script Core/Scripts/adduser.php like this (replace username
 with the actual username):
 
@@ -135,8 +135,8 @@ with the actual username):
 
 And follow the instructions on screen.
 
-If something like this shows up: "-bash: ./adduser.php: Permission denied"
-You'll have to add the execution right to the script before running it:
+If something like this shows up: "-bash: ./adduser.php: Permission denied" 
+You'll have to add the execution right to the script before running it: 
 	chmod +x ./adduser.php
 
 Note: there's also a moduser.php script that'll allow you to modify users.
@@ -154,21 +154,20 @@ be useful (tail -f /var/log/apache2/error.log)
 # 8 - Connecting your CalDAV / CardDAV client to Baïkal Server
 
 ## Apple iCal:
-Add a new CalDAV account
-	* username: the username you just created (in our example, jerome)
-	* password: the password you just defined
-	* In server address: http://dav.mydomain.com/cal.php/principals/jerome
+Add a new CalDAV account 
+	* username: the username you just created (in our example, jerome) 
+	* password: the password you just defined 
+	* In server address: http://dav.mydomain.com/cal.php/principals/jerome 
 
 ## Apple Address Book:
-Add a new CardDAV account:
-	* username: the username you just created (in our example, jerome)
-	* password: the password you just defined
-	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default
+Add a new CardDAV account: 
+	* username: the username you just created (in our example, jerome) 
+	* password: the password you just defined 
+	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
 # 9 - You're done
 
 You may now create new calendars, new events, new visit cards :) Enjoy.
-
 
 # 10 - Troubleshooting
 
@@ -177,8 +176,8 @@ me after reading README.md
 
 # 11 - FAQ
 
-Q:	Why is the Baïkal logo a fish ?
-A:	The fish is an Omul. According to Wikipedia
+Q:	Why is the Baïkal logo a fish ? 
+A:	The fish is an Omul. According to Wikipedia 
 	(http://en.wikipedia.org/wiki/Omul): The omul, Coregonus migratorius, also
 	known as Baikal omul (Russian: байкальский омуль), is a whitefish species
 	of the salmon family endemic to Lake Baikal in Siberia, Russia. It is
