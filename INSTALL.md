@@ -117,7 +117,7 @@ You may now navigate to your domain URL using your favorite web browser. You sho
 	No users are defined.
 	To create a user, you can use the helper Core/Scripts/adduser.php (requires command line access)
 
-In not, there's a problem somewhere. Take a deep breath, and try to understand
+If not, there's a problem somewhere. Take a deep breath, and try to understand
 what's going on. Checking out the apache log might also
 be useful (tail -f /var/log/apache2/error.log)
 
@@ -141,7 +141,7 @@ You'll have to add the execution right to the script before running it:
 
 Note: there's also a moduser.php script that'll allow you to modify users.
 
-# 7 - Checking that Baïkal is reading to fly
+# 7 - Checking that Baïkal is ready to swim
 
 You may now navigate to your domain URL using your favorite web browser. You should see something like:
 
