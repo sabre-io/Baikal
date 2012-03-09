@@ -26,7 +26,7 @@ information regarding these requirements see the INSTALL.md file in this folder.
   3. Mail me (Jérôme Schneider) at mail@jeromeschneider.fr
 
      When mailing, see the following guidelines... 
-       - Be polite 
+       - Be polite
 	   Always include the version of used Baïkal and server environment
 	   (phpinfo())...
        - Be as specific and clear as possible - questions like "my
