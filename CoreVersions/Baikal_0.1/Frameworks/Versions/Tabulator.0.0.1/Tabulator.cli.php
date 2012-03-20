@@ -40,12 +40,18 @@ class TabulatorColumnCli extends TabulatorColumn {
 
 class TabulatorCli extends Tabulator {
 	
+	public $iRepeatHeadersEvery = 20;
+	
 	public function getSep() {
 		return "    ";
 	}
 	
-	public function repeatHeadersEvery() {
-		return 10;
+	public function repeatHeadersEvery($iNum = FALSE) {
+		if(intval($iNum) > 0) {
+			$this->iRepeatHeadersEvery = intval($iNum);
+		}
+		
+		return $this->iRepeatHeadersEvery;
 	}
 	
 	protected function wrapHeaders($sHeaders) {
