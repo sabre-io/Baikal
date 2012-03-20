@@ -1,1 +1,1 @@
-./baikal/card.php
+./baikal/front/card.php
