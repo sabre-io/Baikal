@@ -58,6 +58,7 @@ if(@file_exists($sTemp) && (@is_dir($sTemp . "Core") || @is_link($sTemp . "Core"
 
 define("BAIKAL_PATH_CORE", BAIKAL_PATH_ROOT . "Core/");
 define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");
+define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
 
 require_once(BAIKAL_PATH_SPECIFIC . "config.php");
 
@@ -72,15 +73,17 @@ if(!file_exists(BAIKAL_SQLITE_FILE)) {
 $pdo = new PDO('sqlite:' . BAIKAL_SQLITE_FILE);
 $pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
+$bShouldCheckEnv = ((!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) && (!defined("BAIKAL_CONTEXT_ADMIN") || BAIKAL_CONTEXT_ADMIN === FALSE));
+
 # Check if at least one user exists
-if(!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) {
+if($bShouldCheckEnv === TRUE) {
 	if(($iNbUsers = intval($pdo->query('SELECT count(*) FROM users')->fetchColumn())) === 0) {
 		die("No users are defined.<br />To create a user, you can use the helper <b>Core/Scripts/adduser.php</b> (requires command line access)");
 	}	
 }
 
 
-if(!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) {
+if($bShouldCheckEnv === TRUE) {
 	# Mapping PHP errors to exceptions
 	function exception_error_handler($errno, $errstr, $errfile, $errline) {
 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
