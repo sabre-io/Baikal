@@ -28,7 +28,7 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
-require_once("../../Bootstrap.php");
+require_once(dirname(dirname(dirname(__FILE__))) . "/Bootstrap.php");	# ../../, symlink-safe
 require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalAdmin.php");
 require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
