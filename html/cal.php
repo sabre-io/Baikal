@@ -1,1 +1,1 @@
-../Core/WWWRoot/cal.php
+./baikal/cal.php

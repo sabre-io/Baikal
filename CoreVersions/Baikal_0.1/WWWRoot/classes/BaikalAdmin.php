@@ -30,7 +30,7 @@ class BaikalAdmin {
 	
 	static function assertEnabled() {
 		if(!defined("BAIKAL_ADMIN_ENABLED") || BAIKAL_ADMIN_ENABLED !== TRUE) {
-			die("<h1>Baïkal Admin is disabled.</h1>To enable it, set BAIKAL_ADMIN_ENABLED to TRUE in <b>Specific/config.php</b>");
+			die("<h1>Ba&iuml;kal Admin is disabled.</h1>To enable it, set BAIKAL_ADMIN_ENABLED to TRUE in <b>Specific/config.php</b>");
 		}
 		
 		$bLocked = TRUE;
@@ -46,13 +46,13 @@ class BaikalAdmin {
 				$bLocked = FALSE;
 			} else {
 				if(!@unlink($sEnableFile)) {
-					die("<h1>Baïkal Admin is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
+					die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
 				}
 			}
 		}
 		
 		if($bLocked) {
-			die("<h1>Baïkal Admin is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
+			die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/</b>");
 		} else {
 			// update filemtime
 			@touch($sEnableFile);
@@ -68,7 +68,7 @@ class BaikalAdmin {
 		$oTabulator->render($aUsers);
 	}
 	
-	function &makeColumn($sName, $sHeader = "", $sType = "text") {
+	static function &makeColumn($sName, $sHeader = "", $sType = "text") {
 		$oColumn = new TabulatorColumnHtml($sName, $sHeader, $sType);
 		return $oColumn;
 	}

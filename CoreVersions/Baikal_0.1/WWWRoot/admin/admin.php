@@ -28,12 +28,12 @@ ini_set("display_errors", 1);
 error_reporting(E_ALL);
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
-require_once("../Core/Bootstrap.php");
-require_once(BAIKAL_PATH_CORE . "BaikalAdmin.php");
-require_once(BAIKAL_PATH_CORE . "BaikalTools.php");
+require_once("../../Bootstrap.php");
+require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalAdmin.php");
+require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
 BaikalAdmin::assertEnabled();
 
-echo "<h1>Baïkal Admin</h1>";
+echo "<h1>Ba&iuml;kal Admin</h1>";
 
 BaikalAdmin::displayUsers();
