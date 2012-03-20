@@ -59,6 +59,7 @@ if(@file_exists($sTemp) && (@is_dir($sTemp . "Core") || @is_link($sTemp . "Core"
 define("BAIKAL_PATH_CORE", BAIKAL_PATH_ROOT . "Core/");
 define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");
 define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
+define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
 
 require_once(BAIKAL_PATH_SPECIFIC . "config.php");
 
