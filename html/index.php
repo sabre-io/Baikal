@@ -1,1 +1,1 @@
-./baikal/index-fe.php
+./baikal/front/index.php
