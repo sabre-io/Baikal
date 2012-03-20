@@ -9,7 +9,7 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
 	platform='osx'
 fi
 
-PATH_docroot=`cd ../WWWRoot && pwd`
+PATH_docroot=`cd ../../../html && pwd`
 echo "Serving $PATH_docroot"
 
 PATH_this="`pwd`/"
