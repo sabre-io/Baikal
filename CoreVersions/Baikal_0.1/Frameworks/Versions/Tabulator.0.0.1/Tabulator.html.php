@@ -23,6 +23,12 @@ class TabulatorColumnHtml extends TabulatorColumn {
 
 class TabulatorHtml extends Tabulator {
 	
+	private $sCssClass = FALSE;
+	
+	public function __construct($sCssClass = FALSE) {
+		$this->sCssClass = $sCssClass;
+	}
+	
 	public function getSep() {
 		return "";
 	}
@@ -37,7 +43,13 @@ class TabulatorHtml extends Tabulator {
 	}
 	
 	function renderOpen() {
-		return "<table class=\"books\">";
+		$sClass = "tabulator";
+		
+		if($this->sCssClass !== FALSE) {
+			$sClass .= " " . trim($this->sCssClass);
+		}
+		
+		return "<table class=\"{$sClass}\">";
 	}
 	
 	function renderClose() {
