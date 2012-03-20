@@ -11,6 +11,9 @@ define("BAIKAL_TIMEZONE", "Europe/Paris");
 # WEB absolute URI
 define("BAIKAL_BASEURI", "http://dav.mydomain.com/");
 
+# WEB absolute URI
+define("BAIKAL_ADMIN_ENABLED", TRUE);
+
 
 ##############################################################################
 # In this section: Optional configuration: you *may* customize these settings
@@ -34,7 +37,7 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 #
 
 # PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", BAIKAL_PATH_CORE . "Frameworks/SabreDAV/lib/Sabre/");
+define("BAIKAL_PATH_SABREDAV", BAIKAL_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 
 # If you change this value, you'll have to re-generate passwords for all your users
 define("BAIKAL_AUTH_REALM", "BaikalDAV");
