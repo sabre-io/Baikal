@@ -62,6 +62,7 @@ define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
 define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
 
 require_once(BAIKAL_PATH_SPECIFIC . "config.php");
+require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
 
 date_default_timezone_set(BAIKAL_TIMEZONE);
 
