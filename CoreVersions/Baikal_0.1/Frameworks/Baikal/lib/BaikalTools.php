@@ -43,4 +43,29 @@ class BaikalTools {
 		reset($aUsers);
 		return $aUsers;
 	}
+	
+	static function bashPrompt($prompt) {
+		print $prompt;
+		@flush();
+		@ob_flush();
+		$confirmation = @trim(fgets(STDIN));
+		return $confirmation;
+	}
+	
+	static function bashPromptSilent($prompt = "Enter Password:") {
+		$command = "/usr/bin/env bash -c 'echo OK'";
+
+		if(rtrim(shell_exec($command)) !== 'OK') {
+			trigger_error("Can't invoke bash");
+			return;
+		}
+
+		$command = "/usr/bin/env bash -c 'read -s -p \""
+		. addslashes($prompt)
+		. "\" mypassword && echo \$mypassword'";
+
+		$password = rtrim(shell_exec($command));
+		echo "\n";
+		return $password;
+	}
 }
