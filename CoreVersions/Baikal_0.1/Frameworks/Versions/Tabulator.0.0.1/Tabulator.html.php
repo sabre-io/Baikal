@@ -7,13 +7,21 @@ require_once($sDir . "Tabulator.php");
 class TabulatorColumnHtml extends TabulatorColumn {
 	
 	protected function wrap($sString) {
+		return $this->htmlWrap($sString, "td");
+	}
+	
+	protected function wrapHeader($sString) {
+		return $this->htmlWrap($sString, "th");
+	}
+	
+	protected function htmlWrap($sString, $sTag) {
 		if(in_array($this->getType(), array("numeric", "duration"))) {
 			$sAlign = "right";
 		} else {
 			$sAlign = "left";
 		}
 		
-		return "<td class=\"col-" . $this->getName() . " align-" . $sAlign . "\">" . $sString . "</td>";
+		return "<" . $sTag . " class=\"col-" . $this->getName() . " align-" . $sAlign . "\">" . $sString . "</" . $sTag . ">";
 	}
 	
 	public function renderUnderline() {
