@@ -50,9 +50,14 @@ abstract class Tabulator {
 		return implode("", $aRes) . "\n";
 	}
 	
+	public function	renderAndDisplay($aValues) {
+		echo $this->render($aValues);		
+	}
+	
 	public function	render($aValues) {
-		
 		$this->iNbValues = count($aValues);
+		
+		$sRes = "";
 		
 		reset($aValues);
 		while(list($iRow,) = each($aValues)) {
@@ -64,10 +69,12 @@ abstract class Tabulator {
 			}
 		}
 		
-		echo $this->renderOpen();
-		echo $this->renderHeader();
-		echo $this->renderValues();
-		echo $this->renderClose();
+		$sRes .= $this->renderOpen();
+		$sRes .= $this->renderHeader();
+		$sRes .= $this->renderValues();
+		$sRes .= $this->renderClose();
+		
+		return $sRes;
 	}
 	
 	abstract protected function getSep();

@@ -24,15 +24,36 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_ADMIN", TRUE);
-
-require_once(dirname(dirname(dirname(__FILE__))) . "/Bootstrap.php");	# ../../, symlink-safe
-require_once(BAIKAL_PATH_FRAMEWORKS . "Baikal/Includes.php");
-
-BaikalAdmin::assertEnabled();
-BaikalAdmin::assertAuthentified();
-
-echo BaikalAdmin::wrapWithInterface(BaikalAdmin::displayUsers());
+class BaikalTemplate {
+	
+	private $sAbsPath = "";
+	private $sHtml = "";
+	
+	public function __construct($sAbsPath) {
+		$this->sAbsPath = $sAbsPath;
+		$this->sHtml = self::getTemplateFile(
+			$this->sAbsPath
+		);
+	}
+	
+	public function parse($aMarkers = array()) {
+		return self::parseTemplateCodePhp(
+			$this->sHtml,
+			$aMarkers
+		);
+	}
+	
+	protected static function getTemplateFile($sAbsPath) {
+		return file_get_contents($sAbsPath);
+	}
+	
+	protected static function parseTemplateCodePhp($sCode, $aMarkers) {
+		extract($aMarkers);
+		ob_start();
+		echo eval('?>' . $sCode . '<?');
+		$sHtml = ob_get_contents();
+		ob_end_clean();
+		
+		return $sHtml;
+	}
+}
