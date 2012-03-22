@@ -28,8 +28,9 @@
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_CLI", TRUE);
 
-require_once("../Bootstrap.php");
-require_once("./inc/functions.php");
+define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
+require_once(PATH_ENTRYDIR . "../Bootstrap.php");
+require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
 $sUsername = @trim($argv[1]);
 
@@ -44,7 +45,7 @@ if(($user = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_FIRST)) === FALSE) {
 	die("User not found; aborting.\n");
 }
 
-$sCalendarID = prompt("Calendar Key: ");
+$sCalendarID = BaikalTools::bashPrompt("Calendar Key: ");
 if($sCalendarID === "") {
 	die("Calendar Key cannot be empty.\n");
 }
