@@ -155,18 +155,21 @@ be useful (tail -f /var/log/apache2/error.log)
 
 ## Apple iCal:
 Add a new CalDAV account:
+
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/cal.php/principals/jerome 
 
 ## Apple Address Book:
-Add a new CardDAV account: 
+Add a new CardDAV account:
+
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
 ## Thunderbird/Lighning:
 Add a new CalDAV account:
+
 	* Navigate to "Lightning" > "New account" > "On the network" > "URL"
 	* paste this URL: http://yourdomain.com/cal.php/calendars/username/default
 	  of and replace the domain name, and the username with the correct values
