@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
 *  Copyright notice
 *
@@ -24,18 +23,18 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-	
-	define("BAIKAL_CONTEXT", TRUE);
-	require_once("../Core/Bootstrap.php");
-	
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<title>Baïkal Server</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-</head>
-<body>
-	<h2>Baïkal is running allright.</h2>
-</body>
-</html>
+
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+define("BAIKAL_CONTEXT", TRUE);
+define("BAIKAL_CONTEXT_ADMIN", TRUE);
+
+require_once(dirname(dirname(dirname(__FILE__))) . "/Bootstrap.php");	# ../../, symlink-safe
+require_once(BAIKAL_PATH_FRAMEWORKS . "Baikal/Includes.php");
+
+BaikalAdmin::assertEnabled();
+BaikalAdmin::assertAuthentified();
+
+echo "<h1>Ba&iuml;kal Admin</h1>";
+
+BaikalAdmin::displayUsers();

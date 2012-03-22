@@ -28,8 +28,9 @@
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_CLI", TRUE);
 
-require_once("../Bootstrap.php");
-require_once("./inc/functions.php");
+define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
+require_once(PATH_ENTRYDIR . "../Bootstrap.php");
+require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
 $sUsername = @trim($argv[1]);
 
@@ -37,8 +38,8 @@ if($sUsername === "") {
 	die("You have to provide a username; aborting.\n");
 }
 
-$sPassword = prompt_silent("Password: ");
-$sPasswordConfirm = prompt_silent("Confirm password: ");
+$sPassword = BaikalTools::bashPromptSilent("Password: ");
+$sPasswordConfirm = BaikalTools::bashPromptSilent("Confirm password: ");
 
 if($sPassword === "") {
 	die("Password cannot be empty.\n");
@@ -50,8 +51,8 @@ if($sPassword !== $sPasswordConfirm) {
 
 $sHash = md5($sUsername . ':' . BAIKAL_AUTH_REALM . ':' . $sPassword);
 
-$sEmail = prompt("Email: ");
-$sDisplayName = prompt("Display name: ");
+$sEmail = BaikalTools::bashPrompt("Email: ");
+$sDisplayName = BaikalTools::bashPrompt("Display name: ");
 
 try {
 	$stmt = $pdo->prepare("INSERT INTO users (username, digesta1) VALUES (?, ?)");

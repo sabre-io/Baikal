@@ -28,8 +28,9 @@
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_CLI", TRUE);
 
-require_once("../Bootstrap.php");
-require_once("./inc/functions.php");
+define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
+require_once(PATH_ENTRYDIR . "../Bootstrap.php");
+require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
 $sUsername = isset($argv[1]) ? trim($argv[1]) : "";
 
@@ -58,13 +59,13 @@ echo "--User found--\nid:\t\t" . $user["id"] . "\nemail:\t\t" . $principal["emai
 
 echo "\n--Please enter new values--\n";
 
-$sPassword = prompt_silent("Password (empty to leave untouched): ");
+$sPassword = BaikalTools::bashPromptSilent("Password (empty to leave untouched): ");
 $sHash = "";
 $sEmail = "";
 $sDisplayName = "";
 
 if($sPassword !== "") {
-	$sPasswordConfirm = prompt_silent("Confirm password: ");
+	$sPasswordConfirm = BaikalTools::bashPromptSilent("Confirm password: ");
 	if($sPassword !== $sPasswordConfirm) {
 		die("Passwords don't match; aborting.\n");
 	}
@@ -72,8 +73,8 @@ if($sPassword !== "") {
 	$sHash = md5($sUsername . ':' . BAIKAL_AUTH_REALM . ':' . $sPassword);
 }
 
-$sEmail = prompt("Email (empty to leave untouched): ");
-$sDisplayName = prompt("Display name (empty to leave untouched): ");
+$sEmail = BaikalTools::bashPrompt("Email (empty to leave untouched): ");
+$sDisplayName = BaikalTools::bashPrompt("Display name (empty to leave untouched): ");
 
 
 if($sHash === "" && $sEmail === "" && $sDisplayName === "") {
