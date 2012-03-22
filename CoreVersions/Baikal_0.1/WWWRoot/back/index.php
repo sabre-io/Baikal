@@ -33,6 +33,7 @@ require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalAdmin.php");
 require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
 
 BaikalAdmin::assertEnabled();
+BaikalAdmin::assertAuthentified();
 
 echo "<h1>Ba&iuml;kal Admin</h1>";
 
