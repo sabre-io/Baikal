@@ -24,15 +24,13 @@ information regarding these requirements see the INSTALL.md file in this folder.
   2. Search the web carefully about Baïkal Server
 
   3. Mail me (Jérôme Schneider) at mail@jeromeschneider.fr
-
      When mailing, see the following guidelines... 
-       - Be polite
-	   Always include the version of used Baïkal and server environment
-	   (phpinfo())...
-       - Be as specific and clear as possible - questions like "my
+     - Be verbose; Always include the version of used Baïkal and
+       server environment (phpinfo())...
+     - Be as specific and clear as possible - questions like "my
        installation does not work - what can I do???" will be ignored.
-	   I can read english and french.
-	
+     - I can read english and french.
+
   4. If you have identified a genuine new bug report it at
      the mail address given in point 3 of this list
 
