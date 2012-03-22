@@ -24,17 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-ini_set("display_errors", 1);
-error_reporting(E_ALL);
-define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_ADMIN", TRUE);
-require_once(dirname(dirname(dirname(__FILE__))) . "/Bootstrap.php");	# ../../, symlink-safe
-require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalAdmin.php");
-require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
+define("BAIKAL_FRAMEWORK_ROOT", dirname(__FILE__) . "/");
+define("BAIKAL_FRAMEWORK_LIBDIR", BAIKAL_FRAMEWORK_ROOT . "lib/");
 
-BaikalAdmin::assertEnabled();
-BaikalAdmin::assertAuthentified();
-
-echo "<h1>Ba&iuml;kal Admin</h1>";
-
-BaikalAdmin::displayUsers();
+require_once(BAIKAL_FRAMEWORK_LIBDIR . "BaikalAdmin.php");
+require_once(BAIKAL_FRAMEWORK_LIBDIR . "BaikalTools.php");

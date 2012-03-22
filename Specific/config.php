@@ -19,10 +19,14 @@ define("BAIKAL_CARD_ENABLED", TRUE);
 define("BAIKAL_CAL_ENABLED", TRUE);
 
 # Baïkal Web Admin interface ON/OFF; default FALSE
-define("BAIKAL_ADMIN_ENABLED", FALSE);
+define("BAIKAL_ADMIN_ENABLED", TRUE);
 
 # Standalone Server, allowed or not; default FALSE
-define("BAIKAL_STANDALONE_ALLOWED", FALSE);
+define("BAIKAL_STANDALONE_ALLOWED", TRUE);
 
 # Standalone Server, port number; default 8888
 define("BAIKAL_STANDALONE_PORT", 8888);
+
+
+# Baïkal Web interface admin password hash; Set by Core/Scripts/adminpassword.php
+define("BAIKAL_ADMIN_PASSWORDHASH", "5746d6eb0ff2968c494e5d904b8ef4b6");
