@@ -32,10 +32,10 @@
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-	<title><?= BAIKAL_BASEURI ?></title>
+	<title>Baïkal Server</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 </head>
 <body>
-	<h2>Baïkal on <?= BAIKAL_BASEURI ?></h2>
+	<h2>Baïkal is running allright.</h2>
 </body>
 </html>
