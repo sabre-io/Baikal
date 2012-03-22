@@ -30,18 +30,26 @@ function whichBINDIST() {
 }
 
 function getBaikalConf() {
-	local CONF=$(php -r "require_once('$PATH_CONFIGFILE'); if(is_bool($1)) { echo intval($1);} else { echo $1;}")
+	local CONF=$(php -r "require_once('$PATH_CONFIGFILE'); if(!defined(\"$1\")) { echo null; exit;} if(is_bool($1)) { echo intval($1); exit;} else { echo $1; exit;}")
 	echo "$CONF"
 }
 
 BAIKAL_STANDALONE_ALLOWED=$(getBaikalConf BAIKAL_STANDALONE_ALLOWED)
 if [[ "$BAIKAL_STANDALONE_ALLOWED" == '0' ]]; then
-	echo "Baïkal Standalone Server is disabled by config."
-	exit 0
+	echo "Baïkal Standalone Server is disallowed by config. To allow it, please set BAIKAL_STANDALONE_ALLOWED to TRUE in Specific/config.php"
+	echo "-- Aborting; Baïkal Standalone Server is not running --"
+	exit 1
 fi
 
-BAIKAL_STANDALONE_PORT=$(getBaikalConf BAIKAL_STANDALONE_PORT)
 MONGOOSE_BINDIST=$(whichBINDIST)
+BAIKAL_STANDALONE_PORT=$(getBaikalConf BAIKAL_STANDALONE_PORT)
+
+if [[ "$BAIKAL_STANDALONE_PORT" == "" ]]; then
+	echo "No port number is defined for Baïkal Standalone Server to listen on. Please set BAIKAL_STANDALONE_PORT to the desired portnumber in Specific/config.php;"
+	echo "-- Aborting; Baïkal Standalone Server is not running --"
+	exit 1
+fi
+
 echo "Serving standalone Baïkal on port $BAIKAL_STANDALONE_PORT ('$PATH_DOCROOT' on $MONGOOSE_BINDIST)"
 
 MONGOOSE_BIN="$MONGOOSE_BUILDS""$MONGOOSE_BINDIST""/mongoose"
