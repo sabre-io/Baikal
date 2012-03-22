@@ -96,13 +96,21 @@ class BaikalAdmin {
 		return md5('admin:' . BAIKAL_AUTH_REALM . ':' . $sPassword);
 	}
 	
+	static function wrapWithInterface($sHtml) {
+		$oTemplate = new BaikalTemplate(BAIKAL_FRAMEWORK_RESDIR . "template.html");
+		return $oTemplate->parse(array(
+			"pagetitle" => "Users",
+			"pagecontent" => $sHtml
+		));
+	}
+	
 	static function displayUsers() {
 		$aUsers = BaikalTools::getUsers();
 		
-		$oTabulator = new TabulatorHtml();
+		$oTabulator = new TabulatorHtml("table table-bordered");
 		$oTabulator->addColumn(self::makeColumn("id", "Id", "numeric"));
 		$oTabulator->addColumn(self::makeColumn("username", "Username"));
-		$oTabulator->render($aUsers);
+		return $oTabulator->render($aUsers);
 	}
 	
 	static function &makeColumn($sName, $sHeader = "", $sType = "text") {
