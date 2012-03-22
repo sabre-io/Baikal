@@ -26,6 +26,8 @@
 
 define("BAIKAL_FRAMEWORK_ROOT", dirname(__FILE__) . "/");
 define("BAIKAL_FRAMEWORK_LIBDIR", BAIKAL_FRAMEWORK_ROOT . "lib/");
+define("BAIKAL_FRAMEWORK_RESDIR", BAIKAL_FRAMEWORK_ROOT . "res/");
 
+require_once(BAIKAL_FRAMEWORK_LIBDIR . "BaikalTemplate.php");
 require_once(BAIKAL_FRAMEWORK_LIBDIR . "BaikalAdmin.php");
 require_once(BAIKAL_FRAMEWORK_LIBDIR . "BaikalTools.php");
