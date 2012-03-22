@@ -59,6 +59,43 @@ class BaikalAdmin {
 		}
 	}
 	
+	static function assertAuthentified() {
+		if(!self::isAuthentified()) {
+			header(utf8_decode('WWW-Authenticate: Basic realm="Baïkal admin"'));
+			header('HTTP/1.0 401 Unauthorized'); 
+			die("Please authenticate.");
+		}
+		
+		return TRUE;
+	}
+	
+	static function isAuthentified() {
+
+		if(array_key_exists("PHP_AUTH_USER", $_SERVER)) {
+			$sUser = $_SERVER["PHP_AUTH_USER"];
+		} else {
+			$sUser = FALSE;
+		}
+		
+		if(array_key_exists("PHP_AUTH_PW", $_SERVER)) {
+			$sPass = $_SERVER["PHP_AUTH_PW"];
+		} else {
+			$sPass = FALSE;
+		}
+		
+		$sPassHash = self::hashAdminPassword($sPass);
+		
+		if($sUser === "admin" && $sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
+	static function hashAdminPassword($sPassword) {
+		return md5('admin:' . BAIKAL_AUTH_REALM . ':' . $sPassword);
+	}
+	
 	static function displayUsers() {
 		$aUsers = BaikalTools::getUsers();
 		
