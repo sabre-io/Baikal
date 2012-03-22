@@ -186,8 +186,7 @@ me after reading README.md
 
 # 11 - FAQ
 
-Q:	Why is the Baïkal logo a fish ?
-
+Q:	Why is the Baïkal logo a fish ? 
 A:	The fish is an Omul. According to Wikipedia
 	(http://en.wikipedia.org/wiki/Omul): The omul, Coregonus migratorius, also
 	known as Baikal omul (Russian: байкальский омуль), is a whitefish species
