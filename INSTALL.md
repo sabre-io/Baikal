@@ -186,11 +186,11 @@ me after reading README.md
 
 # 11 - FAQ
 
-Q:	Why is the Baïkal logo a fish ? 
+Q:	Why is the Baïkal logo a fish ?
 A:	The fish is an Omul. According to Wikipedia
-	(http://en.wikipedia.org/wiki/Omul): The omul, Coregonus migratorius, also
-	known as Baikal omul (Russian: байкальский омуль), is a whitefish species
-	of the salmon family endemic to Lake Baikal in Siberia, Russia. It is
-	considered a delicacy and is the object of one of the largest commercial
-	fisheries on Lake Baikal. In 2004, it was listed in Russia as an endangered
-	species.
+(http://en.wikipedia.org/wiki/Omul): The omul, Coregonus migratorius, also
+known as Baikal omul (Russian: байкальский омуль), is a whitefish species
+of the salmon family endemic to Lake Baikal in Siberia, Russia. It is
+considered a delicacy and is the object of one of the largest commercial
+fisheries on Lake Baikal. In 2004, it was listed in Russia as an endangered
+species.
