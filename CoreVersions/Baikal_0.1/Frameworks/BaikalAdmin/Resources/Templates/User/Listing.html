@@ -1,0 +1,17 @@
+<header class="jumbotron subhead" id="overview">
+	<h1>Users</h1>
+	<p class="lead">List, browse, create, update and delete Baïkal user accounts.</p>
+</header>
+
+<table class="table table-bordered table-striped">
+	<tr>
+		<th>id</th>
+		<th>username</th>
+	</tr>
+<? foreach($users as $user) { ?>
+	<tr>
+		<td><?= $user->get("id"); ?></td>
+		<td><?= $user->get("username"); ?></td>
+	</tr>
+<? } ?>
+</table>
