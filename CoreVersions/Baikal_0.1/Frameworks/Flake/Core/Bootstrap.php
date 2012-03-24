@@ -1,5 +1,7 @@
 <?php
 
+define("FLAKE_PATH_ROOT", dirname(dirname(__FILE__)) . "/");	# ../
+
 // les notices PHP ne sont pas affichées
 ini_set("display_errors", 1);
 ini_set("error_reporting", E_ALL & ~E_NOTICE);
@@ -22,6 +24,9 @@ if(!function_exists("debug")) {
 
 require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 \Flake\Core\ClassLoader::register();
+
+# Include Flake Framework config
+require_once(FLAKE_PATH_ROOT . "config.php");
 
 if(!\Flake\Util\Tools::isCliPhp()) {
 	session_start();
