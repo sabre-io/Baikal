@@ -32,7 +32,7 @@ define("BAIKAL_CONTEXT_ADMIN", TRUE);
 define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
 
 # Bootstrap Baikal Core
-require_once(dirname(dirname(dirname(dirname(PATH_ENTRYDIR)))) . "/Core/Bootstrap.php");	# ../../../../, symlink-safe
+require_once(dirname(PATH_ENTRYDIR) . "/Baikal/Core/Bootstrap.php");	# ../, symlink-safe
 
 # Include BaikalAdmin config files
 require_once(PATH_ENTRYDIR . "config.php");

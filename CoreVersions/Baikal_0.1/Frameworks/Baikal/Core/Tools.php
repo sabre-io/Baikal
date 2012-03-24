@@ -24,35 +24,50 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKAL_CONTEXT", TRUE);
+namespace Baikal\Core;
 
-# Bootstraping Baikal
-require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");
+class Tools {
+	public static function &db() {
+		return $GLOBALS["pdo"];
+	}
+	
+	public static function getUsers() {
+		
+		$aUsers = array();
+		
+		# Fetching user
+		$stmt = BaikalTools::db()->prepare("SELECT * FROM users");
+		$stmt->execute();
+		while(($user = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_FIRST)) !== FALSE) {
+			$aUsers[] = $user;
+		}
+		
+		reset($aUsers);
+		return $aUsers;
+	}
+	
+	static function bashPrompt($prompt) {
+		print $prompt;
+		@flush();
+		@ob_flush();
+		$confirmation = @trim(fgets(STDIN));
+		return $confirmation;
+	}
+	
+	static function bashPromptSilent($prompt = "Enter Password:") {
+		$command = "/usr/bin/env bash -c 'echo OK'";
 
-if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
-	throw new ErrorException("Baikal CalDAV is disabled.", 0, 255, __FILE__, __LINE__);
+		if(rtrim(shell_exec($command)) !== 'OK') {
+			trigger_error("Can't invoke bash");
+			return;
+		}
+
+		$command = "/usr/bin/env bash -c 'read -s -p \""
+		. addslashes($prompt)
+		. "\" mypassword && echo \$mypassword'";
+
+		$password = rtrim(shell_exec($command));
+		echo "\n";
+		return $password;
+	}
 }
-
-# Backends
-$authBackend = new Sabre_DAV_Auth_Backend_PDO($pdo);
-$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($pdo);
-$calendarBackend = new Sabre_CalDAV_Backend_PDO($pdo);
-
-# Directory structure
-$nodes = array(
-    new Sabre_CalDAV_Principal_Collection($principalBackend),
-    new Sabre_CalDAV_CalendarRootNode($principalBackend, $calendarBackend),
-);
-
-# Initializing server
-$server = new Sabre_DAV_Server($nodes);
-$server->setBaseUri(BAIKAL_CAL_BASEURI);
-
-# Server Plugins
-$server->addPlugin(new Sabre_DAV_Auth_Plugin($authBackend, BAIKAL_AUTH_REALM));
-$server->addPlugin(new Sabre_DAVACL_Plugin());
-$server->addPlugin(new Sabre_CalDAV_Plugin());
-
-
-# And off we go!
-$server->exec();
