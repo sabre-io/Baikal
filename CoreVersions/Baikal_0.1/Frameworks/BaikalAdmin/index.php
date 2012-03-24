@@ -31,17 +31,8 @@ define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
 define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
 
-# Bootstrap Baikal Core
-require_once(dirname(PATH_ENTRYDIR) . "/Baikal/Core/Bootstrap.php");	# ../, symlink-safe
-
-# Include BaikalAdmin config files
-require_once(PATH_ENTRYDIR . "config.php");
-
 # Bootstrap BaikalAdmin
 require_once(PATH_ENTRYDIR . "Core/Bootstrap.php");
-
-# Bootstrap Flake
-require_once(FLAKE_PATH_ROOT . "Core/Bootstrap.php");
 
 # Evaluate assertions
 \BaikalAdmin\Core\Auth::assertEnabled();
@@ -58,9 +49,3 @@ $oPage->setBaseUrl(FLAKE_BASEURL);
 
 # Render the page
 echo $oPage->render();
-
-/*require_once(BAIKAL_PATH_FRAMEWORKS . "Baikal/Includes.php");
-
-BaikalAdmin::assertEnabled();
-BaikalAdmin::assertAuthentified();
-BaikalAdmin::handleRequest();*/
