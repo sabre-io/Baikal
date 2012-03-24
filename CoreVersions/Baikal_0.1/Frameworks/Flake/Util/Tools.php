@@ -4,11 +4,11 @@ namespace Flake\Util;
 
 class Tools extends \Flake\Core\FLObject {
 
-	static function getCurrentUrl() {
+	public static function getCurrentUrl() {
 		return $_SERVER["REQUEST_URI"];
 	}
 	
-	static function getUrlTokens() {
+	public static function getUrlTokens() {
 		$sUrl = self::getCurrentUrl();
 		if($sUrl{0} === "/") {
 			$sUrl = substr($sUrl, 1);
@@ -31,11 +31,11 @@ class Tools extends \Flake\Core\FLObject {
 		return str_replace($sSep, $sGlue, $sRes);
 	}
 	
-	static function getAction() {
+	public static function getAction() {
 		return \Flake\Util\Tools::GET("action");
 	}
 	
-	static function absolutizeURL($sUrl) {
+	public static function absolutizeURL($sUrl) {
 		$aUrl = parse_url($sUrl);
 		if($aUrl["scheme"] !== "http" && $aUrl["scheme"] !== "https") {
 			if($sUrl{0} === "/") {
@@ -60,7 +60,7 @@ class Tools extends \Flake\Core\FLObject {
 		return "/" . str_replace(FLAKE_PATH_WWWROOT, "", $sAbsPath);
 	}
 
-	static function view_array($array_in)	{
+	public static function view_array($array_in)	{
 		if (is_array($array_in))	{
 			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.htmlspecialchars("EMPTY!").'</b></font></td></tr>';}
@@ -83,7 +83,7 @@ class Tools extends \Flake\Core\FLObject {
 		return $result;
 	}
 
-	static function debug($var="",$brOrHeader=0)	{
+	public static function debug($var="",$brOrHeader=0)	{
 		if($brOrHeader === 0) {
 			$trail = debug_backtrace();
 			$trail = array_reverse($trail);
@@ -114,7 +114,7 @@ class Tools extends \Flake\Core\FLObject {
 		}
 	}
 
-	static function debug_trail()	{
+	public static function debug_trail()	{
 		$trail = debug_backtrace();
 		$trail = array_reverse($trail);
 		array_pop($trail);
@@ -127,7 +127,7 @@ class Tools extends \Flake\Core\FLObject {
 		return implode(' // ',$path);
 	}
 
-	static function POST($sVar = FALSE) {
+	public static function POST($sVar = FALSE) {
 		if($sVar !== FALSE) {
 			$aData = \Flake\Util\Tools::POST();
 			if(array_key_exists($sVar, $aData)) {
@@ -140,7 +140,7 @@ class Tools extends \Flake\Core\FLObject {
 		return is_array($GLOBALS["_POST"]) ? $GLOBALS["_POST"] : array();
 	}
 
-	static function GET($sVar = FALSE) {
+	public static function GET($sVar = FALSE) {
 		if($sVar !== FALSE) {
 			$aData = \Flake\Util\Tools::GET();
 			if(array_key_exists($sVar, $aData)) {
@@ -153,7 +153,7 @@ class Tools extends \Flake\Core\FLObject {
 		return is_array($GLOBALS["_GET"]) ? $GLOBALS["_GET"] : array();
 	}
 
-	static function GP($sVar = FALSE) {
+	public static function GP($sVar = FALSE) {
 		if($sVar !== FALSE) {
 			$aData = \Flake\Util\Tools::GP();
 			if(array_key_exists($sVar, $aData)) {
@@ -169,7 +169,7 @@ class Tools extends \Flake\Core\FLObject {
 		);
 	}
 	
-	static function makeLink($sAction, $aAdditionalParams = FALSE) {
+	public static function makeLink($sAction, $aAdditionalParams = FALSE) {
 
 		if($aAdditionalParams === FALSE) {
 			// aucun paramètre additionnel
@@ -200,21 +200,21 @@ class Tools extends \Flake\Core\FLObject {
 		}
 	}
 	
-	function safelock($sString) {
+	public static function safelock($sString) {
 		return substr(md5(FLAKE_SAFEHASH_SALT . ":" . $sString), 0, 5);
 	}
 	
-	function redirect($sUrl) {
+	public static function redirect($sUrl) {
 		header("Location: " . $sUrl);
 		exit(0);
 	}
 	
-	function refreshPage() {
+	public static function refreshPage() {
 		header("Location: " . \Flake\Util\Tools::getCurrentUrl());
 		exit(0);
 	}
 	
-	function decode_GET() {
+	public static function decode_GET() {
 		$aGet = \Flake\Util\Tools::GET();
 		$aKeys = array_keys($aGet);
 		while(list(,$sKey) = each($aKeys)) {
@@ -227,19 +227,19 @@ class Tools extends \Flake\Core\FLObject {
 		reset($GLOBALS["_GET"]);
 	}
 	
-	function validEmail($sEmail) {
+	public static function validEmail($sEmail) {
 		return (filter_var($sEmail, FILTER_VALIDATE_EMAIL) !== FALSE);
 	}
 	
-	function filterFormInput($sInput) {
+	public static function filterFormInput($sInput) {
 		return strip_tags($sInput);
 	}
 	
-	function getHumanDate($iStamp) {
+	public static function getHumanDate($iStamp) {
 		return ucwords(strftime("%A, %d %B %Y", $iStamp));
 	}
 	
-	function getHumanTime($iStamp) {
+	public static function getHumanTime($iStamp) {
 		return strftime("%Hh%M", $iStamp);
 	}
 	
@@ -274,7 +274,6 @@ class Tools extends \Flake\Core\FLObject {
 	/**
 	 * Taken from TYPO3
 	 * Returns true if the first part of $str matches the string $partStr
-	 * Usage: 59
 	 *
 	 * @param	string		Full string to check
 	 * @param	string		Reference string which must be found as the "first part" of the full string
@@ -313,7 +312,7 @@ class Tools extends \Flake\Core\FLObject {
 	 * @param	boolean		$bUTF8: add UTF8-BOM or not ?
 	 * @return	void
 	 */
-	function file_writeBin($sPath, $sData) {
+	public static function file_writeBin($sPath, $sData) {
 		$rFile=fopen($sPath, "wb");
 		fputs($rFile, $sData);
 		fclose($rFile);
@@ -353,7 +352,7 @@ TEST;
 		return "" . $sFirst;
 	}
 	
-	public function	parseTemplateCodePhp($sCode, $aMarkers) {
+	public static function	parseTemplateCodePhp($sCode, $aMarkers) {
 		extract($aMarkers);
 		ob_start();
 		echo eval('?>' . $sCode . '<?');
