@@ -28,8 +28,8 @@ if(!defined("BAIKAL_CONTEXT") || BAIKAL_CONTEXT !== TRUE) {
 	die("Bootstrap.php may not be included outside the Baikal context");
 }
 
-if(version_compare(PHP_VERSION, '5.2.0', '<')) {
-	die('Baikal Fatal Error: Baikal requires PHP 5.2.0+ to run properly. You version is: ' . PHP_VERSION . '.');
+if(version_compare(PHP_VERSION, '5.3.0', '<')) {
+	die('Baikal Fatal Error: Baikal requires PHP 5.3.0+ to run properly. You version is: ' . PHP_VERSION . '.');
 }
 
 if(!defined('PDO::ATTR_DRIVER_NAME')) {
@@ -40,21 +40,15 @@ if(!in_array('sqlite', PDO::getAvailableDrivers())) {
 	die('Baikal Fatal Error: PDO::sqlite is unavailable. It\'s required by Baikal.');
 }
 
-# determine Baïkal install root path
-# adaptive, either ../../ or ../ relative to the Bootstrap
-# not using realpath here as it resolves symlinks
+# Registering Baikal classloader
+define("BAIKAL_PATH_FRAMEWORKROOT", dirname(dirname(__FILE__)) . "/");
+require_once(BAIKAL_PATH_FRAMEWORKROOT . '/Core/ClassLoader.php');
+\Baikal\Core\ClassLoader::register();
 
-$sTemp = dirname(dirname(__FILE__)) . "/";	#../ if Baïkal distrib is at the same level than "Core" symlink
-if(@file_exists($sTemp) && (@is_dir($sTemp . "Core") || @is_link($sTemp . "Core"))) {
-	define("BAIKAL_PATH_ROOT", $sTemp);	# ../
-} else {
-	$sTemp = dirname($sTemp) . "/"; # ../../ relative to bootstrap
-	if(@file_exists($sTemp) && (@is_dir($sTemp . "Core") || @is_link($sTemp . "Core"))) {
-		define("BAIKAL_PATH_ROOT", $sTemp);	# ../../
-	} else {
-		die('Baikal Fatal Error: Unable to determine Baikal root path.');
-	}
-}
+# determine Baïkal install root path
+# not using realpath here to avoid symlinks resolution
+
+define("BAIKAL_PATH_ROOT", dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/");	# ../../../../../
 
 define("BAIKAL_PATH_CORE", BAIKAL_PATH_ROOT . "Core/");
 define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");

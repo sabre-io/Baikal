@@ -25,7 +25,9 @@
 ***************************************************************/
 
 define("BAIKAL_CONTEXT", TRUE);
-require_once("../Core/Bootstrap.php");
+
+# Bootstraping Baikal
+require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");
 
 if(!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== TRUE) {
 	throw new ErrorException("Baikal CardDAV is disabled.", 0, 255, __FILE__, __LINE__);
