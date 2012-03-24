@@ -28,10 +28,11 @@
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_CLI", TRUE);
 
-define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
-require_once(PATH_ENTRYDIR . "../Bootstrap.php");
-require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalTools.php");
-require_once(BAIKAL_PATH_WWWROOT . "classes/BaikalAdmin.php");
+# Bootstraping Baikal
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Core/Frameworks/Baikal/Core/Bootstrap.php");	# ../../../
+
+# Bootstraping BaikalAdmin
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Core/Frameworks/BaikalAdmin/Core/Bootstrap.php");	# ../../../
 
 $sConfigFile = BAIKAL_PATH_SPECIFIC . "config.php";
 
@@ -52,8 +53,8 @@ if(!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
 	$bFound = TRUE;
 }
 
-$sPassword = BaikalTools::bashPromptSilent("New admin password: ");
-$sPasswordConfirm = BaikalTools::bashPromptSilent("Confirm new admin password: ");
+$sPassword = \Baikal\Core\Tools::bashPromptSilent("New admin password: ");
+$sPasswordConfirm = \Baikal\Core\Tools::bashPromptSilent("Confirm new admin password: ");
 
 if($sPassword === "") {
 	die("Password cannot be empty.\n");
@@ -63,7 +64,7 @@ if($sPassword !== $sPasswordConfirm) {
 	die("Passwords don't match; aborting.\n");
 }
 
-$sHash = BaikalAdmin::hashAdminPassword($sPassword);
+$sHash = \BaikalAdmin\Core\Auth::hashAdminPassword($sPassword);
 
 echo ("\nNew password hash:" . $sHash . "\n");
 $sFileContents = file_get_contents($sConfigFile);

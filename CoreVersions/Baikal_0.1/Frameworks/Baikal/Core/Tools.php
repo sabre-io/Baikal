@@ -36,7 +36,7 @@ class Tools {
 		$aUsers = array();
 		
 		# Fetching user
-		$stmt = BaikalTools::db()->prepare("SELECT * FROM users");
+		$stmt = \Baikal\Core\Tools::db()->prepare("SELECT * FROM users");
 		$stmt->execute();
 		while(($user = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_FIRST)) !== FALSE) {
 			$aUsers[] = $user;
