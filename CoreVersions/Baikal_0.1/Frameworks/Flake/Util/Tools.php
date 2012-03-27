@@ -209,6 +209,12 @@ class Tools extends \Flake\Core\FLObject {
 		exit(0);
 	}
 	
+	public static function redirectUsingMeta($sUrl) {
+		$sDoc = "<html><head><meta http-equiv='refresh' content='0; url=" . $sUrl . "'></meta></head><body></body></html>";
+		echo $sDoc;
+		exit(0);
+	}
+	
 	public static function refreshPage() {
 		header("Location: " . \Flake\Util\Tools::getCurrentUrl());
 		exit(0);
