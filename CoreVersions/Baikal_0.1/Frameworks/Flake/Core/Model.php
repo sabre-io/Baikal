@@ -5,16 +5,25 @@ namespace Flake\Core;
 abstract class Model extends \Flake\Core\FLObject {
 	protected $aData = array();
 	
-	public function getData() {
+	protected function getData() {
 		reset($this->aData);
 		return $this->aData;
 	}
 	
-	public function get($sWhat) {
-		if(array_key_exists($sWhat, $this->aData)) {
-			return $this->aData[$sWhat];
+	public function get($sPropName) {
+		if(array_key_exists($sPropName, $this->aData)) {
+			return $this->aData[$sPropName];
 		}
 		
-		return FALSE;
+		throw new \Exception("\Flake\Core\Model->get(): property " . htmlspecialchars($sPropName) . " does not exist on " . self::getClass());
+	}
+	
+	public function set($sPropName, $sPropValue) {
+		if(array_key_exists($sPropName, $this->aData)) {
+			$this->aData[$sPropName] = $sPropValue;
+			return $this;
+		}
+		
+		throw new \Exception("\Flake\Core\Model->set(): property " . htmlspecialchars($sPropName) . " does not exist on " . self::getClass());
 	}
 }
