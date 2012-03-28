@@ -167,13 +167,20 @@ Add a new CardDAV account:
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
-## Thunderbird/Lighning:
+## Thunderbird/Lightning:
 Add a new CalDAV account:
 
 	* Navigate to "Lightning" > "New account" > "On the network" > "URL"
 	* paste this URL: http://yourdomain.com/cal.php/calendars/username/default
 	  of and replace the domain name, and the username with the correct values
 	* When asked, provide user/password; your CalDAV account should be up and running
+
+## Apple iOS Contact Book:
+Add a new CardDAV account:
+
+	* server address: dav.mydomain.com/card.php 
+	* username: the username you just created (in our example, jerome) 
+	* password: the password you just defined 
 
 # 9 - You're done
 
