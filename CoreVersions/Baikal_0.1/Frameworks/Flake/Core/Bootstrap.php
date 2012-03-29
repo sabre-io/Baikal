@@ -29,6 +29,7 @@ require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 require_once(FLAKE_PATH_ROOT . "config.php");
 
 if(!\Flake\Util\Tools::isCliPhp()) {
+	ini_set("html_errors", TRUE);
 	session_start();
 	\Flake\Util\Tools::decode_GET();
 }

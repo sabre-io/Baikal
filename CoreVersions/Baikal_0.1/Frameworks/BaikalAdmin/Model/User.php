@@ -5,6 +5,7 @@ namespace BaikalAdmin\Model;
 class User extends \Flake\Core\Model\Db {
 	const DATATABLE = "users";
 	const PRIMARYKEY = "id";
+	const LABELFIELD = "username";
 	
 	protected $oIdentityPrincipal = null;
 	
@@ -55,5 +56,38 @@ class User extends \Flake\Core\Model\Db {
 	
 	public function getMailtoURI() {
 		return "mailto:" . rawurlencode($this->get("displayname") . " <" . $this->get("email") . ">");
+	}
+	
+	# Empty form, 
+	public static function formEmpty($options = array()) {
+		$sClass = get_called_class();
+		$oForm = new \Formal\Core\Form($sClass, $options);
+		
+		$oForm->add(new \Formal\Element\Text(array(
+			"prop" => "username",
+			"label" => "Username",
+			"validation" => "required"
+		)));
+		
+		$oForm->add(new \Formal\Element\Text(array(
+			"prop" => "displayname",
+			"label" => "Display name",
+			"validation" => "required"
+		)));
+		
+		$oForm->add(new \Formal\Element\Text(array(
+			"prop" => "email",
+			"label" => "Email",
+			"validation" => "required,email"
+		)));
+		
+		return $oForm;
+	}
+	
+	public function formForInstance($options = array()) {
+		$oForm = self::formEmpty($options)->setModelInstance($this);
+		$oForm->element("username")->setOption("readonly", true);
+		
+		return $oForm;
 	}
 }

@@ -7,8 +7,16 @@ class FLObject {
 		return print_r($this, TRUE);
 	}
 	
-	public static function getClass() {
-		return get_called_class();
+	public function getClass() {
+//		throw new \Exception("getClass() is deprecated");
+		if(!isset($this)) {
+#			echo "STATIC<br />";
+			return get_called_class();
+		} else {
+#			echo "INSTANCE<br />";
+#			debug($this);
+			return get_class($this);
+		}
 	}
 	
 	public function isA($sClassOrProtocolName) {
