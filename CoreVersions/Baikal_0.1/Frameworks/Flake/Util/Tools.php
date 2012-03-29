@@ -428,16 +428,16 @@ TEST;
 	public static function is_a($object, $class) {
 	    if(is_object($object)) return $object instanceof $class;
 	    if(is_string($object)){
-	        if(is_object($class)) $class=get_class($class);
+			if(is_object($class)) $class=get_class($class);
 
-	        if(class_exists($class)) return is_subclass_of($object, $class) || $object==$class;
-	        if(interface_exists($class)) {
-	            $reflect = new \ReflectionClass($object);
-	            return $reflect->implementsInterface($class);
-	        }
-
-	    }
-	    return false;
+			if(class_exists($class)) return is_subclass_of($object, $class) || $object==$class;
+			if(interface_exists($class)) {
+				$reflect = new \ReflectionClass($object);
+				return $reflect->implementsInterface($class);
+			}
+			
+		}
+		return false;
 	}
 	
 	public static function HTTPStatus($iCode, $sMessage) {

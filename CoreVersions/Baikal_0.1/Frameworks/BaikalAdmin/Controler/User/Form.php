@@ -7,10 +7,21 @@ class Form extends \Flake\Core\Controler {
 	const BASEPATH = "/admin/";
 	protected $aMessages = array();
 	
-	function execute() {
+	public function __construct() {
+		parent::__construct();
 		if(($iUser = self::editRequested()) !== FALSE) {
-			if(self::editSubmitted()) {
-				
+			$this->oModel = new \BaikalAdmin\Model\User($iUser);
+		}
+		
+		$this->initForm();
+	}
+	
+	function execute() {
+		
+		if(($iUser = self::editRequested()) !== FALSE) {
+			if($this->oForm->submitted()) {
+				$this->oForm->execute();
+/*				
 				$aPost = \Flake\Util\Tools::POST();
 				$aErrors = array();
 				
@@ -44,7 +55,7 @@ class Form extends \Flake\Core\Controler {
 						"Changes on <i class='icon-user'></i> <strong>" . $oUser->get("username") . "</strong> have been saved."
 					);
 				}
-
+*/
 			}
 		}
 		
@@ -75,7 +86,21 @@ class Form extends \Flake\Core\Controler {
 					self::BASEPATH
 				);
 			}
-		}		
+		}
+	}
+	
+	function initForm() {
+		$aOptions = array(
+			"closeurl" => $this::BASEPATH
+		);
+		
+		if($this->editRequested()) {
+			$this->oForm = $this->oModel->formForInstance($aOptions);
+		} else {
+			$this->oForm = \BaikalAdmin\Model\User::formEmpty(array(
+				"closeurl" => $this::BASEPATH
+			));
+		}
 	}
 	
 	public static function editRequested() {
@@ -84,12 +109,6 @@ class Form extends \Flake\Core\Controler {
 		}
 		
 		return FALSE;
-	}
-	
-	public static function editSubmitted() {
-		return self::editRequested() && (
-			intval(\Flake\Util\Tools::POST("formedit-submitted")) === 1
-		);
 	}
 	
 	public static function deleteRequested() {
@@ -124,7 +143,9 @@ class Form extends \Flake\Core\Controler {
 			$oView->setData("user", $oUser);
 			$oView->setData("messages", $sMessages);
 			
+			$sHtml .= $this->oForm->render();
 			$sHtml .= $oView->render();
+			
 		} else {
 			$sHtml .= $sMessages;
 		}

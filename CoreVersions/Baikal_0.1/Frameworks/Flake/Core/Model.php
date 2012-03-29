@@ -26,4 +26,8 @@ abstract class Model extends \Flake\Core\FLObject {
 		
 		throw new \Exception("\Flake\Core\Model->set(): property " . htmlspecialchars($sPropName) . " does not exist on " . self::getClass());
 	}
+	
+	public function getLabel() {
+		return $this->get($this::LABELFIELD);
+	}
 }

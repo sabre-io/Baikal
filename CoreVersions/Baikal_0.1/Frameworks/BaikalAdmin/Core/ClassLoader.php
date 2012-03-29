@@ -5,7 +5,7 @@ namespace BaikalAdmin\Core;
 class ClassLoader {
 
 	public static function register() {
-		return spl_autoload_register(array(get_called_class(), 'loadClass'));
+		return spl_autoload_register(array(__CLASS__, 'loadClass'));
 	}
 
 	public static function loadClass($sFullClassName) {
