@@ -30,4 +30,12 @@ class CollectionTyped extends \Flake\Core\Collection {
 
 		parent::push($mMixed);
 	}
+	
+	# Create a new collection like this one
+	# This abstraction is useful because of CollectionTyped
+	
+	protected function newCollectionLikeThisOne() {
+		$oCollection = \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
+		return $oCollection;
+	}
 }
