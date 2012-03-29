@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\Core;
+namespace Formal\Core;
 
 class ClassLoader {
 
@@ -15,15 +15,15 @@ class ClassLoader {
 			return;
 		}
 		
-		if($aParts[0] !== "Baikal") {
+		if($aParts[0] !== "Formal") {
 			return;
 		}
 		
 		// ejecting the Radical
 		$sRadical = array_shift($aParts);
 		
-		if($sRadical === "Baikal") {
-			$sRootPath = BAIKAL_PATH_FRAMEWORKROOT;
+		if($sRadical === "Formal") {
+			$sRootPath = FORMAL_PATH_ROOT;
 		}
 		
 		$sClassName = array_pop($aParts);

@@ -8,6 +8,9 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Baikal/Core/Bootstrap.php")
 # Bootstrap Flake
 require_once(dirname(dirname(dirname(__FILE__))) . "/Flake/Core/Bootstrap.php");
 
+# Bootstrap Formal
+require_once(dirname(dirname(dirname(__FILE__))) . "/Formal/Core/Bootstrap.php");
+
 # Registering BaikalAdmin classloader
 require_once(dirname(__FILE__) . '/ClassLoader.php');
 \BaikalAdmin\Core\ClassLoader::register();

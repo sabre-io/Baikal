@@ -26,6 +26,15 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 		$key = key($this->aCollection);
 		return ($key !== NULL && $key !== FALSE);
 	}
+	
+	public function getForKey($sKey) {
+		$aKeys = $this->keys();
+		if(!in_array($sKey, $aKeys)) {
+			throw new \Exception("\Flake\Core\Collection->getForKey(): key '" . $sKey . "' not found in Collection");
+		}
+		
+		return $this->aCollection[$sKey];
+	}
 
 	public function &each() {
 		list($key, $val) = each($this->aCollection);
@@ -125,6 +134,14 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 	 */
 	public function toArray() {
 		return $this->aCollection;
+	}
+	
+	# Create a new collection like this one
+	# This abstraction is useful because of CollectionTyped
+	
+	protected function newCollectionLikeThisOne() {
+		$oCollection = \Flake\Core\Collection();
+		return $oCollection;
 	}
 
 	/*
