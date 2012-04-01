@@ -1,11 +1,15 @@
 <?php
 
-namespace BaikalAdmin\Model;
+namespace Baikal\Model;
 
 class User extends \Flake\Core\Model\Db {
 	const DATATABLE = "users";
 	const PRIMARYKEY = "id";
 	const LABELFIELD = "username";
+	
+	protected $aData = array(
+		"username" => "",
+	);
 	
 	protected $oIdentityPrincipal = null;
 	
@@ -13,7 +17,17 @@ class User extends \Flake\Core\Model\Db {
 		parent::initByPrimary($sPrimary);
 		
 		# Initializing principals
-		$this->oIdentityPrincipal = $this->getIdentityPrincipal();
+		$this->oIdentityPrincipal = \Baikal\Model\Principal::getBaseRequester()
+			->addClauseEquals("uri", "principals/" . $this->get("username"))
+			->execute()
+			->first();
+	}
+	
+	public function initFloating() {
+		parent::initFloating();
+		
+		# Initializing principals
+		$this->oIdentityPrincipal = new \Baikal\Model\Principal();
 	}
 	
 	public function get($sPropName) {
@@ -41,53 +55,66 @@ class User extends \Flake\Core\Model\Db {
 	}
 	
 	public function persist() {
+		
+		# Persisted first, as Model users loads this data
+		$this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
 		$this->oIdentityPrincipal->persist();
+		
+		if($this->floating()) {
+			parent::persist();
+		}
 	}
 	
 	public function destroy() {
-		# we have to delete user, and all related resources (principals, calendars, calendar events, contact books and contacts)
-		die("TODO: Implement destroy() on " . self::getClass() . "(" . __FILE__ . ":" . __LINE__ . ")");
-	}
-	
-	protected function getIdentityPrincipal() {
-		$oPrincipal = new \BaikalAdmin\Model\Principal("principals/" . $this->get("username"));
-		return $oPrincipal;
+		# TODO: delete all related resources (principals, calendars, calendar events, contact books and contacts)
+		
+		# Destroying identity principal
+		$this->oIdentityPrincipal->destroy();
+		
+		parent::destroy();
 	}
 	
 	public function getMailtoURI() {
 		return "mailto:" . rawurlencode($this->get("displayname") . " <" . $this->get("email") . ">");
 	}
 	
-	# Empty form, 
-	public static function formEmpty($options = array()) {
-		$sClass = get_called_class();
-		$oForm = new \Formal\Core\Form($sClass, $options);
+	public function formForThisModelInstance($options = array()) {
+		$sClass = get_class($this);
+		$oForm = new \Formal\Form($sClass, $options);
+		$oForm->setModelInstance($this);
 		
-		$oForm->add(new \Formal\Element\Text(array(
+		return $oForm;
+	}
+	
+	public function formMorphologyForThisModelInstance() {
+		$oMorpho = new \Formal\Form\Morphology();
+		
+		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "username",
 			"label" => "Username",
 			"validation" => "required"
 		)));
 		
-		$oForm->add(new \Formal\Element\Text(array(
+		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "displayname",
 			"label" => "Display name",
 			"validation" => "required"
 		)));
 		
-		$oForm->add(new \Formal\Element\Text(array(
+		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "email",
 			"label" => "Email",
 			"validation" => "required,email"
 		)));
 		
-		return $oForm;
+		if(!$this->floating()) {
+			$oMorpho->element("username")->setOption("readonly", true);
+		}
+		
+		return $oMorpho;
 	}
 	
-	public function formForInstance($options = array()) {
-		$oForm = self::formEmpty($options)->setModelInstance($this);
-		$oForm->element("username")->setOption("readonly", true);
-		
-		return $oForm;
+	public static function getIcon() {
+		return "icon-user";
 	}
 }

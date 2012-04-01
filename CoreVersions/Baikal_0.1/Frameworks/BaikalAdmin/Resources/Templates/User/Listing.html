@@ -1,21 +1,21 @@
 <style type="text/css">
-	.col-id { width: 5%;}
-	.col-username { width: 62%;}
+	.col-id { width: 2%;}
+	.col-username { width: 65%;}
 	.no-border-left { border-left: none !important;}
 </style>
 
 <header class="jumbotron subhead" id="overview">
 	<h1>Users</h1>
 	<p class="lead pull-left">Browse, create, update and delete Baïkal user accounts.</p>
-	<p class="pull-right"><a class="btn"><i class="icon-user"></i> + Add user</a></p>
+	<p class="pull-right"><a class="btn" href="<?= \BaikalAdmin\Controler\User\Form::linkNew() ?>"><i class="<?= \Baikal\Model\User::getIcon() ?>"></i> + Add user</a></p>
 </header>
 
 <table class="table table-bordered table-striped">
-	<tr>
+	<!--tr>
 		<th class="col-id">#ID</th>
 		<th class="col-user"></th>
 		<th class="col-actions no-border-left"></th>
-	</tr>
+	</tr-->
 <? foreach($users as $user) {
 	$linkdetails = \BaikalAdmin\Controler\User\Form::linkDetails($user);
 	$linkedit = \BaikalAdmin\Controler\User\Form::linkEdit($user);
@@ -23,7 +23,7 @@
 	$mailtouri = $user->getMailtoURI();
 ?>
 	<tr>
-		<td class="col-id"><?= $user->get("id"); ?></td>
+		<!--td class="col-id"><?= $user->get("id"); ?></td-->
 		<td class="col-username">
 			<i class="icon-user"></i> <strong><?= $user->get("username"); ?></strong><br />
 			<?= $user->get("displayname"); ?> <a href="<?= $mailtouri ?>">&lt;<?= $user->get("email"); ?>&gt;</a>
