@@ -9,18 +9,23 @@ class Text extends \Formal\Element {
 		$label = $this->option("label");
 		$prop = $this->option("prop");
 		$disabled = "";
-		$class = "";
+		$inputclass = "";
+		$groupclass = "";
 		
 		if($this->option("readonly") === TRUE) {
-			$class = " disabled";
+			$inputclass .= " disabled";
 			$disabled = " disabled";
 		}
 		
+		if($this->option("error") === TRUE) {
+			$groupclass .= " error";
+		}
+		
 		$sHtml =<<<HTML
-<div class="control-group">
+<div class="control-group{$groupclass}">
 	<label class="control-label" for="displayname">{$label}</label>
 	<div class="controls">
-		<input type="text" class="input-xlarge{$sClass}" id="{$prop}" name="{$prop}" value="{$value}"{$disabled} />
+		<input type="text" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$value}"{$disabled} />
 	</div>
 </div>
 HTML;

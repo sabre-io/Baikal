@@ -3,13 +3,22 @@
 namespace Flake\Core\Model;
 
 abstract class Db extends \Flake\Core\Model {
-
-	public function __construct($sPrimary) {
-		$this->initByPrimary($sPrimary);
+	
+	protected $bFloating = TRUE;
+	
+	public function __construct($sPrimary = FALSE) {
+		if($sPrimary === FALSE) {
+			# Object will be floating
+			$this->initFloating();
+			$this->bFloating = TRUE;
+		} else {
+			$this->initByPrimary($sPrimary);
+			$this->bFloating = FALSE;
+		}
 	}
 
 	public static function &getBaseRequester() {
-		$oRequester = new \Flake\Core\Requester\Sql(self::getClass());
+		$oRequester = new \Flake\Core\Requester\Sql(get_called_class());
 		$oRequester->setDataTable(self::getDataTable());
 	
 		return $oRequester;
@@ -21,12 +30,12 @@ abstract class Db extends \Flake\Core\Model {
 	}
 
 	public static function getDataTable() {
-		$sClass = self::getClass();
+		$sClass = get_called_class();
 		return $sClass::DATATABLE;
 	}
 	
 	public static function getPrimaryKey() {
-		$sClass = self::getClass();
+		$sClass = get_called_class();
 		return $sClass::PRIMARYKEY;
 	}
 	
@@ -51,11 +60,22 @@ abstract class Db extends \Flake\Core\Model {
 	}
 	
 	public function persist() {
-		$GLOBALS["DB"]->exec_UPDATEquery(
-			self::getDataTable(),
-			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($this->getPrimary()) . "'",
-			$this->getData()
-		);
+		if($this->floating()) {
+			$GLOBALS["DB"]->exec_INSERTquery(
+				self::getDataTable(),
+				$this->getData()
+			);
+			
+			$sPrimary = $GLOBALS["DB"]->sql_insert_id();
+			$this->initByPrimary($sPrimary);
+			$this->bFloating = FALSE;
+		} else {
+			$GLOBALS["DB"]->exec_UPDATEquery(
+				self::getDataTable(),
+				self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($this->getPrimary()) . "'",
+				$this->getData()
+			);
+		}
 	}
 	
 	public function destroy() {
@@ -63,5 +83,13 @@ abstract class Db extends \Flake\Core\Model {
 			self::getDataTable(),
 			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($this->getPrimary()) . "'"
 		);
+	}
+	
+	protected function initFloating() {
+		# nothing; object will be blank	
+	}
+	
+	public function floating() {
+		return $this->bFloating;
 	}
 }
