@@ -30,4 +30,13 @@ abstract class Model extends \Flake\Core\FLObject {
 	public function getLabel() {
 		return $this->get($this::LABELFIELD);
 	}
+	
+	public static function getIcon() {
+		return "icon-book";
+	}
+	
+	public static function getHumanName() {
+		$aRes = explode("\\", get_called_class());
+		return array_pop($aRes);
+	}
 }

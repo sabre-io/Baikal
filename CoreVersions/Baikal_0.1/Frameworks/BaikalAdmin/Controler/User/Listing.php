@@ -10,8 +10,7 @@ class Listing extends \Flake\Core\Controler {
 	function render() {
 		$aRes = array();
 		
-		$oUsers = \BaikalAdmin\Model\User::getBaseRequester()
-//				->addClauseLike("username", "om")
+		$oUsers = \Baikal\Model\User::getBaseRequester()
 				->execute();
 		
 		$oView = new \BaikalAdmin\View\User\Listing();
