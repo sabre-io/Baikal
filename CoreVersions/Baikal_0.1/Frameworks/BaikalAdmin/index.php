@@ -29,10 +29,9 @@ error_reporting(E_ALL);
 
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
-define("PATH_ENTRYDIR", dirname(__FILE__) . "/");
 
 # Bootstrap BaikalAdmin
-require_once(PATH_ENTRYDIR . "Core/Bootstrap.php");
+require_once(dirname(__FILE__) . "/Core/Bootstrap.php");
 
 # Evaluate assertions
 \BaikalAdmin\Core\Auth::assertEnabled();
@@ -45,7 +44,7 @@ $oPage->setTitle(FLAKE_BASEURL);
 $oPage->setBaseUrl(FLAKE_BASEURL);
 
 # Route the request
-\Flake\Util\Router::route($oPage);
+$GLOBALS["ROUTER"]::route($oPage);
 
 # Render the page
 echo $oPage->render();

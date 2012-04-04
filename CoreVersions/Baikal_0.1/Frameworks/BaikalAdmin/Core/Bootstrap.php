@@ -15,5 +15,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Formal/Core/Bootstrap.php")
 require_once(dirname(__FILE__) . '/ClassLoader.php');
 \BaikalAdmin\Core\ClassLoader::register();
 
+define("BAIKALADMIN_URIPATH", \Flake\Util\Tools::trimSlashes(dirname($_SERVER["SCRIPT_NAME"])) . "/");
+
 # Include BaikalAdmin Framework config
 require_once(BAIKALADMIN_PATH_ROOT . "config.php");

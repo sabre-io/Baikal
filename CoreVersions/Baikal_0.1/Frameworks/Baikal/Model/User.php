@@ -9,6 +9,7 @@ class User extends \Flake\Core\Model\Db {
 	
 	protected $aData = array(
 		"username" => "",
+		"digesta1" => "",
 	);
 	
 	protected $oIdentityPrincipal = null;
@@ -31,6 +32,12 @@ class User extends \Flake\Core\Model\Db {
 	}
 	
 	public function get($sPropName) {
+		
+		if($sPropName === "password" || $sPropName === "passwordconfirm") {
+			# Special handling for password and passwordconfirm
+			return "";
+		}
+		
 		try {
 			# does the property exist on the model object ?
 			$sRes = parent::get($sPropName);
@@ -43,6 +50,20 @@ class User extends \Flake\Core\Model\Db {
 	}
 	
 	public function set($sPropName, $sPropValue) {
+		
+		if($sPropName === "password" || $sPropName === "passwordconfirm") {
+			# Special handling for password and passwordconfirm
+			
+			if($sPropName === "password" && $sPropValue !== "") {
+				parent::set(
+					"digesta1",
+					$this->getPasswordHashForPassword($sPropValue)
+				);
+			}
+			
+			return $this;
+		}
+		
 		try {
 			# does the property exist on the model object ?
 			parent::set($sPropName, $sPropValue);
@@ -60,9 +81,7 @@ class User extends \Flake\Core\Model\Db {
 		$this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
 		$this->oIdentityPrincipal->persist();
 		
-		if($this->floating()) {
-			parent::persist();
-		}
+		parent::persist();
 	}
 	
 	public function destroy() {
@@ -92,7 +111,7 @@ class User extends \Flake\Core\Model\Db {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "username",
 			"label" => "Username",
-			"validation" => "required"
+			"validation" => "required,unique"
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -107,8 +126,25 @@ class User extends \Flake\Core\Model\Db {
 			"validation" => "required,email"
 		)));
 		
-		if(!$this->floating()) {
+		$oMorpho->add(new \Formal\Element\Password(array(
+			"prop" => "password",
+			"label" => "Password",
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Password(array(
+			"prop" => "passwordconfirm",
+			"label" => "Confirm password",
+			"validation" => "sameas:password",
+		)));
+		
+		if($this->floating()) {
+			$oMorpho->element("password")->setOption("validation", "required");
+		} else {
+			
+			$sNotice = "-- Leave empty to keep current password --";
 			$oMorpho->element("username")->setOption("readonly", true);
+			$oMorpho->element("password")->setOption("placeholder", $sNotice);
+			$oMorpho->element("passwordconfirm")->setOption("placeholder", $sNotice);
 		}
 		
 		return $oMorpho;
@@ -116,5 +152,9 @@ class User extends \Flake\Core\Model\Db {
 	
 	public static function getIcon() {
 		return "icon-user";
+	}
+	
+	public function getPasswordHashForPassword($sPassword) {
+		return md5($this->get("username") . ':' . BAIKAL_AUTH_REALM . ':' . $sPassword);
 	}
 }

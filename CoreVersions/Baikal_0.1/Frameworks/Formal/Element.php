@@ -5,13 +5,15 @@ namespace Formal;
 class Element {
 	protected $aOptions = array(
 		"readonly" => FALSE,
+		"validation" => "",
 		"error" => FALSE,
+		"placeholder" => "",
 	);
 	
 	protected $sValue = "";
 	
 	public function __construct($aOptions) {
-		$this->aOptions = array_merge($aOptions, $this->aOptions);
+		$this->aOptions = array_merge($this->aOptions, $aOptions);
 	}
 	
 	public function option($sName) {
@@ -22,10 +24,12 @@ class Element {
 		throw new \Exception("\Formal\Element->option(): Option '" . htmlspecialchars($sName) . "' not found.");
 	}
 	
-	public function optionArray($sName) {
-		$sOption = trim($this->option($sName));
+	public function optionArray($sOptionName) {
+		$sOption = trim($this->option($sOptionName));
 		if($sOption !== "") {
 			$aOptions = explode(",", $sOption);
+		} else {
+			$aOptions = array();
 		}
 		
 		reset($aOptions);
@@ -35,6 +39,12 @@ class Element {
 	public function setOption($sOptionName, $sOptionValue) {
 		$this->aOptions[$sOptionName] = $sOptionValue;
 	}
+	
+/*	public function addToOptionArray($sOptionName, $sOptionValue) {
+		$aOptions = $this->optionArray($sOptionName);
+		$aOptions[] = $sOptionValue;
+		$this->aOptions[$sOptionName] = implode(",", $aOptions);
+	}*/
 	
 	public function value() {
 		return $this->sValue;

@@ -58,6 +58,13 @@ define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
 require_once(BAIKAL_PATH_SPECIFIC . "config.php");
 require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
 
+# Determining baikal protocol, domain and uri-path (looking at BAIKAL_URI)
+$aUrlInfo = parse_url(BAIKAL_URI);
+
+define("BAIKAL_DOMAIN", $aUrlInfo["host"]);
+define("BAIKAL_URIPROTOCOL", $aUrlInfo["scheme"]);
+define("BAIKAL_URIPATH", $aUrlInfo["path"]);
+
 date_default_timezone_set(BAIKAL_TIMEZONE);
 
 # Check if DB exists
