@@ -2,9 +2,9 @@
 
 namespace BaikalAdmin\Route;
 
-class Users {
+class Install {
 	
 	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controler\Users());
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controler\Install());
 	}
 }

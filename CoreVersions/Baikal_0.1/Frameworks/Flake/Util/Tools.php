@@ -9,11 +9,8 @@ class Tools extends \Flake\Core\FLObject {
 	}
 	
 	public static function getUrlTokens() {
-		$sUrl = self::getCurrentUrl();
-		if($sUrl{0} === "/") {
-			$sUrl = substr($sUrl, 1);
-		}
-		
+		$sUrl = self::stripBeginSlash(self::getCurrentUrl());
+
 		if(trim($sUrl) !== "") {
 			return explode("/", $sUrl);
 		}
@@ -29,10 +26,6 @@ class Tools extends \Flake\Core\FLObject {
 		}
 		
 		return str_replace($sSep, $sGlue, $sRes);
-	}
-	
-	public static function getAction() {
-		return \Flake\Util\Tools::GET("action");
 	}
 	
 	public static function absolutizeURL($sUrl) {
@@ -588,5 +581,45 @@ TEST;
 	
 	public static function getUserAgent() {
 		return $_SERVER['HTTP_USER_AGENT'];
+	}
+	
+	public static function appendSlash($sString) {
+		if(substr($sString, -1) !== "/") {
+			$sString .= "/";
+		}
+		
+		return $sString;
+	}
+	
+	public static function prependSlash($sString) {
+		if(substr($sString, 0, 1) !== "/") {
+			$sString = "/" . $sString;
+		}
+		
+		return $sString;
+	}
+	
+	public static function stripBeginSlash($sString) {
+		if(substr($sString, 0, 1) === "/") {
+			$sString = substr($sString, 1);
+		}
+		
+		return $sString;
+	}
+	
+	public static function stripEndSlash($sString) {
+		if(substr($sString, -1) === "/") {
+			$sString = substr($sString, 0, -1);
+		}
+		
+		return $sString;
+	}
+	
+	public static function trimSlashes($sString) {
+		return self::stripBeginSlash(self::stripEndSlash($sString));
+	}
+	
+	public static function router() {
+		return "\Flake\Util\Router\QuestionMarkRewrite";
 	}
 }

@@ -9,8 +9,8 @@ class Form extends \Flake\Core\View {
 		
 		return $oTemplate->parse(array(
 			"user" => $oUser,
-			"linkcancel" => \BaikalAdmin\Controler\User\Form::BASEPATH,
-			"action" => \BaikalAdmin\Controler\User\Form::linkEdit($oUser),
+			"linkcancel" => \BaikalAdmin\Controler\Users::link(),
+			"action" => \BaikalAdmin\Controler\Users::linkEdit($oUser),
 			"messages" => $this->get("messages"),
 		));
 	}
