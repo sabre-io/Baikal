@@ -15,8 +15,11 @@ class Morphology {
 	}
 	
 	public function element($sPropName) {
-		$this->oElements->reset();
-		foreach($this->oElements as $oElement) {
+		$aKeys = $this->oElements->keys();
+		reset($aKeys);
+		foreach($aKeys as $sKey) {
+			$oElement = $this->oElements->getForKey($sKey);
+			
 			if($oElement->option("prop") === $sPropName) {
 				return $oElement;
 			}

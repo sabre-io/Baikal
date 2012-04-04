@@ -1,8 +1,8 @@
 <?php
 
-namespace BaikalAdmin\Controler\User;
+namespace BaikalAdmin\Controler;
 
-class Form extends \Flake\Core\Controler {
+class Users extends \Flake\Core\Controler {
 	
 	const BASEPATH = "/admin/";
 	protected $aMessages = array();
@@ -60,7 +60,7 @@ class Form extends \Flake\Core\Controler {
 				}
 				
 				# Redirecting to admin home
-				\Flake\Util\Tools::redirectUsingMeta(self::BASEPATH);
+				\Flake\Util\Tools::redirectUsingMeta(self::link());
 			} else {
 				
 				$oUser = new \Baikal\Model\User($iUser);
@@ -69,7 +69,7 @@ class Form extends \Flake\Core\Controler {
 					"<p>You are about to delete a user and all it's calendars / contacts. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
 					self::linkDeleteConfirm($oUser),
 					"Delete <strong><i class='" . $oUser->getIcon() . " icon-white'></i> " . $oUser->getLabel() . "</strong>",
-					self::BASEPATH
+					self::link()
 				);
 			}
 		}
@@ -78,7 +78,7 @@ class Form extends \Flake\Core\Controler {
 	function initForm() {
 		if($this->editRequested() || $this->newRequested()) {
 			$aOptions = array(
-				"closeurl" => $this::BASEPATH
+				"closeurl" => self::link()
 			);
 			
 			$this->oForm = $this->oModel->formForThisModelInstance($aOptions);
@@ -86,16 +86,18 @@ class Form extends \Flake\Core\Controler {
 	}
 	
 	public static function editRequested() {
-		if(($iUser = intval(\Flake\Util\Tools::GET("useredit"))) > 0) {
-			return $iUser;
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		if(($aParams[0] === "edit") && intval($aParams[1]) > 0) {
+			return intval($aParams[1]);
 		}
 		
 		return FALSE;
 	}
 	
 	public static function deleteRequested() {
-		if(($iUser = intval(\Flake\Util\Tools::GET("userdel"))) > 0) {
-			return $iUser;
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		if(($aParams[0] === "delete") && intval($aParams[1]) > 0) {
+			return intval($aParams[1]);
 		}
 		
 		return FALSE;
@@ -106,7 +108,8 @@ class Form extends \Flake\Core\Controler {
 			return FALSE;
 		}
 		
-		if(intval(\Flake\Util\tools::GET("userdelconfirm")) === 1) {
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		if($aParams[2] === "confirm") {
 			return $iUser;
 		}
 		
@@ -114,12 +117,22 @@ class Form extends \Flake\Core\Controler {
 	}
 	
 	public static function newRequested() {
-		return (intval(\Flake\Util\Tools::GET("usernew")) === 1);
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		return $aParams[0] === "new";
 	}
 	
 	function render() {
+		$sHtml = "";
 		
-		$sHtml = "<a id='edituser'></a>";
+		# Render list of users
+		$oUsers = \Baikal\Model\User::getBaseRequester()->execute();
+		$oView = new \BaikalAdmin\View\User\Listing();
+		$oView->setData("users", $oUsers);
+		$sHtml .= $oView->render();
+		
+		
+		# Render form
+		$sHtml .= "<a id='edituser'></a>";
 		$sMessages = implode("\n", $this->aMessages);
 
 		if(($iUser = self::editRequested()) !== FALSE) {
@@ -143,23 +156,27 @@ class Form extends \Flake\Core\Controler {
 		return $sHtml;
 	}
 	
+	public static function link() {
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildRouteForControler("\BaikalAdmin\Controler\Users");
+	}
+	
 	public static function linkNew() {
-		return self::BASEPATH . "?usernew=1#edituser";
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildCurrentRoute("new") . "#edituser";
 	}
 	
 	public static function linkEdit(\Baikal\Model\User $user) {
-		return self::BASEPATH . "?useredit=" . $user->get("id") . "#edituser";
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildCurrentRoute("edit", $user->get("id")) . "#edituser";
 	}
 	
 	public static function linkDelete(\Baikal\Model\User $user) {
-		return self::BASEPATH . "?userdel=" . $user->get("id") . "#confirm";
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildCurrentRoute("delete", $user->get("id")) . "#message";
 	}
 	
 	public static function linkDeleteConfirm(\Baikal\Model\User $user) {
-		return self::BASEPATH . "?userdel=" . $user->get("id") . "&userdelconfirm=1#confirm";
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildCurrentRoute("delete", $user->get("id"), "confirm") . "#message";
 	}
 	
 	public static function linkDetails(\Baikal\Model\User $user) {
-		return self::BASEPATH . "?userdetails=" . $user->get("id") . "#confirm";
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildCurrentRoute("details", $user->get("id"));
 	}
 }
