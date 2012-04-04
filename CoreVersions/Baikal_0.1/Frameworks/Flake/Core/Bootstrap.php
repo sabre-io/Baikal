@@ -28,6 +28,9 @@ require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 # Include Flake Framework config
 require_once(FLAKE_PATH_ROOT . "config.php");
 
+# Determine Router class
+$GLOBALS["ROUTER"] = \Flake\Util\Tools::router();
+
 if(!\Flake\Util\Tools::isCliPhp()) {
 	ini_set("html_errors", TRUE);
 	session_start();

@@ -13,10 +13,10 @@ abstract class Controler extends \Flake\Core\FLObject {
 	abstract function execute();
 	abstract function render();
 	
-	public static function buildRouteWithParams() {
+	public static function buildRoute(/*[$sParam, $sParam2, ...]*/) {
 		$aParams = func_get_args();
 		$sControler = "\\" . get_called_class();
-		array_unshift($aParams, $sControler);
-		return call_user_func_array("\Flake\Util\Router::buildRouteForControlerWithParams", $aParams);
+		array_unshift($aParams, $sControler);		# Injecting current controler as first param
+		return call_user_func_array($GLOBALS["ROUTER"] . "::buildRouteForControler", $aParams);
 	}
 }

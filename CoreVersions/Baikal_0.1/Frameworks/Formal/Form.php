@@ -99,26 +99,50 @@ class Form {
 				$sPropName,
 				$sValue
 			);
-			
+		}
+		
+		$oMorpho->elements()->reset();
+		foreach($oMorpho->elements() as $oElement) {
 			$aValidation = $oElement->optionArray("validation");
-			if(!empty($aValidation)) {
-				foreach($aValidation as $sValidation) {
-					$sMethod = "validate" . ucfirst(strtolower($sValidation));
-					if(!method_exists($this, $sMethod)) {
-						throw new \Exception("\Formal\Form::execute(): no validation method for '" . htmlspecialchars($sValidation) . "'");
-					}
+			if(empty($aValidation)) {
+				continue;
+			}
+			
+			$sValue = $oElement->value();
+			
+			foreach($aValidation as $sValidation) {
+				
+				# If element is readonly, skip process
+				if($oElement->option("readonly")) {
+					continue;
+				}
+
+				$sParam = FALSE;
+				if(strpos($sValidation, ":") !== FALSE) {
+					$sValidation = strtok($sValidation, ":");
+					$sParam = strtok(":");
+				}
+				
+				$sMethod = "validate" . ucfirst(strtolower($sValidation));
+				if(!method_exists($this, $sMethod)) {
+					throw new \Exception("\Formal\Form::execute(): no validation method for '" . htmlspecialchars($sValidation) . "'");
+				}
+				
+				if($sParam === FALSE) {
+					$mValid = $this->$sMethod($sValue, $oMorpho, $oElement);
+				} else {
+					$mValid = $this->$sMethod($sValue, $oMorpho, $oElement, $sParam);
+				}
+
+				if($mValid !== TRUE) {
+					$this->aErrors[] = array(
+						"element" => $oElement,
+						"message" => $mValid,
+					);
 					
-					$mValid = $this->$sMethod($sValue, $oElement);
-					if($mValid !== TRUE) {
-						$this->aErrors[] = array(
-							"element" => $oElement,
-							"message" => $mValid,
-						);
-						
-						$oElement->setOption("error", TRUE);
-						
-						break;	# one error per element per submit
-					}
+					$oElement->setOption("error", TRUE);
+					
+					break;	# one error per element per submit
 				}
 			}
 		}
@@ -153,7 +177,7 @@ class Form {
 		return $this->bPersisted;
 	}
 	
-	public function validateRequired($sValue, $oElement) {
+	public function validateRequired($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
 		if(trim($sValue) !== "") {
 			return TRUE;
 		}
@@ -161,12 +185,34 @@ class Form {
 		return "<strong>" . $oElement->option("label") . "</strong> is required.";
 	}
 	
-	public function validateEmail($sValue, $oElement) {
+	public function validateEmail($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
 		if(\Flake\Util\Tools::validEmail($sValue)) {
 			return TRUE;
 		}
 		
 		return "<strong>" . $oElement->option("label") . "</strong> should be an email.";
+	}
+	
+	public function validateSameas($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement, $sReferencePropName) {
+		$sReferenceValue = $oMorpho->element($sReferencePropName)->value();
+		if($sValue === $sReferenceValue) {
+			return TRUE;
+		}
+		
+		return "<strong>" . $oElement->option("label") . "</strong> does not match " . $oMorpho->element($sReferencePropName)->option("label") . ".";
+	}
+	
+	public function validateUnique($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+		$oColl = $this->getModelInstance()->getBaseRequester()->addClauseEquals(
+			$oElement->option("prop"),
+			$sValue
+		)->execute();
+		
+		if($oColl->count() > 0) {
+			return "<strong>" . $oElement->option("label") . "</strong> has to be unique. Given value is not available.";
+		}
+		
+		return TRUE;
 	}
 	
 	public function postValue($sPropName) {
