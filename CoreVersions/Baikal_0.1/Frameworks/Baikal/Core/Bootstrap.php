@@ -59,11 +59,14 @@ require_once(BAIKAL_PATH_SPECIFIC . "config.php");
 require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
 
 # Determining baikal protocol, domain and uri-path (looking at BAIKAL_URI)
-$aUrlInfo = parse_url(BAIKAL_URI);
-
-define("BAIKAL_DOMAIN", $aUrlInfo["host"]);
-define("BAIKAL_URIPROTOCOL", $aUrlInfo["scheme"]);
-define("BAIKAL_URIPATH", $aUrlInfo["path"]);
+if($GLOBALS["_SERVER"]["SERVER_NAME"] === "mongoose") {	# And not using MONGOOSE_SERVER constant, as it will be defined by Flake, later in the process
+	define("BAIKAL_DOMAIN", "");
+	define("BAIKAL_URIPATH", "");
+} else {
+	$aUrlInfo = parse_url(BAIKAL_URI);
+	define("BAIKAL_DOMAIN", $aUrlInfo["host"]);
+	define("BAIKAL_URIPATH", $aUrlInfo["path"]);
+}
 
 date_default_timezone_set(BAIKAL_TIMEZONE);
 

@@ -5,7 +5,16 @@ namespace Flake\Util;
 class Tools extends \Flake\Core\FLObject {
 
 	public static function getCurrentUrl() {
-		return $_SERVER["REQUEST_URI"];
+		if(MONGOOSE_SERVER) {
+			$sUrl = $GLOBALS["_SERVER"]["REQUEST_URI"];
+			if(trim($GLOBALS["_SERVER"]["QUERY_STRING"]) !== "") {
+				$sUrl .= "?" . $GLOBALS["_SERVER"]["QUERY_STRING"];
+			}
+		} else {
+			$sUrl = $GLOBALS["_SERVER"]["REQUEST_URI"];	# Would be REDIRECT_URL for ServerRewrite
+		}
+		
+		return $sUrl;
 	}
 	
 	public static function getUrlTokens() {
@@ -26,27 +35,6 @@ class Tools extends \Flake\Core\FLObject {
 		}
 		
 		return str_replace($sSep, $sGlue, $sRes);
-	}
-	
-	public static function absolutizeURL($sUrl) {
-		$aUrl = parse_url($sUrl);
-		if($aUrl["scheme"] !== "http" && $aUrl["scheme"] !== "https") {
-			if($sUrl{0} === "/") {
-				$sUrl = substr($sUrl, 1);
-			}
-			
-			return FLAKE_BASEURL . $sUrl;
-		}
-		
-		return $sUrl;
-	}
-	
-	public static function serverToAbsoluteWebPath($sAbsoluteServerPath) {
-		if(substr($sAbsoluteServerPath, 0, strlen(FLAKE_PATH_WWWROOT)) === FLAKE_PATH_WWWROOT) {
-			return FLAKE_BASEURL . substr($sAbsoluteServerPath, strlen(FLAKE_PATH_WWWROOT));
-		}
-		
-		return $sAbsoluteServerPath;
 	}
 	
 	public static function serverToRelativeWebPath($sAbsPath) {
@@ -162,37 +150,6 @@ class Tools extends \Flake\Core\FLObject {
 		);
 	}
 	
-	public static function makeLink($sAction, $aAdditionalParams = FALSE) {
-
-		if($aAdditionalParams === FALSE) {
-			// aucun paramètre additionnel
-			if(trim($sAction) === "home") {
-				return FLAKE_BASEURL;
-			} else {
-				return FLAKE_BASEURL . "?action=" . rawurlencode($sAction);
-			}
-		} else {
-			
-			$aTemp = array();
-			while(list($sKey,) = each($aAdditionalParams)) {
-				if($sKey{0} === "u" && $sKey{1} === "_") {
-					// il s'agit d'un message textuel; on l'encode en base 64
-					$aTemp[] = rawurlencode($sKey) . "=" . rawurlencode(base64_encode($aAdditionalParams[$sKey]));
-				} else {
-					$aTemp[] = rawurlencode($sKey) . "=" . rawurlencode($aAdditionalParams[$sKey]);
-				}
-			}
-			
-			$sAdditionalParams = implode("&", $aTemp);
-			
-			if(trim($sAction) === "home") {
-				return FLAKE_BASEURL . "?" . $sAdditionalParams;
-			} else {
-				return FLAKE_BASEURL . "?action=" . $sAction . "&" . $sAdditionalParams;
-			}
-		}
-	}
-	
 	public static function safelock($sString) {
 		return substr(md5(FLAKE_SAFEHASH_SALT . ":" . $sString), 0, 5);
 	}
@@ -211,19 +168,6 @@ class Tools extends \Flake\Core\FLObject {
 	public static function refreshPage() {
 		header("Location: " . \Flake\Util\Tools::getCurrentUrl());
 		exit(0);
-	}
-	
-	public static function decode_GET() {
-		$aGet = \Flake\Util\Tools::GET();
-		$aKeys = array_keys($aGet);
-		while(list(,$sKey) = each($aKeys)) {
-			if($sKey{0} === "u" && $sKey{1} === "_") {
-				$aGet[$sKey] = base64_decode($aGet[$sKey]);
-			}
-		}
-		
-		$GLOBALS["_GET"] = $aGet;
-		reset($GLOBALS["_GET"]);
 	}
 	
 	public static function validEmail($sEmail) {
