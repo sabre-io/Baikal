@@ -6,8 +6,9 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 	
 	public static function getCurrentRoute() {
 		
-		$sUrl = \Flake\Util\Tools::trimSlashes($GLOBALS["_SERVER"]["REQUEST_URI"]);		# REDIRECT_URL for ServerRewrite
-		$sScriptDir = \Flake\Util\Tools::appendSlash(dirname($GLOBALS["_SERVER"]["SCRIPT_NAME"]));
+		$sUrl = \Flake\Util\Tools::trimSlashes(
+			\Flake\Util\Tools::getCurrentUrl()
+		);
 
 		if(trim($sUrl) === "") {
 			return "default";
@@ -43,7 +44,7 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 		return $sRoute;
 	}
 	
-	public static function buildRoute(/* undetermined number of parameters */) {
+	public static function buildRoute($sRoute /* [, $sParam, $sParam2, ...] */) {
 		$aParams = func_get_args();
 		$sUrl = call_user_func_array("parent::buildRoute", $aParams);
 		return "?" . $sUrl;
@@ -57,7 +58,18 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 			# Pos+0 = position of "?"
 			# Pos+1 = position of "route"
 			# Pos+2 = position of first param
-			return array_slice($aTokens, $iPosQuestionMark + 2);
+			$sRouteUrl = implode("/", array_slice($aTokens, $iPosQuestionMark + 1));
+			$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
+			
+			if(strpos($sRouteUrl, $sCurrentRoute) === FALSE) {
+				throw new \Exception("Flake\Util\Router\QuestionMarkRewrite::getURLParams(): unrecognized route.");
+			}
+			
+			$sParams = \Flake\Util\Tools::trimSlashes(substr($sRouteUrl, strlen($sCurrentRoute)));
+			
+			if($sParams !== "") {
+				return explode("/", $sParams);
+			}
 		}
 
 		return array();
