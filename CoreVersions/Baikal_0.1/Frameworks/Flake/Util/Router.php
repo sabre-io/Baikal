@@ -79,6 +79,13 @@ abstract class Router extends \Flake\Core\FLObject {
 		return "/" . $sRoute . "/" . $sParams;
 	}
 	
-	public static abstract function getCurrentRoute();
-	public static abstract function getURLParams();
+	# should be abstract, but is not, because of PHP's strict standards
+	public static function getCurrentRoute() {
+		
+	}
+	
+	# should be abstract, but is not, because of PHP's strict standards
+	public static function getURLParams() {
+		
+	}
 }

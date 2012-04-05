@@ -1,5 +1,11 @@
 <?php
 
+if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mongoose") {
+	define("MONGOOSE_SERVER", TRUE);
+} else {
+	define("MONGOOSE_SERVER", FALSE);
+}
+
 define("FLAKE_PATH_ROOT", dirname(dirname(__FILE__)) . "/");	# ../
 
 // les notices PHP ne sont pas affichées
@@ -34,7 +40,6 @@ $GLOBALS["ROUTER"] = \Flake\Util\Tools::router();
 if(!\Flake\Util\Tools::isCliPhp()) {
 	ini_set("html_errors", TRUE);
 	session_start();
-	\Flake\Util\Tools::decode_GET();
 }
 
 setlocale(LC_ALL, FLAKE_LOCALE);

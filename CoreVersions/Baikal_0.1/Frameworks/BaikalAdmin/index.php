@@ -40,8 +40,8 @@ require_once(dirname(__FILE__) . "/Core/Bootstrap.php");
 # Create and setup a page object
 $oPage = new \Flake\Controler\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
-$oPage->setTitle(FLAKE_BASEURL);
-$oPage->setBaseUrl(FLAKE_BASEURL);
+$oPage->setTitle("Baïkal Web Admin");
+$oPage->setBaseUrl(BAIKAL_URI);
 
 # Route the request
 $GLOBALS["ROUTER"]::route($oPage);

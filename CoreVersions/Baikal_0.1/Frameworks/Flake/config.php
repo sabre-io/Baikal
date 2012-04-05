@@ -6,6 +6,3 @@ define("FLAKE_PATH_FRAMEWORKS", BAIKAL_PATH_FRAMEWORKS);
 define("FLAKE_PATH_WWWROOT", BAIKAL_PATH_WWWROOT);
 define("FLAKE_SAFEHASH_SALT", "une-clef-super-secrete");
 define("FLAKE_LOCALE", "fr_FR.UTF-8");
-
-# TODO: CHANGE THIS
-define("FLAKE_BASEURL", "http://baikal.jeromeschneider.fr/");
