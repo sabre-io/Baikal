@@ -1,28 +1,40 @@
 <?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2012 Jérôme Schneider <mail@jeromeschneider.fr>
+*  All rights reserved
+*
+*  http://baikal.codr.fr
+*
+*  This script is part of the Baïkal Server project. The Baïkal
+*  Server project is free software; you can redistribute it
+*  and/or modify it under the terms of the GNU General Public
+*  License as published by the Free Software Foundation; either
+*  version 2 of the License, or (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 namespace Flake\Core;
 
 class CollectionTyped extends \Flake\Core\Collection {
 
-	private $sTypeClassOrProtocol;
+	protected $sTypeClassOrProtocol;
 
-	/*
-	 * Constructeur de la classe
-	 *
-	 * @param	$sTypeClassOrProtocol	string	type des éléments de la collection
-	 * @return	void
-	 */
 	public function __construct($sTypeClassOrProtocol) {
 		$this->sTypeClassOrProtocol = $sTypeClassOrProtocol;
 		$this->setMetaType($this->sTypeClassOrProtocol);
 	}
 
-	/*
-	 * Insère un élément dans la collection
-	 *
-	 * @param 	$mMixed	mixed	valeur à insérer dans la collection
-	 * @return	void
-	 */
 	public function push(&$mMixed) {
 		if(!\Flake\Util\Tools::is_a($mMixed, $this->sTypeClassOrProtocol)) {
 			throw new \Exception("\Flake\Core\CollectionTyped<" . $this->sTypeClassOrProtocol . ">: Given object is not correctly typed.");
@@ -32,8 +44,7 @@ class CollectionTyped extends \Flake\Core\Collection {
 	}
 	
 	# Create a new collection like this one
-	# This abstraction is useful because of CollectionTyped
-	
+	# This abstraction is useful because of CollectionTyped	
 	protected function newCollectionLikeThisOne() {
 		$oCollection = \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
 		return $oCollection;
