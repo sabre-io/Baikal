@@ -1,12 +1,10 @@
 <?php
 
-namespace Flake\Controler;
+namespace Flake\Controller;
 
-class Kickstart extends \Flake\Core\Controler {
+class Kickstart extends \Flake\Core\Controller {
 		
 	public function execute() {
-#		"--helloworld"
-
 		if(array_key_exists("helloworld", self::cli()->aArgs)) {
 			$this->action_helloworld();
 		}

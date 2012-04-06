@@ -20,7 +20,7 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 			
 			$aRoutes = self::getRoutes();
 			reset($aRoutes);
-			foreach($aRoutes as $sDefinedRoute => $sDefinedControler) {
+			foreach($aRoutes as $sDefinedRoute => $sDefinedController) {
 				if(strpos($sRoutePart, $sDefinedRoute) !== FALSE) {
 					
 					# found a match

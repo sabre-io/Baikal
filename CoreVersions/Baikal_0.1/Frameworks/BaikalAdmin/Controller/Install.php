@@ -1,8 +1,8 @@
 <?php
 
-namespace BaikalAdmin\Controler;
+namespace BaikalAdmin\Controller;
 
-class Install extends \Flake\Core\Controler {
+class Install extends \Flake\Core\Controller {
 
 	function execute() {
 	}

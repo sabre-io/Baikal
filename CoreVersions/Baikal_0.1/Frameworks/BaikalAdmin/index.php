@@ -38,10 +38,15 @@ require_once(dirname(__FILE__) . "/Core/Bootstrap.php");
 \BaikalAdmin\Core\Auth::assertAuthentified();
 
 # Create and setup a page object
-$oPage = new \Flake\Controler\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
+$oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal Web Admin");
 $oPage->setBaseUrl(BAIKAL_URI);
+
+$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
+$oPage->zone("adminurl")->addBlock(new \Flake\Controller\HtmlBlock(
+	$sControllerForDefaultRoute::link()
+));
 
 # Route the request
 $GLOBALS["ROUTER"]::route($oPage);

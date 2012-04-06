@@ -1,6 +1,6 @@
 <?php
 
-namespace Flake\Controler;
+namespace Flake\Controller;
 
 class Page extends \Flake\Core\Render\Container {
 	
@@ -114,6 +114,6 @@ class Page extends \Flake\Core\Render\Container {
 		$sCssUrl = \Flake\Util\Tools::serverToRelativeWebPath($sCompiledFilePath);
 		
 		$sHtml = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $sCssUrl . "\" media=\"all\"/>";
-		$this->zone("head")->addBlock(new \Flake\Controler\HtmlBlock($sHtml));
+		$this->zone("head")->addBlock(new \Flake\Controller\HtmlBlock($sHtml));
 	}
 }
