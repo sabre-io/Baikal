@@ -15,22 +15,26 @@ abstract class Router extends \Flake\Core\FLObject {
 		return $GLOBALS["ROUTES"];
 	}
 	
-	public static function getControlerForRoute($sRoute) {
+	public static function getControllerForRoute($sRoute) {
+		return str_replace("\\Route", "\\Controller", self::getRouteClassForRoute($sRoute));
+	}
+	
+	public static function getRouteClassForRoute($sRoute) {
 		$aRoutes = $GLOBALS["ROUTER"]::getRoutes();
 		return $aRoutes[$sRoute];
 	}
 	
-	public static function getRouteForControler($sControler) {
+	public static function getRouteForController($sController) {
 		
-		if($sControler{0} !== "\\") {
-			$sControler = "\\" . $sControler;
+		if($sController{0} !== "\\") {
+			$sController = "\\" . $sController;
 		}
 		
 		$aRoutes = $GLOBALS["ROUTER"]::getRoutes();
 		
 		reset($aRoutes);
 		while(list($sRoute,) = each($aRoutes)) {
-			if(str_replace("\\Route", "\\Controler", $aRoutes[$sRoute]) === $sControler) {
+			if(str_replace("\\Route", "\\Controller", $aRoutes[$sRoute]) === $sController) {
 				return $sRoute;
 			}
 		}
@@ -39,20 +43,20 @@ abstract class Router extends \Flake\Core\FLObject {
 	}
 	
 	public static function route(\Flake\Core\Render\Container &$oRenderContainer) {
-		$sControler = $GLOBALS["ROUTER"]::getControlerForRoute(
+		$sRouteClass = $GLOBALS["ROUTER"]::getRouteClassForRoute(
 			$GLOBALS["ROUTER"]::getCurrentRoute()
 		);
 		
-		$sControler::execute($oRenderContainer);
+		$sRouteClass::execute($oRenderContainer);
 	}
 	
-	public static function buildRouteForControler($sControler /* [, $sParam, $sParam2, ...] */) {
+	public static function buildRouteForController($sController /* [, $sParam, $sParam2, ...] */) {
 
 		$aParams = func_get_args();
-		array_shift($aParams);	# stripping $sControler
-		$sRouteForControler = $GLOBALS["ROUTER"]::getRouteForControler($sControler);
+		array_shift($aParams);	# stripping $sController
+		$sRouteForController = $GLOBALS["ROUTER"]::getRouteForController($sController);
 		
-		array_unshift($aParams, $sRouteForControler);	# Injecting route as first param
+		array_unshift($aParams, $sRouteForController);	# Injecting route as first param
 		return call_user_func_array($GLOBALS["ROUTER"] . "::buildRoute", $aParams);
 	}
 	

@@ -1,8 +1,8 @@
 <?php
 
-namespace Flake\Controler;
+namespace Flake\Controller;
 
-class HtmlBlockTemplated extends \Flake\Core\Controler {
+class HtmlBlockTemplated extends \Flake\Core\Controller {
 	
 	function __construct($sTemplatePath, $aMarkers = array()) {
 		$this->sTemplatePath = $sTemplatePath;
