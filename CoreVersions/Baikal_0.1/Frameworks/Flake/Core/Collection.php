@@ -1,4 +1,28 @@
 <?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2012 Jérôme Schneider <mail@jeromeschneider.fr>
+*  All rights reserved
+*
+*  http://baikal.codr.fr
+*
+*  This script is part of the Baïkal Server project. The Baïkal
+*  Server project is free software; you can redistribute it
+*  and/or modify it under the terms of the GNU General Public
+*  License as published by the Free Software Foundation; either
+*  version 2 of the License, or (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
 
 namespace Flake\Core;
 
@@ -48,30 +72,15 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 	public function prev() {
 		return prev($this->aCollection);
 	}
-
-	/*
-	 * Retourne le nombre d'élémént
-	 *
-	 * @return	int	nombre l'éléments
-	 */
+	
 	public function count() {
 		return count($this->aCollection);
 	}
-
-	/*
-	 * Retourne le tableau des clés
-	 *
-	 * @return	array	tableau des clés
-	 */
+	
 	public function keys() {
 		return array_keys($this->aCollection);
 	}
-
-	/*
-	 * Vérifie si la collection est vide
-	 *
-	 * @return	bool	TRUE si la collection est vide
-	 */
+	
 	public function isEmpty() {
 		return $this->count() === 0;
 	}
@@ -83,32 +92,16 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 	public function isAtLast() {
 		return $this->key() === array_pop($this->keys());
 	}
-
-	/*
-	 * Insère un élément dans la collection
-	 *
-	 * @param	$mMixed	valeur à insérer dans la collection
-	 * @return	void
-	 */
+	
 	public function push(&$mMixed) {
 		array_push($this->aCollection, $mMixed);
 	}
-
-	/*
-	 * Vide la collection
-	 *
-	 * @return	void
-	 */
+	
 	public function flush() {
 		unset($this->aCollection);
 		$this->aCollection = array();
 	}
-
-	/*
-	 * Retourne le premier élément de la collection
-	 *
-	 * @return	mixed	premier élément de la collection
-	 */
+	
 	public function &first() {
 		if(!$this->isEmpty()) {
 			$aKeys = $this->keys();
@@ -126,31 +119,18 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 
 		return null;
 	}
-
-	/*
-	 * Converti la collection en tableau
-	 *
-	 * @return	array	collection sous forme de tableau
-	 */
+	
 	public function toArray() {
 		return $this->aCollection;
 	}
 	
 	# Create a new collection like this one
 	# This abstraction is useful because of CollectionTyped
-	
 	protected function newCollectionLikeThisOne() {
 		$oCollection = \Flake\Core\Collection();
 		return $oCollection;
 	}
-
-	/*
-	 * Méthode magique __call
-	 *
-	 * @param	$sName	string	nom de la méthode
-	 * @param	$aArguments	array		argument passé initialement
-	 * @return 	mixed	valeur de la collection correspond
-	 */
+	
 	public function &__call($sName, $aArguments) {
 		if(
 			strlen($sName) > 7 &&
@@ -190,7 +170,7 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 				return null;
 			}
 		} else {
-			throw new \Exception("Method " . $sName . "() not found on " . self::getClass());
+			throw new \Exception("Method " . $sName . "() not found on " . get_class($this));
 		}
 	}
 }
