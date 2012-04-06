@@ -1,6 +1,6 @@
 <?php
 
-namespace Flake\Controler;
+namespace Flake\Controller;
 
 class Cli extends \Flake\Core\Render\Container {
 	

@@ -1,8 +1,8 @@
 <?php
 
-namespace Flake\Controler;
+namespace Flake\Controller;
 
-class HtmlBlock extends \Flake\Core\Controler {
+class HtmlBlock extends \Flake\Core\Controller {
 	
 	function __construct($sHtml) {
 		$this->sHtml = $sHtml;
