@@ -1,14 +1,14 @@
 <?php
 
-namespace BaikalAdmin\Controler;
+namespace BaikalAdmin\Controller;
 
-class Dashboard extends \Flake\Core\Controler {
+class Dashboard extends \Flake\Core\Controller {
 	
 	function execute() {
 	}
 	
 	function render() {
-		$sLinkUsers = \BaikalAdmin\Controler\Users::link();
+		$sLinkUsers = \BaikalAdmin\Controller\Users::link();
 		
 		$sMessage =<<<MESSAGE
 Ici, infos sur:<br />

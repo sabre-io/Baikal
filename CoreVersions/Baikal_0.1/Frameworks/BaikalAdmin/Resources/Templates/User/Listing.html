@@ -7,7 +7,7 @@
 <header class="jumbotron subhead" id="overview">
 	<h1>Users</h1>
 	<p class="lead pull-left">Browse, create, update and delete Baïkal user accounts.</p>
-	<p class="pull-right"><a class="btn" href="<?= \BaikalAdmin\Controler\Users::linkNew() ?>"><i class="<?= \Baikal\Model\User::getIcon() ?>"></i> + Add user</a></p>
+	<p class="pull-right"><a class="btn" href="<?= \BaikalAdmin\Controller\Users::linkNew() ?>"><i class="<?= \Baikal\Model\User::getIcon() ?>"></i> + Add user</a></p>
 </header>
 
 <table class="table table-bordered table-striped">
@@ -17,9 +17,9 @@
 		<th class="col-actions no-border-left"></th>
 	</tr-->
 <? foreach($users as $user) {
-	$linkdetails = \BaikalAdmin\Controler\Users::linkDetails($user);
-	$linkedit = \BaikalAdmin\Controler\Users::linkEdit($user);
-	$linkdelete = \BaikalAdmin\Controler\Users::linkDelete($user);
+	$linkdetails = \BaikalAdmin\Controller\Users::linkDetails($user);
+	$linkedit = \BaikalAdmin\Controller\Users::linkEdit($user);
+	$linkdelete = \BaikalAdmin\Controller\Users::linkDelete($user);
 	$mailtouri = $user->getMailtoURI();
 ?>
 	<tr>

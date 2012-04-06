@@ -1,8 +1,8 @@
 <?php
 
-namespace BaikalAdmin\Controler;
+namespace BaikalAdmin\Controller;
 
-class Users extends \Flake\Core\Controler {
+class Users extends \Flake\Core\Controller {
 	
 	const BASEPATH = "/admin/";
 	protected $aMessages = array();
@@ -23,7 +23,6 @@ class Users extends \Flake\Core\Controler {
 	}
 	
 	function execute() {
-		
 		if(($iUser = self::editRequested()) !== FALSE) {
 			if($this->oForm->submitted()) {
 				$this->oForm->execute();
@@ -157,7 +156,7 @@ class Users extends \Flake\Core\Controler {
 	}
 	
 	public static function link() {
-		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildRouteForControler("\BaikalAdmin\Controler\Users");
+		return BAIKAL_URI . BAIKALADMIN_URIPATH . $GLOBALS["ROUTER"]::buildRouteForController("\BaikalAdmin\Controller\Users");
 	}
 	
 	public static function linkNew() {
