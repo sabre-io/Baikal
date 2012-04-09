@@ -58,16 +58,6 @@ define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
 require_once(BAIKAL_PATH_SPECIFIC . "config.php");
 require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
 
-# Determining baikal protocol, domain and uri-path (looking at BAIKAL_URI)
-if($GLOBALS["_SERVER"]["SERVER_NAME"] === "mongoose") {	# And not using MONGOOSE_SERVER constant, as it will be defined by Flake, later in the process
-	define("BAIKAL_DOMAIN", "");
-	define("BAIKAL_URIPATH", "");
-} else {
-	$aUrlInfo = parse_url(BAIKAL_URI);
-	define("BAIKAL_DOMAIN", $aUrlInfo["host"]);
-	define("BAIKAL_URIPATH", $aUrlInfo["path"]);
-}
-
 date_default_timezone_set(BAIKAL_TIMEZONE);
 
 # Check if DB exists
@@ -88,7 +78,6 @@ if($bShouldCheckEnv === TRUE) {
 	}	
 }
 
-
 if($bShouldCheckEnv === TRUE) {
 	# Mapping PHP errors to exceptions
 	function exception_error_handler($errno, $errstr, $errfile, $errline) {
@@ -99,6 +88,8 @@ if($bShouldCheckEnv === TRUE) {
 } else {
 	error_reporting(E_ALL ^ E_NOTICE);
 }
+
+unset($bShouldCheckEnv);
 
 // Autoloader 
 require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');

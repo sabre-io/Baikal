@@ -73,8 +73,22 @@ class Tools extends \Flake\Core\FLObject {
 				$result.= '<tr><td valign="top"><font face="Verdana,Arial" size="1">'.htmlspecialchars((string)$key).'</font></td><td>';
 				if (is_array($array_in[$key]))	{
 					$result.= \Flake\Util\Tools::view_array($array_in[$key]);
-				} else
-					$result.= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars((string)$val)).'<br /></font>';
+				} else {
+					if(is_object($val)) {
+						if(method_exists($val, "__toString")) {
+							$sWhat = nl2br(htmlspecialchars((string)$val));
+						} else {
+							$sWhat = nl2br(htmlspecialchars(get_class($val)));
+						}
+					} elseif(is_bool($val)) {
+						$sWhat = ($val === TRUE ? "boolean:TRUE" : "boolean:FALSE");
+					} else {
+						$sWhat = nl2br(htmlspecialchars((string)$val));
+					}
+					
+					$result .= '<font face="Verdana,Arial" size="1" color="red">' . $sWhat . '<br /></font>';
+				}
+				
 				$result.= '</td></tr>';
 			}
 			$result.= '</table>';

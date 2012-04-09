@@ -29,6 +29,7 @@ define("BAIKALADMIN_PATH_TEMPLATES", BAIKALADMIN_PATH_ROOT . "Resources/Template
 $GLOBALS["ROUTES"] = array(
 	"default" => "\BaikalAdmin\Route\Dashboard",
 	"users" => "\BaikalAdmin\Route\Users",
-	"users/details" => "\BaikalAdmin\Route\Details",
-	"install" => "\BaikalAdmin\Route\Install"
+	"users/calendars" => "\BaikalAdmin\Route\User\Calendars",
+	"install" => "\BaikalAdmin\Route\Install",
+	"settings" => "\BaikalAdmin\Route\Settings"
 );

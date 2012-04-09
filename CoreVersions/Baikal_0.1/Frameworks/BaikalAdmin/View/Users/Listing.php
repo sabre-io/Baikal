@@ -24,14 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\User;
+namespace BaikalAdmin\View\Users;
 
-class Listing extends \Flake\Core\View {
-	public function render() {
-		$oTemplate = new \Flake\Core\Template(BAIKALADMIN_PATH_TEMPLATES . "User/Listing.html", TRUE);
-		
-		return $oTemplate->parse(array(
-			"users" => $this->get("users"),
-		));
-	}
+class Listing extends \BaikalAdmin\Core\View {
 }

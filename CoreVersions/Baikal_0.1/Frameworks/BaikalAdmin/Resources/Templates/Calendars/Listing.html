@@ -1,0 +1,47 @@
+<style type="text/css">
+	.no-border-left { border-left: none !important;}
+	.col-displayname { width: 20%;}
+	.col-description { width: 55%;}
+	.col-actions { width: 25%;}
+	p.lead { line-height: 40px;}
+	table p {
+		margin-bottom: 0;
+	}
+</style>
+
+<header class="jumbotron subhead" id="overview">
+	<h1><i class="glyph2x-calendar"></i>Calendars</h1>
+	<p class="lead">Manage Calendars for<i class="<?= $user->mediumicon() ?>"></i><strong><?= $user->label() ?></strong>.</p>
+	<p class="pull-left"><a href="<?= \BaikalAdmin\Controller\Users::link() ?>" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
+	<p class="pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\User\Calendars::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\Calendar::icon() ?>"></i> + Add calendar</a></p>
+</header>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Display name</th>
+			<th>Description</th>
+			<th class="no-border-left"></th>
+		</tr>
+	</thead>
+	<tbody>
+<?
+	foreach($calendars as $calendar):
+	
+		$linkedit = \BaikalAdmin\Controller\User\Calendars::linkEdit($calendar);
+		$linkdelete = \BaikalAdmin\Controller\User\Calendars::linkDelete($calendar);
+?>
+	<tr>
+		<td class="col-displayname"><i class="<?= $calendar->icon() ?>"></i><?= $calendar->label() ?></td>
+		<td class="col-description"><?= $calendar->get("description") ?></td>
+		<td class="col-actions no-border-left">
+			<p class="pull-right">
+				<nobr><a class="btn btn-primary" href="<?= $linkedit ?>"><i class="icon-edit icon-white"></i> Edit</a></nobr>
+				<nobr><a class="btn btn-danger" href="<?= $linkdelete ?>"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+			</p>
+		</td>
+	</tr>
+	
+<?	endforeach ?>
+	</tbody>
+</table>

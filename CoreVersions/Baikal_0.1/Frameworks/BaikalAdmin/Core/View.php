@@ -24,18 +24,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\User;
+namespace BaikalAdmin\Core;
 
-class Form extends \Flake\Core\View {
-	public function render() {
-		$oTemplate = new \Flake\Core\Template(BAIKALADMIN_PATH_TEMPLATES . "User/Form.html", TRUE);
-		$oUser = $this->get("user");
-		
-		return $oTemplate->parse(array(
-			"user" => $oUser,
-			"linkcancel" => \BaikalAdmin\Controller\Users::link(),
-			"action" => \BaikalAdmin\Controller\Users::linkEdit($oUser),
-			"messages" => $this->get("messages"),
-		));
+class View extends \Flake\Core\View {
+	public function templatesPath() {
+		$sViewName = get_class($this);
+		$sTemplate = str_replace("\\", "/", substr($sViewName, strlen("BaikalAdmin\\View\\"))) . ".html";
+		return BAIKALADMIN_PATH_TEMPLATES . $sTemplate;
 	}
 }

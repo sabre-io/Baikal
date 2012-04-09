@@ -1,0 +1,1084 @@
+
+/* 350 glyphs, generated on 2012-04-06 23:34:03; C=10; R=35; W=400; H=1400; PREFIX=glyph- */
+.btn-large [class^="glyph-"] {
+  margin-top: 1px;
+}
+
+.btn-small [class^="glyph-"] {
+  margin-top: -1px;
+}
+
+.nav-list [class^="glyph-"] {
+  margin-right: 2px;
+}
+
+[class^="glyph-"],
+[class*=" glyph-"] {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: bottom;
+  background-image: url("glyph-dark.png");
+  background-position: 40px 40px;
+  background-repeat: no-repeat;
+  *margin-right: .3em;
+}
+[class^="glyph-"]:last-child,
+[class*=" glyph-"]:last-child {
+  *margin-left: 0;
+}
+
+.glyph-white {
+  background-image: url("glyph-white.png");
+}
+.glyph-glass {
+	background-position: 0 0;
+}
+.glyph-leaf {
+	background-position: -40px 0;
+}
+.glyph-dog {
+	background-position: -80px 0;
+}
+.glyph-user {
+	background-position: -120px 0;
+}
+.glyph-girl {
+	background-position: -160px 0;
+}
+.glyph-car {
+	background-position: -200px 0;
+}
+.glyph-user-add {
+	background-position: -240px 0;
+}
+.glyph-user-remove {
+	background-position: -280px 0;
+}
+.glyph-film {
+	background-position: -320px 0;
+}
+.glyph-magic {
+	background-position: -360px 0;
+}
+.glyph-envelope {
+	background-position: 0 -40px;
+}
+.glyph-camera {
+	background-position: -40px -40px;
+}
+.glyph-heart {
+	background-position: -80px -40px;
+}
+.glyph-beach-umbrella {
+	background-position: -120px -40px;
+}
+.glyph-train {
+	background-position: -160px -40px;
+}
+.glyph-print {
+	background-position: -200px -40px;
+}
+.glyph-bin {
+	background-position: -240px -40px;
+}
+.glyph-music {
+	background-position: -280px -40px;
+}
+.glyph-note {
+	background-position: -320px -40px;
+}
+.glyph-cogwheel {
+	background-position: -360px -40px;
+}
+.glyph-home {
+	background-position: 0 -80px;
+}
+.glyph-snowflake {
+	background-position: -40px -80px;
+}
+.glyph-fire {
+	background-position: -80px -80px;
+}
+.glyph-cogwheels {
+	background-position: -120px -80px;
+}
+.glyph-parents {
+	background-position: -160px -80px;
+}
+.glyph-binoculars {
+	background-position: -200px -80px;
+}
+.glyph-road {
+	background-position: -240px -80px;
+}
+.glyph-search {
+	background-position: -280px -80px;
+}
+.glyph-cars {
+	background-position: -320px -80px;
+}
+.glyph-notes-2 {
+	background-position: -360px -80px;
+}
+.glyph-pencil {
+	background-position: 0 -120px;
+}
+.glyph-bus {
+	background-position: -40px -120px;
+}
+.glyph-wifi-alt {
+	background-position: -80px -120px;
+}
+.glyph-luggage {
+	background-position: -120px -120px;
+}
+.glyph-old-man {
+	background-position: -160px -120px;
+}
+.glyph-woman {
+	background-position: -200px -120px;
+}
+.glyph-file {
+	background-position: -240px -120px;
+}
+.glyph-credit {
+	background-position: -280px -120px;
+}
+.glyph-airplane {
+	background-position: -320px -120px;
+}
+.glyph-notes {
+	background-position: -360px -120px;
+}
+.glyph-stats {
+	background-position: 0 -160px;
+}
+.glyph-charts {
+	background-position: -40px -160px;
+}
+.glyph-pie-chart {
+	background-position: -80px -160px;
+}
+.glyph-group {
+	background-position: -120px -160px;
+}
+.glyph-keys {
+	background-position: -160px -160px;
+}
+.glyph-calendar {
+	background-position: -200px -160px;
+}
+.glyph-router {
+	background-position: -240px -160px;
+}
+.glyph-camera-small {
+	background-position: -280px -160px;
+}
+.glyph-dislikes {
+	background-position: -320px -160px;
+}
+.glyph-star {
+	background-position: -360px -160px;
+}
+.glyph-link {
+	background-position: 0 -200px;
+}
+.glyph-eye-open {
+	background-position: -40px -200px;
+}
+.glyph-eye-close {
+	background-position: -80px -200px;
+}
+.glyph-alarm {
+	background-position: -120px -200px;
+}
+.glyph-clock {
+	background-position: -160px -200px;
+}
+.glyph-stopwatch {
+	background-position: -200px -200px;
+}
+.glyph-projector {
+	background-position: -240px -200px;
+}
+.glyph-history {
+	background-position: -280px -200px;
+}
+.glyph-truck {
+	background-position: -320px -200px;
+}
+.glyph-cargo {
+	background-position: -360px -200px;
+}
+.glyph-compass {
+	background-position: 0 -240px;
+}
+.glyph-keynote {
+	background-position: -40px -240px;
+}
+.glyph-attach {
+	background-position: -80px -240px;
+}
+.glyph-power {
+	background-position: -120px -240px;
+}
+.glyph-lightbulb {
+	background-position: -160px -240px;
+}
+.glyph-tag {
+	background-position: -200px -240px;
+}
+.glyph-tags {
+	background-position: -240px -240px;
+}
+.glyph-cleaning {
+	background-position: -280px -240px;
+}
+.glyph-ruller {
+	background-position: -320px -240px;
+}
+.glyph-gift {
+	background-position: -360px -240px;
+}
+.glyph-umbrella {
+	background-position: 0 -280px;
+}
+.glyph-book {
+	background-position: -40px -280px;
+}
+.glyph-bookmark {
+	background-position: -80px -280px;
+}
+.glyph-signal {
+	background-position: -120px -280px;
+}
+.glyph-cup {
+	background-position: -160px -280px;
+}
+.glyph-stroller {
+	background-position: -200px -280px;
+}
+.glyph-headphones {
+	background-position: -240px -280px;
+}
+.glyph-headset {
+	background-position: -280px -280px;
+}
+.glyph-warning-sign {
+	background-position: -320px -280px;
+}
+.glyph-signal {
+	background-position: -360px -280px;
+}
+.glyph-retweet {
+	background-position: 0 -320px;
+}
+.glyph-refresh {
+	background-position: -40px -320px;
+}
+.glyph-roundabout {
+	background-position: -80px -320px;
+}
+.glyph-random {
+	background-position: -120px -320px;
+}
+.glyph-heat {
+	background-position: -160px -320px;
+}
+.glyph-repeat {
+	background-position: -200px -320px;
+}
+.glyph-display {
+	background-position: -240px -320px;
+}
+.glyph-log-book {
+	background-position: -280px -320px;
+}
+.glyph-adress-book {
+	background-position: -320px -320px;
+}
+.glyph-magnet {
+	background-position: -360px -320px;
+}
+.glyph-table {
+	background-position: 0 -360px;
+}
+.glyph-adjust {
+	background-position: -40px -360px;
+}
+.glyph-tint {
+	background-position: -80px -360px;
+}
+.glyph-crop {
+	background-position: -120px -360px;
+}
+.glyph-vector-path-square {
+	background-position: -160px -360px;
+}
+.glyph-vector-path-circle {
+	background-position: -200px -360px;
+}
+.glyph-vector-path-polygon {
+	background-position: -240px -360px;
+}
+.glyph-vector-path-line {
+	background-position: -280px -360px;
+}
+.glyph-vector-path-curve {
+	background-position: -320px -360px;
+}
+.glyph-vector-path-all {
+	background-position: -360px -360px;
+}
+.glyph-font {
+	background-position: 0 -400px;
+}
+.glyph-italic {
+	background-position: -40px -400px;
+}
+.glyph-bold {
+	background-position: -80px -400px;
+}
+.glyph-text-underline {
+	background-position: -120px -400px;
+}
+.glyph-text-strike {
+	background-position: -160px -400px;
+}
+.glyph-text-height {
+	background-position: -200px -400px;
+}
+.glyph-text-width {
+	background-position: -240px -400px;
+}
+.glyph-text-resize {
+	background-position: -280px -400px;
+}
+.glyph-left-indent {
+	background-position: -320px -400px;
+}
+.glyph-right-indent {
+	background-position: -360px -400px;
+}
+.glyph-align-left {
+	background-position: 0 -440px;
+}
+.glyph-align-center {
+	background-position: -40px -440px;
+}
+.glyph-align-right {
+	background-position: -80px -440px;
+}
+.glyph-justify {
+	background-position: -120px -440px;
+}
+.glyph-list {
+	background-position: -160px -440px;
+}
+.glyph-text-smaller {
+	background-position: -200px -440px;
+}
+.glyph-text-bigger {
+	background-position: -240px -440px;
+}
+.glyph-embed {
+	background-position: -280px -440px;
+}
+.glyph-embed-close {
+	background-position: -320px -440px;
+}
+.glyph-adjust {
+	background-position: -360px -440px;
+}
+.glyph-message-full {
+	background-position: 0 -480px;
+}
+.glyph-message-empty {
+	background-position: -40px -480px;
+}
+.glyph-message-in {
+	background-position: -80px -480px;
+}
+.glyph-message-out {
+	background-position: -120px -480px;
+}
+.glyph-message-plus {
+	background-position: -160px -480px;
+}
+.glyph-message-minus {
+	background-position: -200px -480px;
+}
+.glyph-message-ban {
+	background-position: -240px -480px;
+}
+.glyph-message-flag {
+	background-position: -280px -480px;
+}
+.glyph-message-lock {
+	background-position: -320px -480px;
+}
+.glyph-message-new {
+	background-position: -360px -480px;
+}
+.glyph-inbox {
+	background-position: 0 -520px;
+}
+.glyph-inbox-plus {
+	background-position: -40px -520px;
+}
+.glyph-inbox-minus {
+	background-position: -80px -520px;
+}
+.glyph-inbox-lock {
+	background-position: -120px -520px;
+}
+.glyph-inbox-in {
+	background-position: -160px -520px;
+}
+.glyph-inbox-out {
+	background-position: -200px -520px;
+}
+.glyph-computer-locked {
+	background-position: -240px -520px;
+}
+.glyph-computer-service {
+	background-position: -280px -520px;
+}
+.glyph-computer-proces {
+	background-position: -320px -520px;
+}
+.glyph-phone {
+	background-position: -360px -520px;
+}
+.glyph-database-lock {
+	background-position: 0 -560px;
+}
+.glyph-database-plus {
+	background-position: -40px -560px;
+}
+.glyph-database-minus {
+	background-position: -80px -560px;
+}
+.glyph-database-ban {
+	background-position: -120px -560px;
+}
+.glyph-folder-open {
+	background-position: -160px -560px;
+}
+.glyph-folder-plus {
+	background-position: -200px -560px;
+}
+.glyph-folder-minus {
+	background-position: -240px -560px;
+}
+.glyph-folder-lock {
+	background-position: -280px -560px;
+}
+.glyph-folder-flag {
+	background-position: -320px -560px;
+}
+.glyph-folder-new {
+	background-position: -360px -560px;
+}
+.glyph-check {
+	background-position: 0 -600px;
+}
+.glyph-edit {
+	background-position: -40px -600px;
+}
+.glyph-new-window {
+	background-position: -80px -600px;
+}
+.glyph-more-windows {
+	background-position: -120px -600px;
+}
+.glyph-show-big-thumbnails {
+	background-position: -160px -600px;
+}
+.glyph-show-thumbnails {
+	background-position: -200px -600px;
+}
+.glyph-show-thumbnails-with-lines {
+	background-position: -240px -600px;
+}
+.glyph-show-lines {
+	background-position: -280px -600px;
+}
+.glyph-playlist {
+	background-position: -320px -600px;
+}
+.glyph-picture {
+	background-position: -360px -600px;
+}
+.glyph-imac {
+	background-position: 0 -640px;
+}
+.glyph-macbook {
+	background-position: -40px -640px;
+}
+.glyph-ipad {
+	background-position: -80px -640px;
+}
+.glyph-iphone {
+	background-position: -120px -640px;
+}
+.glyph-iphone-transfer {
+	background-position: -160px -640px;
+}
+.glyph-iphone-exchange {
+	background-position: -200px -640px;
+}
+.glyph-ipod {
+	background-position: -240px -640px;
+}
+.glyph-ipod-shuffle {
+	background-position: -280px -640px;
+}
+.glyph-ear-plugs {
+	background-position: -320px -640px;
+}
+.glyph-albums {
+	background-position: -360px -640px;
+}
+.glyph-step-backward {
+	background-position: 0 -680px;
+}
+.glyph-fast-backward {
+	background-position: -40px -680px;
+}
+.glyph-rewind {
+	background-position: -80px -680px;
+}
+.glyph-play {
+	background-position: -120px -680px;
+}
+.glyph-pause {
+	background-position: -160px -680px;
+}
+.glyph-stop {
+	background-position: -200px -680px;
+}
+.glyph-forward {
+	background-position: -240px -680px;
+}
+.glyph-fast-forward {
+	background-position: -280px -680px;
+}
+.glyph-step-forward {
+	background-position: -320px -680px;
+}
+.glyph-eject {
+	background-position: -360px -680px;
+}
+.glyph-facetime-video {
+	background-position: 0 -720px;
+}
+.glyph-download-alt {
+	background-position: -40px -720px;
+}
+.glyph-mute {
+	background-position: -80px -720px;
+}
+.glyph-volume-down {
+	background-position: -120px -720px;
+}
+.glyph-volume-up {
+	background-position: -160px -720px;
+}
+.glyph-screenshot {
+	background-position: -200px -720px;
+}
+.glyph-move {
+	background-position: -240px -720px;
+}
+.glyph-more {
+	background-position: -280px -720px;
+}
+.glyph-brightness-reduce {
+	background-position: -320px -720px;
+}
+.glyph-brightness-increase {
+	background-position: -360px -720px;
+}
+.glyph-circle-plus {
+	background-position: 0 -760px;
+}
+.glyph-circle-minus {
+	background-position: -40px -760px;
+}
+.glyph-circle-remove {
+	background-position: -80px -760px;
+}
+.glyph-circle-ok {
+	background-position: -120px -760px;
+}
+.glyph-circle-question-mark {
+	background-position: -160px -760px;
+}
+.glyph-circle-info {
+	background-position: -200px -760px;
+}
+.glyph-circle-exclamation-mark {
+	background-position: -240px -760px;
+}
+.glyph-remove {
+	background-position: -280px -760px;
+}
+.glyph-ok {
+	background-position: -320px -760px;
+}
+.glyph-ban {
+	background-position: -360px -760px;
+}
+.glyph-download {
+	background-position: 0 -800px;
+}
+.glyph-upload {
+	background-position: -40px -800px;
+}
+.glyph-shopping-cart {
+	background-position: -80px -800px;
+}
+.glyph-lock {
+	background-position: -120px -800px;
+}
+.glyph-unlock {
+	background-position: -160px -800px;
+}
+.glyph-electricity {
+	background-position: -200px -800px;
+}
+.glyph-ok-2 {
+	background-position: -240px -800px;
+}
+.glyph-remove-2 {
+	background-position: -280px -800px;
+}
+.glyph-cart-out {
+	background-position: -320px -800px;
+}
+.glyph-cart-in {
+	background-position: -360px -800px;
+}
+.glyph-left-arrow {
+	background-position: 0 -840px;
+}
+.glyph-right-arrow {
+	background-position: -40px -840px;
+}
+.glyph-down-arrow {
+	background-position: -80px -840px;
+}
+.glyph-up-arrow {
+	background-position: -120px -840px;
+}
+.glyph-resize-small {
+	background-position: -160px -840px;
+}
+.glyph-resize-full {
+	background-position: -200px -840px;
+}
+.glyph-circle-arrow-left {
+	background-position: -240px -840px;
+}
+.glyph-circle-arrow-right {
+	background-position: -280px -840px;
+}
+.glyph-circle-arrow-right {
+	background-position: -320px -840px;
+}
+.glyph-circle-arrow-right {
+	background-position: -360px -840px;
+}
+.glyph-play-button {
+	background-position: 0 -880px;
+}
+.glyph-unshare {
+	background-position: -40px -880px;
+}
+.glyph-share {
+	background-position: -80px -880px;
+}
+.glyph-thin-right-arrow {
+	background-position: -120px -880px;
+}
+.glyph-thin-arrow-left {
+	background-position: -160px -880px;
+}
+.glyph-bluetooth {
+	background-position: -200px -880px;
+}
+.glyph-euro {
+	background-position: -240px -880px;
+}
+.glyph-usd {
+	background-position: -280px -880px;
+}
+.glyph-bp {
+	background-position: -320px -880px;
+}
+.glyph-retweet-2 {
+	background-position: -360px -880px;
+}
+.glyph-moon {
+	background-position: 0 -920px;
+}
+.glyph-sun {
+	background-position: -40px -920px;
+}
+.glyph-cloud {
+	background-position: -80px -920px;
+}
+.glyph-direction {
+	background-position: -120px -920px;
+}
+.glyph-brush {
+	background-position: -160px -920px;
+}
+.glyph-pen {
+	background-position: -200px -920px;
+}
+.glyph-zoom-in {
+	background-position: -240px -920px;
+}
+.glyph-zoom-out {
+	background-position: -280px -920px;
+}
+.glyph-pin {
+	background-position: -320px -920px;
+}
+.glyph-riflescope {
+	background-position: -360px -920px;
+}
+.glyph-rotation-lock {
+	background-position: 0 -960px;
+}
+.glyph-flash {
+	background-position: -40px -960px;
+}
+.glyph-google-maps {
+	background-position: -80px -960px;
+}
+.glyph-anchor {
+	background-position: -120px -960px;
+}
+.glyph-conversation {
+	background-position: -160px -960px;
+}
+.glyph-chat {
+	background-position: -200px -960px;
+}
+.glyph-male {
+	background-position: -240px -960px;
+}
+.glyph-female {
+	background-position: -280px -960px;
+}
+.glyph-asterisk {
+	background-position: -320px -960px;
+}
+.glyph-divide {
+	background-position: -360px -960px;
+}
+.glyph-snorkel-diving {
+	background-position: 0 -1000px;
+}
+.glyph-scuba-diving {
+	background-position: -40px -1000px;
+}
+.glyph-oxygen-bottle {
+	background-position: -80px -1000px;
+}
+.glyph-fins {
+	background-position: -120px -1000px;
+}
+.glyph-fishes {
+	background-position: -160px -1000px;
+}
+.glyph-boat {
+	background-position: -200px -1000px;
+}
+.glyph-delete-point {
+	background-position: -240px -1000px;
+}
+.glyph-sheriffs--star {
+	background-position: -280px -1000px;
+}
+.glyph-qrcode {
+	background-position: -320px -1000px;
+}
+.glyph-barcode {
+	background-position: -360px -1000px;
+}
+.glyph-pool {
+	background-position: 0 -1040px;
+}
+.glyph-buoy {
+	background-position: -40px -1040px;
+}
+.glyph-spade {
+	background-position: -80px -1040px;
+}
+.glyph-bank {
+	background-position: -120px -1040px;
+}
+.glyph-vcard {
+	background-position: -160px -1040px;
+}
+.glyph-electrical-plug {
+	background-position: -200px -1040px;
+}
+.glyph-flag {
+	background-position: -240px -1040px;
+}
+.glyph-credit-card {
+	background-position: -280px -1040px;
+}
+.glyph-keyboard-wireless {
+	background-position: -320px -1040px;
+}
+.glyph-keyboard-wired {
+	background-position: -360px -1040px;
+}
+.glyph-shield {
+	background-position: 0 -1080px;
+}
+.glyph-ring {
+	background-position: -40px -1080px;
+}
+.glyph-cake {
+	background-position: -80px -1080px;
+}
+.glyph-drink {
+	background-position: -120px -1080px;
+}
+.glyph-beer {
+	background-position: -160px -1080px;
+}
+.glyph-fast-food {
+	background-position: -200px -1080px;
+}
+.glyph-cutlery {
+	background-position: -240px -1080px;
+}
+.glyph-pizza {
+	background-position: -280px -1080px;
+}
+.glyph-birthday-cake {
+	background-position: -320px -1080px;
+}
+.glyph-tablet {
+	background-position: -360px -1080px;
+}
+.glyph-settings {
+	background-position: 0 -1120px;
+}
+.glyph-bullets {
+	background-position: -40px -1120px;
+}
+.glyph-cardio {
+	background-position: -80px -1120px;
+}
+.glyph-t-shirt {
+	background-position: -120px -1120px;
+}
+.glyph-pants {
+	background-position: -160px -1120px;
+}
+.glyph-sweater {
+	background-position: -200px -1120px;
+}
+.glyph-fabric {
+	background-position: -240px -1120px;
+}
+.glyph-leather {
+	background-position: -280px -1120px;
+}
+.glyph-scissors {
+	background-position: -320px -1120px;
+}
+.glyph-podium {
+	background-position: -360px -1120px;
+}
+.glyph-skull {
+	background-position: 0 -1160px;
+}
+.glyph-celebration {
+	background-position: -40px -1160px;
+}
+.glyph-tea-kettle {
+	background-position: -80px -1160px;
+}
+.glyph-french-press {
+	background-position: -120px -1160px;
+}
+.glyph-coffe-cup {
+	background-position: -160px -1160px;
+}
+.glyph-pot {
+	background-position: -200px -1160px;
+}
+.glyph-grater {
+	background-position: -240px -1160px;
+}
+.glyph-kettle {
+	background-position: -280px -1160px;
+}
+.glyph-hospital {
+	background-position: -320px -1160px;
+}
+.glyph-hospital-h {
+	background-position: -360px -1160px;
+}
+.glyph-microphone {
+	background-position: 0 -1200px;
+}
+.glyph-webcam {
+	background-position: -40px -1200px;
+}
+.glyph-temple-christianity-church {
+	background-position: -80px -1200px;
+}
+.glyph-temple-islam {
+	background-position: -120px -1200px;
+}
+.glyph-temple-hindu {
+	background-position: -160px -1200px;
+}
+.glyph-temple-buddhist {
+	background-position: -200px -1200px;
+}
+.glyph-electrical-socket-eu {
+	background-position: -240px -1200px;
+}
+.glyph-electrical-socket-us {
+	background-position: -280px -1200px;
+}
+.glyph-bomb {
+	background-position: -320px -1200px;
+}
+.glyph-comments {
+	background-position: -360px -1200px;
+}
+.glyph-flower {
+	background-position: 0 -1240px;
+}
+.glyph-baseball {
+	background-position: -40px -1240px;
+}
+.glyph-rugby {
+	background-position: -80px -1240px;
+}
+.glyph-ax {
+	background-position: -120px -1240px;
+}
+.glyph-table-tennis {
+	background-position: -160px -1240px;
+}
+.glyph-bowling {
+	background-position: -200px -1240px;
+}
+.glyph-tree-conifer {
+	background-position: -240px -1240px;
+}
+.glyph-tree-deciduous {
+	background-position: -280px -1240px;
+}
+.glyph-more-items {
+	background-position: -320px -1240px;
+}
+.glyph-sort {
+	background-position: -360px -1240px;
+}
+.glyph-facebook {
+	background-position: 0 -1280px;
+}
+.glyph-twitter-t {
+	background-position: -40px -1280px;
+}
+.glyph-twitter {
+	background-position: -80px -1280px;
+}
+.glyph-buzz {
+	background-position: -120px -1280px;
+}
+.glyph-vimeo {
+	background-position: -160px -1280px;
+}
+.glyph-flickr {
+	background-position: -200px -1280px;
+}
+.glyph-last-fm {
+	background-position: -240px -1280px;
+}
+.glyph-rss {
+	background-position: -280px -1280px;
+}
+.glyph-skype {
+	background-position: -320px -1280px;
+}
+.glyph-e-mail {
+	background-position: -360px -1280px;
+}
+.glyph-instapaper {
+	background-position: 0 -1320px;
+}
+.glyph-evernote {
+	background-position: -40px -1320px;
+}
+.glyph-xing {
+	background-position: -80px -1320px;
+}
+.glyph-zootool {
+	background-position: -120px -1320px;
+}
+.glyph-dribbble {
+	background-position: -160px -1320px;
+}
+.glyph-deviantart {
+	background-position: -200px -1320px;
+}
+.glyph-read-it-later {
+	background-position: -240px -1320px;
+}
+.glyph-linked-in {
+	background-position: -280px -1320px;
+}
+.glyph-forrst {
+	background-position: -320px -1320px;
+}
+.glyph-pinboard {
+	background-position: -360px -1320px;
+}
+.glyph-behance {
+	background-position: 0 -1360px;
+}
+.glyph-github {
+	background-position: -40px -1360px;
+}
+.glyph-youtube {
+	background-position: -80px -1360px;
+}
+.glyph-skitch {
+	background-position: -120px -1360px;
+}
+.glyph-4square {
+	background-position: -160px -1360px;
+}
+.glyph-quora {
+	background-position: -200px -1360px;
+}
+.glyph-google-plus {
+	background-position: -240px -1360px;
+}
+.glyph-spootify {
+	background-position: -280px -1360px;
+}
+.glyph-stumbleupon {
+	background-position: -320px -1360px;
+}
+.glyph-readability {
+	background-position: -360px -1360px;
+}
