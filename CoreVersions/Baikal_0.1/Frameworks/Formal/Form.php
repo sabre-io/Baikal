@@ -74,7 +74,7 @@ class Form {
 		$this->oElements->reset();
 		foreach($this->oElements as $oElement) {
 			$oElement->setValue(
-				$this->getModelInstance()->get(
+				$this->modelInstance()->get(
 					$oElement->option("prop")
 				)
 			);
@@ -83,25 +83,26 @@ class Form {
 		# Displayed form title is generated depending on modelInstance floatingness
 		
 		if($this->floatingModelInstance()) {
-			$this->sDisplayTitle = "Creating new " . $this->getModelInstance()->getHumanName();
+			$this->sDisplayTitle = "Creating new<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->humanName() . "</strong>";
 		} else {
-			$this->sDisplayTitle = "Editing " . $this->getModelInstance()->getHumanName() . " <strong>" . $this->getModelInstance()->getLabel() . "</strong>";
+			# This is changed if form is persisted, after persistance, to reflect possible change in model instance label
+			$this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
 		}
 		
 		return $this;
 	}
 	
-	public function getModelInstance() {
+	public function modelInstance() {
 		return $this->oModelInstance;
 	}
 	
 	public function floatingModelInstance() {
-		return $this->getModelInstance()->floating();
+		return $this->modelInstance()->floating();
 	}
 	
 	public function execute() {
 		# Obtaining morphology from model object
-		$oMorpho = $this->getModelInstance()->formMorphologyForThisModelInstance();
+		$oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
 		
 		$this->aErrors = array();
 		$oMorpho->elements()->reset();
@@ -119,7 +120,7 @@ class Form {
 			
 			$sValue = $oElement->value();
 			
-			$this->getModelInstance()->set(
+			$this->modelInstance()->set(
 				$sPropName,
 				$sValue
 			);
@@ -178,15 +179,21 @@ class Form {
 			
 			if($this->floatingModelInstance()) {
 				$this->sDisplayMessage = \Formal\Core\Message::notice(
-					$this->getModelInstance()->getHumanName() . " <i class='" . $this->getModelInstance()->getIcon() . "'></i> <strong>" . $this->getModelInstance()->getLabel() . "</strong> has been created."
+					$this->modelInstance()->humanName() . " <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> has been created."
 				);
+				$bWasFloating = TRUE;
 			} else {
+				$bWasFloating = FALSE;
 				$this->sDisplayMessage = \Formal\Core\Message::notice(
-					"Changes on <i class='" . $this->getModelInstance()->getIcon() . "'></i> <strong>" . $this->getModelInstance()->getLabel() . "</strong> have been saved."
+					"Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> have been saved."
 				);
 			}
 			
-			$this->getModelInstance()->persist();
+			$this->modelInstance()->persist();
+			if($bWasFloating === FALSE) {
+				# Title is generated now, as submitted data might have changed the model instance label
+				$this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<strong><i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+			}
 			$this->bPersisted = TRUE;
 		} else {
 			$this->bPersisted = FALSE;
@@ -227,13 +234,35 @@ class Form {
 	}
 	
 	public function validateUnique($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
-		$oColl = $this->getModelInstance()->getBaseRequester()->addClauseEquals(
+		$oModelInstance = $this->modelInstance();
+		
+		$oRequest = $oModelInstance->getBaseRequester()->addClauseEquals(
 			$oElement->option("prop"),
 			$sValue
-		)->execute();
+		);
+		
+		if(!$oModelInstance->floating()) {
+			# checking id only if model instance is not floating
+			$oRequest->addClauseNotEquals(
+				$oModelInstance::PRIMARYKEY,
+				$oModelInstance->get(
+					$oModelInstance::PRIMARYKEY
+				)
+			);
+		}
+		
+		$oColl = $oRequest->execute();
 		
 		if($oColl->count() > 0) {
 			return "<strong>" . $oElement->option("label") . "</strong> has to be unique. Given value is not available.";
+		}
+		
+		return TRUE;
+	}
+	
+	public function validateTokenid($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+		if(!preg_match("/^[a-z0-9\-]+$/", $sValue)) {
+			return "<strong>" . $oElement->option("label") . "</strong> is not valid. Allowed characters are digits, lowercase letters and the dash symbol '-'.";
 		}
 		
 		return TRUE;
@@ -246,7 +275,7 @@ class Form {
 	public function render() {
 		$aHtml = array();
 		
-		$oMorpho = $this->getModelInstance()->formMorphologyForThisModelInstance();
+		$oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
 		
 		$oMorpho->elements()->reset();
 		foreach($oMorpho->elements() as $oElement) {
@@ -256,7 +285,7 @@ class Form {
 			# And obtained from Model instance
 			
 			$oElement->setValue(
-				$this->getModelInstance()->get(
+				$this->modelInstance()->get(
 					$oElement->option("prop")
 				)
 			);
@@ -297,7 +326,7 @@ class Form {
 <form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
 	<input type="hidden" name="{$sSubmittedFlagName}" value="1" />
 	<fieldset>
-		<legend>{$this->sDisplayTitle}</legend>
+		<legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
 		{$this->sDisplayMessage}
 		{$elements}
 		<div class="form-actions">

@@ -1,0 +1,44 @@
+<style type="text/css">
+	.col-id { width: 2%;}
+	.col-username { width: 45%;}
+	.no-border-left { border-left: none !important;}
+	p.lead { line-height: 40px;}
+	table p {
+		margin-bottom: 0;
+	}
+</style>
+
+<header class="jumbotron subhead" id="overview">
+	<h1><i class="glyph2x-group"></i>Users</h1>
+	<p class="lead pull-left">Manage Baïkal user accounts, and associated resources.</p>
+	<p class="lead pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\Users::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\User::icon() ?>"></i> + Add user</a></p>
+</header>
+
+<table class="table table-bordered table-striped">
+<?
+	foreach($users as $user):
+
+		$linkcalendars = \BaikalAdmin\Controller\Users::linkCalendars($user);
+#		$linkcontacts = \BaikalAdmin\Controller\Users::linkContacts($user);
+		$linkedit = \BaikalAdmin\Controller\Users::linkEdit($user);
+		$linkdelete = \BaikalAdmin\Controller\Users::linkDelete($user);
+		$mailtouri = $user->getMailtoURI();
+?>
+	
+	<tr>
+		<td class="col-username">
+			<i class="icon-user"></i> <strong><?= $user->get("username"); ?></strong><br />
+			<?= $user->get("displayname"); ?> <a href="<?= $mailtouri ?>">&lt;<?= $user->get("email"); ?>&gt;</a>
+		</td>
+		<td class="col-actions no-border-left">
+			<p class="pull-right">
+				<nobr><a class="btn" href="<?= $linkcalendars ?>"><i class="<?= \Baikal\Model\Calendar::icon() ?>"></i> Calendars</a></nobr>
+				<nobr><a class="btn" href="<?= $linkcontacts ?>"><i class="icon-book"></i> Contacts</a></nobr>
+				<nobr><a class="btn btn-primary" href="<?= $linkedit ?>"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
+				<nobr><a class="btn btn-danger" href="<?= $linkdelete ?>"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+			</p>
+		</td>
+	</tr>
+	
+<?	endforeach ?>
+</table>

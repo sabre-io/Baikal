@@ -41,6 +41,7 @@ require_once(dirname(__FILE__) . '/ClassLoader.php');
 
 # Relative to BAIKAL_URI; so that BAIKAL_URI . BAIKALADMIN_URIPATH corresponds to the full URL to Baïkal admin
 define("BAIKALADMIN_URIPATH", "admin/");
+$GLOBALS["ROUTER"]::setURIPath(BAIKALADMIN_URIPATH);
 
 # Include BaikalAdmin Framework config
 require_once(BAIKALADMIN_PATH_ROOT . "config.php");

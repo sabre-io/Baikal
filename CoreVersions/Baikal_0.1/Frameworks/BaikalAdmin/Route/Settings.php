@@ -24,21 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller;
+namespace BaikalAdmin\Route;
 
-class Details extends \Flake\Core\Controller {
-
-	function execute() {
-	}
-
-	function render() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($iUser = intval($aParams[0])) === 0) {
-			throw new \Exception("BaikalAdmin\Controller\Details::render(): User get-parameter not found.");
-		}
-		
-		$oUser = new \Baikal\Model\User($iUser);
-		
-		return "<h2>Details for user " . $oUser->getLabel() . "</h2>";
+class Settings {
+	
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Settings());
 	}
 }

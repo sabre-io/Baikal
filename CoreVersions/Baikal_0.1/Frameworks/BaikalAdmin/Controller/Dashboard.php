@@ -28,10 +28,10 @@ namespace BaikalAdmin\Controller;
 
 class Dashboard extends \Flake\Core\Controller {
 	
-	function execute() {
+	public function execute() {
 	}
 	
-	function render() {
+	public function render() {
 		$sLinkUsers = \BaikalAdmin\Controller\Users::link();
 		
 		$sMessage =<<<MESSAGE
