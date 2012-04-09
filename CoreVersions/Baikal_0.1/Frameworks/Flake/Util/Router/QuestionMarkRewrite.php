@@ -70,13 +70,32 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 	
 	public static function buildRoute($sRoute /* [, $sParam, $sParam2, ...] */) {
 		$aParams = func_get_args();
-		$sUrl = call_user_func_array("parent::buildRoute", $aParams);
+		array_shift($aParams);	# Stripping $sRoute
 		
-		if($sUrl === "/") {
-			return "";
+		$sParams = implode("/", $aParams);
+		if(trim($sParams) !== "") {
+			$sParams .= "/";
 		}
 		
-		return "?" . $sUrl;
+		if($sRoute === "default" && empty($aParams)) {
+			$sUrl =  "/";
+		} else {
+			$sUrl = "/" . $sRoute . "/" . $sParams;
+		}
+		
+		if(self::getUriPath() === "") {
+			if($sUrl !== "/") {
+				$sUrl = "?" . $sUrl;
+			}
+		} else {
+			if($sUrl !== "/") {
+				$sUrl = "/" . self::getUriPath() . "?" . $sUrl;
+			} else {
+				$sUrl = "/" . self::getUriPath();
+			}
+		}
+		
+		return $sUrl;
 	}
 	
 	public static function getURLParams() {

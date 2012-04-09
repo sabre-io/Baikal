@@ -33,7 +33,7 @@
 define("BAIKAL_TIMEZONE", "Europe/Paris");
 
 # Absolute Baïkal URI; end with slash; includes protocol (http:// or https://), port (optional) and subfolders if any
-if($_SERVER["SERVER_NAME"] === "mongoose") {
+if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mongoose") {
 	define("BAIKAL_URI", "/");
 } elseif(array_key_exists("HTTP_HOST", $_SERVER) && $_SERVER["HTTP_HOST"] === "subbaikal.jeromeschneider.fr") {
 	define("BAIKAL_URI", "http://subbaikal.jeromeschneider.fr/html/");

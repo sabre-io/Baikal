@@ -24,14 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller;
+namespace BaikalAdmin\View\Calendars;
 
-class Install extends \Flake\Core\Controller {
-
-	public function execute() {
-	}
-
-	public function render() {
-		return "<h2>Install</h2>";
-	}
+class Listing extends \BaikalAdmin\Core\View {
 }

@@ -26,12 +26,12 @@
 
 namespace BaikalAdmin\Controller;
 
-class Install extends \Flake\Core\Controller {
+class Settings extends \Flake\Core\Controller {
 
 	public function execute() {
 	}
 
 	public function render() {
-		return "<h2>Install</h2>";
+		return "<h2>Settings</h2>";
 	}
 }
