@@ -31,7 +31,7 @@ abstract class Requester extends \Flake\Core\FLObject {
 		$this->sModelClass = $sModelClass;
 	}
 
-	public function addClause($sField, $sValue) {
+	protected function addClause($sField, $sValue) {
 		$this->addClauseEquals($sField, $sValue);
 		return $this;
 	}

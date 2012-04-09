@@ -28,13 +28,20 @@ namespace Formal\Element;
 
 class Text extends \Formal\Element {
 	
+	protected function inputtype() {
+		return "text";
+	}
+	
 	public function render() {
-		$value = htmlspecialchars($this->value());
-		$label = $this->option("label");
-		$prop = $this->option("prop");
 		$disabled = "";
 		$inputclass = "";
 		$groupclass = "";
+		$placeholder = "";
+		
+		$value = htmlspecialchars($this->value());
+		$label = $this->option("label");
+		$prop = $this->option("prop");
+		$placeholder = $this->option("placeholder");
 		
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
@@ -45,11 +52,17 @@ class Text extends \Formal\Element {
 			$groupclass .= " error";
 		}
 		
+		if(($sPlaceHolder = trim($this->option("placeholder"))) !== "") {
+			$placeholder = " placeholder=\"" . htmlspecialchars($sPlaceHolder) . "\" ";
+		}
+		
+		$sInputType = $this->inputtype();
+		
 		$sHtml =<<<HTML
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="displayname">{$label}</label>
 	<div class="controls">
-		<input type="text" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$value}"{$disabled} />
+		<input type="{$sInputType}" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$value}"{$disabled}{$placeholder}/>
 	</div>
 </div>
 HTML;

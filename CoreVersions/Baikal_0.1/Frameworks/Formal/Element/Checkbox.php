@@ -24,11 +24,44 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Route;
+namespace Formal\Element;
 
-class Details {
+class Checkbox extends \Formal\Element {
 	
-	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Details());
+	public function setValue($sValue) {
+		# Boolean
+		$this->sValue = ((intval($sValue) === 1));
+	}
+	
+	public function render() {
+		$disabled = "";
+		$inputclass = "";
+		$groupclass = "";
+		
+		$value = $this->value();
+		
+		$checked = ($value === TRUE ? " checked=\"checked\" " : "");
+		$label = $this->option("label");
+		$prop = $this->option("prop");
+
+		if($this->option("readonly") === TRUE) {
+			$inputclass .= " disabled";
+			$disabled = " disabled";
+		}
+
+		if($this->option("error") === TRUE) {
+			$groupclass .= " error";
+		}
+		
+
+		$sHtml =<<<HTML
+<div class="control-group{$groupclass}">
+	<label class="control-label" for="displayname">{$label}</label>
+	<div class="controls">
+		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="1"{$checked}{$disabled}/>
+	</div>
+</div>
+HTML;
+		return $sHtml;
 	}
 }

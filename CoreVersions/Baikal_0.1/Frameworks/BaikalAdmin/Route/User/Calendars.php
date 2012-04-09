@@ -24,14 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller;
+namespace BaikalAdmin\Route\User;
 
-class Install extends \Flake\Core\Controller {
-
-	public function execute() {
-	}
-
-	public function render() {
-		return "<h2>Install</h2>";
+class Calendars {
+	
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\Calendars());
 	}
 }

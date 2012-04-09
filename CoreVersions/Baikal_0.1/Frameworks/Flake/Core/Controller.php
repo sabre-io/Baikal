@@ -34,9 +34,7 @@ abstract class Controller extends \Flake\Core\FLObject {
 		$this->aParams = $aParams;
 	}
 	
-	abstract function execute();
-	abstract function render();
-	static function link(/*[$sParam, $sParam2, ...]*/) {
+	public static function link(/*[$sParam, $sParam2, ...]*/) {
 		return static::buildRoute();
 	}
 	
@@ -46,4 +44,7 @@ abstract class Controller extends \Flake\Core\FLObject {
 		array_unshift($aParams, $sController);		# Injecting current controller as first param
 		return call_user_func_array($GLOBALS["ROUTER"] . "::buildRouteForController", $aParams);
 	}
+	
+	public abstract function execute();
+	public abstract function render();
 }

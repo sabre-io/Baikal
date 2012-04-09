@@ -51,16 +51,36 @@ abstract class Model extends \Flake\Core\FLObject {
 		throw new \Exception("\Flake\Core\Model->set(): property " . htmlspecialchars($sPropName) . " does not exist on " . get_class($this));
 	}
 	
-	public function getLabel() {
+	public function label() {
 		return $this->get($this::LABELFIELD);
 	}
 	
-	public static function getIcon() {
+	public static function icon() {
 		return "icon-book";
 	}
 	
-	public static function getHumanName() {
+	public static function mediumicon() {
+		return "glyph-book";
+	}
+	
+	public static function bigicon() {
+		return "glyph2x-book";
+	}
+	
+	public static function humanName() {
 		$aRes = explode("\\", get_called_class());
 		return array_pop($aRes);
+	}
+	
+	public function formForThisModelInstance($options = array()) {
+		$sClass = get_class($this);
+		$oForm = new \Formal\Form($sClass, $options);
+		$oForm->setModelInstance($this);
+		
+		return $oForm;
+	}
+	
+	public function formMorphologyForThisModelInstance() {
+		throw new \Exception(get_class($this) . ": No form morphology provided for Model.");
 	}
 }

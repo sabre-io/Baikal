@@ -48,6 +48,16 @@ class User extends \Flake\Core\Model\Db {
 			->first();
 	}
 	
+	public function getCalendarsBaseRequester() {
+		$oCalendarBaseRequester = \Baikal\Model\Calendar::getBaseRequester();
+		$oCalendarBaseRequester->addClauseEquals(
+			"principaluri",
+			"principals/" . $this->get("username")
+		);
+		
+		return $oCalendarBaseRequester;
+	}
+	
 	public function initFloating() {
 		parent::initFloating();
 		
@@ -101,11 +111,40 @@ class User extends \Flake\Core\Model\Db {
 	
 	public function persist() {
 		
+		$bFloating = $this->floating();
+		
 		# Persisted first, as Model users loads this data
 		$this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
 		$this->oIdentityPrincipal->persist();
 		
 		parent::persist();
+		
+		if($bFloating) {
+			
+			# Creating default calendar for user
+			$oDefaultCalendar = new \Baikal\Model\Calendar();
+			$oDefaultCalendar->set(
+				"principaluri",
+				"principals/" . $this->get("username")
+			)->set(
+				"displayname",
+				"Default calendar"
+			)->set(
+				"uri",
+				"default"
+			)->set(
+				"ctag",
+				1
+			)->set(
+				"description",
+				"Default calendar"
+			)->set(
+				"components",
+				"VEVENT,VTODO"
+			);
+			
+			$oDefaultCalendar->persist();
+		}
 	}
 	
 	public function destroy() {
@@ -121,21 +160,13 @@ class User extends \Flake\Core\Model\Db {
 		return "mailto:" . rawurlencode($this->get("displayname") . " <" . $this->get("email") . ">");
 	}
 	
-	public function formForThisModelInstance($options = array()) {
-		$sClass = get_class($this);
-		$oForm = new \Formal\Form($sClass, $options);
-		$oForm->setModelInstance($this);
-		
-		return $oForm;
-	}
-	
 	public function formMorphologyForThisModelInstance() {
 		$oMorpho = new \Formal\Form\Morphology();
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "username",
 			"label" => "Username",
-			"validation" => "required,unique"
+			"validation" => "required,tokenid,unique"
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -174,8 +205,16 @@ class User extends \Flake\Core\Model\Db {
 		return $oMorpho;
 	}
 	
-	public static function getIcon() {
+	public static function icon() {
 		return "icon-user";
+	}
+	
+	public static function mediumicon() {
+		return "glyph-user";
+	}
+	
+	public static function bigicon() {
+		return "glyph2x-user";
 	}
 	
 	public function getPasswordHashForPassword($sPassword) {

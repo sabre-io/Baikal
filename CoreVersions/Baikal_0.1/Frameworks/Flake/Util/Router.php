@@ -28,6 +28,8 @@ namespace Flake\Util;
 
 abstract class Router extends \Flake\Core\FLObject {
 	
+	static $sURIPath = "";
+	
 	/* ----------------------- COMMON METHODS ------------------------------*/
 	
 	private function __construct() {
@@ -92,6 +94,14 @@ abstract class Router extends \Flake\Core\FLObject {
 		return call_user_func_array($GLOBALS["ROUTER"] . "::buildRoute", $aParams);
 	}
 	
+	public static function setURIPath($sURIPath) {
+		static::$sURIPath = $sURIPath;
+	}
+	
+	public static function getUriPath() {
+		return FLAKE_URIPATH . static::$sURIPath;
+	}
+	
 	/* ----------------------- CHANGING METHODS ----------------------------*/
 	
 	# this method is likely to change with every Router implementation
@@ -105,10 +115,16 @@ abstract class Router extends \Flake\Core\FLObject {
 		}
 		
 		if($sRoute === "default" && empty($aParams)) {
-			return "/";
+			$sUrl =  "/";
+		} else {
+			$sUrl = "/" . $sRoute . "/" . $sParams;
 		}
 		
-		return "/" . $sRoute . "/" . $sParams;
+		if(self::getUriPath() !== "") {
+			$sUrl = "/" . self::getUriPath() . $sUrl;
+		}
+		
+		return $sUrl;
 	}
 	
 	# should be abstract, but is not, because of PHP's strict standards

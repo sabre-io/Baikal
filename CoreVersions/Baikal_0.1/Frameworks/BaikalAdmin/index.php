@@ -44,8 +44,16 @@ $oPage->setTitle("Baïkal Web Admin");
 $oPage->setBaseUrl(BAIKAL_URI);
 
 $sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
-$oPage->zone("adminurl")->addBlock(new \Flake\Controller\HtmlBlock(
+$oPage->zone("homelink")->addBlock(new \Flake\Controller\HtmlBlock(
 	$sControllerForDefaultRoute::link()
+));
+
+$oPage->zone("userslink")->addBlock(new \Flake\Controller\HtmlBlock(
+	\BaikalAdmin\Controller\Users::link()
+));
+
+$oPage->zone("settingslink")->addBlock(new \Flake\Controller\HtmlBlock(
+	\BaikalAdmin\Controller\Settings::link()
 ));
 
 # Route the request

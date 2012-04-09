@@ -24,27 +24,51 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller;
+namespace BaikalAdmin\Controller\User;
 
-class Users extends \Flake\Core\Controller {
+class Calendars extends \Flake\Core\Controller {
 	
 	protected $aMessages = array();
+	protected $oModel;	# \Baikal\Model\Calendar 
+	protected $oUser;	# \Baikal\Model\User
+	protected $oForm;	# \Formal\Form
 	
 	public function __construct() {
 		parent::__construct();
 		
-		if(($iUser = self::editRequested()) !== FALSE) {
-			$this->oModel = new \Baikal\Model\User($iUser);
-			$this->initForm();
+		if(($iUser = $this->currentUserId()) === FALSE) {
+			throw new \Exception("BaikalAdmin\Controller\Details::render(): User get-parameter not found.");
 		}
 		
+		$this->oUser = new \Baikal\Model\User($iUser);
+		
+		if(($iCalendar = self::editRequested()) !== FALSE) {
+			$this->oModel = new \Baikal\Model\Calendar($iCalendar);
+			$this->initForm();
+		}
+
 		if(($iUser = self::newRequested()) !== FALSE) {
 			# building floating object
-			$this->oModel = new \Baikal\Model\User();
+			$this->oModel = new \Baikal\Model\Calendar();
+			$this->oModel->set(
+				"principaluri",
+				$this->oUser->get("uri")
+			);
+			
+			$this->oModel->set(
+				"components",
+				"VEVENT"
+			);
+			
+			$this->oModel->set(
+				"ctag",
+				"1"
+			);
+			
 			$this->initForm();
 		}
 	}
-	
+
 	public function execute() {
 		if(($iUser = self::editRequested()) !== FALSE) {
 			if($this->oForm->submitted()) {
@@ -67,45 +91,47 @@ class Users extends \Flake\Core\Controller {
 			}
 		}
 		
-		if(($iUser = self::deleteRequested()) !== FALSE) {
+		if(($iCalendar = self::deleteRequested()) !== FALSE) {
 			
 			if(self::deleteConfirmed() !== FALSE) {
 				
 				# catching Exception thrown when model already destroyed
-					# happens when user refreshes delete-page, for instance
+					# happens when user refreshes page on delete-URL, for instance
 					
 				try {
-					$oUser = new \Baikal\Model\User($iUser);
-					$oUser->destroy();				
+					$oModel = new \Baikal\Model\Calendar($iCalendar);
+					$oModel->destroy();				
 				} catch(\Exception $e) {
-					# user is already deleted; silently discarding
+					# already deleted; silently discarding
 				}
 				
 				# Redirecting to admin home
-				\Flake\Util\Tools::redirectUsingMeta(self::link());
+				\Flake\Util\Tools::redirectUsingMeta(self::linkHome());
 			} else {
 				
-				$oUser = new \Baikal\Model\User($iUser);
+				$oModel = new \Baikal\Model\Calendar($iCalendar);
 				$this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
-					"Check twice, you're about to delete " . $oUser->label() . "</strong> from the database !",
-					"<p>You are about to delete a user and all it's calendars / contacts. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
-					self::linkDeleteConfirm($oUser),
-					"Delete <strong><i class='" . $oUser->icon() . " icon-white'></i> " . $oUser->label() . "</strong>",
-					self::link()
+					"Check twice, you're about to delete " . $oModel->label() . "</strong> from the database !",
+					"<p>You are about to delete a calendar and all it's scheduled events. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
+					self::linkDeleteConfirm($oModel),
+					"Delete <strong><i class='" . $oModel->icon() . " icon-white'></i> " . $oModel->label() . "</strong>",
+					self::linkHome()
 				);
 			}
 		}
 	}
-	
+
 	public function render() {
+		
 		$sHtml = "";
 		
 		# Render list of users
-		$oUsers = \Baikal\Model\User::getBaseRequester()->execute();
-		$oView = new \BaikalAdmin\View\Users\Listing();
-		$oView->setData("users", $oUsers);
-		$sHtml .= $oView->render();
+		$oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
 		
+		$oView = new \BaikalAdmin\View\Calendars\Listing();
+		$oView->setData("user", $this->oUser);
+		$oView->setData("calendars", $oCalendars);
+		$sHtml .= $oView->render();
 		
 		# Render form
 		$sHtml .= "<a id='form'></a>";
@@ -118,24 +144,38 @@ class Users extends \Flake\Core\Controller {
 			# No form is displayed; simply display messages, if any
 			$sHtml .= $sMessages;
 		}
-		
+
 		return $sHtml;
 	}
 	
 	protected function initForm() {
 		if($this->editRequested() || $this->newRequested()) {
 			$aOptions = array(
-				"closeurl" => self::link()
+				"closeurl" => $this->linkHome()
 			);
 			
 			$this->oForm = $this->oModel->formForThisModelInstance($aOptions);
 		}
 	}
 	
+	protected static function currentUserId() {
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		if(($iUser = intval($aParams[0])) === 0) {
+			return FALSE;
+		}
+		
+		return $iUser;
+	}
+	
+	protected static function newRequested() {
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		return $aParams[1] === "new";
+	}
+	
 	protected static function editRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[0] === "edit") && intval($aParams[1]) > 0) {
-			return intval($aParams[1]);
+		if(($aParams[1] === "edit") && intval($aParams[2]) > 0) {
+			return intval($aParams[2]);
 		}
 		
 		return FALSE;
@@ -143,57 +183,66 @@ class Users extends \Flake\Core\Controller {
 	
 	protected static function deleteRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[0] === "delete") && intval($aParams[1]) > 0) {
-			return intval($aParams[1]);
+		if(($aParams[1] === "delete") && intval($aParams[2]) > 0) {
+			return intval($aParams[2]);
 		}
 		
 		return FALSE;
 	}
 	
 	protected static function deleteConfirmed() {
-		if(($iUser = self::deleteRequested()) === FALSE) {
+		if(($iPrimary = self::deleteRequested()) === FALSE) {
 			return FALSE;
 		}
 		
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if($aParams[2] === "confirm") {
-			return $iUser;
+		if($aParams[3] === "confirm") {
+			return $iPrimary;
 		}
 		
 		return FALSE;
 	}
 	
-	protected static function newRequested() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		return $aParams[0] === "new";
-	}
-	
 	public static function linkNew() {
-		return $GLOBALS["ROUTER"]::buildRouteForController(get_called_class(), "new") . "#form";
-	}
-	
-	public static function linkEdit(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController(get_called_class(), "edit", $user->get("id")) . "#form";
-	}
-	
-	public static function linkDelete(\Baikal\Model\User $user) {
 		return $GLOBALS["ROUTER"]::buildRouteForController(
 			get_called_class(),
+			self::currentUserId(),
+			"new"
+		) . "#form";
+	}
+	
+	public static function linkEdit(\Baikal\Model\Calendar $oCalendar) {
+		return $GLOBALS["ROUTER"]::buildRouteForController(
+			get_called_class(),
+			self::currentUserId(),
+			"edit",
+			$oCalendar->get("id")
+		) . "#form";
+	}
+	
+	public static function linkDelete(\Baikal\Model\Calendar $oCalendar) {
+		return $GLOBALS["ROUTER"]::buildRouteForController(
+			get_called_class(),
+			self::currentUserId(),
 			"delete",
-			$user->get("id")
+			$oCalendar->get("id")
 		) . "#message";
 	}
 	
-	public static function linkDeleteConfirm(\Baikal\Model\User $user) {
+	public static function linkDeleteConfirm(\Baikal\Model\Calendar $oCalendar) {
 		return $GLOBALS["ROUTER"]::buildRouteForController(
 			get_called_class(),
+			self::currentUserId(),
 			"delete",
-			$user->get("id"),
+			$oCalendar->get("id"),
 			"confirm"
 		) . "#message";
 	}
 	
-	public static function linkCalendars(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController('\BaikalAdmin\Controller\User\Calendars', $user->get("id"));
+	public static function linkHome() {
+		return $GLOBALS["ROUTER"]::buildRouteForController(
+			get_called_class(),
+			self::currentUserId()
+		);
 	}
 }
