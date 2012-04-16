@@ -27,11 +27,28 @@
 namespace BaikalAdmin\Controller;
 
 class Settings extends \Flake\Core\Controller {
-
+	
+	public function __construct() {
+		parent::__construct();
+		$this->oModel = new \Baikal\Model\Config(BAIKAL_PATH_SPECIFIC . "config.php");
+		
+		# Assert that config file is writable
+		if(!$this->oModel->writable()) {
+			throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
+		}
+		
+		$this->oForm = $this->oModel->formForThisModelInstance(array(
+			"close" => FALSE
+		));
+	}
+		
 	public function execute() {
+		if($this->oForm->submitted()) {
+			$this->oForm->execute();
+		}
 	}
 
 	public function render() {
-		return "<h2>Settings</h2>";
+		return $this->oForm->render();
 	}
 }

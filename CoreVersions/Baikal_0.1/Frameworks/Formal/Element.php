@@ -26,7 +26,7 @@
 
 namespace Formal;
 
-class Element {
+abstract class Element {
 	
 	protected $aOptions = array(
 		"readonly" => FALSE,
@@ -76,4 +76,6 @@ class Element {
 	public function __toString() {
 		return get_class($this) . "<" . $this->option("label") . ">";
 	}
+	
+	public abstract function render();
 }

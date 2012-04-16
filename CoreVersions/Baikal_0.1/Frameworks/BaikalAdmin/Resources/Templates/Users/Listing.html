@@ -19,7 +19,7 @@
 	foreach($users as $user):
 
 		$linkcalendars = \BaikalAdmin\Controller\Users::linkCalendars($user);
-#		$linkcontacts = \BaikalAdmin\Controller\Users::linkContacts($user);
+		$linkaddressbooks = \BaikalAdmin\Controller\Users::linkAddressBooks($user);
 		$linkedit = \BaikalAdmin\Controller\Users::linkEdit($user);
 		$linkdelete = \BaikalAdmin\Controller\Users::linkDelete($user);
 		$mailtouri = $user->getMailtoURI();
@@ -27,13 +27,13 @@
 	
 	<tr>
 		<td class="col-username">
-			<i class="icon-user"></i> <strong><?= $user->get("username"); ?></strong><br />
+			<i class="<?= \Baikal\Model\User::icon() ?>"></i> <strong><?= $user->get("username"); ?></strong><br />
 			<?= $user->get("displayname"); ?> <a href="<?= $mailtouri ?>">&lt;<?= $user->get("email"); ?>&gt;</a>
 		</td>
 		<td class="col-actions no-border-left">
 			<p class="pull-right">
 				<nobr><a class="btn" href="<?= $linkcalendars ?>"><i class="<?= \Baikal\Model\Calendar::icon() ?>"></i> Calendars</a></nobr>
-				<nobr><a class="btn" href="<?= $linkcontacts ?>"><i class="icon-book"></i> Contacts</a></nobr>
+				<nobr><a class="btn" href="<?= $linkaddressbooks ?>"><i class="icon-book"></i> Address Books</a></nobr>
 				<nobr><a class="btn btn-primary" href="<?= $linkedit ?>"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
 				<nobr><a class="btn btn-danger" href="<?= $linkdelete ?>"><i class="icon-remove icon-white"></i> Delete</a></nobr>
 			</p>

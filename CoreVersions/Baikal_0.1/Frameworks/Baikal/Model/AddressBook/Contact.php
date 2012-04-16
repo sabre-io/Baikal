@@ -24,11 +24,17 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace Flake\Core\Model;
+namespace Baikal\Model\AddressBook;
 
-abstract class NoDb extends \Flake\Core\Model {
+class Contact extends \Flake\Core\Model\Db {
+	const DATATABLE = "cards";
+	const PRIMARYKEY = "id";
+	const LABELFIELD = "uri";
 	
-	public function __construct($aData = array()) {
-		$this->aData = $aData;
-	}
+	protected $aData = array(
+		"carddata" => "",
+		"uri" => "",
+		"addressbookid" => "",
+		"lastmodified" => "",
+	);
 }
