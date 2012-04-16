@@ -48,14 +48,24 @@ class User extends \Flake\Core\Model\Db {
 			->first();
 	}
 	
-	public function getCalendarsBaseRequester() {
-		$oCalendarBaseRequester = \Baikal\Model\Calendar::getBaseRequester();
-		$oCalendarBaseRequester->addClauseEquals(
+	public function getAddressBooksBaseRequester() {
+		$oBaseRequester = \Baikal\Model\AddressBook::getBaseRequester();
+		$oBaseRequester->addClauseEquals(
 			"principaluri",
 			"principals/" . $this->get("username")
 		);
 		
-		return $oCalendarBaseRequester;
+		return $oBaseRequester;
+	}
+	
+	public function getCalendarsBaseRequester() {
+		$oBaseRequester = \Baikal\Model\Calendar::getBaseRequester();
+		$oBaseRequester->addClauseEquals(
+			"principaluri",
+			"principals/" . $this->get("username")
+		);
+		
+		return $oBaseRequester;
 	}
 	
 	public function initFloating() {
@@ -144,6 +154,24 @@ class User extends \Flake\Core\Model\Db {
 			);
 			
 			$oDefaultCalendar->persist();
+			
+			# Creating default address book for user
+			$oDefaultAddressBook = new \Baikal\Model\AddressBook();
+			$oDefaultAddressBook->set(
+				"principaluri",
+				"principals/" . $this->get("username")
+			)->set(
+				"displayname",
+				"Default Address Book"
+			)->set(
+				"uri",
+				"default"
+			)->set(
+				"description",
+				"Default Address Book for " . $this->get("displayname")
+			);
+			
+			$oDefaultAddressBook->persist();
 		}
 	}
 	
@@ -152,6 +180,16 @@ class User extends \Flake\Core\Model\Db {
 		
 		# Destroying identity principal
 		$this->oIdentityPrincipal->destroy();
+		
+		$oCalendars = $this->getCalendarsBaseRequester()->execute();
+		foreach($oCalendars as $calendar) {
+			$calendar->destroy();
+		}
+		
+		$oAddressBooks = $this->getAddressBooksBaseRequester()->execute();
+		foreach($oAddressBooks as $addressbook) {
+			$addressbook->destroy();
+		}
 		
 		parent::destroy();
 	}

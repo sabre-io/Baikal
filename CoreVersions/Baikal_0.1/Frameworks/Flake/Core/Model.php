@@ -72,6 +72,10 @@ abstract class Model extends \Flake\Core\FLObject {
 		return array_pop($aRes);
 	}
 	
+	public function floating() {
+		return TRUE;
+	}
+	
 	public function formForThisModelInstance($options = array()) {
 		$sClass = get_class($this);
 		$oForm = new \Formal\Form($sClass, $options);
@@ -83,4 +87,8 @@ abstract class Model extends \Flake\Core\FLObject {
 	public function formMorphologyForThisModelInstance() {
 		throw new \Exception(get_class($this) . ": No form morphology provided for Model.");
 	}
+	
+	public abstract function persist();
+	
+	public abstract function destroy();
 }

@@ -1,6 +1,11 @@
 body {
 	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-	background: url('page-bg.png') repeat center top;
+/*	background: url('page-bg.png') repeat center top;*/
+}
+
+.table thead th {
+	background-color: #777;
+	color: white;
 }
 
 .table-striped tbody tr:nth-child(even) td, .table-striped tbody tr:nth-child(even) th {

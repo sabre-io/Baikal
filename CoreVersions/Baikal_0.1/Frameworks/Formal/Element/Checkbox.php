@@ -56,7 +56,7 @@ class Checkbox extends \Formal\Element {
 
 		$sHtml =<<<HTML
 <div class="control-group{$groupclass}">
-	<label class="control-label" for="displayname">{$label}</label>
+	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
 		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="1"{$checked}{$disabled}/>
 	</div>
