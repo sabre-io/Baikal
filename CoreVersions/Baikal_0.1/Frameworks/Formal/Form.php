@@ -31,6 +31,8 @@ class Form {
 	protected $sModelClass = "";
 	protected $aOptions = array(
 		"action" => "",
+		"close" => TRUE,
+		"closeurl" => "",
 	);
 	protected $oModelInstance = null;
 	protected $oElements = null;
@@ -289,6 +291,7 @@ class Form {
 					$oElement->option("prop")
 				)
 			);
+			
 			$aHtml[] = $oElement->render();
 		}
 		
@@ -319,7 +322,13 @@ class Form {
 		}
 		
 		$sSubmittedFlagName = $this->sModelClass . "::submitted";
-		$sCloseUrl = $this->option("closeurl");
+		if($this->option("close") === TRUE) {
+			$sCloseUrl = $this->option("closeurl");
+			$sCloseButton = '<a class="btn" href="' . $sCloseUrl . '">Close</a>';
+		} else {
+			$sCloseButton = "";
+		}
+		
 		$sActionUrl = $this->option("action");
 		
 		$sHtml =<<<HTML
@@ -331,7 +340,7 @@ class Form {
 		{$elements}
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">Save changes</button>
-			<a class="btn" href="{$sCloseUrl}">Close</a>
+			{$sCloseButton}
 		</div>
 	</fieldset>
 </form>

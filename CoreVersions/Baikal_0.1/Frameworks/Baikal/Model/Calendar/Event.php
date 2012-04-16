@@ -24,11 +24,17 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace Flake\Core\Model;
+namespace Baikal\Model\Calendar;
 
-abstract class NoDb extends \Flake\Core\Model {
+class Event extends \Flake\Core\Model\Db {
+	const DATATABLE = "calendarobjects";
+	const PRIMARYKEY = "id";
+	const LABELFIELD = "uri";
 	
-	public function __construct($aData = array()) {
-		$this->aData = $aData;
-	}
+	protected $aData = array(
+		"calendardata" => "",
+		"uri" => "",
+		"calendarid" => "",
+		"lastmodified" => "",
+	);
 }

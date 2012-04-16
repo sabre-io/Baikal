@@ -26,47 +26,65 @@
 
 namespace Formal\Element;
 
-class Text extends \Formal\Element {
-	
-	protected function inputtype() {
-		return "text";
-	}
-	
+class Listbox extends \Formal\Element {
 	public function render() {
+		
 		$disabled = "";
 		$inputclass = "";
 		$groupclass = "";
 		$placeholder = "";
-		
+
 		$value = $this->value();
 		$label = $this->option("label");
 		$prop = $this->option("prop");
-		$placeholder = $this->option("placeholder");
-		
+
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
 			$disabled = " disabled";
 		}
-		
+
 		if($this->option("error") === TRUE) {
 			$groupclass .= " error";
 		}
-		
-		if(($sPlaceHolder = trim($this->option("placeholder"))) !== "") {
-			$placeholder = " placeholder=\"" . htmlspecialchars($sPlaceHolder) . "\" ";
+
+		$aOptions = $this->option("options");
+		if(!is_array($aOptions)) {
+			throw new \Exception("\Formal\Element\Listbox->render(): 'options' has to be an array.");
 		}
 		
 		$clientvalue = htmlspecialchars($value);
 		
-		$sInputType = $this->inputtype();
+		$aRenderedOptions = array();
+		
+		if(\Flake\Util\Tools::arrayIsSeq($aOptions)) {
+			# Array is sequential
+			reset($aOptions);
+			foreach($aOptions as $sOptionValue) {
+				$selected = ($sOptionValue === $value) ? " selected=\"selected\"" : "";
+				$aRenderedOptions[] = "<option" . $selected . ">" . htmlspecialchars($sOptionValue) . "</option>";
+			}
+		} else {
+			# Array is associative
+			reset($aOptions);
+			foreach($aOptions as $sOptionValue => $sOptionCaption) {
+				$selected = ($sOptionValue === $value) ? " selected=\"selected\"" : "";
+				$aRenderedOptions[] = "<option value=\"" . htmlspecialchars($sOptionValue) . "\"" . $selected . ">" . htmlspecialchars($sOptionCaption) . "</option>";
+			}
+		}
+		
+		reset($aRenderedOptions);
+		$sRenderedOptions = implode("\n", $aRenderedOptions);
+		unset($aRenderedOptions);
 		
 		$sHtml =<<<HTML
-<div class="control-group{$groupclass}">
-	<label class="control-label" for="{$prop}">{$label}</label>
-	<div class="controls">
-		<input type="{$sInputType}" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}/>
+	<div class="control-group{$groupclass}">
+		<label class="control-label" for="{$prop}">{$label}</label>
+		<div class="controls">
+			<select class="{$inputclass}" id="{$prop}" name="{$prop}"{$disabled}>
+				{$sRenderedOptions}
+			</select>
+		</div>
 	</div>
-</div>
 HTML;
 		return $sHtml;
 	}

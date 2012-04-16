@@ -24,6 +24,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+if(!defined('LF')) {
+	define('LF', chr(10));
+}
+
+if(!defined('CR')) {
+	define('CR', chr(13));
+}
+
 if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mongoose") {
 	define("MONGOOSE_SERVER", TRUE);
 } else {

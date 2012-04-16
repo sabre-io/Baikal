@@ -604,4 +604,18 @@ TEST;
 	public static function router() {
 		return "\Flake\Util\Router\QuestionMarkRewrite";
 	}
+	
+	public static function arrayIsAssoc($aArray) {
+		if(!is_array($aArray)) {
+			throw new \Exception("\Flake\Util\Tools::arrayIsAssoc(): parameter has to be an array.");
+		}
+		
+		# Taken from http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-sequential#answer-4254008
+		# count() will return 0 if numeric, and > 0 if assoc, even partially
+		return (bool)count(array_filter(array_keys($aArray), 'is_string'));
+	}
+	
+	public static function arrayIsSeq($aArray) {
+		return !self::arrayIsAssoc($aArray);
+	}
 }

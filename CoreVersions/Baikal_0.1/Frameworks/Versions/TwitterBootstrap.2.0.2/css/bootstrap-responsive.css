@@ -59,6 +59,9 @@
   display: none;
 }
 @media (max-width: 767px) {
+	.mq0:after {
+		content: "(max-width: 767px)" !important;
+	}
   .visible-phone {
     display: block;
   }
@@ -73,6 +76,9 @@
   }
 }
 @media (min-width: 768px) and (max-width: 979px) {
+	.mq1:after {
+		content: "(min-width: 768px) and (max-width: 979px)" !important;
+	}
   .visible-tablet {
     display: block;
   }
@@ -87,6 +93,9 @@
   }
 }
 @media (max-width: 480px) {
+	.mq2:after {
+		content: "(max-width: 480px)" !important;
+	}
   .nav-collapse {
     -webkit-transform: translate3d(0, 0, 0);
   }
@@ -134,6 +143,9 @@
   }
 }
 @media (max-width: 767px) {
+	.mq3:after {
+		content: "(max-width: 767px)" !important;
+	}
   body {
     padding-left: 20px;
     padding-right: 20px;
@@ -183,6 +195,9 @@
   }
 }
 @media (min-width: 768px) and (max-width: 979px) {
+	.mq4:after {
+		content: "(min-width: 768px) and (max-width: 979px)" !important;
+	}
   .row {
     margin-left: -20px;
     *zoom: 1;
@@ -374,6 +389,9 @@
   }
 }
 @media (max-width: 979px) {
+	.mq5:after {
+		content: "max-width: 979px" !important;
+	}
   body {
     padding-top: 0;
   }
@@ -482,12 +500,18 @@
   }
 }
 @media (min-width: 980px) {
+	.mq6:after {
+		content: "min-width: 980px" !important;
+	}
   .nav-collapse.collapse {
     height: auto !important;
     overflow: visible !important;
   }
 }
 @media (min-width: 1200px) {
+	.mq7:after {
+		content: "min-width: 1200px" !important;
+	}
   .row {
     margin-left: -30px;
     *zoom: 1;

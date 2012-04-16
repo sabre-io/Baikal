@@ -24,11 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace Flake\Core\Model;
+namespace BaikalAdmin\Route\User;
 
-abstract class NoDb extends \Flake\Core\Model {
+class AddressBooks {
 	
-	public function __construct($aData = array()) {
-		$this->aData = $aData;
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\AddressBooks());
 	}
 }

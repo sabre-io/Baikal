@@ -24,11 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace Flake\Core\Model;
+namespace BaikalAdmin\View\AddressBooks;
 
-abstract class NoDb extends \Flake\Core\Model {
-	
-	public function __construct($aData = array()) {
-		$this->aData = $aData;
-	}
+class Listing extends \BaikalAdmin\Core\View {
 }

@@ -26,8 +26,8 @@
 
 namespace Baikal\Model;
 
-class Calendar extends \Flake\Core\Model\Db {
-	const DATATABLE = "calendars";
+class AddressBook extends \Flake\Core\Model\Db {
+	const DATATABLE = "addressbooks";
 	const PRIMARYKEY = "id";
 	const LABELFIELD = "displayname";
 	
@@ -35,76 +35,34 @@ class Calendar extends \Flake\Core\Model\Db {
 		"principaluri" => "",
 		"displayname" => "",
 		"uri" => "",
-		"ctag" => "",
 		"description" => "",
-		"calendarorder" => "",
-		"calendarcolor" => "",
-		"timezone" => "",
-		"components" => "",
+		"ctag" => "",
 	);
 	
+	public static function humanName() {
+		return "Address Book";
+	}
+	
 	public static function icon() {
-		return "icon-calendar";
+		return "icon-book";
 	}
 	
 	public static function mediumicon() {
-		return "glyph-calendar";
+		return "glyph-adress-book";
 	}
 	
 	public static function bigicon() {
-		return "glyph2x-calendar";
+		return "glyph2x-adress-book";
 	}
 	
-	public function getEventsBaseRequester() {
-		$oBaseRequester = \Baikal\Model\Calendar\Event::getBaseRequester();
+	public function getContactsBaseRequester() {
+		$oBaseRequester = \Baikal\Model\AddressBook\Contact::getBaseRequester();
 		$oBaseRequester->addClauseEquals(
-			"calendarid",
+			"addressbookid",
 			$this->get("id")
 		);
 
 		return $oBaseRequester;
-	}
-	
-	public function get($sPropName) {
-		
-		if($sPropName === "todos") {
-			# TRUE if components contains VTODO, FALSE otherwise
-			if(($sComponents = $this->get("components")) !== "") {
-				$aComponents = explode(",", $sComponents);
-			} else {
-				$aComponents = array();
-			}
-			
-			return in_array("VTODO", $aComponents);
-		}
-		
-		return parent::get($sPropName);
-	}
-	
-	public function set($sPropName, $sValue) {
-		
-		if($sPropName === "todos") {
-			
-			if(($sComponents = $this->get("components")) !== "") {
-				$aComponents = explode(",", $sComponents);
-			} else {
-				$aComponents = array();
-			}
-			
-			if($sValue === TRUE) {
-				if(!in_array("VTODO", $aComponents)) {
-					$aComponents[] = "VTODO";
-				}
-			} else {
-				if(in_array("VTODO", $aComponents)) {
-					unset($aComponents[array_search("VTODO", $aComponents)]);
-				}
-			}
-			
-			return parent::set("components", implode(",", $aComponents));
-		}
-		
-		return parent::set($sPropName, $sValue);
 	}
 	
 	public function formMorphologyForThisModelInstance() {
@@ -112,7 +70,7 @@ class Calendar extends \Flake\Core\Model\Db {
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "uri",
-			"label" => "Calendar token ID",
+			"label" => "Address Book token ID",
 			"validation" => "required,tokenid"
 		)));
 		
@@ -128,28 +86,18 @@ class Calendar extends \Flake\Core\Model\Db {
 			"validation" => "required"
 		)));
 		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "todos",
-			"label" => "Todos"
-		)));
-		
 		if(!$this->floating()) {
 			$oMorpho->element("uri")->setOption("readonly", TRUE);
 		}
 		
 		return $oMorpho;
 	}
-	
-	public function isDefault() {
-		return $this->get("uri") === "default";
-	}
-	
+		
 	public function destroy() {
-		
-		
-		$oEvents = $this->getEventsBaseRequester()->execute();
-		foreach($oEvents as $event) {
-			$event->destroy();
+				
+		$oContacts = $this->getContactsBaseRequester()->execute();
+		foreach($oContacts as $contact) {
+			$contact->destroy();
 		}
 		
 		parent::destroy();
