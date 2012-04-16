@@ -196,4 +196,8 @@ class Users extends \Flake\Core\Controller {
 	public static function linkCalendars(\Baikal\Model\User $user) {
 		return $GLOBALS["ROUTER"]::buildRouteForController('\BaikalAdmin\Controller\User\Calendars', $user->get("id"));
 	}
+	
+	public static function linkAddressBooks(\Baikal\Model\User $user) {
+		return $GLOBALS["ROUTER"]::buildRouteForController('\BaikalAdmin\Controller\User\AddressBooks', $user->get("id"));
+	}
 }

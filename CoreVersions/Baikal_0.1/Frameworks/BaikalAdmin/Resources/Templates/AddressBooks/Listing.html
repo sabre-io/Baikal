@@ -10,10 +10,10 @@
 </style>
 
 <header class="jumbotron subhead" id="overview">
-	<h1><i class="<?= \Baikal\Model\Calendar::bigicon() ?>"></i>Calendars</h1>
-	<p class="lead">Manage Calendars for<i class="<?= $user->mediumicon() ?>"></i><strong><?= $user->label() ?></strong>.</p>
+	<h1><i class="<?= \Baikal\Model\AddressBook::bigicon() ?>"></i>Address Books</h1>
+	<p class="lead">Manage Address Books for<i class="<?= $user->mediumicon() ?>"></i><strong><?= $user->label() ?></strong>.</p>
 	<p class="pull-left"><a href="<?= \BaikalAdmin\Controller\Users::link() ?>" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
-	<p class="pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\User\Calendars::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\Calendar::icon() ?>"></i> + Add calendar</a></p>
+	<p class="pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\User\AddressBooks::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\Calendar::icon() ?>"></i> + Add address book</a></p>
 </header>
 
 <table class="table table-bordered table-striped">
@@ -26,14 +26,14 @@
 	</thead>
 	<tbody>
 <?
-	foreach($calendars as $calendar):
+	foreach($addressbooks as $addressbook):
 	
-		$linkedit = \BaikalAdmin\Controller\User\Calendars::linkEdit($calendar);
-		$linkdelete = \BaikalAdmin\Controller\User\Calendars::linkDelete($calendar);
+		$linkedit = \BaikalAdmin\Controller\User\AddressBooks::linkEdit($addressbook);
+		$linkdelete = \BaikalAdmin\Controller\User\AddressBooks::linkDelete($addressbook);
 ?>
 	<tr>
-		<td class="col-displayname"><i class="<?= $calendar->icon() ?>"></i><?= $calendar->label() ?></td>
-		<td class="col-description"><?= $calendar->get("description") ?></td>
+		<td class="col-displayname"><i class="<?= $addressbook->icon() ?>"></i><?= $addressbook->label() ?></td>
+		<td class="col-description"><?= $addressbook->get("description") ?></td>
 		<td class="col-actions no-border-left">
 			<p class="pull-right">
 				<nobr><a class="btn btn-primary" href="<?= $linkedit ?>"><i class="icon-edit icon-white"></i> Edit</a></nobr>
