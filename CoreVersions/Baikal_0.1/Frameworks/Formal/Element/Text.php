@@ -41,7 +41,9 @@ class Text extends \Formal\Element {
 		$value = $this->value();
 		$label = $this->option("label");
 		$prop = $this->option("prop");
-		$placeholder = $this->option("placeholder");
+		$placeholder = "";
+		$helpblock = "";
+		$popover = "";
 		
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
@@ -60,11 +62,22 @@ class Text extends \Formal\Element {
 		
 		$sInputType = $this->inputtype();
 		
+		if(($sHelp = trim($this->option("help"))) !== "") {
+			$helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+		}
+		
+		if(($aPopover = $this->option("popover")) !== "") {
+			$inputclass .= " popover-focus ";
+			$popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
+			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+		}
+		
 		$sHtml =<<<HTML
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="{$sInputType}" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}/>
+		<input type="{$sInputType}" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
+		{$helpblock}
 	</div>
 </div>
 HTML;
