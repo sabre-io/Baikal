@@ -204,13 +204,21 @@ class User extends \Flake\Core\Model\Db {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "username",
 			"label" => "Username",
-			"validation" => "required,tokenid,unique"
+			"validation" => "required,tokenid,unique",
+			"popover" => array(
+				"title" => "Username",
+				"content" => "The login for this user account.<br />It has to be unique.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "displayname",
 			"label" => "Display name",
-			"validation" => "required"
+			"validation" => "required",
+			"popover" => array(
+				"title" => "Display name",
+				"content" => "This is the name that will be displayed in your CalDAV/CardDAV clients.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -231,11 +239,22 @@ class User extends \Flake\Core\Model\Db {
 		)));
 		
 		if($this->floating()) {
+			$oMorpho->element("username")->setOption("help", "Allowed characters are digits, lowercase letters and the dash symbol '-'.");
 			$oMorpho->element("password")->setOption("validation", "required");
 		} else {
-			
 			$sNotice = "-- Leave empty to keep current password --";
 			$oMorpho->element("username")->setOption("readonly", true);
+			
+			$oMorpho->element("password")->setOption("popover", array(
+				"title" => "Password",
+				"content" => "Write something here only if you want to change the user password."
+			));
+			
+			$oMorpho->element("passwordconfirm")->setOption("popover", array(
+				"title" => "Confirm password",
+				"content" => "Write something here only if you want to change the user password."
+			));
+			
 			$oMorpho->element("password")->setOption("placeholder", $sNotice);
 			$oMorpho->element("passwordconfirm")->setOption("placeholder", $sNotice);
 		}

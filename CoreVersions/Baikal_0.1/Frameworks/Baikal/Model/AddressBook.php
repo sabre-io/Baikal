@@ -71,13 +71,21 @@ class AddressBook extends \Flake\Core\Model\Db {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "uri",
 			"label" => "Address Book token ID",
-			"validation" => "required,tokenid"
+			"validation" => "required,tokenid",
+			"popover" => array(
+				"title" => "Address Book token ID",
+				"content" => "The unique identifier for this address book.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "displayname",
 			"label" => "Display name",
-			"validation" => "required"
+			"validation" => "required",
+			"popover" => array(
+				"title" => "Display name",
+				"content" => "This is the name that will be displayed in your CardDAV client.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -86,7 +94,12 @@ class AddressBook extends \Flake\Core\Model\Db {
 			"validation" => "required"
 		)));
 		
-		if(!$this->floating()) {
+		if($this->floating()) {
+			$oMorpho->element("uri")->setOption(
+				"help",
+				"Allowed characters are digits, lowercase letters and the dash symbol '-'."
+			);
+		} else {
 			$oMorpho->element("uri")->setOption("readonly", TRUE);
 		}
 		
