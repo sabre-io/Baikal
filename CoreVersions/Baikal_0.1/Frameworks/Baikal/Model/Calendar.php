@@ -113,13 +113,21 @@ class Calendar extends \Flake\Core\Model\Db {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "uri",
 			"label" => "Calendar token ID",
-			"validation" => "required,tokenid"
+			"validation" => "required,tokenid",
+			"popover" => array(
+				"title" => "Calendar token ID",
+				"content" => "The unique identifier for this calendar.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "displayname",
 			"label" => "Display name",
-			"validation" => "required"
+			"validation" => "required",
+			"popover" => array(
+				"title" => "Display name",
+				"content" => "This is the name that will be displayed in your CalDAV client.",
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -130,10 +138,16 @@ class Calendar extends \Flake\Core\Model\Db {
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
 			"prop" => "todos",
-			"label" => "Todos"
+			"label" => "Todos",
+			"help" => "If checked, todos will be enabled on this calendar.",
 		)));
 		
-		if(!$this->floating()) {
+		if($this->floating()) {
+			$oMorpho->element("uri")->setOption(
+				"help",
+				"Allowed characters are digits, lowercase letters and the dash symbol '-'."
+			);
+		} else {
 			$oMorpho->element("uri")->setOption("readonly", TRUE);
 		}
 		

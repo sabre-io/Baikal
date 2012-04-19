@@ -32,7 +32,7 @@ class Message {
 	
 	public static function error($sMessage) {
 		$sHtml =<<<HTML
-<div id="confirm" class="alert alert-block alert-error">
+<div id="message" class="alert alert-block alert-error">
 	<h3 class="alert-heading">Validation error</h3>
 	{$sMessage}
 </div>
@@ -42,7 +42,7 @@ HTML;
 	
 	public static function notice($sMessage) {
 		$sHtml =<<<HTML
-<div id="info" class="alert alert-info">
+<div id="message" class="alert alert-info">
 	<a class="close" data-dismiss="alert" href="#">&times;</a>
 	{$sMessage}
 </div>
@@ -52,7 +52,7 @@ HTML;
 	
 	public static function warningConfirmMessage($sHeader, $sDescription, $sActionUrl, $sActionLabel, $sCancelUrl, $sCancelLabel="Cancel") {
 		$sHtml =<<<HTML
-<div id="confirm" class="alert alert-block alert-error">
+<div id="message" class="alert alert-block alert-error">
 	<!--a class="close" data-dismiss="alert" href="#">&times;</a-->
 	<h3 class="alert-heading">{$sHeader}</h3>
 	{$sDescription}
