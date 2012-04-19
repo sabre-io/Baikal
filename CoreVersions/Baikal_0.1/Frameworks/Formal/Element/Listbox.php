@@ -37,6 +37,8 @@ class Listbox extends \Formal\Element {
 		$value = $this->value();
 		$label = $this->option("label");
 		$prop = $this->option("prop");
+		$helpblock = "";
+		$popover = "";
 
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
@@ -50,6 +52,16 @@ class Listbox extends \Formal\Element {
 		$aOptions = $this->option("options");
 		if(!is_array($aOptions)) {
 			throw new \Exception("\Formal\Element\Listbox->render(): 'options' has to be an array.");
+		}
+		
+		if(($sHelp = trim($this->option("help"))) !== "") {
+			$helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+		}
+		
+		if(($aPopover = $this->option("popover")) !== "") {
+			$inputclass .= " popover-focus ";
+			$popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
+			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
 		}
 		
 		$clientvalue = htmlspecialchars($value);
@@ -80,9 +92,10 @@ class Listbox extends \Formal\Element {
 	<div class="control-group{$groupclass}">
 		<label class="control-label" for="{$prop}">{$label}</label>
 		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" name="{$prop}"{$disabled}>
+			<select class="{$inputclass}" id="{$prop}" name="{$prop}"{$disabled}{$popover}>
 				{$sRenderedOptions}
 			</select>
+			{$helpblock}
 		</div>
 	</div>
 HTML;

@@ -43,6 +43,8 @@ class Checkbox extends \Formal\Element {
 		$checked = ($value === TRUE ? " checked=\"checked\" " : "");
 		$label = $this->option("label");
 		$prop = $this->option("prop");
+		$helpblock = "";
+		$popover = "";
 
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
@@ -53,12 +55,22 @@ class Checkbox extends \Formal\Element {
 			$groupclass .= " error";
 		}
 		
-
+		if(($sHelp = trim($this->option("help"))) !== "") {
+			$helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+		}
+		
+		if(($aPopover = $this->option("popover")) !== "") {
+			$inputclass .= " popover-hover ";
+			$popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
+			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+		}
+		
 		$sHtml =<<<HTML
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="1"{$checked}{$disabled}/>
+		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="1"{$checked}{$disabled}{$popover}/>
+		{$helpblock}
 	</div>
 </div>
 HTML;

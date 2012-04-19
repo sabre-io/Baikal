@@ -33,6 +33,8 @@ abstract class Element {
 		"validation" => "",
 		"error" => FALSE,
 		"placeholder" => "",
+		"help" => "",
+		"popover" => "",
 	);
 	
 	protected $sValue = "";

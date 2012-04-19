@@ -11,7 +11,7 @@
 		<link href="res/core/BaikalAdmin/Templates/Page/style.css" rel="stylesheet" />
 		<link href="res/core/BaikalAdmin/GlyphiconsPro/glyphpro.css" rel="stylesheet" />
 		<link href="res/core/BaikalAdmin/GlyphiconsPro/glyphpro-2x.css" rel="stylesheet" />
-		<!--link href="res/core/TwitterBootstrap/css/bootstrap-responsive.css" rel="stylesheet" /-->
+		<link href="res/core/TwitterBootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
 
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -25,6 +25,9 @@
 		<div class="container">
 			{Payload}
 		</div> <!-- /container -->
+		
+		<!--a rel="tooltip" title="first tooltip">hello</a>
+		<a class="popover" title="first popover" data-content="hello&lt;br&gt;World">hello</a-->
 		
 		<div class="mq0"></div>
 		<div class="mq1"></div>
@@ -41,6 +44,15 @@
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="res/core/TwitterBootstrap/js/jquery-1.7.1.min.js"></script>
 		<script src="res/core/TwitterBootstrap/js/bootstrap.min.js"></script>
+		<script src="res/core/TwitterBootstrap/js/bootstrap-tooltip.js"></script>
+		<script src="res/core/TwitterBootstrap/js/bootstrap-popover.js"></script>
+		<script type="text/javascript">
+			$("[rel=tooltip]").tooltip();
+			$(".popover-hover").popover();
+			$(".popover-focus").popover({
+				trigger: 'focus'
+			});
+		</script>
 		{javascript}
 	</body>
 </html>
