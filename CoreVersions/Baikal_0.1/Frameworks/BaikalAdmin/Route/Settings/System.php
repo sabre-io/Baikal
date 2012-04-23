@@ -24,31 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller;
+namespace BaikalAdmin\Route\Settings;
 
-class Settings extends \Flake\Core\Controller {
+class System {
 	
-	public function __construct() {
-		parent::__construct();
-		$this->oModel = new \Baikal\Model\Config(BAIKAL_PATH_SPECIFIC . "config.php");
-		
-		# Assert that config file is writable
-		if(!$this->oModel->writable()) {
-			throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
-		}
-		
-		$this->oForm = $this->oModel->formForThisModelInstance(array(
-			"close" => FALSE
-		));
-	}
-		
-	public function execute() {
-		if($this->oForm->submitted()) {
-			$this->oForm->execute();
-		}
-	}
-
-	public function render() {
-		return $this->oForm->render();
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Settings\System());
 	}
 }

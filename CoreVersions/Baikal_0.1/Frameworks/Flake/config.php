@@ -24,6 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+define("FLAKE_URI", BAIKAL_URI);
 define("FLAKE_DB_FILEPATH", BAIKAL_SQLITE_FILE);
 define("FLAKE_TIMEZONE", BAIKAL_TIMEZONE);
 define("FLAKE_PATH_FRAMEWORKS", BAIKAL_PATH_FRAMEWORKS);

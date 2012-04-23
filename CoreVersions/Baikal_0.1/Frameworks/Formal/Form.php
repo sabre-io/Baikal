@@ -187,7 +187,9 @@ class Form {
 			} else {
 				$bWasFloating = FALSE;
 				$this->sDisplayMessage = \Formal\Core\Message::notice(
-					"Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> have been saved."
+					"Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> have been saved.",
+					FALSE,	# No title
+					FALSE	# No close button
 				);
 			}
 			
@@ -316,8 +318,9 @@ class Form {
 				}
 				
 				$this->sDisplayMessage = \Formal\Core\Message::error(
-					implode("<br />", $aMessages)
-				);				
+					implode("<br />", $aMessages),
+					"Validation error"
+				);
 			}
 		}
 		
