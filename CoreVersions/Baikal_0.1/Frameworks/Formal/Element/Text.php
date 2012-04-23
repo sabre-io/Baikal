@@ -54,6 +54,14 @@ class Text extends \Formal\Element {
 			$groupclass .= " error";
 		}
 		
+		if(trim($this->option("class")) !== "") {
+			$groupclass .= " " . $this->option("class");
+		}
+		
+		if(trim($this->option("inputclass")) !== "") {
+			$inputclass = $this->option("inputclass");
+		}
+		
 		if(($sPlaceHolder = trim($this->option("placeholder"))) !== "") {
 			$placeholder = " placeholder=\"" . htmlspecialchars($sPlaceHolder) . "\" ";
 		}
@@ -67,7 +75,14 @@ class Text extends \Formal\Element {
 		}
 		
 		if(($aPopover = $this->option("popover")) !== "") {
-			$inputclass .= " popover-focus ";
+			
+			if(array_key_exists("position", $aPopover)) {
+				$sPosition = $aPopover["position"];
+				$inputclass .= " popover-focus-" . $sPosition;
+			} else {
+				$inputclass .= " popover-focus ";
+			}
+			
 			$popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
 			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
 		}
@@ -76,7 +91,7 @@ class Text extends \Formal\Element {
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="{$sInputType}" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
+		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
 		{$helpblock}
 	</div>
 </div>

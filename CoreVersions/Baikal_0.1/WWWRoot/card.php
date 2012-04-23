@@ -25,6 +25,7 @@
 ***************************************************************/
 
 define("BAIKAL_CONTEXT", TRUE);
+define("BAIKAL_CONTEXT_BASEURI", "/");
 
 # Bootstraping Baikal
 require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");

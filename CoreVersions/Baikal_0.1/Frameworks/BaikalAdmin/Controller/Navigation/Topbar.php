@@ -26,7 +26,7 @@
 
 namespace BaikalAdmin\Controller\Navigation;
 
-class Bar extends \Flake\Core\Controller {
+class Topbar extends \Flake\Core\Controller {
 
 	public function execute() {
 	}
@@ -34,12 +34,13 @@ class Bar extends \Flake\Core\Controller {
 	public function render() {
 		
 		$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
-		$sActiveHome = $sActiveUsers = $sActiveSettings = "";
+		$sActiveHome = $sActiveUsers = $sActiveSettings = $sActiveSystemSettings = "";
 		
 		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
 		$sHomeLink = $sControllerForDefaultRoute::link();
 		$sUsersLink = \BaikalAdmin\Controller\Users::link();
-		$sSettingsLink = \BaikalAdmin\Controller\Settings::link();
+		$sSettingsStandardLink = \BaikalAdmin\Controller\Settings\Standard::link();
+		$sSettingsSystemLink = \BaikalAdmin\Controller\Settings\System::link();
 		
 		if($sCurrentRoute === "default") {
 			$sActiveHome = "active";
@@ -52,8 +53,12 @@ class Bar extends \Flake\Core\Controller {
 			$sActiveUsers = "active";
 		}
 		
-		if($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings")) {
-			$sActiveSettings = "active";
+		if($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\Standard")) {
+			$sActiveSettingsStandard = "active";
+		}
+		
+		if($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\System")) {
+			$sActiveSettingsSystem = "active";
 		}
 		
 		$sHtml =<<<HTML
@@ -65,12 +70,13 @@ class Bar extends \Flake\Core\Controller {
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="{$sHomeLink}">Baïkal Admin !!!!!</a>
+					<a class="brand" href="{$sHomeLink}">Baïkal Web Admin</a>
 					<div class="nav-collapse">
 						<ul class="nav">
 							<li class="{$sActiveHome}"> <a href="{$sHomeLink}">Home</a></li>
 							<li class="{$sActiveUsers}"> <a href="{$sUsersLink}">Users and resources</a></li>
-							<li class="{$sActiveSettings}"> <a href="{$sSettingsLink}">Settings</a></li>
+							<li class="{$sActiveSettingsStandard}"> <a href="{$sSettingsStandardLink}">Settings</a></li>
+							<li class="{$sActiveSettingsSystem}"> <a href="{$sSettingsSystemLink}">System settings</a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>

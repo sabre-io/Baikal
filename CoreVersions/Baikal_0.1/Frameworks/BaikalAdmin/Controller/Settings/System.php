@@ -24,5 +24,36 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKAL_VERSION", "0.2.0");
-define("BAIKAL_HOMEPAGE", "http://baikal.codr.fr");
+namespace BaikalAdmin\Controller\Settings;
+
+class System extends \Flake\Core\Controller {
+	
+	public function __construct() {
+		parent::__construct();
+		$this->oModel = new \Baikal\Model\Config\System(BAIKAL_PATH_SPECIFIC . "config.system.php");
+		
+		# Assert that config file is writable
+		if(!$this->oModel->writable()) {
+			throw new \Exception("System config file is not writable;" . __FILE__ . " > " . __LINE__);
+		}
+		
+		$this->oForm = $this->oModel->formForThisModelInstance(array(
+			"close" => FALSE
+		));
+	}
+		
+	public function execute() {
+		if($this->oForm->submitted()) {
+			$this->oForm->execute();
+		}
+	}
+
+	public function render() {
+		$sMessage = \Formal\Core\Message::notice(
+			"Do not change anything on this page unless you really know what you are doing.<br />You might break Baïkal if you misconfigure something here.",
+			"Warning !",
+			FALSE
+		);
+		return $sMessage . $this->oForm->render();
+	}
+}

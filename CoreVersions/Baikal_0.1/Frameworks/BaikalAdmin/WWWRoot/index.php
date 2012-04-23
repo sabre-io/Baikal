@@ -24,5 +24,30 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKAL_VERSION", "0.2.0");
-define("BAIKAL_HOMEPAGE", "http://baikal.codr.fr");
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+define("BAIKAL_CONTEXT_BASEURI", "/admin/");
+
+define("BAIKAL_CONTEXT", TRUE);
+define("BAIKAL_CONTEXT_ADMIN", TRUE);
+
+# Bootstrap BaikalAdmin
+require_once(dirname(dirname(__FILE__)) . "/Core/Bootstrap.php");	# ../
+
+# Evaluate assertions
+\BaikalAdmin\Core\Auth::assertEnabled();
+\BaikalAdmin\Core\Auth::assertAuthentified();
+
+# Create and setup a page object
+$oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
+$oPage->injectHTTPHeaders();
+$oPage->setTitle("Baïkal Web Admin");
+$oPage->setBaseUrl(BAIKAL_URI);
+
+$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
+
+# Route the request
+$GLOBALS["ROUTER"]::route($oPage);
+
+# Render the page
+echo $oPage->render();
