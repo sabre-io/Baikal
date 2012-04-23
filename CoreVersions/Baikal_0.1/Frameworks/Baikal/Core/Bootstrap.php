@@ -24,6 +24,49 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+
+function rmBeginSlash($sString) {
+	if(substr($sString, 0, 1) === "/") {
+		$sString = substr($sString, 1);
+	}
+	
+	return $sString;
+}
+
+function rmEndSlash($sString) {
+	if(substr($sString, -1) === "/") {
+		$sString = substr($sString, 0, -1);
+	}
+	
+	return $sString;
+}
+
+function appendSlash($sString) {
+	if(substr($sString, -1) !== "/") {
+		$sString .= "/";
+	}
+	
+	return $sString;
+}
+
+function prependSlash($sString) {
+	if(substr($sString, 0, 1) !== "/") {
+		$sString = "/" . $sString;
+	}
+	
+	return $sString;
+}
+
+function installTool() {	
+	if(defined("BAIKAL_CONTEXT_INSTALL") && BAIKAL_CONTEXT_INSTALL === TRUE) {
+		return;
+	} else {
+		$sInstallToolUrl = prependSlash($sBaseUrl . "admin/install/");
+		header("Location: " . $sInstallToolUrl);
+		exit(0);
+	}
+}
+
 if(!defined("BAIKAL_CONTEXT") || BAIKAL_CONTEXT !== TRUE) {
 	die("Bootstrap.php may not be included outside the Baikal context");
 }
@@ -55,41 +98,58 @@ define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");
 define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
 define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
 
-require_once(BAIKAL_PATH_SPECIFIC . "config.php");
-require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
+require_once(BAIKAL_PATH_CORE . "Distrib.php");
 
-date_default_timezone_set(BAIKAL_TIMEZONE);
+# Determine BAIKAL_URI
+#print_r($_SERVER);
+$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
+$sDirName = appendSlash(dirname($sScript));
+$sBaseUrl = appendSlash(substr($sDirName, 0, -1 * strlen(BAIKAL_CONTEXT_BASEURI)));
+$aParts = explode("/", $_SERVER["SERVER_PROTOCOL"]);
+$sProtocol = strtolower(array_shift($aParts));
+define("BAIKAL_URI", $sProtocol . "://" . rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
+unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
 
-# Check if DB exists
-if(!file_exists(BAIKAL_SQLITE_FILE)) {
-	die("DB file does not exist.<br />To create it, please copy '<b>Core/Resources/baikal.empty.sqlite</b>' to '<b>Specific/db/baikal.sqlite</b>'.<br /><span style='color: red; font-weight: bold'>Please note the change in the file name while doing so</span> (from 'baikal.empty.sqlite' to 'baikal.sqlite').");
-}
-
-# Database
-$pdo = new PDO('sqlite:' . BAIKAL_SQLITE_FILE);
-$pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-
-$bShouldCheckEnv = ((!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) && (!defined("BAIKAL_CONTEXT_ADMIN") || BAIKAL_CONTEXT_ADMIN === FALSE));
-
-# Check if at least one user exists
-if($bShouldCheckEnv === TRUE) {
-	if(($iNbUsers = intval($pdo->query('SELECT count(*) FROM users')->fetchColumn())) === 0) {
-		die("No users are defined.<br />To create a user, you can use the helper <b>Core/Scripts/adduser.php</b> (requires command line access)");
-	}	
-}
-
-if($bShouldCheckEnv === TRUE) {
-	# Mapping PHP errors to exceptions
-	function exception_error_handler($errno, $errstr, $errfile, $errline) {
-		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-	}
-	
-	set_error_handler("exception_error_handler");
+# Check that a config file exists
+if(
+	!file_exists(BAIKAL_PATH_SPECIFIC . "config.php") ||
+	!file_exists(BAIKAL_PATH_SPECIFIC . "config.system.php")
+) {
+	installTool();
 } else {
-	error_reporting(E_ALL ^ E_NOTICE);
+	require_once(BAIKAL_PATH_SPECIFIC . "config.php");
+	require_once(BAIKAL_PATH_SPECIFIC . "config.system.php");
+	date_default_timezone_set(BAIKAL_TIMEZONE);
+
+
+	if(version_compare(BAIKAL_VERSION, BAIKAL_CONFIGURED_VERSION) > 0) {
+		installTool();
+	} else {
+		# Check if DB exists
+		if(!file_exists(BAIKAL_SQLITE_FILE)) {
+			die("DB file does not exist.<br />To create it, please copy '<b>Core/Resources/baikal.empty.sqlite</b>' to '<b>Specific/db/baikal.sqlite</b>'.<br /><span style='color: red; font-weight: bold'>Please note the change in the file name while doing so</span> (from 'baikal.empty.sqlite' to 'baikal.sqlite').");
+		}
+
+		# Database
+		$pdo = new PDO('sqlite:' . BAIKAL_SQLITE_FILE);
+		$pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+
+		$bShouldCheckEnv = ((!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) && (!defined("BAIKAL_CONTEXT_ADMIN") || BAIKAL_CONTEXT_ADMIN === FALSE));
+
+		if($bShouldCheckEnv === TRUE) {
+			# Mapping PHP errors to exceptions
+			function exception_error_handler($errno, $errstr, $errfile, $errline) {
+				throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+			}
+
+			set_error_handler("exception_error_handler");
+		} else {
+			error_reporting(E_ALL ^ E_NOTICE);
+		}
+
+		unset($bShouldCheckEnv);
+
+		// Autoloader 
+		require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');
+	}
 }
-
-unset($bShouldCheckEnv);
-
-// Autoloader 
-require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');

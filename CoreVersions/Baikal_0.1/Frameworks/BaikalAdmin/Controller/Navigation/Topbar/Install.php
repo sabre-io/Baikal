@@ -24,11 +24,24 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Route;
+namespace BaikalAdmin\Controller\Navigation\Topbar;
 
-class Settings {
-	
-	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Settings());
+class Install extends \Flake\Core\Controller {
+
+	public function execute() {
+	}
+
+	public function render() {
+				
+		$sHtml =<<<HTML
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand">Baïkal Install Tool</a>
+				</div>
+			</div>
+		</div>
+HTML;
+		return $sHtml;
 	}
 }
