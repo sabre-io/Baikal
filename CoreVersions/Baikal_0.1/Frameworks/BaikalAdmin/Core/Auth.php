@@ -31,7 +31,11 @@ class Auth {
 		if(!defined("BAIKAL_ADMIN_ENABLED") || BAIKAL_ADMIN_ENABLED !== TRUE) {
 			die("<h1>Ba&iuml;kal Admin is disabled.</h1>To enable it, set BAIKAL_ADMIN_ENABLED to TRUE in <b>Specific/config.php</b>");
 		}
-
+		
+		self::assertUnlocked();
+	}
+	
+	static function assertUnlocked() {
 		$bLocked = TRUE;
 		$sEnableFile = BAIKAL_PATH_SPECIFIC . "ENABLE_ADMIN";
 		if(file_exists($sEnableFile)) {
@@ -39,11 +43,14 @@ class Auth {
 			clearstatcache();
 			$iTime = intval(filemtime($sEnableFile));
 			if((time() - $iTime) < 3600) {
-				// file has been created more than an hour ago
-				// delete and declare locked
-
+				# file has been created/updated less than an hour ago; update it's mtime
+				if(is_writable($sEnableFile)) {
+					@touch($sEnableFile);
+				}
 				$bLocked = FALSE;
 			} else {
+				// file has been created more than an hour ago
+				// delete and declare locked
 				if(!@unlink($sEnableFile)) {
 					die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
 				}
@@ -52,9 +59,6 @@ class Auth {
 
 		if($bLocked) {
 			die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/</b>");
-		} else {
-			// update filemtime
-			@touch($sEnableFile);
 		}
 	}
 

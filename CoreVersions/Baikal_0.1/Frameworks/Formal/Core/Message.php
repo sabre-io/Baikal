@@ -30,20 +30,35 @@ class Message {
 	private function __construct() {
 	}
 	
-	public static function error($sMessage) {
+	public static function error($sMessage, $sTitle = "") {
+		if($sTitle !== "") {
+			$sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
+		}
+		
 		$sHtml =<<<HTML
 <div id="message" class="alert alert-block alert-error">
-	<h3 class="alert-heading">Validation error</h3>
+	{$sTitle}
 	{$sMessage}
 </div>
 HTML;
 		return $sHtml;
 	}
 	
-	public static function notice($sMessage) {
+	public static function notice($sMessage, $sTitle = "", $bClose = TRUE) {
+		$sClose = "";
+		
+		if($sTitle !== "") {
+			$sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
+		}
+		
+		if($bClose === TRUE) {
+			$sClose = '<a class="close" data-dismiss="alert" href="#">&times;</a>';
+		}
+		
 		$sHtml =<<<HTML
 <div id="message" class="alert alert-info">
-	<a class="close" data-dismiss="alert" href="#">&times;</a>
+	{$sClose}
+	{$sTitle}
 	{$sMessage}
 </div>
 HTML;

@@ -32,15 +32,6 @@
 # Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 define("BAIKAL_TIMEZONE", "Europe/Paris");
 
-# Absolute Baïkal URI; end with slash; includes protocol (http:// or https://), port (optional) and subfolders if any
-if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mongoose") {
-	define("BAIKAL_URI", "/");
-} elseif(array_key_exists("HTTP_HOST", $_SERVER) && $_SERVER["HTTP_HOST"] === "subbaikal.jeromeschneider.fr") {
-	define("BAIKAL_URI", "http://subbaikal.jeromeschneider.fr/html/");
-} else {
-	define("BAIKAL_URI", "http://baikal.jeromeschneider.fr/");
-}
-
 ##############################################################################
 # In this section: Optional configuration: you *may* customize these settings
 #

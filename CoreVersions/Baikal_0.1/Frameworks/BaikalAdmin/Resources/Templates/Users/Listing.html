@@ -1,20 +1,10 @@
-<style type="text/css">
-	.col-id { width: 2%;}
-	.col-username { width: 45%;}
-	.no-border-left { border-left: none !important;}
-	p.lead { line-height: 40px;}
-	table p {
-		margin-bottom: 0;
-	}
-</style>
-
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-group"></i>Users</h1>
 	<p class="lead pull-left">Manage Baïkal user accounts, and associated resources.</p>
 	<p class="lead pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\Users::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\User::icon() ?>"></i> + Add user</a></p>
 </header>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped users">
 <?
 	foreach($users as $user):
 

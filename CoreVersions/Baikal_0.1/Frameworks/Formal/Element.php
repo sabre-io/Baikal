@@ -29,6 +29,8 @@ namespace Formal;
 abstract class Element {
 	
 	protected $aOptions = array(
+		"class" => "",
+		"inputclass" => "input-xlarge",
 		"readonly" => FALSE,
 		"validation" => "",
 		"error" => FALSE,

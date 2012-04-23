@@ -77,18 +77,14 @@ if(!\Flake\Util\Tools::isCliPhp()) {
 setlocale(LC_ALL, FLAKE_LOCALE);
 date_default_timezone_set(FLAKE_TIMEZONE);
 
-$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite();
-$GLOBALS["DB"]->init(FLAKE_DB_FILEPATH);
+if(defined("FLAKE_DB_FILEPATH") && file_exists(FLAKE_DB_FILEPATH) && is_readable(FLAKE_DB_FILEPATH)) {
+	$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite();
+	$GLOBALS["DB"]->init(FLAKE_DB_FILEPATH);
+}
 
 $GLOBALS["TEMPLATESTACK"] = array();
 
-# Determining baikal protocol, domain and uri-path (looking at BAIKAL_URI)
-if($GLOBALS["_SERVER"]["SERVER_NAME"] === "mongoose") {	# And not using MONGOOSE_SERVER constant, as it will be defined by Flake, later in the process
-	define("FLAKE_DOMAIN", "");
-	define("FLAKE_URIPATH", "");
-} else {
-	$aUrlInfo = parse_url(BAIKAL_URI);
-	define("FLAKE_DOMAIN", $aUrlInfo["host"]);
-	define("FLAKE_URIPATH", \Flake\Util\Tools::stripBeginSlash($aUrlInfo["path"]));
-	unset($aUrlInfo);
-}
+$aUrlInfo = parse_url(FLAKE_URI);
+define("FLAKE_DOMAIN", $_SERVER["HTTP_HOST"]);
+define("FLAKE_URIPATH", \Flake\Util\Tools::stripBeginSlash($aUrlInfo["path"]));
+unset($aUrlInfo);
