@@ -44,6 +44,12 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_SQLITE_FILE" => array(
 			"type" => "litteral",
 		),
+		"BAIKAL_STANDALONE_ALLOWED" => array(
+			"type" => "boolean",
+		),
+		"BAIKAL_STANDALONE_PORT" => array(
+			"type" => "integer",
+		),
 	);
 		
 	protected $aData = array(
@@ -52,6 +58,8 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_CARD_BASEURI" => "",
 		"BAIKAL_CAL_BASEURI" => "",
 		"BAIKAL_SQLITE_FILE" => "",
+		"BAIKAL_STANDALONE_ALLOWED" => "",
+		"BAIKAL_STANDALONE_PORT" => "",
 	);
 	
 	public function formMorphologyForThisModelInstance() {
@@ -109,6 +117,16 @@ class System extends \Baikal\Model\Config {
 				"title" => "Auth realm",
 				"content" => "If you change this, you'll loose your access to this interface.<br />In other words: <strong>you should not change this, unless YKWYD.</strong>"
 			)
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "BAIKAL_STANDALONE_ALLOWED",
+			"label" => "Allow Standalone Baïkal execution"
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_STANDALONE_PORT",
+			"label" => "Standalone Baïkal port"
 		)));
 		
 		return $oMorpho;

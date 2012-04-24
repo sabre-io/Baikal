@@ -205,11 +205,15 @@ class Form {
 	}
 	
 	public function persisted() {
-		if(is_null($this->bPersisted)) {
-			throw new \Exception("\Formal\Form->persisted(): information is not available yet. This method may only be called after execute()");
+		if($this->submitted()) {
+			if(is_null($this->bPersisted)) {
+				throw new \Exception("\Formal\Form->persisted(): information is not available yet. This method may only be called after execute()");
+			}
+			
+			return $this->bPersisted;
 		}
 		
-		return $this->bPersisted;
+		return FALSE;
 	}
 	
 	public function validateRequired($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
