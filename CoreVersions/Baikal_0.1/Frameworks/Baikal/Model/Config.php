@@ -101,7 +101,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
 				$aRes[$sConstant] = $sValue;
 			} elseif($iNbRes === 0) {
-				throw new \Exception("Baikal\Model\Config->parseConfig(): Unable to find constant '" . $prop . "' in config file");
+				throw new \Exception("Baikal\Model\Config->parseConfig(): Unable to find constant '" . $sConstant . "' in config file");
 			}
 		}
 
