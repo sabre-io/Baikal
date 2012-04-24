@@ -36,6 +36,13 @@ class Auth {
 	}
 	
 	static function assertUnlocked() {
+		
+		if(defined("BAIKAL_CONTEXT_INSTALL") || BAIKAL_CONTEXT_INSTALL !== TRUE) {
+			$sToolName = "Ba&iuml;kal Install Tool";
+		} else {
+			$sToolName = "Ba&iuml;kal Admin";
+		}
+		
 		$bLocked = TRUE;
 		$sEnableFile = BAIKAL_PATH_SPECIFIC . "ENABLE_ADMIN";
 		if(file_exists($sEnableFile)) {
@@ -52,13 +59,13 @@ class Auth {
 				// file has been created more than an hour ago
 				// delete and declare locked
 				if(!@unlink($sEnableFile)) {
-					die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
+					die("<h1>" . $sToolName . " is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
 				}
 			}
 		}
 
 		if($bLocked) {
-			die("<h1>Ba&iuml;kal Admin is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/</b>");
+			die("<h1>" . $sToolName . " is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/</b>");
 		}
 	}
 
