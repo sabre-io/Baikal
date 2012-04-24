@@ -41,12 +41,6 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_ADMIN_ENABLED" => array(
 			"type" => "boolean",
 		),
-		"BAIKAL_STANDALONE_ALLOWED" => array(
-			"type" => "boolean",
-		),
-		"BAIKAL_STANDALONE_PORT" => array(
-			"type" => "integer",
-		),
 		"BAIKAL_ADMIN_PASSWORDHASH" => array(
 			"type" => "string",
 		)
@@ -60,8 +54,6 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_CARD_ENABLED" => "",
 		"BAIKAL_CAL_ENABLED" => "",
 		"BAIKAL_ADMIN_ENABLED" => "",
-		"BAIKAL_STANDALONE_ALLOWED" => "",
-		"BAIKAL_STANDALONE_PORT" => "",
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
 	);
 	
@@ -95,30 +87,26 @@ class Standard extends \Baikal\Model\Config {
 			),
 		)));
 		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_STANDALONE_ALLOWED",
-			"label" => "Allow Standalone Baïkal execution"
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "BAIKAL_STANDALONE_PORT",
-			"label" => "Standalone Baïkal port"
-		)));
-		
-		$sNotice = "-- Leave empty to keep current password --";
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "BAIKAL_ADMIN_PASSWORDHASH",
 			"label" => "Web admin password",
-			"placeholder" => $sNotice,
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "BAIKAL_ADMIN_PASSWORDHASH_CONFIRM",
 			"label" => "Web admin password confirmation",
-			"placeholder" => $sNotice,
 			"validation" => "sameas:BAIKAL_ADMIN_PASSWORDHASH",
 		)));
 		
+		if(!defined("BAIKAL_ADMIN_PASSWORDHASH") || trim(BAIKAL_ADMIN_PASSWORDHASH) === "") {
+
+			# No password set (Form is used in install tool), so password is required as it has to be defined
+			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("validation", "required");
+		} else {
+			$sNotice = "-- Leave empty to keep current password --";
+			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("placeholder", $sNotice);
+			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH_CONFIRM")->setOption("placeholder", $sNotice);
+		}
 		
 		return $oMorpho;
 	}

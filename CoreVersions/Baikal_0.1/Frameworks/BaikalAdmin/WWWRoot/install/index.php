@@ -40,11 +40,24 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Core/Bootstrap.php");	# ../
 # Create and setup a page object
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
-$oPage->setTitle("Baïkal Install Tool");
+$oPage->setTitle("Baïkal Maintainance");
 $oPage->setBaseUrl(BAIKAL_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
-$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install());
+
+if(!defined("BAIKAL_CONFIGURED_VERSION")) {
+	# we have to upgrade Baïkal (existing installation)
+	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
+	
+} elseif(!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
+	# we have to set an admin password
+	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\AdminPassword());
+	
+} else {
+	# we have to initialize Baïkal (new installation)
+	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+}
+
 # Route the request
 //$GLOBALS["ROUTER"]::route($oPage);
 
