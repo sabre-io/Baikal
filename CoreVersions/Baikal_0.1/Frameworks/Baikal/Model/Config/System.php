@@ -41,9 +41,6 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_CAL_BASEURI" => array(
 			"type" => "litteral",
 		),
-		"BAIKAL_SQLITE_FILE" => array(
-			"type" => "litteral",
-		),
 		"BAIKAL_STANDALONE_ALLOWED" => array(
 			"type" => "boolean",
 		),
@@ -57,7 +54,6 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_AUTH_REALM" => "",
 		"BAIKAL_CARD_BASEURI" => "",
 		"BAIKAL_CAL_BASEURI" => "",
-		"BAIKAL_SQLITE_FILE" => "",
 		"BAIKAL_STANDALONE_ALLOWED" => "",
 		"BAIKAL_STANDALONE_PORT" => "",
 	);
@@ -101,14 +97,6 @@ class System extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "BAIKAL_SQLITE_FILE",
-			"label" => "Path to SQLite DB",
-			"inputclass" => "input-xxlarge",
-			"validation" => "required",
-			"help" => "The absolute server path to SQLite database."
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_AUTH_REALM",
 			"label" => "Auth realm",
 			"validation" => "required",
@@ -119,16 +107,18 @@ class System extends \Baikal\Model\Config {
 			)
 		)));
 		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_STANDALONE_ALLOWED",
-			"label" => "Allow Standalone Baïkal execution"
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "BAIKAL_STANDALONE_PORT",
-			"label" => "Standalone Baïkal port"
-		)));
-		
+		if(\Flake\Util\Frameworks::enabled("BaikalStandalone")) {
+			$oMorpho->add(new \Formal\Element\Checkbox(array(
+				"prop" => "BAIKAL_STANDALONE_ALLOWED",
+				"label" => "Allow Standalone Baïkal execution"
+			)));
+
+			$oMorpho->add(new \Formal\Element\Text(array(
+				"prop" => "BAIKAL_STANDALONE_PORT",
+				"label" => "Standalone Baïkal port"
+			)));
+		}
+				
 		return $oMorpho;
 	}
 		

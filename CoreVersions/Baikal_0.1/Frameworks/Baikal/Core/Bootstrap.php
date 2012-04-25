@@ -87,6 +87,10 @@ define("BAIKAL_PATH_CORE", BAIKAL_PATH_ROOT . "Core/");
 define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");
 define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
 define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
+
+# Define path to Baïkal SQLite file
+define("BAIKAL_SQLITE_FILE", BAIKAL_PATH_SPECIFIC . "db/baikal.sqlite");
+
 require_once(BAIKAL_PATH_CORE . "Distrib.php");
 
 # Determine BAIKAL_URI
@@ -99,6 +103,8 @@ define("BAIKAL_BASEURI", $sBaseUrl);
 define("BAIKAL_URI", $sProtocol . "://" . rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
 unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
 
+# Bootstrap Flake
+require_once(BAIKAL_PATH_FRAMEWORKS . "Flake/Core/Bootstrap.php");
 
 # Check that a config file exists
 if(
@@ -129,9 +135,6 @@ if(
 			}
 			
 			\Baikal\Core\Tools::assertBaikalIsOk();
-			
-			# Bootstrap Flake
-			require_once(BAIKAL_PATH_FRAMEWORKS . "Flake/Core/Bootstrap.php");
 
 			# Establishing connection with database
 			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(BAIKAL_SQLITE_FILE);
