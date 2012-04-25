@@ -35,9 +35,9 @@ if(!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== TRUE) {
 }
 
 # Backends
-$authBackend = new Sabre_DAV_Auth_Backend_PDO($pdo);
-$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($pdo);
-$carddavBackend = new Sabre_CardDAV_Backend_PDO($pdo); 
+$authBackend = new Sabre_DAV_Auth_Backend_PDO($GLOBALS["DB"]->getPDO());
+$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($GLOBALS["DB"]->getPDO());
+$carddavBackend = new Sabre_CardDAV_Backend_PDO($GLOBALS["DB"]->getPDO()); 
 
 # Setting up the directory tree
 $nodes = array(
