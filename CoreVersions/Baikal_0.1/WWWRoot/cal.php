@@ -35,9 +35,9 @@ if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
 }
 
 # Backends
-$authBackend = new Sabre_DAV_Auth_Backend_PDO($pdo);
-$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($pdo);
-$calendarBackend = new Sabre_CalDAV_Backend_PDO($pdo);
+$authBackend = new Sabre_DAV_Auth_Backend_PDO($GLOBALS["DB"]->getPDO());
+$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($GLOBALS["DB"]->getPDO());
+$calendarBackend = new Sabre_CalDAV_Backend_PDO($GLOBALS["DB"]->getPDO());
 
 # Directory structure
 $nodes = array(

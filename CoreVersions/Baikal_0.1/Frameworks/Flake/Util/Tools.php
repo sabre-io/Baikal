@@ -109,7 +109,7 @@ class Tools extends \Flake\Core\FLObject {
 			array_pop($trail);	// la ligne d'appel à debug
 			array_pop($trail);	// la ligne d'appel à debug
 			$aLastNode = array_pop($trail);	// l'appel qui nous intéresse
-			$brOrHeader = $aLastNode['class'].$aLastNode['type'].$aLastNode['function'];
+			$brOrHeader = @strval($aLastNode['class']).@strval($aLastNode['type']).@strval($aLastNode['function']);
 		}
 
 		if ($brOrHeader)	{

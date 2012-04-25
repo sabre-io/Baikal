@@ -40,9 +40,9 @@ if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mon
 
 define("FLAKE_PATH_ROOT", dirname(dirname(__FILE__)) . "/");	# ../
 
-// les notices PHP ne sont pas affichées
-ini_set("display_errors", 1);
-ini_set("error_reporting", E_ALL & ~E_NOTICE);
+# Display errors messages, except notices
+#ini_set("display_errors", 1);
+#ini_set("error_reporting", E_ALL & ~E_NOTICE);
 
 if(!function_exists("appendSlash")) {
 	function appendSlash($sPath) {
@@ -77,9 +77,8 @@ if(!\Flake\Util\Tools::isCliPhp()) {
 setlocale(LC_ALL, FLAKE_LOCALE);
 date_default_timezone_set(FLAKE_TIMEZONE);
 
-if(defined("FLAKE_DB_FILEPATH") && file_exists(FLAKE_DB_FILEPATH) && is_readable(FLAKE_DB_FILEPATH)) {
-	$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite();
-	$GLOBALS["DB"]->init(FLAKE_DB_FILEPATH);
+if(defined("FLAKE_DB_FILEPATH") && file_exists(FLAKE_DB_FILEPATH) && is_readable(FLAKE_DB_FILEPATH) && !isset($GLOBALS["DB"])) {
+	$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(FLAKE_DB_FILEPATH);
 }
 
 $GLOBALS["TEMPLATESTACK"] = array();
