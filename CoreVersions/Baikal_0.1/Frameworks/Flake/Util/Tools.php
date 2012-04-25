@@ -27,7 +27,10 @@
 namespace Flake\Util;
 
 class Tools extends \Flake\Core\FLObject {
-
+	
+	private function __construct() {	# private constructor to force static class
+	}
+	
 	public static function getCurrentUrl() {
 		if(MONGOOSE_SERVER) {
 			$sUrl = $GLOBALS["_SERVER"]["REQUEST_URI"];
