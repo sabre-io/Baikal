@@ -152,6 +152,9 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 			} else {
 				$this->aMeta[$sKey] =& $mValue;
 			}
+			
+			$res = NULL;
+			return $res;	# To avoid 'Notice: Only variable references should be returned by reference'
 
 		} elseif(
 			strlen($sName) > 7 &&
@@ -172,5 +175,7 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 		} else {
 			throw new \Exception("Method " . $sName . "() not found on " . get_class($this));
 		}
+		
+		debug("laaaaaaaaaaaaa:" . $sName);
 	}
 }

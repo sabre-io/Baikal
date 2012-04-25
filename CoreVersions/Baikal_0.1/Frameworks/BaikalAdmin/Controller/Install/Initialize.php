@@ -54,8 +54,21 @@ class Initialize extends \Flake\Core\Controller {
 			
 			if($this->oForm->persisted()) {
 				$sContent = file_get_contents(BAIKAL_PATH_SPECIFIC . "config.system.php");
-				$sContent .= "\n\ndefine(\"BAIKAL_CONFIGURED_VERSION\", \"" . BAIKAL_VERSION . "\");\n";
-				file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent);
+				
+				$sBaikalVersion = BAIKAL_VERSION;
+				$sEncryptionKey = md5(microtime() . rand());
+				
+				# Setting "BAIKAL_CONFIGURED_VERSION"
+				$sNewConstants =<<<PHP
+# A random 32 bytes key that will be used to encrypt data
+define("BAIKAL_ENCRYPTION_KEY", "{$sEncryptionKey}");
+
+# The currently configured Baïkal version
+define("BAIKAL_CONFIGURED_VERSION", "{$sBaikalVersion}");
+PHP;
+				
+				# Writing results to file
+				file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
 			}
 		}
 	}
@@ -156,13 +169,10 @@ define("BAIKAL_PATH_SABREDAV", BAIKAL_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 define("BAIKAL_AUTH_REALM", "BaikalDAV");
 
 # Should begin and end with a "/"
-define("BAIKAL_CARD_BASEURI", "/card.php/");
+define("BAIKAL_CARD_BASEURI", BAIKAL_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
-define("BAIKAL_CAL_BASEURI", "/cal.php/");
-
-# SQLite DB path
-define("BAIKAL_SQLITE_FILE", BAIKAL_PATH_SPECIFIC . "db/baikal.sqlite");
+define("BAIKAL_CAL_BASEURI", BAIKAL_BASEURI . "cal.php/");
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;
