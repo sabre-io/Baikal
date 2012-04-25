@@ -175,7 +175,5 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 		} else {
 			throw new \Exception("Method " . $sName . "() not found on " . get_class($this));
 		}
-		
-		debug("laaaaaaaaaaaaa:" . $sName);
 	}
 }
