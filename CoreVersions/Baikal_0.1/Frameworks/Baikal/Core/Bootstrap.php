@@ -106,6 +106,7 @@ $sDirName = appendSlash(dirname($sScript));
 $sBaseUrl = appendSlash(substr($sDirName, 0, -1 * strlen(BAIKAL_CONTEXT_BASEURI)));
 $aParts = explode("/", $_SERVER["SERVER_PROTOCOL"]);
 $sProtocol = strtolower(array_shift($aParts));
+define("BAIKAL_BASEURI", $sBaseUrl);
 define("BAIKAL_URI", $sProtocol . "://" . rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
 unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
 
@@ -136,11 +137,8 @@ if(
 			if(!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
 				installTool();
 			}
-
-			# Check that DB exists
-			if(!file_exists(BAIKAL_SQLITE_FILE)) {
-				die("DB file does not exist.<br />To create it, please copy '<b>Core/Resources/baikal.empty.sqlite</b>' to '<b>Specific/db/baikal.sqlite</b>'.<br /><span style='color: red; font-weight: bold'>Please note the change in the file name while doing so</span> (from 'baikal.empty.sqlite' to 'baikal.sqlite').");
-			}
+			
+			\Baikal\Core\Tools::assertEnvironmentIsOk();
 
 			# Database
 			$pdo = new PDO('sqlite:' . BAIKAL_SQLITE_FILE);
