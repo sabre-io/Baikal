@@ -72,10 +72,10 @@ abstract class Db extends \Flake\Core\Model {
 		$rSql = $GLOBALS["DB"]->exec_SELECTquery(
 			"*",
 			self::getDataTable(),
-			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($sPrimary) . "'"
+			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quote($sPrimary) . "'"
 		);
 	
-		if(($aRs = $GLOBALS["DB"]->fetch($rSql)) === FALSE) {
+		if(($aRs = $rSql->fetch()) === FALSE) {
 			throw new \Exception("\Flake\Core\Model '" . htmlspecialchars($sPrimary) . "' not found for model " . get_class($this));
 		}
 		
@@ -90,13 +90,13 @@ abstract class Db extends \Flake\Core\Model {
 				$this->getData()
 			);
 			
-			$sPrimary = $GLOBALS["DB"]->sql_insert_id();
+			$sPrimary = $GLOBALS["DB"]->lastInsertId();
 			$this->initByPrimary($sPrimary);
 			$this->bFloating = FALSE;
 		} else {
 			$GLOBALS["DB"]->exec_UPDATEquery(
 				self::getDataTable(),
-				self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($this->getPrimary()) . "'",
+				self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quote($this->getPrimary()) . "'",
 				$this->getData()
 			);
 		}
@@ -105,7 +105,7 @@ abstract class Db extends \Flake\Core\Model {
 	public function destroy() {
 		$GLOBALS["DB"]->exec_DELETEquery(
 			self::getDataTable(),
-			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quoteStr($this->getPrimary()) . "'"
+			self::getPrimaryKey() . "='" . $GLOBALS["DB"]->quote($this->getPrimary()) . "'"
 		);
 	}
 	

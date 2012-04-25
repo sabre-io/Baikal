@@ -28,47 +28,49 @@ namespace Flake\Core\Database;
 
 class Sqlite extends \Flake\Core\Database {
 
-	var $oDb = FALSE;	// current DB link
-	var $debugOutput = FALSE;
-	var $store_lastBuiltQuery = TRUE;
-	var $debug_lastBuiltQuery = "";
-	var $sDbPath = "";
+	protected $oDb = FALSE;	// current DB link
+	protected $debugOutput = FALSE;
+	protected $store_lastBuiltQuery = TRUE;
+	protected $debug_lastBuiltQuery = "";
+	protected $sDbPath = "";
 
-	function init($sDbPath) {
-		if(is_object($this->oDb)) {
-			$this->messageAndDie("DB already initialized");
-		}
-		
+	public function __construct($sDbPath) {
 		$this->sDbPath = $sDbPath;
-		$this->oDb = new \SQLite3($this->sDbPath);
+		$this->oDb = new \PDO('sqlite:' . $this->sDbPath);
+#		$this->oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
 	
-	function query($sSql) {
-		return $this->oDb->query($sSql);
+	public function query($sSql) {
+		$stmt = $this->oDb->query($sSql);
+		return new \Flake\Core\Database\SqliteStatement($stmt);
+	}
+	
+	public function lastInsertId() {
+		return $this->oDb->lastInsertId();
 	}
 
-	function fetch($rSql) {
-		if(is_object($rSql)) {
-			return $rSql->fetchArray(SQLITE3_ASSOC);
+	public function quote($str) {
+		return substr($this->oDb->quote($str), 1, -1);	# stripping first and last quote
+	}
+	
+	public function getPDO() {
+		return $this->oDb;
+	}
+}
+
+Class SqliteStatement {
+	
+	protected $stmt = null;
+	
+	public function __construct($stmt) {
+		$this->stmt = $stmt;
+	}
+	
+	public function fetch() {
+		if($this->stmt !== FALSE) {
+			return $this->stmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_FIRST);
 		}
 		
 		return FALSE;
-	}
-	
-	function sql_insert_id() {
-		$rSql = $this->query("SELECT last_insert_rowid() as uid");
-		if(($aRes = $this->fetch($rSql)) !== FALSE) {
-			return intval($aRes["uid"]);
-		}
-		
-		return FALSE;
-	}
-
-	function quoteStr($str, $table=FALSE) {
-		if(function_exists("sqlite_escape_string")) {
-			return sqlite_escape_string($str);
-		}
-		
-		return addslashes($str);
 	}
 }

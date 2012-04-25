@@ -154,7 +154,7 @@ class Sql extends \Flake\Core\FLObject {
 	}
 
 	protected function escapeSqlValue($sValue) {
-		return $GLOBALS["DB"]->quoteStr(
+		return $GLOBALS["DB"]->quote(
 			$sValue,
 			$this->sDataTable
 		);
@@ -207,7 +207,7 @@ class Sql extends \Flake\Core\FLObject {
 		$sSql = $this->getQuery();
 
 		$rSql = $GLOBALS["DB"]->query($sSql);
-		while(($aRs = $GLOBALS["DB"]->fetch($rSql)) !== FALSE) {
+		while(($aRs = $rSql->fetch()) !== FALSE) {
 			$oCollection->push(
 				$this->reify($aRs)
 			);

@@ -30,6 +30,7 @@ define("BAIKAL_CONTEXT_CLI", TRUE);
 
 # Bootstraping Baikal
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Core/Frameworks/Baikal/Core/Bootstrap.php");	# ../../../
+$pdo = $GLOBALS["DB"]->getPDO();
 
 $sUsername = isset($argv[1]) ? trim($argv[1]) : "";
 
