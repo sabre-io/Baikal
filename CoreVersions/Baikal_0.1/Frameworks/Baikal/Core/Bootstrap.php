@@ -148,6 +148,8 @@ if(
 				}
 
 				set_error_handler("exception_error_handler");
+			} else {
+				error_reporting(E_ALL ^ E_NOTICE);
 			}
 
 			unset($bShouldCheckEnv);
