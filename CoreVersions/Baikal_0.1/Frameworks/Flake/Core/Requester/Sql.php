@@ -162,7 +162,8 @@ class Sql extends \Flake\Core\FLObject {
 
 	protected function &reify($aData) {
 		$sTemp = $this->sModelClass;
-		return new $sTemp($aData[$sTemp::getPrimaryKey()]);
+		$res = new $sTemp($aData[$sTemp::getPrimaryKey()]);
+		return $res;	# To address 'Notice: Only variable references should be returned by reference'
 	}
 
 	public function hasBeenExecuted() {
@@ -170,17 +171,17 @@ class Sql extends \Flake\Core\FLObject {
 	}
 
 	public function getQuery() {
-		if(empty($this->aClauses)) {
-			$sWhere = "1=1";
-		} else {
+		$sWhere = "1=1";
+		$sOrderBy = "";
+		$sLimit = "";
+
+		if(!empty($this->aClauses)) {
 			$sWhere = implode(" AND ", $this->aClauses);
 		}
 
 		if(trim($this->sOrderField) !== "") {
 			$sOrderBy = $this->sOrderField . " " . $this->sOrderDirection;
 		}
-
-		$sLimit = "";
 
 		if($this->iLimitStart !== FALSE) {
 			if($this->iLimitNumber !== FALSE) {

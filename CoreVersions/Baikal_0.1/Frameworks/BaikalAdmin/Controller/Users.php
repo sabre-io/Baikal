@@ -134,7 +134,7 @@ class Users extends \Flake\Core\Controller {
 	
 	protected static function editRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[0] === "edit") && intval($aParams[1]) > 0) {
+		if((count($aParams) >= 2) && ($aParams[0] === "edit") && intval($aParams[1]) > 0) {
 			return intval($aParams[1]);
 		}
 		
@@ -143,7 +143,7 @@ class Users extends \Flake\Core\Controller {
 	
 	protected static function deleteRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[0] === "delete") && intval($aParams[1]) > 0) {
+		if((count($aParams) >= 2) && ($aParams[0] === "delete") && intval($aParams[1]) > 0) {
 			return intval($aParams[1]);
 		}
 		
@@ -156,7 +156,7 @@ class Users extends \Flake\Core\Controller {
 		}
 		
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if($aParams[2] === "confirm") {
+		if((count($aParams) >= 3) && $aParams[2] === "confirm") {
 			return $iUser;
 		}
 		
@@ -165,7 +165,7 @@ class Users extends \Flake\Core\Controller {
 	
 	protected static function newRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		return $aParams[0] === "new";
+		return (count($aParams) >= 1) && $aParams[0] === "new";
 	}
 	
 	public static function linkNew() {

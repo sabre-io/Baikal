@@ -142,14 +142,12 @@ if(
 			$bShouldCheckEnv = ((!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) && (!defined("BAIKAL_CONTEXT_ADMIN") || BAIKAL_CONTEXT_ADMIN === FALSE));
 
 			if($bShouldCheckEnv === TRUE) {
-				# Mapping PHP errors to exceptions
+				# Mapping PHP errors to exceptions; needed by SabreDAV
 				function exception_error_handler($errno, $errstr, $errfile, $errline) {
 					throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 				}
 
 				set_error_handler("exception_error_handler");
-			} else {
-				error_reporting(E_ALL ^ E_NOTICE);
 			}
 
 			unset($bShouldCheckEnv);
