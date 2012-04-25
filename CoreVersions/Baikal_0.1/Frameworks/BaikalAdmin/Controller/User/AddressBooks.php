@@ -164,12 +164,12 @@ class AddressBooks extends \Flake\Core\Controller {
 	
 	protected static function newRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		return $aParams[1] === "new";
+		return (count($aParams) >= 2) && $aParams[1] === "new";
 	}
 	
 	protected static function editRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[1] === "edit") && intval($aParams[2]) > 0) {
+		if((count($aParams) >= 3) && ($aParams[1] === "edit") && intval($aParams[2]) > 0) {
 			return intval($aParams[2]);
 		}
 		
@@ -178,7 +178,7 @@ class AddressBooks extends \Flake\Core\Controller {
 	
 	protected static function deleteRequested() {
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if(($aParams[1] === "delete") && intval($aParams[2]) > 0) {
+		if((count($aParams) >= 3) && ($aParams[1] === "delete") && intval($aParams[2]) > 0) {
 			return intval($aParams[2]);
 		}
 		
@@ -191,7 +191,7 @@ class AddressBooks extends \Flake\Core\Controller {
 		}
 		
 		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if($aParams[3] === "confirm") {
+		if((count($aParams) >= 4) && $aParams[3] === "confirm") {
 			return $iPrimary;
 		}
 		
