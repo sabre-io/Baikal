@@ -67,20 +67,9 @@ function installTool() {
 	}
 }
 
-if(!defined("BAIKAL_CONTEXT") || BAIKAL_CONTEXT !== TRUE) {
-	die("Bootstrap.php may not be included outside the Baikal context");
-}
-
+# Asserting PHP 5.3.0+
 if(version_compare(PHP_VERSION, '5.3.0', '<')) {
 	die('Baikal Fatal Error: Baikal requires PHP 5.3.0+ to run properly. You version is: ' . PHP_VERSION . '.');
-}
-
-if(!defined('PDO::ATTR_DRIVER_NAME')) {
-	die('Baikal Fatal Error: PDO is unavailable. It\'s required by Baikal.');
-}
-
-if(!in_array('sqlite', PDO::getAvailableDrivers())) {
-	die('Baikal Fatal Error: PDO::sqlite is unavailable. It\'s required by Baikal.');
 }
 
 # Registering Baikal classloader
@@ -88,16 +77,16 @@ define("BAIKAL_PATH_FRAMEWORKROOT", dirname(dirname(__FILE__)) . "/");
 require_once(BAIKAL_PATH_FRAMEWORKROOT . '/Core/ClassLoader.php');
 \Baikal\Core\ClassLoader::register();
 
+\Baikal\Core\Tools::assertEnvironmentIsOk();
+
 # determine Baïkal install root path
 # not using realpath here to avoid symlinks resolution
 
 define("BAIKAL_PATH_ROOT", dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/");	# ../../../../../
-
 define("BAIKAL_PATH_CORE", BAIKAL_PATH_ROOT . "Core/");
 define("BAIKAL_PATH_SPECIFIC", BAIKAL_PATH_ROOT . "Specific/");
 define("BAIKAL_PATH_FRAMEWORKS", BAIKAL_PATH_CORE . "Frameworks/");
 define("BAIKAL_PATH_WWWROOT", BAIKAL_PATH_CORE . "WWWRoot/");
-
 require_once(BAIKAL_PATH_CORE . "Distrib.php");
 
 # Determine BAIKAL_URI
@@ -109,6 +98,7 @@ $sProtocol = strtolower(array_shift($aParts));
 define("BAIKAL_BASEURI", $sBaseUrl);
 define("BAIKAL_URI", $sProtocol . "://" . rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
 unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
+
 
 # Check that a config file exists
 if(
@@ -138,18 +128,20 @@ if(
 				installTool();
 			}
 			
-			\Baikal\Core\Tools::assertEnvironmentIsOk();
+			\Baikal\Core\Tools::assertBaikalIsOk();
+			
+			# Bootstrap Flake
+			require_once(BAIKAL_PATH_FRAMEWORKS . "Flake/Core/Bootstrap.php");
 
-			# Database
-			$pdo = new PDO('sqlite:' . BAIKAL_SQLITE_FILE);
-			$pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+			# Establishing connection with database
+			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(BAIKAL_SQLITE_FILE);
 
 			$bShouldCheckEnv = ((!defined("BAIKAL_CONTEXT_CLI") || BAIKAL_CONTEXT_CLI === FALSE) && (!defined("BAIKAL_CONTEXT_ADMIN") || BAIKAL_CONTEXT_ADMIN === FALSE));
 
 			if($bShouldCheckEnv === TRUE) {
 				# Mapping PHP errors to exceptions
 				function exception_error_handler($errno, $errstr, $errfile, $errline) {
-					throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+					throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 				}
 
 				set_error_handler("exception_error_handler");
@@ -159,7 +151,7 @@ if(
 
 			unset($bShouldCheckEnv);
 
-			// Autoloader 
+			# SabreDAV Autoloader 
 			require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');
 		}
 	}

@@ -32,7 +32,24 @@ class Tools {
 	}
 	
 	public static function assertEnvironmentIsOk() {
+		# Asserting Baikal Context
+		if(!defined("BAIKAL_CONTEXT") || BAIKAL_CONTEXT !== TRUE) {
+			die("Bootstrap.php may not be included outside the Baikal context");
+		}
+		
+		# Asserting PDO
+		if(!defined('PDO::ATTR_DRIVER_NAME')) {
+			die('Baikal Fatal Error: PDO is unavailable. It\'s required by Baikal.');
+		}
 
+		# Asserting PDO::SQLite
+		if(!in_array('sqlite', \PDO::getAvailableDrivers())) {
+			die('Baikal Fatal Error: PDO::sqlite is unavailable. It\'s required by Baikal.');
+		}
+	}
+	
+	public static function assertBaikalIsOk() {
+		
 		# Asserting DB file exists
 		if(!file_exists(BAIKAL_SQLITE_FILE)) {
 			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/baikal.empty.sqlite' to 'Specific/db/baikal.sqlite'.");
@@ -77,21 +94,6 @@ class Tools {
 		if(!is_writable(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
 			throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
 		}
-	}
-	
-	public static function getUsers() {
-		
-		$aUsers = array();
-		
-		# Fetching user
-		$stmt = \Baikal\Core\Tools::db()->prepare("SELECT * FROM users");
-		$stmt->execute();
-		while(($user = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_FIRST)) !== FALSE) {
-			$aUsers[] = $user;
-		}
-		
-		reset($aUsers);
-		return $aUsers;
 	}
 	
 	public static function bashPrompt($prompt) {

@@ -29,9 +29,6 @@ define("BAIKALADMIN_PATH_ROOT", dirname(dirname(__FILE__)) . "/");
 # Bootstrap Baïkal Core
 require_once(dirname(dirname(dirname(__FILE__))) . "/Baikal/Core/Bootstrap.php");	# ../../, symlink-safe
 
-# Bootstrap Flake
-require_once(dirname(dirname(dirname(__FILE__))) . "/Flake/Core/Bootstrap.php");
-
 # Bootstrap Formal
 require_once(dirname(dirname(dirname(__FILE__))) . "/Formal/Core/Bootstrap.php");
 

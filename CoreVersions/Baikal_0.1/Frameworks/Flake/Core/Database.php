@@ -154,8 +154,8 @@ abstract class Database extends \Flake\Core\FLObject {
 		return $query;
 	}
 	
-	function fullQuoteStr($str, $table)	{
-		return '\''.$this->quoteStr($str, $table).'\'';
+	function fullQuote($str, $table)	{
+		return '\''.$this->quote($str, $table).'\'';
 	}
 
 	function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
@@ -167,7 +167,7 @@ abstract class Database extends \Flake\Core\FLObject {
 
 		foreach($arr as $k => $v)	{
 			if ($noQuote===FALSE || !in_array($k,$noQuote))     {
-				$arr[$k] = $this->fullQuoteStr($v, $table);
+				$arr[$k] = $this->fullQuote($v, $table);
 			}
 		}
 		return $arr;
@@ -176,10 +176,8 @@ abstract class Database extends \Flake\Core\FLObject {
 	/* fonctions abstraites */
 	
 	abstract function query($sSql);
-
-	abstract function fetch($rSql);
 	
-	abstract function sql_insert_id();
+	abstract function lastInsertId();
 
-	abstract function quoteStr($str, $table);
+	abstract function quote($str);
 }
