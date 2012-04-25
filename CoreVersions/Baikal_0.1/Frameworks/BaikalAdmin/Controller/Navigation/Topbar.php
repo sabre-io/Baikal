@@ -34,7 +34,7 @@ class Topbar extends \Flake\Core\Controller {
 	public function render() {
 		
 		$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
-		$sActiveHome = $sActiveUsers = $sActiveSettings = $sActiveSystemSettings = "";
+		$sActiveHome = $sActiveUsers = $sActiveSettingsStandard = $sActiveSettingsSystem = "";
 		
 		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
 		$sHomeLink = $sControllerForDefaultRoute::link();

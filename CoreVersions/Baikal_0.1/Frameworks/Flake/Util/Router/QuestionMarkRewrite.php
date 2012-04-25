@@ -37,10 +37,15 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 		if(trim($sUrl) === "") {
 			return "default";
 		} else {
+			
+			$aMatches = array();
 			$aURI = parse_url($sUrl);
 			
-			$sRoutePart = \Flake\Util\Tools::stripBeginSlash($aURI["query"]);
-			$aMatches = array();
+			if(array_key_exists("query", $aURI)) {
+				$sRoutePart = \Flake\Util\Tools::stripBeginSlash($aURI["query"]);
+			} else {
+				$sRoutePart = "";
+			}
 			
 			$aRoutes = self::getRoutes();
 			reset($aRoutes);
