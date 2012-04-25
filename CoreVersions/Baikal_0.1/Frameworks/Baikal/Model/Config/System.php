@@ -36,10 +36,10 @@ class System extends \Baikal\Model\Config {
 			"type" => "string",
 		),
 		"BAIKAL_CARD_BASEURI" => array(
-			"type" => "string",
+			"type" => "litteral",
 		),
 		"BAIKAL_CAL_BASEURI" => array(
-			"type" => "string",
+			"type" => "litteral",
 		),
 		"BAIKAL_SQLITE_FILE" => array(
 			"type" => "litteral",

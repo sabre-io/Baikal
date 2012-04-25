@@ -1,0 +1,12 @@
+# Disabling URL rewrite and cache management
+# that could cause problems with DAV requests
+# Useful only for Apache servers, with AllowOverride All
+# (ie, .htaccess files enabled)
+
+<IfModule mod_rewrite.c>
+	RewriteEngine Off
+</IfModule>
+
+<IfModule mod_expires.c>
+	ExpiresActive Off
+</IfModule>
