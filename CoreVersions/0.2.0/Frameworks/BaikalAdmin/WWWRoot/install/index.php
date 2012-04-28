@@ -26,13 +26,16 @@
 
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
-define("BAIKAL_CONTEXT_BASEURI", "/admin/install/");
+define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
 
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_INSTALL", TRUE);
 
+# Bootstrap Flake
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Flake/Core/Bootstrap.php");	# ../../../
+
 # Bootstrap BaikalAdmin
-require_once(dirname(dirname(dirname(__FILE__))) . "/Core/Bootstrap.php");	# ../../
+\BaikalAdmin\Framework::bootstrap();
 
 # Evaluate assertions
 \BaikalAdmin\Core\Auth::assertUnlocked();
@@ -41,7 +44,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Core/Bootstrap.php");	# ../
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal Maintainance");
-$oPage->setBaseUrl(BAIKAL_URI);
+$oPage->setBaseUrl(PROJECT_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
