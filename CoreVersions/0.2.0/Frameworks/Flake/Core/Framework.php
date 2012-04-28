@@ -24,8 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("FORMAL_PATH_ROOT", dirname(dirname(__FILE__)) . "/");
+namespace Flake\Core;
 
-# Registering BaikalAdmin classloader
-require_once(dirname(__FILE__) . '/ClassLoader.php');
-\Formal\Core\ClassLoader::register();
+class Framework extends \Flake\Core\FLObject {
+	
+}

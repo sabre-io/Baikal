@@ -24,24 +24,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller\Navigation\Topbar;
+namespace Formal;
 
-class Install extends \Flake\Core\Controller {
-
-	public function execute() {
-	}
-
-	public function render() {
-				
-		$sHtml =<<<HTML
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="brand">Baïkal Install Tool</a>
-				</div>
-			</div>
-		</div>
-HTML;
-		return $sHtml;
+class Framework extends \Flake\Core\Framework {
+	
+	public static function bootstrap() {
+		define("FORMAL_PATH_ROOT", dirname(__FILE__) . "/");
+		
+		require_once(dirname(__FILE__) . '/Core/ClassLoader.php');
+		\Formal\Core\ClassLoader::register();		
 	}
 }

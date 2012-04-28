@@ -24,6 +24,14 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+# Asserting PHP 5.3.0+
+if(version_compare(PHP_VERSION, '5.3.0', '<')) {
+	die('Flake Fatal Error: Flake requires PHP 5.3.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
+}
+
+# Define absolute server path to Flake Framework
+define("FLAKE_PATH_ROOT", dirname(dirname(__FILE__)) . "/");	# ../
+
 if(!defined('LF')) {
 	define('LF', chr(10));
 }
@@ -38,27 +46,76 @@ if(array_key_exists("SERVER_NAME", $_SERVER) && $_SERVER["SERVER_NAME"] === "mon
 	define("MONGOOSE_SERVER", FALSE);
 }
 
-define("FLAKE_PATH_ROOT", dirname(dirname(__FILE__)) . "/");	# ../
-
 # Display errors messages, except notices
 #ini_set("display_errors", 1);
 #ini_set("error_reporting", E_ALL & ~E_NOTICE);
 
-if(!function_exists("appendSlash")) {
-	function appendSlash($sPath) {
-		if($sPath{strlen($sPath) - 1} !== "/") {
-			$sPath .= "/";
-		}
-	
-		return $sPath;
+function rmBeginSlash($sString) {
+	if(substr($sString, 0, 1) === "/") {
+		$sString = substr($sString, 1);
 	}
+	
+	return $sString;
 }
 
+function rmEndSlash($sString) {
+	if(substr($sString, -1) === "/") {
+		$sString = substr($sString, 0, -1);
+	}
+	
+	return $sString;
+}
+
+function appendSlash($sString) {
+	if(substr($sString, -1) !== "/") {
+		$sString .= "/";
+	}
+	
+	return $sString;
+}
+
+function prependSlash($sString) {
+	if(substr($sString, 0, 1) !== "/") {
+		$sString = "/" . $sString;
+	}
+	
+	return $sString;
+}
 if(!function_exists("debug")) {
 	function debug($mVar, $sHeader=0) {
 		\Flake\Util\Tools::debug($mVar, $sHeader);
 	}
 }
+
+#################################################################################################
+
+# determine Flake install root path
+# not using realpath here to avoid symlinks resolution
+
+define("PROJECT_PATH_ROOT", dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/");	# ../../../../../
+define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
+define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
+define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
+define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
+
+# Define path to Baïkal SQLite file
+define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/baikal.sqlite");
+
+define("PROJECT_SAFEHASH_SALT", "une-clef-super-secrete");
+
+require_once(PROJECT_PATH_CORE . "Distrib.php");
+
+# Determine PROJECT_URI
+$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
+$sDirName = appendSlash(dirname($sScript));
+$sBaseUrl = appendSlash(substr($sDirName, 0, -1 * strlen(PROJECT_CONTEXT_BASEURI)));
+$aParts = explode("/", $_SERVER["SERVER_PROTOCOL"]);
+$sProtocol = strtolower(array_shift($aParts));
+define("PROJECT_BASEURI", $sBaseUrl);
+define("PROJECT_URI", $sProtocol . "://" . rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
+unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
+
+#################################################################################################
 
 require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 \Flake\Core\ClassLoader::register();
@@ -77,13 +134,13 @@ if(!\Flake\Util\Tools::isCliPhp()) {
 setlocale(LC_ALL, FLAKE_LOCALE);
 date_default_timezone_set(FLAKE_TIMEZONE);
 
-if(defined("FLAKE_DB_FILEPATH") && file_exists(FLAKE_DB_FILEPATH) && is_readable(FLAKE_DB_FILEPATH) && !isset($GLOBALS["DB"])) {
-	$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(FLAKE_DB_FILEPATH);
+if(defined("PROJECT_SQLITE_FILE") && file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
+	$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
 }
 
 $GLOBALS["TEMPLATESTACK"] = array();
 
-$aUrlInfo = parse_url(FLAKE_URI);
+$aUrlInfo = parse_url(PROJECT_URI);
 define("FLAKE_DOMAIN", $_SERVER["HTTP_HOST"]);
 define("FLAKE_URIPATH", \Flake\Util\Tools::stripBeginSlash($aUrlInfo["path"]));
 unset($aUrlInfo);
