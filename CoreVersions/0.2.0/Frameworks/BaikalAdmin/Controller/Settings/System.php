@@ -30,7 +30,7 @@ class System extends \Flake\Core\Controller {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->oModel = new \Baikal\Model\Config\System(BAIKAL_PATH_SPECIFIC . "config.system.php");
+		$this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
 		
 		# Assert that config file is writable
 		if(!$this->oModel->writable()) {

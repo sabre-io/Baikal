@@ -35,8 +35,13 @@ class Initialize extends \Flake\Core\Controller {
 	public function __construct() {
 		parent::__construct();
 		
+		# Assert that /Specific is writable
+		if(!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
+			throw new \Flake\Core\DocumentedException("specificreadonly");
+		}
+		
 		$this->createDefaultConfigFilesIfNeeded();
-		$this->oModel = new \Baikal\Model\Config\Standard(BAIKAL_PATH_SPECIFIC . "config.php");
+		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
 		
 		# Assert that config file is writable
 		if(!$this->oModel->writable()) {
@@ -53,7 +58,7 @@ class Initialize extends \Flake\Core\Controller {
 			$this->oForm->execute();
 			
 			if($this->oForm->persisted()) {
-				$sContent = file_get_contents(BAIKAL_PATH_SPECIFIC . "config.system.php");
+				$sContent = file_get_contents(PROJECT_PATH_SPECIFIC . "config.system.php");
 				
 				$sBaikalVersion = BAIKAL_VERSION;
 				$sEncryptionKey = md5(microtime() . rand());
@@ -68,7 +73,7 @@ define("BAIKAL_CONFIGURED_VERSION", "{$sBaikalVersion}");
 PHP;
 				
 				# Writing results to file
-				file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
+				file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
 			}
 		}
 	}
@@ -85,7 +90,7 @@ PHP;
 HTML;
 		
 		if($this->oForm->persisted()) {
-			$sHtml .= "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . BAIKAL_URI . "admin/'>Access the Baïkal admin</a></h2>";
+			$sHtml .= "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></h2>";
 			
 		} else {
 			# Display the config form
@@ -96,25 +101,25 @@ HTML;
 	}
 	
 	protected function tagConfiguredVersion() {
-		file_put_contents(BAIKAL_PATH_SPECIFIC . "config.php", $sContent);
+		file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
 	}
 	
 	protected function createDefaultConfigFilesIfNeeded() {
 
 		# Create empty config.php if needed
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.php")) {
-			@touch(BAIKAL_PATH_SPECIFIC . "config.php");
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.php");
 			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
 			$sContent .= $this->getDefaultConfig();
-			file_put_contents(BAIKAL_PATH_SPECIFIC . "config.php", $sContent);
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
 		}
 		
 		# Create empty config.system.php if needed
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
-			@touch(BAIKAL_PATH_SPECIFIC . "config.system.php");
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.system.php");
 			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
 			$sContent .= $this->getDefaultSystemConfig();
-			file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent);
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
 		}
 	}
 	
@@ -163,16 +168,16 @@ define("BAIKAL_STANDALONE_ALLOWED", FALSE);
 define("BAIKAL_STANDALONE_PORT", 8888);
 
 # PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", BAIKAL_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
+define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 
 # If you change this value, you'll have to re-generate passwords for all your users
 define("BAIKAL_AUTH_REALM", "BaikalDAV");
 
 # Should begin and end with a "/"
-define("BAIKAL_CARD_BASEURI", BAIKAL_BASEURI . "card.php/");
+define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
-define("BAIKAL_CAL_BASEURI", BAIKAL_BASEURI . "cal.php/");
+define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;
