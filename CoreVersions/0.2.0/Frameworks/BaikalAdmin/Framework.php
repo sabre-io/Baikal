@@ -24,21 +24,23 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKALADMIN_PATH_ROOT", dirname(dirname(__FILE__)) . "/");
+namespace BaikalAdmin;
 
-# Bootstrap Baïkal Core
-require_once(dirname(dirname(dirname(__FILE__))) . "/Baikal/Core/Bootstrap.php");	# ../../, symlink-safe
+class Framework extends \Flake\Core\Framework {
+	
+	public static function bootstrap() {
+		define("BAIKALADMIN_PATH_ROOT", dirname(__FILE__) . "/");	# ./
+		
+		\Baikal\Framework::bootstrap();
+		\Formal\Framework::bootstrap();
 
-# Bootstrap Formal
-require_once(dirname(dirname(dirname(__FILE__))) . "/Formal/Core/Bootstrap.php");
+		# Registering BaikalAdmin classloader
+		require_once(BAIKALADMIN_PATH_ROOT . '/Core/ClassLoader.php');
+		\BaikalAdmin\Core\ClassLoader::register();
+		
+		$GLOBALS["ROUTER"]::setURIPath("admin/");
 
-# Registering BaikalAdmin classloader
-require_once(dirname(__FILE__) . '/ClassLoader.php');
-\BaikalAdmin\Core\ClassLoader::register();
-
-# Relative to BAIKAL_URI; so that BAIKAL_URI . BAIKALADMIN_URIPATH corresponds to the full URL to Baïkal admin
-define("BAIKALADMIN_URIPATH", "admin/");
-$GLOBALS["ROUTER"]::setURIPath(BAIKALADMIN_URIPATH);
-
-# Include BaikalAdmin Framework config
-require_once(BAIKALADMIN_PATH_ROOT . "config.php");
+		# Include BaikalAdmin Framework config
+		require_once(BAIKALADMIN_PATH_ROOT . "config.php");
+	}
+}

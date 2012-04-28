@@ -44,7 +44,7 @@ class Auth {
 		}
 		
 		$bLocked = TRUE;
-		$sEnableFile = BAIKAL_PATH_SPECIFIC . "ENABLE_ADMIN";
+		$sEnableFile = PROJECT_PATH_SPECIFIC . "ENABLE_ADMIN";
 		if(file_exists($sEnableFile)) {
 
 			clearstatcache();
