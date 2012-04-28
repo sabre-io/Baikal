@@ -26,8 +26,11 @@
 define("BAIKAL_CONTEXT", TRUE);
 define("PROJECT_CONTEXT_BASEURI", "/");
 
-# Bootstraping Baikal
-require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");
+# Bootstraping Flake
+require_once(dirname(dirname(__FILE__)) . "/Frameworks/Flake/Core/Bootstrap.php");
+
+# Bootstrapping Baïkal
+\Baikal\Framework::bootstrap();
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
