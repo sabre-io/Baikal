@@ -37,9 +37,8 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Flake/Core/Bootstrap.php");
 # Bootstrap BaikalAdmin
 \BaikalAdmin\Framework::bootstrap();
 
-# Evaluate assertions
+# Assert that BaikalAdmin is enabled
 \BaikalAdmin\Core\Auth::assertEnabled();
-\BaikalAdmin\Core\Auth::assertAuthentified();
 
 # Create and setup a page object
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
@@ -47,10 +46,16 @@ $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal Web Admin");
 $oPage->setBaseUrl(PROJECT_URI);
 
-$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
+# Authentication
+if(\BaikalAdmin\Core\Auth::isAuthenticated() === FALSE) {
+	$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
+	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
+} else {
+	$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
 
-# Route the request
-$GLOBALS["ROUTER"]::route($oPage);
+	# Route the request
+	$GLOBALS["ROUTER"]::route($oPage);
+}
 
 # Render the page
 echo $oPage->render();

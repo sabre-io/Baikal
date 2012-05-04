@@ -49,11 +49,18 @@ class System extends \Flake\Core\Controller {
 	}
 
 	public function render() {
+		
+		$sHeader =<<<FORM
+<header class="jumbotron subhead" id="overview">
+	<h1><i class="glyph2x-adjust"></i>Baïkal system settings</h1>
+</header>
+FORM;
+
 		$sMessage = \Formal\Core\Message::notice(
 			"Do not change anything on this page unless you really know what you are doing.<br />You might break Baïkal if you misconfigure something here.",
 			"Warning !",
 			FALSE
 		);
-		return $sMessage . $this->oForm->render();
+		return $sHeader . $sMessage . $this->oForm->render();
 	}
 }

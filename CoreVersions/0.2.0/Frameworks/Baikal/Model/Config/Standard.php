@@ -32,13 +32,13 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_TIMEZONE" => array(
 			"type" => "string",
 		),
-		"BAIKAL_CARD_ENABLED" => array(
+		"BAIKAL_ADMIN_ENABLED" => array(
 			"type" => "boolean",
 		),
 		"BAIKAL_CAL_ENABLED" => array(
 			"type" => "boolean",
 		),
-		"BAIKAL_ADMIN_ENABLED" => array(
+		"BAIKAL_CARD_ENABLED" => array(
 			"type" => "boolean",
 		),
 		"BAIKAL_ADMIN_PASSWORDHASH" => array(
@@ -69,8 +69,12 @@ class Standard extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_CARD_ENABLED",
-			"label" => "Enable CardDAV"
+			"prop" => "BAIKAL_ADMIN_ENABLED",
+			"label" => "Enable Web Admin",
+			"popover" => array(
+				"title" => "Warning !",
+				"content" => "If disabled, you'll lose access to this very admin interface !",
+			),
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
@@ -79,12 +83,8 @@ class Standard extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_ENABLED",
-			"label" => "Enable Web Admin",
-			"popover" => array(
-				"title" => "Warning !",
-				"content" => "If disabled, you'll lose access to this very admin interface !",
-			),
+			"prop" => "BAIKAL_CARD_ENABLED",
+			"label" => "Enable CardDAV"
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Password(array(

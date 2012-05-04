@@ -73,7 +73,7 @@ class Topbar extends \Flake\Core\Controller {
 					<a class="brand" href="{$sHomeLink}">Baïkal Web Admin</a>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li class="{$sActiveHome}"> <a href="{$sHomeLink}">Home</a></li>
+							<li class="{$sActiveHome}"> <a href="{$sHomeLink}">Dashboard</a></li>
 							<li class="{$sActiveUsers}"> <a href="{$sUsersLink}">Users and resources</a></li>
 							<li class="{$sActiveSettingsStandard}"> <a href="{$sSettingsStandardLink}">Settings</a></li>
 							<li class="{$sActiveSettingsSystem}"> <a href="{$sSettingsSystemLink}">System settings</a></li>
