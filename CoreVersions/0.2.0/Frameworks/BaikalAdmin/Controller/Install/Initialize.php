@@ -79,7 +79,7 @@ PHP;
 	}
 
 	public function render() {
-		$sBigIcon = \BaikalAdmin\Model\Install::bigicon();
+		$sBigIcon = "glyph2x-magic";
 		$sBaikalVersion = BAIKAL_VERSION;
 
 		$sHtml = <<<HTML

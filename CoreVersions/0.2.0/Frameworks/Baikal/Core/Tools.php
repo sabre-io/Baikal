@@ -53,8 +53,8 @@ class Tools {
 		ini_set("error_reporting", E_ALL);
 	}
 	
-	function handleException($exception) {
-		echo $exception;
+	public static function handleException($exception) {
+		echo "<pre>" . $exception . "<pre>";
 	}
 	
 	public static function assertBaikalIsOk() {
