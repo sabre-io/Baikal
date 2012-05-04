@@ -30,8 +30,10 @@ class Framework extends \Flake\Core\Framework {
 	
 	public static function installTool() {	
 		if(defined("BAIKAL_CONTEXT_INSTALL") && BAIKAL_CONTEXT_INSTALL === TRUE) {
+			# Install tool has been launched and we're already on the install page
 			return;
 		} else {
+			# Install tool has been launched; redirecting user
 			$sInstallToolUrl = PROJECT_URI . "admin/install/";
 			header("Location: " . $sInstallToolUrl);
 			exit(0);
@@ -79,9 +81,7 @@ class Framework extends \Flake\Core\Framework {
 					\Baikal\Core\Tools::assertBaikalIsOk();
 
 					set_error_handler("\Baikal\Framework::exception_error_handler");
-
-					unset($bShouldCheckEnv);
-
+					
 					# SabreDAV Autoloader 
 					require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');
 				}
@@ -91,7 +91,7 @@ class Framework extends \Flake\Core\Framework {
 	}
 	
 	# Mapping PHP errors to exceptions; needed by SabreDAV
-	function exception_error_handler($errno, $errstr, $errfile, $errline) {
+	public static function exception_error_handler($errno, $errstr, $errfile, $errline) {
 		throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
 }
