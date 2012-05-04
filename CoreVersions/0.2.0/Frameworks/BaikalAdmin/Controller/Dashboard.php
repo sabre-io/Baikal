@@ -32,17 +32,47 @@ class Dashboard extends \Flake\Core\Controller {
 	}
 	
 	public function render() {
-		$sLinkUsers = \BaikalAdmin\Controller\Users::link();
+		$oView = new \BaikalAdmin\View\Dashboard();
+		$oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
 		
-		$sMessage =<<<MESSAGE
-Ici, infos sur:<br />
-* Nombre d'utilisateurs<br />
-* Nombre de calendriers<br />
-* Nombre d'évènements<br />
-* Version + Mise à jour de baikal<br />
-* <a href='{$sLinkUsers}'>Lien vers liste des utilisateurs</a><br />
-* Lien vers paramétrage<br />
-MESSAGE;
-		return $sMessage;
+		# Services status
+		$oView->setData("BAIKAL_CAL_ENABLED", BAIKAL_CAL_ENABLED);
+		$oView->setData("BAIKAL_CARD_ENABLED", BAIKAL_CARD_ENABLED);
+		
+		# Statistics: Users
+		$iNbUsers = \Baikal\Model\User::getBaseRequester()->count();
+		$oView->setData("nbusers", $iNbUsers);
+		
+		# Statistics: CalDAV
+		$iNbCalendars = \Baikal\Model\Calendar::getBaseRequester()->count();
+		$oView->setData("nbcalendars", $iNbCalendars);
+		
+		$iNbEvents = \Baikal\Model\Calendar\Event::getBaseRequester()->count();
+		$oView->setData("nbevents", $iNbEvents);
+		
+		if($iNbCalendars > 0) {
+			$fEventsPerCalendarAvg = $iNbEvents / $iNbCalendars;
+		} else {
+			$fEventsPerCalendarAvg = 0;
+		}
+		
+		$oView->setData("eventspercalendaravg", $fEventsPerCalendarAvg);
+		
+		# Statistics: CardDAV
+		$iNbBooks = \Baikal\Model\AddressBook::getBaseRequester()->count();
+		$oView->setData("nbbooks", $iNbBooks);
+		
+		$iNbContacts = \Baikal\Model\AddressBook\Contact::getBaseRequester()->count();
+		$oView->setData("nbcontacts", $iNbEvents);
+		
+		if($iNbBooks > 0) {
+			$fContactsPerBookAvg = $iNbContacts / $iNbBooks;
+		} else {
+			$fContactsPerBookAvg = 0;
+		}
+		
+		$oView->setData("contactsperbookavg", $fContactsPerBookAvg);
+		
+		return $oView->render();
 	}
 }

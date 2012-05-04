@@ -36,7 +36,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 	}
 
 	public function render() {
-		$sBigIcon = \BaikalAdmin\Model\Install::bigicon();
+		$sBigIcon = "glyph2x-magic";
 		$sBaikalVersion = BAIKAL_VERSION;
 		$sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
 
@@ -47,15 +47,6 @@ class VersionUpgrade extends \Flake\Core\Controller {
 </header>
 HTML;
 
-/*		$sHtml .= <<<HTML
-<h2>What is this ?</h2>
-<p>
-	This is the Baïkal Install Tool.<br />
-	It's displayed because you just installed or upgraded your Baïkal installation.<br />
-	<strong>Baïkal requires some maintenance in order to ensure everything works as expected.</strong>
-</p>
-HTML;
-*/
 		return $sHtml;
 	}
 }

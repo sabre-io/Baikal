@@ -24,37 +24,48 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller\Settings;
+namespace BaikalAdmin\Controller;
 
-class Standard extends \Flake\Core\Controller {
+class Login extends \Flake\Core\Controller {
 	
-	public function __construct() {
-		parent::__construct();
-		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
-		
-		# Assert that config file is writable
-		if(!$this->oModel->writable()) {
-			throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
-		}
-		
-		$this->oForm = $this->oModel->formForThisModelInstance(array(
-			"close" => FALSE
-		));
-	}
-		
 	public function execute() {
-		if($this->oForm->submitted()) {
-			$this->oForm->execute();
-		}
 	}
-
+	
 	public function render() {
-		
-		$sHeader =<<<FORM
+		$sActionUrl = \Flake\Util\Tools::getCurrentUrl();
+		$sSubmittedFlagName = "auth";
+		$sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
+		$sPassword = htmlspecialchars(\Flake\Util\Tools::POST("password"));
+		if(trim($sLogin) === "") {
+			$sLogin = "admin";
+		}
+
+		$sForm =<<<FORM
+
 <header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-adjust"></i>Baïkal settings</h1>
+	<h1><i class="glyph2x-lock"></i>Authentication</h1>
+		<p class="lead">Please authenticate to access Baïkal Web Admin.</p>
 </header>
+
+<form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
+	<input type="hidden" name="{$sSubmittedFlagName}" value="1" />
+	<fieldset>
+		<p>
+			<label for="login">Login</label>
+			<input type="text" name="login" value="{$sLogin}" />
+		</p>
+
+		<p>
+			<label for="password">Password</label>
+			<input type="password" name="password" value="{$sPassword}" />
+		</p>
+		
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Authenticate</button>
+		</div>
+	</fieldset>
+</form>
 FORM;
-		return $sHeader . $this->oForm->render();
+		return $sForm;
 	}
 }

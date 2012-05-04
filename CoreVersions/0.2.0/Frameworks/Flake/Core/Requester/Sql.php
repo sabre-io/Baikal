@@ -170,7 +170,7 @@ class Sql extends \Flake\Core\FLObject {
 		return $this->bHasBeenExecuted;
 	}
 
-	public function getQuery() {
+	public function getQuery($sFields = "*") {
 		$sWhere = "1=1";
 		$sOrderBy = "";
 		$sLimit = "";
@@ -194,13 +194,17 @@ class Sql extends \Flake\Core\FLObject {
 		}
 
 		return $GLOBALS["DB"]->SELECTquery(
-			"*",
+			$sFields,
 			$this->sDataTable,
 			$sWhere,
 			"",
 			$sOrderBy,
 			$sLimit
 		);
+	}
+	
+	public function getCountQuery() {
+		return $this->getQuery("count(*) as nbitems");
 	}
 
 	public function execute() {
@@ -217,5 +221,16 @@ class Sql extends \Flake\Core\FLObject {
 		$this->bHasBeenExecuted = TRUE;
 
 		return $oCollection;
+	}
+	
+	public function count() {
+		$sSql = $this->getCountQuery();
+
+		$rSql = $GLOBALS["DB"]->query($sSql);
+		if(($aRs = $rSql->fetch()) !== FALSE) {
+			return intval($aRs["nbitems"]);
+		}
+		
+		return 0;
 	}
 }
