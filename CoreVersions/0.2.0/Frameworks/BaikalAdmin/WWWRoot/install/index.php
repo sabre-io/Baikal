@@ -31,8 +31,9 @@ define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_INSTALL", TRUE);
 
-# Bootstrap Flake
-require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Flake/Core/Bootstrap.php");	# ../../../
+# Bootstraping Flake
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Flake/Framework.php");	# ../../../
+\Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin
 \BaikalAdmin\Framework::bootstrap();

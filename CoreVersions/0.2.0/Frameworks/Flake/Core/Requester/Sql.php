@@ -225,7 +225,7 @@ class Sql extends \Flake\Core\FLObject {
 	
 	public function count() {
 		$sSql = $this->getCountQuery();
-
+		
 		$rSql = $GLOBALS["DB"]->query($sSql);
 		if(($aRs = $rSql->fetch()) !== FALSE) {
 			return intval($aRs["nbitems"]);

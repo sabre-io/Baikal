@@ -55,7 +55,7 @@ class Dashboard extends \Flake\Core\Controller {
 		$oView->setData("nbbooks", $iNbBooks);
 		
 		$iNbContacts = \Baikal\Model\AddressBook\Contact::getBaseRequester()->count();
-		$oView->setData("nbcontacts", $iNbEvents);
+		$oView->setData("nbcontacts", $iNbContacts);
 		
 		return $oView->render();
 	}
