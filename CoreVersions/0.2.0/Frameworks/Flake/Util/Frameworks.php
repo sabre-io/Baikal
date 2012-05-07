@@ -47,7 +47,7 @@ class Frameworks extends \Flake\Core\FLObject {
 	# TODO: Create a 'Framework' Model	
 	public function getPath($sName) {
 		if(self::isAFramework($sName)) {
-			throw new \Flake\Core\DocumentedException("notaframework", $sName);
+			throw new \Flake\Core\Exception(htmlspecialchars($$sName) . " is not a framework.", $sName);
 		}
 		
 		return \Flake\Util\Tools::appendSlash(PROJECT_PATH_FRAMEWORKS . $sName);
