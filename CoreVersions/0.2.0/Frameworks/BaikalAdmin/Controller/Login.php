@@ -34,38 +34,43 @@ class Login extends \Flake\Core\Controller {
 	public function render() {
 		$sActionUrl = \Flake\Util\Tools::getCurrentUrl();
 		$sSubmittedFlagName = "auth";
+		
+		if(self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
+			$sMessage = \Formal\Core\Message::error(
+				"The login/password you provided is invalid. Please retry.",
+				"Authentication error"
+			);
+		} elseif(self::justLoggedOut()) {
+			$sMessage = \Formal\Core\Message::notice(
+				"You have been disconnected from your session.",
+				"Session ended",
+				FALSE
+			);
+		}
+		
 		$sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
 		$sPassword = htmlspecialchars(\Flake\Util\Tools::POST("password"));
+		
 		if(trim($sLogin) === "") {
 			$sLogin = "admin";
 		}
-
-		$sForm =<<<FORM
-
-<header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-lock"></i>Authentication</h1>
-		<p class="lead">Please authenticate to access Baïkal Web Admin.</p>
-</header>
-
-<form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
-	<input type="hidden" name="{$sSubmittedFlagName}" value="1" />
-	<fieldset>
-		<p>
-			<label for="login">Login</label>
-			<input type="text" name="login" value="{$sLogin}" />
-		</p>
-
-		<p>
-			<label for="password">Password</label>
-			<input type="password" name="password" value="{$sPassword}" />
-		</p>
 		
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">Authenticate</button>
-		</div>
-	</fieldset>
-</form>
-FORM;
-		return $sForm;
+		$oView = new \BaikalAdmin\View\Login();
+		$oView->setData("message", $sMessage);
+		$oView->setData("actionurl", $sActionUrl);
+		$oView->setData("submittedflagname", $sSubmittedFlagName);
+		$oView->setData("login", $sLogin);
+		$oView->setData("password", $sPassword);
+		
+		return $oView->render();
+	}
+	
+	protected static function isSubmitted() {
+		return (intval(\Flake\Util\Tools::POST("auth")) === 1);
+	}
+	
+	protected static function justLoggedOut() {
+		$aParams = $GLOBALS["ROUTER"]::getURLParams();
+		return (!empty($aParams) && $aParams[0] === "loggedout");
 	}
 }
