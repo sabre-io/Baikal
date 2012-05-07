@@ -39,7 +39,7 @@ class DocumentedException extends \Exception {
 	# custom string representation of object
 	public function __toString() {
 		$aDoc = $this->getDocumentation();
-		debug($aDoc);
+		\Flake\Util\Tools::debug($aDoc);
 		return "<span style='color: red;'>" . htmlspecialchars($this->message) . "</span>";
 	}
 	
