@@ -74,6 +74,11 @@ class Auth {
 			return TRUE;
 		}
 		
+		return FALSE;		
+	}
+	
+	public static function authenticate() {
+		
 		if(intval(\Flake\Util\Tools::POST("auth")) !== 1) {
 			return FALSE;
 		}
@@ -89,6 +94,11 @@ class Auth {
 		}
 
 		return FALSE;
+		
+	}
+	
+	public static function unAuthenticate() {
+		unset($_SESSION["baikaladminauth"]);
 	}
 
 	public static function hashAdminPassword($sPassword) {

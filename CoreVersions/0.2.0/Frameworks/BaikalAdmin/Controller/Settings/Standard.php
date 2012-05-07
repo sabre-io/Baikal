@@ -50,11 +50,9 @@ class Standard extends \Flake\Core\Controller {
 
 	public function render() {
 		
-		$sHeader =<<<FORM
-<header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-adjust"></i>Baïkal settings</h1>
-</header>
-FORM;
-		return $sHeader . $this->oForm->render();
+		$oView = new \BaikalAdmin\View\Settings\Standard();
+		$oView->setData("form", $this->oForm->render());
+		
+		return $oView->render();
 	}
 }

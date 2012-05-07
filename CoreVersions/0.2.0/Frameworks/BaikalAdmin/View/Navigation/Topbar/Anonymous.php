@@ -24,15 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKALADMIN_PATH_TEMPLATES", BAIKALADMIN_PATH_ROOT . "Resources/Templates/");
+namespace BaikalAdmin\View\Navigation\Topbar;
 
-$GLOBALS["ROUTES"] = array(
-	"default" => "\BaikalAdmin\Route\Dashboard",
-	"users" => "\BaikalAdmin\Route\Users",
-	"users/calendars" => "\BaikalAdmin\Route\User\Calendars",
-	"users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
-	"install" => "\BaikalAdmin\Route\Install",
-	"settings/standard" => "\BaikalAdmin\Route\Settings\Standard",
-	"settings/system" => "\BaikalAdmin\Route\Settings\System",
-	"logout" => "\BaikalAdmin\Route\Logout"
-);
+class Anonymous extends \BaikalAdmin\Core\View {
+	
+}
