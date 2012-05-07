@@ -37,7 +37,7 @@ class Initialize extends \Flake\Core\Controller {
 		
 		# Assert that /Specific is writable
 		if(!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
-			throw new \Flake\Core\DocumentedException("specificreadonly");
+			throw new \Exception("Specific/ dir is readonly. Baïkal Admin requires write permissions on this dir.");
 		}
 		
 		$this->createDefaultConfigFilesIfNeeded();
