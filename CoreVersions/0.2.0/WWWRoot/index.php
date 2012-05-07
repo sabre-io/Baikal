@@ -27,7 +27,8 @@ define("BAIKAL_CONTEXT", TRUE);
 define("PROJECT_CONTEXT_BASEURI", "/");
 
 # Bootstraping Flake
-require_once(dirname(dirname(__FILE__)) . "/Frameworks/Flake/Core/Bootstrap.php");
+require_once(dirname(dirname(__FILE__)) . "/Frameworks/Flake/Framework.php");
+\Flake\Framework::bootstrap();
 
 # Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
