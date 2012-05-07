@@ -26,6 +26,6 @@
 
 namespace Flake\Core;
 
-class Framework extends \Flake\Core\FLObject {
+class Framework {
 	
 }
