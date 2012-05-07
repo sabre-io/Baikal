@@ -98,28 +98,27 @@ class Users extends \Flake\Core\Controller {
 	}
 	
 	public function render() {
-		$sHtml = "";
 		
-		# Render list of users
+		$oView = new \BaikalAdmin\View\Users();
+		
+		# List of users
 		$oUsers = \Baikal\Model\User::getBaseRequester()->execute();
-		$oView = new \BaikalAdmin\View\Users\Listing();
 		$oView->setData("users", $oUsers);
-		$sHtml .= $oView->render();
 		
-		
-		# Render form
-		$sHtml .= "<a id='form'></a>";
+		# Messages
 		$sMessages = implode("\n", $this->aMessages);
-
+		$oView->setData("messages", $sMessages);
+		
+		# Form
 		if(self::newRequested() || self::editRequested()) {
-			# We have to display the User form
-			$sHtml .= $this->oForm->render();
+			$sForm = $this->oForm->render();
 		} else {
-			# No form is displayed; simply display messages, if any
-			$sHtml .= $sMessages;
+			$sForm = "";
 		}
 		
-		return $sHtml;
+		$oView->setData("form", $sForm);
+		
+		return $oView->render();
 	}
 	
 	protected function initForm() {

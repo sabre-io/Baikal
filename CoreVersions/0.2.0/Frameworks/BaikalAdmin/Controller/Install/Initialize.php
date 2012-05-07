@@ -81,23 +81,22 @@ PHP;
 	public function render() {
 		$sBigIcon = "glyph2x-magic";
 		$sBaikalVersion = BAIKAL_VERSION;
-
-		$sHtml = <<<HTML
-<header class="jumbotron subhead" id="overview">
-	<h1><i class="{$sBigIcon}"></i>Baïkal initialization wizard</h1>
-	<p class="lead">Configure your new Baïkal <strong>{$sBaikalVersion}</strong> installation.</p>
-</header>
-HTML;
+		
+		$oView = new \BaikalAdmin\View\Install\Initialize();
+		$oView->setData("baikalversion", BAIKAL_VERSION);
 		
 		if($this->oForm->persisted()) {
-			$sHtml .= "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></h2>";
-			
+			$sMessage = "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></h2>";
+			$sForm = "";
 		} else {
-			# Display the config form
-			$sHtml .= $this->oForm->render();
+			$sMessage = "";
+			$sForm = $this->oForm->render();
 		}
-
-		return $sHtml;
+		
+		$oView->setData("message", $sMessage);
+		$oView->setData("form", $sForm);
+		
+		return $oView->render();
 	}
 	
 	protected function tagConfiguredVersion() {
