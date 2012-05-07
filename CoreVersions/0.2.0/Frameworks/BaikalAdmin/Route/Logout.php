@@ -24,7 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\Calendars;
+namespace BaikalAdmin\Route;
 
-class Listing extends \BaikalAdmin\Core\View {
+class Logout {
+	
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Logout());
+	}
 }

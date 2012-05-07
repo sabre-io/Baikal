@@ -47,7 +47,10 @@ $oPage->setTitle("Baïkal Web Admin");
 $oPage->setBaseUrl(PROJECT_URI);
 
 # Authentication
-if(\BaikalAdmin\Core\Auth::isAuthenticated() === FALSE) {
+if(
+	\BaikalAdmin\Core\Auth::isAuthenticated() === FALSE &&
+	\BaikalAdmin\Core\Auth::authenticate() === FALSE
+) {
 	$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
 	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
 } else {

@@ -123,29 +123,28 @@ class Calendars extends \Flake\Core\Controller {
 
 	public function render() {
 		
-		$sHtml = "";
+		$oView = new \BaikalAdmin\View\User\Calendars();
 		
-		# Render list of users
-		$oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
-		
-		$oView = new \BaikalAdmin\View\Calendars\Listing();
+		# User
 		$oView->setData("user", $this->oUser);
-		$oView->setData("calendars", $oCalendars);
-		$sHtml .= $oView->render();
 		
-		# Render form
-		$sHtml .= "<a id='form'></a>";
+		# List of calendars
+		$oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
+		$oView->setData("calendars", $oCalendars);
+		
+		# Messages
 		$sMessages = implode("\n", $this->aMessages);
+		$oView->setData("messages", $sMessages);
 
 		if(self::newRequested() || self::editRequested()) {
-			# We have to display the User form
-			$sHtml .= $this->oForm->render();
+			$sForm = $this->oForm->render();
 		} else {
-			# No form is displayed; simply display messages, if any
-			$sHtml .= $sMessages;
+			$sForm = "";
 		}
+		
+		$oView->setData("form", $sForm);
 
-		return $sHtml;
+		return $oView->render();
 	}
 	
 	protected function initForm() {

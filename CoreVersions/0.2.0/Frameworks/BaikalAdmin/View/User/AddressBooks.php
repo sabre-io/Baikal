@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\AddressBooks;
+namespace BaikalAdmin\View\User;
 
-class Listing extends \BaikalAdmin\Core\View {
+class AddressBooks extends \BaikalAdmin\Core\View {
 }
