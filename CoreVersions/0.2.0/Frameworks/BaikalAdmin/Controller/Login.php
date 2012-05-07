@@ -34,6 +34,7 @@ class Login extends \Flake\Core\Controller {
 	public function render() {
 		$sActionUrl = \Flake\Util\Tools::getCurrentUrl();
 		$sSubmittedFlagName = "auth";
+		$sMessage = "";
 		
 		if(self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
 			$sMessage = \Formal\Core\Message::error(
