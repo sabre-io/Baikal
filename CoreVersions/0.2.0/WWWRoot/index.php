@@ -24,10 +24,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_BASEURI", "/");
+define("PROJECT_CONTEXT_BASEURI", "/");
+define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
 
-# Bootstraping Baikal
-require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");
+# Bootstraping Flake
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
+\Flake\Framework::bootstrap();
+
+# Bootstrapping Baïkal
+\Baikal\Framework::bootstrap();
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">

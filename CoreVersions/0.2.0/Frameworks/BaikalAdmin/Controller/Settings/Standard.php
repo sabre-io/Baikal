@@ -30,7 +30,7 @@ class Standard extends \Flake\Core\Controller {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->oModel = new \Baikal\Model\Config\Standard(BAIKAL_PATH_SPECIFIC . "config.php");
+		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
 		
 		# Assert that config file is writable
 		if(!$this->oModel->writable()) {
@@ -49,6 +49,10 @@ class Standard extends \Flake\Core\Controller {
 	}
 
 	public function render() {
-		return $this->oForm->render();
+		
+		$oView = new \BaikalAdmin\View\Settings\Standard();
+		$oView->setData("form", $this->oForm->render());
+		
+		return $oView->render();
 	}
 }

@@ -24,48 +24,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Controller\Install;
+namespace BaikalAdmin\Controller\Navigation\Topbar;
 
-class AdminPassword extends \Flake\Core\Controller {
-	
-	protected $aMessages = array();
-	protected $oModel;	# \BaikalAdmin\Model\Install 
-	protected $oForm;	# \Formal\Form
-	
-/*	public function __construct() {
-		parent::__construct();
-		
-		$this->oModel = new \BaikalAdmin\Model\Install();
-		
-		$this->oForm = $this->oModel->formForThisModelInstance(array(
-			"close" => FALSE
-		));
-	}
-	
-	public function execute() {
-		if($this->oForm->submitted()) {
-			$this->oForm->execute();
-		}
-	}*/
-	
+class Anonymous extends \Flake\Core\Controller {
+
 	public function execute() {
 	}
 
 	public function render() {
-		$sBigIcon = \BaikalAdmin\Model\Install::bigicon();
-		$sBaikalVersion = BAIKAL_VERSION;
-
-		$sHtml = <<<HTML
-<header class="jumbotron subhead" id="overview">
-	<h1><i class="{$sBigIcon}"></i>Baïkal maintainance wizard</h1>
-	<p class="lead">Maintaining Baïkal <strong>{$sBaikalVersion}</strong></p>
-</header>
-HTML;
-
-		$sHtml .= <<<HTML
-<p>You have to set a password for the <strong>admin</strong> user.</p>
-HTML;
-
-		return $sHtml;
+		$oView = new \BaikalAdmin\View\Navigation\Topbar\Anonymous();
+		return $oView->render();
 	}
 }

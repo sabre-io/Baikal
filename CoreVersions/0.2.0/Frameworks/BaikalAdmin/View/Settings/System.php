@@ -24,7 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\Users;
+namespace BaikalAdmin\View\Settings;
 
-class Listing extends \BaikalAdmin\Core\View {
+class System extends \BaikalAdmin\Core\View {
+	
 }

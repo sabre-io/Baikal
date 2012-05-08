@@ -25,10 +25,15 @@
 ***************************************************************/
 
 define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_BASEURI", "/");
+define("PROJECT_CONTEXT_BASEURI", "/");
+define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
 
-# Bootstraping Baikal
-require_once(dirname(dirname(__FILE__)) . "/Frameworks/Baikal/Core/Bootstrap.php");
+# Bootstraping Flake
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
+\Flake\Framework::bootstrap();
+
+# Bootstrapping Baïkal
+\Baikal\Framework::bootstrap();
 
 if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
 	throw new ErrorException("Baikal CalDAV is disabled.", 0, 255, __FILE__, __LINE__);

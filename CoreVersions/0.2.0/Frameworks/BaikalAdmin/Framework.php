@@ -24,7 +24,23 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\AddressBooks;
+namespace BaikalAdmin;
 
-class Listing extends \BaikalAdmin\Core\View {
+class Framework extends \Flake\Core\Framework {
+	
+	public static function bootstrap() {
+		define("BAIKALADMIN_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/BaikalAdmin/");	# ./
+		
+		\Baikal\Framework::bootstrap();
+		\Formal\Framework::bootstrap();
+
+		# Registering BaikalAdmin classloader
+		require_once(BAIKALADMIN_PATH_ROOT . '/Core/ClassLoader.php');
+		\BaikalAdmin\Core\ClassLoader::register();
+		
+		$GLOBALS["ROUTER"]::setURIPath("admin/");
+
+		# Include BaikalAdmin Framework config
+		require_once(BAIKALADMIN_PATH_ROOT . "config.php");
+	}
 }
