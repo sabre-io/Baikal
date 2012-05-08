@@ -25,7 +25,7 @@
 ***************************************************************/
 
 namespace Flake;
-require_once(dirname(__FILE__) . "/Core/Framework.php");	# Manual require as Classloader not included yet
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Core/Framework.php");	# Manual require as Classloader not included yet
 
 	
 if(!function_exists("debug")) {
@@ -75,7 +75,7 @@ class Framework extends \Flake\Core\Framework {
 		}
 
 		# Define absolute server path to Flake Framework
-		define("FLAKE_PATH_ROOT", dirname(__FILE__) . "/");	# ./
+		define("FLAKE_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/Flake/");	# ./
 
 		if(!defined('LF')) {
 			define('LF', chr(10));
@@ -100,7 +100,6 @@ class Framework extends \Flake\Core\Framework {
 		# determine Flake install root path
 		# not using realpath here to avoid symlinks resolution
 
-		define("PROJECT_PATH_ROOT", dirname(dirname(dirname(dirname(dirname(__FILE__))))) . "/");	# ../../../../../
 		define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
 		define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
 		define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
