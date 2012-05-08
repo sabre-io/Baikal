@@ -41,7 +41,7 @@ require_once(dirname(dirname(__FILE__)) . "/Core/Bootstrap.php");	# ../
 # Create and setup a page object
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
-$oPage->setTitle("Baïkal Web Admin");
+$oPage->setTitle("Baïkal " . BAIKAL_VERSION . " Web Admin");
 $oPage->setBaseUrl(BAIKAL_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
