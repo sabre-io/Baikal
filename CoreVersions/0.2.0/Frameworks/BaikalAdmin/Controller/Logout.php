@@ -24,8 +24,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("FORMAL_PATH_ROOT", dirname(dirname(__FILE__)) . "/");
+namespace BaikalAdmin\Controller;
 
-# Registering BaikalAdmin classloader
-require_once(dirname(__FILE__) . '/ClassLoader.php');
-\Formal\Core\ClassLoader::register();
+class Logout extends \Flake\Core\Controller {
+	
+	public function execute() {
+		\BaikalAdmin\Core\Auth::unAuthenticate();
+		
+		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
+#		debug($sControllerForDefaultRoute);
+#		die();
+		$sLink = $GLOBALS["ROUTER"]::buildRouteForController($sControllerForDefaultRoute, "loggedout");
+		\Flake\Util\Tools::redirect($sLink);
+	}
+	
+	public function render() {
+	}
+}

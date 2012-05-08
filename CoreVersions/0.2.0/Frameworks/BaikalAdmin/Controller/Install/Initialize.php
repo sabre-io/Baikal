@@ -35,8 +35,13 @@ class Initialize extends \Flake\Core\Controller {
 	public function __construct() {
 		parent::__construct();
 		
+		# Assert that /Specific is writable
+		if(!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
+			throw new \Exception("Specific/ dir is readonly. Baïkal Admin requires write permissions on this dir.");
+		}
+		
 		$this->createDefaultConfigFilesIfNeeded();
-		$this->oModel = new \Baikal\Model\Config\Standard(BAIKAL_PATH_SPECIFIC . "config.php");
+		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
 		
 		# Assert that config file is writable
 		if(!$this->oModel->writable()) {
@@ -53,7 +58,7 @@ class Initialize extends \Flake\Core\Controller {
 			$this->oForm->execute();
 			
 			if($this->oForm->persisted()) {
-				$sContent = file_get_contents(BAIKAL_PATH_SPECIFIC . "config.system.php");
+				$sContent = file_get_contents(PROJECT_PATH_SPECIFIC . "config.system.php");
 				
 				$sBaikalVersion = BAIKAL_VERSION;
 				$sEncryptionKey = md5(microtime() . rand());
@@ -68,53 +73,52 @@ define("BAIKAL_CONFIGURED_VERSION", "{$sBaikalVersion}");
 PHP;
 				
 				# Writing results to file
-				file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
+				file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
 			}
 		}
 	}
 
 	public function render() {
-		$sBigIcon = \BaikalAdmin\Model\Install::bigicon();
+		$sBigIcon = "glyph2x-magic";
 		$sBaikalVersion = BAIKAL_VERSION;
-
-		$sHtml = <<<HTML
-<header class="jumbotron subhead" id="overview">
-	<h1><i class="{$sBigIcon}"></i>Baïkal initialization wizard</h1>
-	<p class="lead">Configure your new Baïkal <strong>{$sBaikalVersion}</strong> installation.</p>
-</header>
-HTML;
+		
+		$oView = new \BaikalAdmin\View\Install\Initialize();
+		$oView->setData("baikalversion", BAIKAL_VERSION);
 		
 		if($this->oForm->persisted()) {
-			$sHtml .= "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . BAIKAL_URI . "admin/'>Access the Baïkal admin</a></h2>";
-			
+			$sMessage = "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></h2>";
+			$sForm = "";
 		} else {
-			# Display the config form
-			$sHtml .= $this->oForm->render();
+			$sMessage = "";
+			$sForm = $this->oForm->render();
 		}
-
-		return $sHtml;
+		
+		$oView->setData("message", $sMessage);
+		$oView->setData("form", $sForm);
+		
+		return $oView->render();
 	}
 	
 	protected function tagConfiguredVersion() {
-		file_put_contents(BAIKAL_PATH_SPECIFIC . "config.php", $sContent);
+		file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
 	}
 	
 	protected function createDefaultConfigFilesIfNeeded() {
 
 		# Create empty config.php if needed
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.php")) {
-			@touch(BAIKAL_PATH_SPECIFIC . "config.php");
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.php");
 			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
 			$sContent .= $this->getDefaultConfig();
-			file_put_contents(BAIKAL_PATH_SPECIFIC . "config.php", $sContent);
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
 		}
 		
 		# Create empty config.system.php if needed
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
-			@touch(BAIKAL_PATH_SPECIFIC . "config.system.php");
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.system.php");
 			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
 			$sContent .= $this->getDefaultSystemConfig();
-			file_put_contents(BAIKAL_PATH_SPECIFIC . "config.system.php", $sContent);
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
 		}
 	}
 	
@@ -137,6 +141,9 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 
 # Baïkal Web Admin ON/OFF switch; default TRUE
 define("BAIKAL_ADMIN_ENABLED", TRUE);
+
+# Baïkal Web Admin autolock ON/OFF switch; default TRUE
+define("BAIKAL_ADMIN_AUTOLOCKENABLED", TRUE);
 
 # Baïkal Web admin password hash; Set by Core/Scripts/adminpassword.php or via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");
@@ -163,16 +170,16 @@ define("BAIKAL_STANDALONE_ALLOWED", FALSE);
 define("BAIKAL_STANDALONE_PORT", 8888);
 
 # PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", BAIKAL_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
+define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 
 # If you change this value, you'll have to re-generate passwords for all your users
 define("BAIKAL_AUTH_REALM", "BaikalDAV");
 
 # Should begin and end with a "/"
-define("BAIKAL_CARD_BASEURI", BAIKAL_BASEURI . "card.php/");
+define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
-define("BAIKAL_CAL_BASEURI", BAIKAL_BASEURI . "cal.php/");
+define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;

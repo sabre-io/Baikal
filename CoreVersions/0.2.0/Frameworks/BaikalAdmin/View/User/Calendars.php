@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\View\Calendars;
+namespace BaikalAdmin\View\User;
 
-class Listing extends \BaikalAdmin\Core\View {
+class Calendars extends \BaikalAdmin\Core\View {
 }

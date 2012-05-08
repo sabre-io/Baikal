@@ -34,34 +34,50 @@ class ClassLoader {
 
 	public static function loadClass($sFullClassName) {
 		
+		$sClassPath = FALSE;
+		
 		$aParts = explode("\\", $sFullClassName);
 		if(count($aParts) === 1) {
 			return;
 		}
 		
-		if($aParts[0] !== "Flake" && $aParts[0] !== "Specific" && $aParts[0] !== "Frameworks") {
+		# Extracting the Radical
+		$sRadical = $aParts[0];
+		
+		if(in_array($sRadical, array("Flake", "Specific", "Frameworks"))) {
+			
+			if($sRadical === "Flake") {
+				$sRootPath = FLAKE_PATH_ROOT;
+			} elseif($sRadical === "Specific") {
+				$sRootPath = FLAKE_PATH_SPECIFIC;
+			} else {
+				$sRootPath = PROJECT_PATH_FRAMEWORKS;
+			}
+			
+			# Stripping radical
+			array_shift($aParts);
+			
+			# Classname is the last part
+			$sClassName = array_pop($aParts);
+			
+			# Path to class 
+			$sClassPath = $sRootPath . implode("/", $aParts) . "/" . $sClassName . ".php";
+			
+		} elseif(count($aParts) > 1) {
+			if($aParts[1] === "Framework") {
+				# It must be a Flake Framework
+				$sClassPath = PROJECT_PATH_FRAMEWORKS . $sRadical . "/Framework.php";
+			}
+		}
+		
+		if($sClassPath === FALSE) {
 			return;
 		}
-		
-		// ejecting the Radical
-		$sRadical = array_shift($aParts);
-		
-		if($sRadical === "Flake") {
-			$sRootPath = FLAKE_PATH_ROOT;
-		} elseif($sRadical === "Specific") {
-			$sRootPath = FLAKE_PATH_SPECIFIC;	# When prefix does not point another namespaced framework, we use "Specific"
-		} elseif($sRadical === "Frameworks") {
-			$sRootPath = FLAKE_PATH_FRAMEWORKS;
-		}
-		
-		$sClassName = array_pop($aParts);
-		$sBasePath = $sRootPath . implode("/", $aParts) . "/";
-		$sClassPath = $sBasePath . $sClassName . ".php";
 
 		if(file_exists($sClassPath) && is_readable($sClassPath)) {
 			require_once($sClassPath);
 		} else {
-			echo '<h1>PHP Autoload Error. Cannot find ' . $sFullClassName . '</h1>';
+			echo '<h1>PHP Autoload Error. Cannot find ' . $sFullClassName . ' in ' . $sClassPath . '</h1>';
 			echo "<pre>" . print_r(debug_backtrace(), TRUE) . "</pre>";
 			die();
 		}

@@ -33,5 +33,6 @@ $GLOBALS["ROUTES"] = array(
 	"users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
 	"install" => "\BaikalAdmin\Route\Install",
 	"settings/standard" => "\BaikalAdmin\Route\Settings\Standard",
-	"settings/system" => "\BaikalAdmin\Route\Settings\System"
+	"settings/system" => "\BaikalAdmin\Route\Settings\System",
+	"logout" => "\BaikalAdmin\Route\Logout"
 );

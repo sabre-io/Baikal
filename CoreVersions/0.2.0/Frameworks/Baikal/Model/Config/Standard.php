@@ -32,13 +32,16 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_TIMEZONE" => array(
 			"type" => "string",
 		),
-		"BAIKAL_CARD_ENABLED" => array(
+		"BAIKAL_ADMIN_ENABLED" => array(
+			"type" => "boolean",
+		),
+		"BAIKAL_ADMIN_AUTOLOCKENABLED" => array(
 			"type" => "boolean",
 		),
 		"BAIKAL_CAL_ENABLED" => array(
 			"type" => "boolean",
 		),
-		"BAIKAL_ADMIN_ENABLED" => array(
+		"BAIKAL_CARD_ENABLED" => array(
 			"type" => "boolean",
 		),
 		"BAIKAL_ADMIN_PASSWORDHASH" => array(
@@ -54,6 +57,7 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_CARD_ENABLED" => "",
 		"BAIKAL_CAL_ENABLED" => "",
 		"BAIKAL_ADMIN_ENABLED" => "",
+		"BAIKAL_ADMIN_AUTOLOCKENABLED" => "",
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
 	);
 	
@@ -69,8 +73,21 @@ class Standard extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_CARD_ENABLED",
-			"label" => "Enable CardDAV"
+			"prop" => "BAIKAL_ADMIN_ENABLED",
+			"label" => "Enable Web Admin",
+			"popover" => array(
+				"title" => "Warning !",
+				"content" => "If disabled, you'll lose access to this very admin interface !",
+			),
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "BAIKAL_ADMIN_AUTOLOCKENABLED",
+			"label" => "Enable Web Admin autolock",
+			"popover" => array(
+				"title" => "Web admin autolock",
+				"content" => "If enabled, you'll have to create a file named ENABLE_ADMIN in Specific/ prior to every admin use."
+			)
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
@@ -79,12 +96,8 @@ class Standard extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_ENABLED",
-			"label" => "Enable Web Admin",
-			"popover" => array(
-				"title" => "Warning !",
-				"content" => "If disabled, you'll lose access to this very admin interface !",
-			),
+			"prop" => "BAIKAL_CARD_ENABLED",
+			"label" => "Enable CardDAV"
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Password(array(

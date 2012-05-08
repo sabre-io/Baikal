@@ -30,7 +30,7 @@ class System extends \Flake\Core\Controller {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->oModel = new \Baikal\Model\Config\System(BAIKAL_PATH_SPECIFIC . "config.system.php");
+		$this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
 		
 		# Assert that config file is writable
 		if(!$this->oModel->writable()) {
@@ -49,11 +49,16 @@ class System extends \Flake\Core\Controller {
 	}
 
 	public function render() {
-		$sMessage = \Formal\Core\Message::notice(
+		
+		$oView = new \BaikalAdmin\View\Settings\System();
+		$oView->setData("message", \Formal\Core\Message::notice(
 			"Do not change anything on this page unless you really know what you are doing.<br />You might break Baïkal if you misconfigure something here.",
 			"Warning !",
 			FALSE
-		);
-		return $sMessage . $this->oForm->render();
+		));
+		
+		$oView->setData("form", $this->oForm->render());
+		
+		return $oView->render();
 	}
 }
