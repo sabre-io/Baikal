@@ -29,9 +29,9 @@ namespace Formal;
 class Framework extends \Flake\Core\Framework {
 	
 	public static function bootstrap() {
-		define("FORMAL_PATH_ROOT", dirname(__FILE__) . "/");
+		define("FORMAL_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/Formal/");
 		
-		require_once(dirname(__FILE__) . '/Core/ClassLoader.php');
+		require_once(FORMAL_PATH_ROOT . 'Core/ClassLoader.php');
 		\Formal\Core\ClassLoader::register();		
 	}
 }
