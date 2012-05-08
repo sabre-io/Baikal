@@ -48,50 +48,59 @@ class Tools {
 		}
 	}
 	
+	public static function configureEnvironment() {
+		set_exception_handler('\Baikal\Core\Tools::handleException');
+		ini_set("error_reporting", E_ALL);
+	}
+	
+	public static function handleException($exception) {
+		echo "<pre>" . $exception . "<pre>";
+	}
+	
 	public static function assertBaikalIsOk() {
 		
 		# Asserting DB file exists
-		if(!file_exists(BAIKAL_SQLITE_FILE)) {
+		if(!file_exists(PROJECT_SQLITE_FILE)) {
 			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/baikal.empty.sqlite' to 'Specific/db/baikal.sqlite'.");
 		}
 		
 		# Asserting DB file is readable
-		if(!is_readable(BAIKAL_SQLITE_FILE)) {
+		if(!is_readable(PROJECT_SQLITE_FILE)) {
 			throw new \Exception("DB file is not readable. Please give read permissions to httpd user on file 'Specific/db/baikal.sqlite'.");
 		}
 		
 		# Asserting DB file is writable
-		if(!is_writable(BAIKAL_SQLITE_FILE)) {
+		if(!is_writable(PROJECT_SQLITE_FILE)) {
 			throw new \Exception("DB file is not writable. Please give write permissions to httpd user on file 'Specific/db/baikal.sqlite'.");
 		}
 		
 		# Asserting config file exists
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.php")) {
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
 			throw new \Exception("Specific/config.php does not exist. Please use the Install tool to create it.");
 		}
 		
 		# Asserting config file is readable
-		if(!is_readable(BAIKAL_PATH_SPECIFIC . "config.php")) {
+		if(!is_readable(PROJECT_PATH_SPECIFIC . "config.php")) {
 			throw new \Exception("Specific/config.php is not readable. Please give read permissions to httpd user on file 'Specific/config.php'.");
 		}
 		
 		# Asserting config file is writable
-		if(!is_writable(BAIKAL_PATH_SPECIFIC . "config.php")) {
+		if(!is_writable(PROJECT_PATH_SPECIFIC . "config.php")) {
 			throw new \Exception("Specific/config.php is not writable. Please give write permissions to httpd user on file 'Specific/config.php'.");
 		}
 		
 		# Asserting system config file exists
-		if(!file_exists(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
 			throw new \Exception("Specific/config.system.php does not exist. Please use the Install tool to create it.");
 		}
 		
 		# Asserting system config file is readable
-		if(!is_readable(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
+		if(!is_readable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
 			throw new \Exception("Specific/config.system.php is not readable. Please give read permissions to httpd user on file 'Specific/config.system.php'.");
 		}
 		
 		# Asserting system config file is writable
-		if(!is_writable(BAIKAL_PATH_SPECIFIC . "config.system.php")) {
+		if(!is_writable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
 			throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
 		}
 	}

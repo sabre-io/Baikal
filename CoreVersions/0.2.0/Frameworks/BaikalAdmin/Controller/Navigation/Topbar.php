@@ -33,6 +33,8 @@ class Topbar extends \Flake\Core\Controller {
 
 	public function render() {
 		
+		$oView = new \BaikalAdmin\View\Navigation\Topbar();
+		
 		$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
 		$sActiveHome = $sActiveUsers = $sActiveSettingsStandard = $sActiveSettingsSystem = "";
 		
@@ -41,6 +43,7 @@ class Topbar extends \Flake\Core\Controller {
 		$sUsersLink = \BaikalAdmin\Controller\Users::link();
 		$sSettingsStandardLink = \BaikalAdmin\Controller\Settings\Standard::link();
 		$sSettingsSystemLink = \BaikalAdmin\Controller\Settings\System::link();
+		$sLogoutLink = \BaikalAdmin\Controller\Logout::link();
 		
 		if($sCurrentRoute === "default") {
 			$sActiveHome = "active";
@@ -61,6 +64,7 @@ class Topbar extends \Flake\Core\Controller {
 			$sActiveSettingsSystem = "active";
 		}
 		
+<<<<<<< HEAD
 		$sHtml =<<<HTML
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -84,5 +88,18 @@ class Topbar extends \Flake\Core\Controller {
 		</div>
 HTML;
 		return $sHtml;
+=======
+		$oView->setData("activehome", $sActiveHome);
+		$oView->setData("activeusers", $sActiveUsers);
+		$oView->setData("activesettingsstandard", $sActiveSettingsStandard);
+		$oView->setData("activesettingssystem", $sActiveSettingsSystem);
+		$oView->setData("homelink", $sHomeLink);
+		$oView->setData("userslink", $sUsersLink);
+		$oView->setData("settingsstandardlink", $sSettingsStandardLink);
+		$oView->setData("settingssystemlink", $sSettingsSystemLink);
+		$oView->setData("logoutlink", $sLogoutLink);
+		
+		return $oView->render();
+>>>>>>> 140b415248d6a98d9f3aa37815964b3a4456cfd6
 	}
 }

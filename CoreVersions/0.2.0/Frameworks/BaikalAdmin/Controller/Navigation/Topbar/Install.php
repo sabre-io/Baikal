@@ -32,16 +32,7 @@ class Install extends \Flake\Core\Controller {
 	}
 
 	public function render() {
-				
-		$sHtml =<<<HTML
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="brand">Baïkal Install Tool</a>
-				</div>
-			</div>
-		</div>
-HTML;
-		return $sHtml;
+		$oView = new \BaikalAdmin\View\Navigation\Topbar\Install();
+		return $oView->render();
 	}
 }

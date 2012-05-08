@@ -26,13 +26,19 @@
 
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
-define("BAIKAL_CONTEXT_BASEURI", "/admin/install/");
 
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_INSTALL", TRUE);
 
+define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
+define("PROJECT_PATH_ROOT", dirname(dirname(dirname(getcwd()))) . "/");	# ../../../
+
+# Bootstraping Flake
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
+\Flake\Framework::bootstrap();
+
 # Bootstrap BaikalAdmin
-require_once(dirname(dirname(dirname(__FILE__))) . "/Core/Bootstrap.php");	# ../../
+\BaikalAdmin\Framework::bootstrap();
 
 # Evaluate assertions
 \BaikalAdmin\Core\Auth::assertUnlocked();
@@ -41,7 +47,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . "/Core/Bootstrap.php");	# ../
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal Maintainance");
-$oPage->setBaseUrl(BAIKAL_URI);
+$oPage->setBaseUrl(PROJECT_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
@@ -51,15 +57,11 @@ if(!defined("BAIKAL_CONFIGURED_VERSION")) {
 	
 } elseif(!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
 	# we have to set an admin password
-	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\AdminPassword());
-	
+	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
 	# we have to initialize Baïkal (new installation)
 	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
 }
-
-# Route the request
-//$GLOBALS["ROUTER"]::route($oPage);
 
 # Render the page
 echo $oPage->render();
