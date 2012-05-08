@@ -29,7 +29,7 @@ namespace BaikalAdmin;
 class Framework extends \Flake\Core\Framework {
 	
 	public static function bootstrap() {
-		define("BAIKALADMIN_PATH_ROOT", dirname(__FILE__) . "/");	# ./
+		define("BAIKALADMIN_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/BaikalAdmin/");	# ./
 		
 		\Baikal\Framework::bootstrap();
 		\Formal\Framework::bootstrap();

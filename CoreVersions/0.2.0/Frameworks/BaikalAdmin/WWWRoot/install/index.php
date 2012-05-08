@@ -26,13 +26,15 @@
 
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
-define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
 
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_INSTALL", TRUE);
 
+define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
+define("PROJECT_PATH_ROOT", dirname(dirname(dirname(getcwd()))) . "/");	# ../../../
+
 # Bootstraping Flake
-require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Flake/Framework.php");	# ../../../
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
 \Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin
@@ -60,9 +62,6 @@ if(!defined("BAIKAL_CONFIGURED_VERSION")) {
 	# we have to initialize Baïkal (new installation)
 	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
 }
-
-# Route the request
-//$GLOBALS["ROUTER"]::route($oPage);
 
 # Render the page
 echo $oPage->render();

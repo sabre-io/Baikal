@@ -26,13 +26,14 @@
 
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
-define("PROJECT_CONTEXT_BASEURI", "/admin/");
 
 define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
+define("PROJECT_CONTEXT_BASEURI", "/admin/");
+define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");	#../../
 
 # Bootstraping Flake
-require_once(dirname(dirname(dirname(__FILE__))) . "/Flake/Framework.php");	# ../../
+require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");	# ../../
 \Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin

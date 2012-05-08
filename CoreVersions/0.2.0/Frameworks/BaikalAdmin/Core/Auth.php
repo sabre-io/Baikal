@@ -37,6 +37,10 @@ class Auth {
 	
 	public static function assertUnlocked() {
 		
+		if(defined("BAIKAL_ADMIN_AUTOLOCKENABLED") && BAIKAL_ADMIN_AUTOLOCKENABLED === FALSE) {
+			return TRUE;
+		}
+		
 		if(defined("BAIKAL_CONTEXT_INSTALL") && BAIKAL_CONTEXT_INSTALL === TRUE) {
 			$sToolName = "Ba&iuml;kal Install Tool";
 		} else {
