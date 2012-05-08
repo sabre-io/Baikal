@@ -45,4 +45,5 @@ abstract class Requester extends \Flake\Core\FLObject {
 	}
 	
 	public abstract function execute();
+	public abstract function count();
 }

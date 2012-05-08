@@ -34,7 +34,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Core/Frameworks/Ba
 # Bootstraping BaikalAdmin
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/Core/Frameworks/BaikalAdmin/Core/Bootstrap.php");	# ../../../
 
-$sConfigFile = BAIKAL_PATH_SPECIFIC . "config.php";
+$sConfigFile = PROJECT_PATH_SPECIFIC . "config.php";
 
 if(!file_exists($sConfigFile)) {
 	die("Specific/config.php is does not exist. Aborting, cannot modify admin password.");

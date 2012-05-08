@@ -24,52 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-namespace BaikalAdmin\Model;
+namespace BaikalAdmin\Route;
 
-class Install extends \Flake\Core\Model\NoDb {
+class Logout {
 	
-	protected $aData = array(
-		"test" => "",
-	);
-	
-	public function persist() {
-	}
-	
-	public function destroy() {
-	}
-	
-	public function floating() {
-		return FALSE;
-	}
-	
-	public function formMorphologyForThisModelInstance() {
-		$oMorpho = new \Formal\Form\Morphology();
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "test",
-			"label" => "Test"
-		)));
-				
-		return $oMorpho;
-	}
-	
-	public static function icon() {
-		return "icon-cog";
-	}
-
-	public static function mediumicon() {
-		return "glyph-magic";
-	}
-
-	public static function bigicon() {
-		return "glyph2x-magic";
-	}
-	
-	public function label() {
-		return "Baïkal";
-	}
-	
-	public static function humanName() {
-		return "Parameters";
+	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Logout());
 	}
 }

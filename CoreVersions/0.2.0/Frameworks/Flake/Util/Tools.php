@@ -65,7 +65,7 @@ class Tools extends \Flake\Core\FLObject {
 	}
 	
 	public static function serverToRelativeWebPath($sAbsPath) {
-		return "/" . str_replace(FLAKE_PATH_WWWROOT, "", $sAbsPath);
+		return "/" . str_replace(PROJECT_PATH_WWWROOT, "", $sAbsPath);
 	}
 
 	public static function view_array($array_in)	{
@@ -192,7 +192,7 @@ class Tools extends \Flake\Core\FLObject {
 	}
 	
 	public static function safelock($sString) {
-		return substr(md5(FLAKE_SAFEHASH_SALT . ":" . $sString), 0, 5);
+		return substr(md5(PROJECT_SAFEHASH_SALT . ":" . $sString), 0, 5);
 	}
 	
 	public static function redirect($sUrl) {
@@ -568,41 +568,64 @@ TEST;
 		return $_SERVER['HTTP_USER_AGENT'];
 	}
 	
+	###########
 	public static function appendSlash($sString) {
-		if(substr($sString, -1) !== "/") {
-			$sString .= "/";
-		}
-		
-		return $sString;
+		return self::appendString($sString, "/");
 	}
 	
 	public static function prependSlash($sString) {
-		if(substr($sString, 0, 1) !== "/") {
-			$sString = "/" . $sString;
-		}
-		
-		return $sString;
+		return self::prependString($sString, "/");
 	}
 	
 	public static function stripBeginSlash($sString) {
-		if(substr($sString, 0, 1) === "/") {
-			$sString = substr($sString, 1);
-		}
-		
-		return $sString;
+		return self::stripBeginString($sString, "/");
 	}
 	
 	public static function stripEndSlash($sString) {
-		if(substr($sString, -1) === "/") {
-			$sString = substr($sString, 0, -1);
-		}
-		
-		return $sString;
+		return self::stripEndString($sString, "/");
 	}
 	
 	public static function trimSlashes($sString) {
 		return self::stripBeginSlash(self::stripEndSlash($sString));
 	}
+	
+	###########
+	public static function appendString($sString, $sAppend) {
+		if(substr($sString, -1 * strlen($sAppend)) !== $sAppend) {
+			$sString .= $sAppend;
+		}
+		
+		return $sString;
+	}
+	
+	public static function prependString($sString, $sAppend) {
+		if(substr($sString, 0, 1 * strlen($sAppend)) !== $sAppend) {
+			$sString = $sAppend . $sString;
+		}
+		
+		return $sString;
+	}
+	
+	public static function stripBeginString($sString, $sAppend) {
+		if(substr($sString, 0, 1 * strlen($sAppend)) === $sAppend) {
+			$sString = substr($sString, strlen($sAppend));
+		}
+		
+		return $sString;
+	}
+	
+	public static function stripEndString($sString, $sAppend) {
+		if(substr($sString, -1 * strlen($sAppend)) === $sAppend) {
+			$sString = substr($sString, 0, -1 * strlen($sAppend));
+		}
+		
+		return $sString;
+	}
+	
+	public static function trimStrings($sString, $sAppend) {
+		return self::stripBeginString(self::stripEndString($sString, $sAppend), $sAppend);
+	}
+	###########
 	
 	public static function router() {
 		return "\Flake\Util\Router\QuestionMarkRewrite";
