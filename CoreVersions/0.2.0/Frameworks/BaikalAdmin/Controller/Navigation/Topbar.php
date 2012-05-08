@@ -70,10 +70,10 @@ class Topbar extends \Flake\Core\Controller {
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="{$sHomeLink}">Baïkal Web Admin</a>
+					<a class="brand" href="{$sHomeLink}"><img style="vertical-align: text-top; line-height: 20px;" src="res/core/BaikalAdmin/Templates/Page/baikal-text-20.png" /> Web Admin</a>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li class="{$sActiveHome}"> <a href="{$sHomeLink}">Home</a></li>
+							<li class="{$sActiveHome}"> <a href="{$sHomeLink}">Dashboard</a></li>
 							<li class="{$sActiveUsers}"> <a href="{$sUsersLink}">Users and resources</a></li>
 							<li class="{$sActiveSettingsStandard}"> <a href="{$sSettingsStandardLink}">Settings</a></li>
 							<li class="{$sActiveSettingsSystem}"> <a href="{$sSettingsSystemLink}">System settings</a></li>
