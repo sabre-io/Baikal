@@ -29,7 +29,7 @@ namespace Baikal\Model\Config;
 class Standard extends \Baikal\Model\Config {
 	
 	protected $aConstants = array(
-		"BAIKAL_TIMEZONE" => array(
+		"PROJECT_TIMEZONE" => array(
 			"type" => "string",
 		),
 		"BAIKAL_ADMIN_ENABLED" => array(
@@ -50,10 +50,9 @@ class Standard extends \Baikal\Model\Config {
 	);
 		
 	protected $aData = array(
-		"BAIKAL_TIMEZONE" => "",
+		"PROJECT_TIMEZONE" => "",
 		"BAIKAL_CARD_ENABLED" => "",
 		"BAIKAL_CAL_ENABLED" => "",
-		"BAIKAL_TIMEZONE" => "",
 		"BAIKAL_CARD_ENABLED" => "",
 		"BAIKAL_CAL_ENABLED" => "",
 		"BAIKAL_ADMIN_ENABLED" => "",
@@ -65,7 +64,7 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho = new \Formal\Form\Morphology();
 		
 		$oMorpho->add(new \Formal\Element\Listbox(array(
-			"prop" => "BAIKAL_TIMEZONE",
+			"prop" => "PROJECT_TIMEZONE",
 			"label" => "Time zone",
 			"validation" => "required",
 			"options" => \Baikal\Core\Tools::timezones(),
