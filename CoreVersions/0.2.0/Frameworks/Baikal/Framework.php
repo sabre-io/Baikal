@@ -59,7 +59,7 @@ class Framework extends \Flake\Core\Framework {
 		} else {
 			require_once(PROJECT_PATH_SPECIFIC . "config.php");
 			require_once(PROJECT_PATH_SPECIFIC . "config.system.php");
-			date_default_timezone_set(BAIKAL_TIMEZONE);
+			date_default_timezone_set(PROJECT_TIMEZONE);
 
 			# Check that Baïkal is already configured
 			if(!defined("BAIKAL_CONFIGURED_VERSION")) {
