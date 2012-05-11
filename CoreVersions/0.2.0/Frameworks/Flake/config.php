@@ -24,8 +24,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("FLAKE_LOCALE", "fr_FR.UTF-8");
-
 if(defined("PROJECT_LOCALE")) {
 	define("FLAKE_LOCALE", PROJECT_LOCALE);
 } else {
