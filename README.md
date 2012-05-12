@@ -14,7 +14,7 @@ http://www.opensource.org/licenses/gpl-license.php.
 
 # 3. Baïkal Server requirements
 
-Baïkal Server is based on PHP5.2.0, and uses a SQLite3 with PHP PDO. For more
+Baïkal Server is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. For more
 information regarding these requirements see the INSTALL.md file in this folder.
 
 # 4. What should you do if you have a problem ?
