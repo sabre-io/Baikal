@@ -7,24 +7,44 @@ is copyright (c) 2012 by Jérôme Schneider.
 This document describes the system requirements for Baïkal Server and the
 installation routine.
 
-# 0 - System requirements
+# 1 - System requirements
 
-Baïkal Server is based on PHP5.2.0, and uses a SQLite3 with PHP PDO. This
+Baïkal Server is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. This
 document does not cover the installation of these requirements.
 
+## 1 - System requirements for FTP-driven hosting
+
 The following configuration is the minimum required:
+
+- an hosted webserver running apache 2 and PHP 5.3.0
+
+- PHP 5.3.0 or newer with the following extensions: 
+	- PDO and SQLite3 
+	Some extensions can be optionally compiled into PHP. A list of loaded
+	extensions can be checked using the phpinfo() function. 
+
+- 30 MB of disk space
+
+## 2 - System requirements for dedicated server hosting
+
+The following configuration is the minimum required:
+
 - an Apache2 web server capable of running PHP, and accessible thru a
  dedicated subdomain (something like "dav.mydomainname.com") 
 	NOTE: this document only covers sub-domain based installations. Other
 	installations modes are possible, though not documented (yet). 
+
 - root access to a command line on this server 
 	NOTE: tools to create and manage users are command line only. Web-based
 	interfaces will be produced in the future. 
-- PHP 5.2.0 or newer with the following extensions: 
+
+- PHP 5.3.0 or newer with the following extensions: 
 	- PDO and SQLite3 
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function. 
+
 - 30 MB of disk space 
+
 - Apache configuration that activates "FollowSymlinks" 
 
 # 1 - Obtaining Baïkal Server

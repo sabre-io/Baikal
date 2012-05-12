@@ -43,7 +43,7 @@ rm -Rf Core/Scripts
 rm -Rf Core/Frameworks/Baikal/Scripts
 
 # Cleaning WWWRoot
-rm -Rf Core/WWWRoot
+rm -Rf Core/Frameworks/Baikal/WWWRoot
 rm -Rf Core/Frameworks/BaikalAdmin/WWWRoot
 
 # Cleaning Specific/Virtualhosts
