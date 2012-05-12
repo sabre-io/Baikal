@@ -1,1 +1,1 @@
-../Core/WWWRoot/card.php
+../Core/Frameworks/Baikal/WWWRoot/card.php
