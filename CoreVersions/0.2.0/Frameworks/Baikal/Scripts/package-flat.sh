@@ -17,13 +17,13 @@ TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
 mkdir $TEMPDIR && cd ../../../../ && git archive $BRANCH | tar -x -C $TEMPDIR
 
 # Dereferencig symlinks
-cp -Rf --dereference $TEMPDIR $TEMPDIRDEREFERENCE
-rm -Rf $TEMPDIR
+cp -RfL $TEMPDIR $TEMPDIRDEREFERENCE && \
+rm -Rf $TEMPDIR && \
 
-TEMPDIR=$TEMPDIRDEREFERENCE
+TEMPDIR=$TEMPDIRDEREFERENCE && \
 
 # Jump to tempdir
-cd $TEMPDIR
+cd $TEMPDIR && \
 
 # Cleaning git stuff
 rm .gitignore
@@ -48,3 +48,11 @@ rm -Rf Core/Frameworks/BaikalAdmin/WWWRoot
 
 # Cleaning Specific/Virtualhosts
 rm -Rf Specific/virtualhosts
+
+# Moving HTML roots
+mv html/* .
+mv html/.htaccess .
+rm -Rf html
+
+# Displaying result
+echo "#     "$TEMPDIR
