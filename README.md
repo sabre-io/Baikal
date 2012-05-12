@@ -1,27 +1,27 @@
 # 1. About this package
 
-This package contains a release of Baïkal Server. 
+This package contains a release of Baïkal.
 Go to http://baikal.codr.fr to get more information about this package, and upgrades.
 
-# 2. What is Baïkal Server ?
+# 2. What is Baïkal ?
 
 Baïkal is an open source lightweight CalDAV and CardDAV server. It's developped
 by Jérôme Schneider (http://codr.fr) and based on the SabreDAV library. Baïkal
-Server is distributed under the GPL license. 
+is distributed under the GPL license. 
 
 To get more info about the GPL license, visit 
 http://www.opensource.org/licenses/gpl-license.php.
 
-# 3. Baïkal Server requirements
+# 3. Baïkal requirements
 
-Baïkal Server is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. For more
+Baïkal is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. For more
 information regarding these requirements see the INSTALL.md file in this folder.
 
 # 4. What should you do if you have a problem ?
 
   1. Read the available documentation carefully
 
-  2. Search the web carefully about Baïkal Server
+  2. Search the web carefully about Baïkal CalDAV CardDAV
 
   3. Mail me (Jérôme Schneider) at mail@jeromeschneider.fr
      When mailing, see the following guidelines... 
@@ -29,13 +29,13 @@ information regarding these requirements see the INSTALL.md file in this folder.
        server environment (phpinfo())...
      - Be as specific and clear as possible - questions like "my
        installation does not work - what can I do???" will be ignored.
-     - I can read english and french.
+     - Write in english or french, please.
 
-  4. If you have identified a genuine new bug report it at
+  4. If you have identified a genuine new bug, report it at
      the mail address given in point 3 of this list
 
 # 5. How to get started
 
 Please see the INSTALL.md in this folder.
 
--- Jérôme Schneider <mail@jeromeschneider.fr>  Wed, 22 Feb 2012 21:46:00 +0100
+-- Jérôme Schneider <mail@jeromeschneider.fr>  Sat, 12 May 2012 23:45:00 +0100
