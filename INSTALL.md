@@ -169,12 +169,12 @@ Add a new CalDAV account:
 
 You may now create new calendars, new events, new visit cards :) Enjoy.
 
-# 10 - Troubleshooting
+# 6 - Troubleshooting
 
 For troubleshooting read the FAQ below. If your problem is not listed, contact
 me after reading README.md
 
-# 11 - FAQ
+# 7 - FAQ
 
 Q: Why is the Baïkal logo a fish ?
 
