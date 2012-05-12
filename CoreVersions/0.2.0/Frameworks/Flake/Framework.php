@@ -109,7 +109,7 @@ class Framework extends \Flake\Core\Framework {
 		define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
 
 		# Define path to Baïkal SQLite file
-		define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
+		define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/.ht.db.sqlite");
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
 
