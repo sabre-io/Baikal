@@ -8,13 +8,16 @@ echo "#     by their target). Useful for FTP deployment"
 echo "#"
 echo "#"
 
-BRANCH="mongoose"
+BRANCH="master"
 TARGETFILE="/tmp/package.zip"
+SRCDIR="/Users/jeromeschneider/Desktop/Baikal/"
 TEMPDIR="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`-temp"
 TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
 
 # Export Project
-mkdir $TEMPDIR && cd ../../../../ && git archive $BRANCH | tar -x -C $TEMPDIR
+mkdir $TEMPDIR
+cd $SRCDIR
+git archive $BRANCH | tar -x -C $TEMPDIR
 
 # Dereferencig symlinks
 cp -RfL $TEMPDIR $TEMPDIRDEREFERENCE && \
