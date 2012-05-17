@@ -1,3 +1,4 @@
+{% autoescape false %}
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-circle-info"></i>Dashboard</h1>
 </header>
@@ -9,28 +10,26 @@
 	<div class="row">
 		<div class="span3">
 			<h2>Version</h2>
-			<p>This systems runs Baïkal <span class="label label-info"><?= $BAIKAL_VERSION ?></span></p>
+			<p>This systems runs Baïkal <span class="label label-info">{{ BAIKAL_VERSION }}</span></p>
 		</div>
 		<div class="span3">
 			<h2>Services</h2>
-			<?
-				if($BAIKAL_CAL_ENABLED === TRUE) {
-					$sCalDAVClass = "label-success";
-					$sCalDAVText = "On";
-				} else {
-					$sCalDAVClass = "label-important";
-					$sCalDAVText = "Off";
-				}
-				
-				if($BAIKAL_CARD_ENABLED === TRUE) {
-					$sCardDAVClass = "label-success";
-					$sCardDAVText = "On";
-				} else {
-					$sCardDAVClass = "label-important";
-					$sCardDAVText = "Off";
-				}
+			{% if BAIKAL_CAL_ENABLED %}
+				{% set caldavclass = 'label-success' %}
+				{% set caldavtext = 'On' %}
+			{% else %}
+				{% set caldavclass = 'label-important' %}
+				{% set caldavtext = 'Off' %}
+			{% endif %}
 			
-			?>
+			{% if BAIKAL_CARD_ENABLED %}
+				{% set carddavclass = 'label-success' %}
+				{% set carddavtext = 'On' %}
+			{% else %}
+				{% set carddavclass = 'label-important' %}
+				{% set carddavtext = 'Off' %}
+			{% endif %}
+			
 			<table class="table">
 				<tbody>
 					<tr>
@@ -39,24 +38,22 @@
 					</tr>
 					<tr>
 						<td>CalDAV</td>
-						<td><span class="label <?= $sCalDAVClass ?>"><?= $sCalDAVText ?></span></td>
+						<td><span class="label {{ caldavclass }}">{{ caldavtext }}</span></td>
 					</tr>
 					<tr>
 						<td>CardDAV</td>
-						<td><span class="label <?= $sCardDAVClass ?>"><?= $sCardDAVText ?></span></td>
+						<td><span class="label {{ carddavclass }}">{{ carddavtext }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="span6">
 			<h2>License and credits</h2>
-			<?
-				$sUrl = "http://baikal.codr.fr/version/" . $BAIKAL_VERSION . "/about";
-			?>
+			{% set url = 'http://baikal.codr.fr/version/' ~ BAIKAL_VERSION ~ '/about' %}
 			<p>Baïkal is open source software, and released under the terms of the GNU GPL v3.</p>
 			<p>Baïkal is developped by Jérôme Schneider. You can contact him at <a href="mailto:mail@jeromeschneider.fr">mail@jeromeschneider.fr</a>.</p>
 			<p>Baïkal is based upon other open source projects. Read the README.md file to learn about that.</p>
-			<p><a href="<?= $sUrl ?>"><?= $sUrl ?></a></p>
+			<p><a href="{{ url }}">{{ url }}</a></p>
 		</div>
 	</div>
 </section>
@@ -72,7 +69,7 @@
 				<tbody>
 					<tr>
 						<td>Registered users</td>
-						<td><span class="badge"><?= $nbusers ?></span></td>
+						<td><span class="badge">{{ nbusers }}</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -83,11 +80,11 @@
 				<tbody>
 					<tr>
 						<td>Number of calendars</td>
-						<td><span class="badge"><?= $nbcalendars ?></span></td>
+						<td><span class="badge">{{ nbcalendars }}</span></td>
 					</tr>
 					<tr>
 						<td>Number of events</td>
-						<td><span class="badge"><?= $nbevents ?></span></td>
+						<td><span class="badge">{{ nbevents }}</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -98,14 +95,15 @@
 				<tbody>
 					<tr>
 						<td>Number of address books</td>
-						<td><span class="badge"><?= $nbbooks ?></span></td>
+						<td><span class="badge">{{ nbbooks }}</span></td>
 					</tr>
 					<tr>
 						<td>Number of contacts</td>
-						<td><span class="badge"><?= $nbcontacts ?></span></td>
+						<td><span class="badge">{{ nbcontacts }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </section>
+{% endautoescape %}

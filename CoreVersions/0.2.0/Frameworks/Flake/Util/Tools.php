@@ -335,73 +335,15 @@ TEST;
 		
 		return "" . $sFirst;
 	}
-	
-	public static function	parseTemplateCodePhp($sCode, $aMarkers) {
-		extract($aMarkers);
-		ob_start();
-		echo eval('?>' . $sCode . '<?');
-		$sHtml = ob_get_contents();
-		ob_end_clean();
 		
-		return $sHtml;
-	}
-	
-	public static function stackMarkers($aMarkers) {
-		array_push($GLOBALS["TEMPLATESTACK"], $aMarkers);
-	}
-	
-	public static function unstackMarkers() {
-		array_pop($GLOBALS["TEMPLATESTACK"]);
-	}
-	
-	public static function &getMarkers() {
-		if(count($GLOBALS["TEMPLATESTACK"]) === 0) {
-			return FALSE;
-		}
-		
-		return $GLOBALS["TEMPLATESTACK"][count($GLOBALS["TEMPLATESTACK"]) - 1];
-	}
-	
 	public static function parseTemplateCode($sCode, $aMarkers) {
 		
-		self::stackMarkers($aMarkers);
+		$loader = new \Twig_Loader_String();
+		$twig = new \Twig_Environment($loader);
 		
-		$sPattern = '/{([^\{\}\n]*)}/';
-		$sCode = preg_replace_callback(
-			$sPattern,
-			"self::processMarkersCallBackClearNotUsed",
-			$sCode,
-			-1	// no limit
-		);
-		
-		self::unstackMarkers();
-
-		return $sCode;
+		return $twig->render($sCode, $aMarkers);
 	}
 	
-	public static function processMarkersCallBackClearNotUsed($aMatch) {
-		return self::resolveForTemplate($aMatch[1], self::getMarkers());
-	}
-	
-	public static function resolveForTemplate($sSearch, $aMarkers) {
-		
-		$aSearchParts = explode(".", $sSearch);
-		$sSearchPart = array_shift($aSearchParts);
-		
-		if(\Flake\Util\Tools::is_a($aMarkers, "\Flake\Core\Model")) {
-			$aMarkers = $aMarkers->getData();
-		}
-		
-		if(!array_key_exists($sSearchPart, $aMarkers)) {
-			return "";
-		}
-		
-		if(count($aSearchParts) > 0) {
-			return self::resolveForTemplate(implode(".", $aSearchParts), $aMarkers[$sSearchPart]);
-		}
-		
-		return $aMarkers[$sSearchPart];
-	}
 	
 	public static function is_a($object, $class) {
 	    if(is_object($object)) return $object instanceof $class;
