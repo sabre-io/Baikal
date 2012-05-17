@@ -51,7 +51,7 @@ abstract class View extends \Flake\Core\FLObject {
 	
 	public function render() {
 		$sTemplatePath = $this->templatesPath();
-		$oTemplate = new \Flake\Core\Template($this->templatesPath(), TRUE);
+		$oTemplate = new \Flake\Core\Template($this->templatesPath());
 		return $oTemplate->parse($this->getData());
 	}
 	

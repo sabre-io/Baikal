@@ -130,7 +130,19 @@ class Calendars extends \Flake\Core\Controller {
 		
 		# List of calendars
 		$oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
-		$oView->setData("calendars", $oCalendars);
+		$aCalendars = array();
+		
+		foreach($oCalendars as $calendar) {
+			$aCalendars[] = array(
+				"linkedit" => \BaikalAdmin\Controller\User\Calendars::linkEdit($calendar),
+				"linkdelete" => \BaikalAdmin\Controller\User\Calendars::linkDelete($calendar),
+				"icon" => $calendar->icon(),
+				"label" => $calendar->label(),
+				"description" => $calendar->get("description"),
+			);
+		}
+		
+		$oView->setData("calendars", $aCalendars);
 		
 		# Messages
 		$sMessages = implode("\n", $this->aMessages);
@@ -143,7 +155,13 @@ class Calendars extends \Flake\Core\Controller {
 		}
 		
 		$oView->setData("form", $sForm);
-
+		$oView->setData("titleicon", \Baikal\Model\Calendar::bigicon());
+		$oView->setData("modelicon", $this->oUser->mediumicon());
+		$oView->setData("modellabel", $this->oUser->label());
+		$oView->setData("linkback", \BaikalAdmin\Controller\Users::link());
+		$oView->setData("linknew", \BaikalAdmin\Controller\User\Calendars::linkNew());
+		$oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
+		
 		return $oView->render();
 	}
 	

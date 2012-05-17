@@ -1,9 +1,10 @@
+{% autoescape false %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>{pagetitle}</title>
-		<base href="{baseurl}" />
+		<title>{{ pagetitle }}</title>
+		<base href="{{ baseurl }}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<!-- Le styles -->
@@ -17,13 +18,13 @@
 		<!--[if lt IE 9]>
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		{head}
+		{{ head }}
 	</head>
 	<body>
-		{navbar}
+		{{ navbar }}
 		
 		<div class="container">
-			{Payload}
+			{{ Payload }}
 		</div> <!-- /container -->
 
 		<!-- Le javascript
@@ -48,6 +49,7 @@
 				placement: 'bottom'
 			});
 		</script>
-		{javascript}
+		{{ javascript }}
 	</body>
 </html>
+{% endautoescape %}
