@@ -1,38 +1,30 @@
+{% autoescape false %}
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-group"></i>Users</h1>
 	<p class="lead pull-left">Manage Baïkal user accounts, and associated resources.</p>
-	<p class="lead pull-right"><a class="btn btn btn-inverse" href="<?= \BaikalAdmin\Controller\Users::linkNew() ?>"><i class="icon-white <?= \Baikal\Model\User::icon() ?>"></i> + Add user</a></p>
+	<p class="lead pull-right"><a class="btn btn btn-inverse" href="{{ linknew }}"><i class="icon-white {{ usericon }}"></i> + Add user</a></p>
 </header>
 
 <table class="table table-bordered table-striped users">
-<?
-	foreach($users as $user):
-
-		$linkcalendars = \BaikalAdmin\Controller\Users::linkCalendars($user);
-		$linkaddressbooks = \BaikalAdmin\Controller\Users::linkAddressBooks($user);
-		$linkedit = \BaikalAdmin\Controller\Users::linkEdit($user);
-		$linkdelete = \BaikalAdmin\Controller\Users::linkDelete($user);
-		$mailtouri = $user->getMailtoURI();
-?>
-	
+	{% for user in users %}
 	<tr>
 		<td class="col-username">
-			<i class="<?= \Baikal\Model\User::icon() ?>"></i> <strong><?= $user->get("username"); ?></strong><br />
-			<?= $user->get("displayname"); ?> <a href="<?= $mailtouri ?>">&lt;<?= $user->get("email"); ?>&gt;</a>
+			<i class="{{ usericon }}"></i> <strong>{{ user.username|escape }}</strong><br />
+			{{ user.displayname|escape }} <a href="{{ user.mailtouri|escape }}">&lt;{{ user.email|escape }}&gt;</a>
 		</td>
 		<td class="col-actions no-border-left">
 			<p class="pull-right">
-				<nobr><a class="btn" href="<?= $linkcalendars ?>"><i class="<?= \Baikal\Model\Calendar::icon() ?>"></i> Calendars</a></nobr>
-				<nobr><a class="btn" href="<?= $linkaddressbooks ?>"><i class="icon-book"></i> Address Books</a></nobr>
-				<nobr><a class="btn btn-primary" href="<?= $linkedit ?>"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
-				<nobr><a class="btn btn-danger" href="<?= $linkdelete ?>"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+				<nobr><a class="btn" href="{{ user.linkcalendars }}"><i class="{{ calendaricon }}"></i> Calendars</a></nobr>
+				<nobr><a class="btn" href="{{ user.linkaddressbooks }}"><i class="icon-book"></i> Address Books</a></nobr>
+				<nobr><a class="btn btn-primary" href="{{ user.linkedit }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
+				<nobr><a class="btn btn-danger" href="{{ user.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
 			</p>
 		</td>
 	</tr>
-	
-<?	endforeach ?>
+	{% endfor %}
 </table>
 
 <a id='form'></a>
-<?= $messages ?>
-<?= $form ?>
+{{ messages }}
+{{ form }}
+{% endautoescape %}
