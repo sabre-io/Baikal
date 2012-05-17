@@ -124,8 +124,22 @@ class AddressBooks extends \Flake\Core\Controller {
 		$oView->setData("user", $this->oUser);
 		
 		# Render list of address books
+		$aAddressBooks = array();
+		
 		$oAddressBooks = $this->oUser->getAddressBooksBaseRequester()->execute();
-		$oView->setData("addressbooks", $oAddressBooks);
+		
+		reset($oAddressBooks);
+		foreach($oAddressBooks as $addressbook) {
+			$aAddressBooks[] = array(
+				"linkedit" => \BaikalAdmin\Controller\User\AddressBooks::linkEdit($addressbook),
+				"linkdelete" => \BaikalAdmin\Controller\User\AddressBooks::linkDelete($addressbook),
+				"icon" => $addressbook->icon(),
+				"label" => $addressbook->label(),
+				"description" => $addressbook->get("description"),
+			);
+		}
+		
+		$oView->setData("addressbooks", $aAddressBooks);
 		
 		# Messages
 		$sMessages = implode("\n", $this->aMessages);
@@ -138,6 +152,12 @@ class AddressBooks extends \Flake\Core\Controller {
 		}
 		
 		$oView->setData("form", $sForm);
+		$oView->setData("titleicon", \Baikal\Model\AddressBook::bigicon());
+		$oView->setData("modelicon", $this->oUser->mediumIcon());
+		$oView->setData("modellabel", $this->oUser->label());
+		$oView->setData("linkback", \BaikalAdmin\Controller\Users::link());
+		$oView->setData("linknew", \BaikalAdmin\Controller\User\AddressBooks::linkNew());
+		$oView->setData("addressbookicon", \Baikal\Model\AddressBook::icon());
 
 		return $oView->render();
 	}

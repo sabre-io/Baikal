@@ -102,8 +102,26 @@ class Users extends \Flake\Core\Controller {
 		$oView = new \BaikalAdmin\View\Users();
 		
 		# List of users
+		$aUsers = array();
 		$oUsers = \Baikal\Model\User::getBaseRequester()->execute();
-		$oView->setData("users", $oUsers);
+		
+		reset($oUsers);
+		foreach($oUsers as $user) {
+			$aUsers[] = array(
+				"linkcalendars" => \BaikalAdmin\Controller\Users::linkCalendars($user),
+				"linkaddressbooks" => \BaikalAdmin\Controller\Users::linkAddressBooks($user),
+				"linkedit" => \BaikalAdmin\Controller\Users::linkEdit($user),
+				"linkdelete" => \BaikalAdmin\Controller\Users::linkDelete($user),
+				"mailtouri" => $user->getMailtoURI(),
+				"username" => $user->get("username"),
+				"displayname" => $user->get("displayname"),
+				"email" => $user->get("email"),
+			);
+		}
+		
+		$oView->setData("users", $aUsers);
+		$oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
+		$oView->setData("usericon", \Baikal\Model\User::icon());
 		
 		# Messages
 		$sMessages = implode("\n", $this->aMessages);
@@ -117,6 +135,8 @@ class Users extends \Flake\Core\Controller {
 		}
 		
 		$oView->setData("form", $sForm);
+		$oView->setData("usericon", \Baikal\Model\User::icon());
+		$oView->setData("linknew", \BaikalAdmin\Controller\Users::linkNew());
 		
 		return $oView->render();
 	}

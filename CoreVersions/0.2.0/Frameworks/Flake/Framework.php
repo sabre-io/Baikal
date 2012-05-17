@@ -124,7 +124,10 @@ class Framework extends \Flake\Core\Framework {
 		unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
 
 		#################################################################################################
-
+		
+		require_once(FLAKE_PATH_ROOT . 'Util/Twig/lib/Twig/Autoloader.php');
+		\Twig_Autoloader::register();
+		
 		require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 		\Flake\Core\ClassLoader::register();
 
