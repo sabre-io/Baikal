@@ -138,9 +138,13 @@ In our example, we will assume that the apache2 configuration directory is:
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
 
-# 4 - Connecting your CalDAV / CardDAV client to Baïkal
+# 4 - Accessing the Baïkal Web Admin
 
-## 4.1 - Apple iCal:
+Navigate to http://dav.mydomain.com/admin/
+
+# 5 - Connecting your CalDAV / CardDAV client to Baïkal
+
+## 5.1 - Apple iCal:
 
 Add a new CalDAV account:
 
@@ -148,7 +152,7 @@ Add a new CalDAV account:
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/cal.php/principals/jerome 
 
-## 4.2 - Apple Address Book:
+## 5.2 - Apple Address Book:
 
 Add a new CardDAV account:
 
@@ -156,7 +160,7 @@ Add a new CardDAV account:
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
-## 4.3 - Thunderbird/Lighning:
+## 5.3 - Thunderbird/Lighning:
 
 Add a new CalDAV account:
 
@@ -165,23 +169,11 @@ Add a new CalDAV account:
 	  of and replace the domain name, and the username with the correct values
 	* When asked, provide user/password; your CalDAV account should be up and running
 
-# 5 - You're done
+# 6 - You're done
 
 You may now create new calendars, new events, new visit cards :) Enjoy.
 
-# 6 - Troubleshooting
+# 7 - Troubleshooting
 
 For troubleshooting read the FAQ below. If your problem is not listed, contact
 me after reading README.md
-
-# 7 - FAQ
-
-Q: Why is the Baïkal logo a fish ?
-
-A:The fish is an Omul. According to Wikipedia
-(http://en.wikipedia.org/wiki/Omul): The omul, Coregonus migratorius, also
-known as Baikal omul (Russian: байкальский омуль), is a whitefish species
-of the salmon family endemic to Lake Baikal in Siberia, Russia. It is
-considered a delicacy and is the object of one of the largest commercial
-fisheries on Lake Baikal. In 2004, it was listed in Russia as an endangered
-species.
