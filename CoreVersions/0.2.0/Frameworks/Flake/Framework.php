@@ -36,7 +36,7 @@ if(!function_exists("debug")) {
 
 class Framework extends \Flake\Core\Framework {
 	
-	function rmBeginSlash($sString) {
+	public static function rmBeginSlash($sString) {
 		if(substr($sString, 0, 1) === "/") {
 			$sString = substr($sString, 1);
 		}
@@ -44,7 +44,7 @@ class Framework extends \Flake\Core\Framework {
 		return $sString;
 	}
 
-	function rmEndSlash($sString) {
+	public static function rmEndSlash($sString) {
 		if(substr($sString, -1) === "/") {
 			$sString = substr($sString, 0, -1);
 		}
@@ -52,7 +52,7 @@ class Framework extends \Flake\Core\Framework {
 		return $sString;
 	}
 
-	function appendSlash($sString) {
+	public static function appendSlash($sString) {
 		if(substr($sString, -1) !== "/") {
 			$sString .= "/";
 		}
@@ -60,7 +60,7 @@ class Framework extends \Flake\Core\Framework {
 		return $sString;
 	}
 
-	function prependSlash($sString) {
+	public static function prependSlash($sString) {
 		if(substr($sString, 0, 1) !== "/") {
 			$sString = "/" . $sString;
 		}
@@ -69,6 +69,7 @@ class Framework extends \Flake\Core\Framework {
 	}
 	
 	public static function bootstrap() {
+		
 		# Asserting PHP 5.3.0+
 		if(version_compare(PHP_VERSION, '5.3.0', '<')) {
 			die('Flake Fatal Error: Flake requires PHP 5.3.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
@@ -94,10 +95,6 @@ class Framework extends \Flake\Core\Framework {
 			define("MONGOOSE_SERVER", FALSE);
 		}
 
-		# Display errors messages, except notices
-		#ini_set("display_errors", 1);
-		#ini_set("error_reporting", E_ALL & ~E_NOTICE);
-
 		#################################################################################################
 
 		# determine Flake install root path
@@ -110,6 +107,21 @@ class Framework extends \Flake\Core\Framework {
 
 		# Define path to Baïkal SQLite file
 		define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/.ht.db.sqlite");
+		
+		# Asserting DB file exists
+		if(!file_exists(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
+		}
+		
+		# Asserting DB file is readable
+		if(!is_readable(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file is not readable. Please give read permissions on file '<span style='font-family: monospace; background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
+		}
+		
+		# Asserting DB file is writable
+		if(!is_writable(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
+		}
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
 
@@ -145,7 +157,7 @@ class Framework extends \Flake\Core\Framework {
 		setlocale(LC_ALL, FLAKE_LOCALE);
 		date_default_timezone_set(FLAKE_TIMEZONE);
 
-		if(defined("PROJECT_SQLITE_FILE") && file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
+		if(file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
 			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
 		}
 
