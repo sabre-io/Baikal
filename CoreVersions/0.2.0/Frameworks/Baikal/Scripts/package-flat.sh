@@ -10,7 +10,7 @@ echo "#"
 
 BRANCH="master"
 TARGETFILE="/tmp/package.zip"
-SRCDIR="/Users/jerome/Desktop/temp-baikal/baikal-stock.0.2.0//"
+SRCDIR="../../../../"
 TEMPDIR="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`-temp"
 TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
 
