@@ -330,7 +330,7 @@ class Form {
 			}
 		}
 		
-		$sSubmittedFlagName = $this->sModelClass . "::submitted";
+		$sSubmittedFlagName = $this->submitSignatureName();
 		if($this->option("close") === TRUE) {
 			$sCloseUrl = $this->option("closeurl");
 			$sCloseButton = '<a class="btn" href="' . $sCloseUrl . '">Close</a>';
@@ -358,7 +358,11 @@ HTML;
 		return $sHtml;
 	}
 	
+	protected function submitSignatureName() {
+		return str_replace('\\', '_', $this->sModelClass . "::submitted");
+	}
+	
 	public function submitted() {
-		return intval(\Flake\Util\Tools::POST($this->sModelClass . "::submitted")) === 1;
+		return intval(\Flake\Util\Tools::POST($this->submitSignatureName())) === 1;
 	}
 }
