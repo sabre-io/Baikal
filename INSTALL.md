@@ -21,9 +21,10 @@ The following configuration is the minimum required:
 - an hosted webserver running apache 2 and PHP 5.3.0
 
 - PHP 5.3.0 or newer with the following extensions: 
-	- PDO and SQLite3 
+	- PDO and SQLite3
+        - DOM (php-xml)  
 	Some extensions can be optionally compiled into PHP. A list of loaded
-	extensions can be checked using the phpinfo() function. 
+	extensions can be checked using the phpinfo() function.
 
 - 30 MB of disk space
 
@@ -42,6 +43,7 @@ The following configuration is the minimum required:
 
 - PHP 5.3.0 or newer with the following extensions: 
 	- PDO and SQLite3 
+        - DOM (php-xml) 
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function. 
 
@@ -59,7 +61,7 @@ To get Baïkal, navigate to the following location:
 ## 3.1 - Installing Baïkal on a FTP-driven hosting
 
 To install Baïkal on a FTP-driven hosting:
-* Download the "Baikal package for installation via FTP"
+* Download the "Baikal Flat package for FTP"
 * Unzip the package on you computer
 * Send the unzipped package on the remote host via FTP
 * (optional) Rename the Baïkal folder to whatever you want
