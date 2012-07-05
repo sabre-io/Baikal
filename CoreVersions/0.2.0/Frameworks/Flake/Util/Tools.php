@@ -44,6 +44,14 @@ class Tools extends \Flake\Core\FLObject {
 		return $sUrl;
 	}
 	
+	public static function getCurrentProtocol() {
+		if((!empty($GLOBALS["_SERVER"]["HTTPS"]) && $GLOBALS["_SERVER"]['HTTPS'] !== 'off') || intval($_SERVER['SERVER_PORT']) === 443) {
+			return "https";
+		}
+		
+		return "http";
+	}
+	
 	public static function getUrlTokens() {
 		$sUrl = self::stripBeginSlash(self::getCurrentUrl());
 
