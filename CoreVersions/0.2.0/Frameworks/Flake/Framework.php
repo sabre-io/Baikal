@@ -108,6 +108,10 @@ class Framework extends \Flake\Core\Framework {
 		# Define path to Baïkal SQLite file
 		define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/.ht.db.sqlite");
 		
+		# Activate Flake class loader
+		require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
+		\Flake\Core\ClassLoader::register();
+		
 		# Asserting DB file exists
 		if(!file_exists(PROJECT_SQLITE_FILE)) {
 			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
@@ -129,19 +133,15 @@ class Framework extends \Flake\Core\Framework {
 		$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
 		$sDirName = self::appendSlash(dirname($sScript));
 		$sBaseUrl = self::appendSlash(substr($sDirName, 0, -1 * strlen(PROJECT_CONTEXT_BASEURI)));
-		$aParts = explode("/", $_SERVER["SERVER_PROTOCOL"]);
-		$sProtocol = strtolower(array_shift($aParts));
+		$sProtocol = \Flake\Util\Tools::getCurrentProtocol();
 		define("PROJECT_BASEURI", $sBaseUrl);
 		define("PROJECT_URI", $sProtocol . "://" . self::rmEndSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
-		unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($aParts);
+		unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol);
 
 		#################################################################################################
 		
 		require_once(FLAKE_PATH_ROOT . 'Util/Twig/lib/Twig/Autoloader.php');
 		\Twig_Autoloader::register();
-		
-		require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
-		\Flake\Core\ClassLoader::register();
 
 		# Include Flake Framework config
 		require_once(FLAKE_PATH_ROOT . "config.php");
