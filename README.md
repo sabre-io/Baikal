@@ -47,12 +47,12 @@ Auth informations to PHP, and thus preventing Cal/CardDAV to auth
 requests properly. Baïkal tries to address this issue by re-routing
 HTTP Auth informations using Apaches mod_rewrite. This is done by the
 Apache config directives found in the /.htaccess file that comes with Baïkal
-(or /html/.htaccess for the non-ftp package).
+(or /html/.htaccess for the non-ftp package). 
 Note: if this file is empty / does not exist, you should try to add it manually
 (sometimes FTP clients decide to not send files with names beginning with a dot ".")
 
 # 7. Credits
-Jérôme Schneider (@jeromeschneider) is admin and lead developper.
-Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal.codr.fr). Much appreciated, Daniel :)
+Jérôme Schneider (@jeromeschneider) is admin and lead developper. 
+Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal.codr.fr). Much appreciated, Daniel :) 
 
 -- Jérôme Schneider <mail@jeromeschneider.fr>  Sat, 12 May 2012 23:45:00 +0100
