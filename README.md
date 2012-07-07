@@ -51,4 +51,8 @@ Apache config directives found in the /.htaccess file that comes with Baïkal
 Note: if this file is empty / does not exist, you should try to add it manually
 (sometimes FTP clients decide to not send files with names beginning with a dot ".")
 
+# 7. Credits
+Jérôme Schneider (@jeromeschneider) is admin and lead developper.
+Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal.codr.fr). Much appreciated, Daniel :)
+
 -- Jérôme Schneider <mail@jeromeschneider.fr>  Sat, 12 May 2012 23:45:00 +0100
