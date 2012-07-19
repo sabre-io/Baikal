@@ -146,7 +146,7 @@ Navigate to http://dav.mydomain.com/admin/
 
 # 5 - Connecting your CalDAV / CardDAV client to Baïkal
 
-## 5.1 - Apple iCal:
+## 5.1 - Apple iCal (OSX):
 
 Add a new CalDAV account:
 
@@ -154,7 +154,17 @@ Add a new CalDAV account:
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/cal.php/principals/jerome 
 
-## 5.2 - Apple Address Book (OSX):
+## 5.2 - Apple Calendar (iOS):
+
+Add a new CardDAV account:
+
+	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
+ 	* Select "CalDAV" 
+  	* Server: dav.mydomain.com/cal.php          (note: no http:// nor https://, and no trailing slash) 
+	* username: the username you just created (in our example, jerome) 
+	* password: the password you just defined 
+
+## 5.3 - Apple Address Book (OSX):
 
 Add a new CardDAV account:
 
@@ -162,7 +172,7 @@ Add a new CardDAV account:
 	* password: the password you just defined 
 	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
-## 5.2 - Apple Contacts (iOS):
+## 5.4 - Apple Contacts (iOS):
 
 Add a new CardDAV account:
 
@@ -172,7 +182,7 @@ Add a new CardDAV account:
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 
-## 5.3 - Thunderbird/Lighning:
+## 5.5 - Thunderbird/Lighning:
 
 Add a new CalDAV account:
 
