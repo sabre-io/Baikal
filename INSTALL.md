@@ -160,7 +160,7 @@ Add a new CardDAV account:
 
 	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
  	* Select "CalDAV" 
-  	* Server: dav.mydomain.com/cal.php          (note: no http:// nor https://, and no trailing slash) 
+  	* Server: http://dav.mydomain.com/cal.php/principals/jerome 
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 
