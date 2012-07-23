@@ -142,8 +142,8 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 # Baïkal Web Admin ON/OFF switch; default TRUE
 define("BAIKAL_ADMIN_ENABLED", TRUE);
 
-# Baïkal Web Admin autolock ON/OFF switch; default TRUE
-define("BAIKAL_ADMIN_AUTOLOCKENABLED", TRUE);
+# Baïkal Web Admin autolock ON/OFF switch; default FALSE
+define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
 
 # Baïkal Web admin password hash; Set by Core/Scripts/adminpassword.php or via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");

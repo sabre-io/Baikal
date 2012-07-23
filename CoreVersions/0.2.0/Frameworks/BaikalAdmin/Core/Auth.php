@@ -37,7 +37,7 @@ class Auth {
 	
 	public static function assertUnlocked() {
 		
-		if(defined("BAIKAL_ADMIN_AUTOLOCKENABLED") && BAIKAL_ADMIN_AUTOLOCKENABLED === FALSE) {
+		if(!defined("BAIKAL_ADMIN_AUTOLOCKENABLED") || BAIKAL_ADMIN_AUTOLOCKENABLED === FALSE) {
 			return TRUE;
 		}
 		
