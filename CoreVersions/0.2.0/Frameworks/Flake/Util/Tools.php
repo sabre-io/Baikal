@@ -34,7 +34,7 @@ class Tools extends \Flake\Core\FLObject {
 	public static function getCurrentUrl() {
 		if(MONGOOSE_SERVER) {
 			$sUrl = $GLOBALS["_SERVER"]["REQUEST_URI"];
-			if(trim($GLOBALS["_SERVER"]["QUERY_STRING"]) !== "") {
+			if(array_key_exists("QUERY_STRING", $GLOBALS["_SERVER"]) && trim($GLOBALS["_SERVER"]["QUERY_STRING"]) !== "") {
 				$sUrl .= "?" . $GLOBALS["_SERVER"]["QUERY_STRING"];
 			}
 		} else {
