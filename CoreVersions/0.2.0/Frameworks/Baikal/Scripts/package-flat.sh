@@ -16,7 +16,9 @@ TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
 
 # Export Project
 mkdir $TEMPDIR
-cd $SRCDIR
+
+BASEDIR="`dirname $0`"
+PATH_this="`cd $BASEDIR && cd $SRCDIR && pwd`/"
 git archive $BRANCH | tar -x -C $TEMPDIR
 
 # Dereferencig symlinks
