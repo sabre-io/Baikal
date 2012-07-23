@@ -152,7 +152,7 @@ Add a new CalDAV account:
 
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
-	* In server address: http://dav.mydomain.com/cal.php/principals/jerome 
+	* In server address (replace domain and username): http://dav.mydomain.com/cal.php/principals/jerome 
 
 ## 5.2 - Apple Calendar (iOS):
 
@@ -170,7 +170,7 @@ Add a new CardDAV account:
 
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
-	* In server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default 
+	* In server address (replace domain and username): http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
 ## 5.4 - Apple Contacts (iOS):
 
@@ -197,5 +197,4 @@ You may now create new calendars, new events, new visit cards :) Enjoy.
 
 # 7 - Troubleshooting
 
-For troubleshooting read the FAQ below. If your problem is not listed, contact
-me after reading README.md
+Please read TROUBLESHOOTING.md in this folder.
