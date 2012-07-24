@@ -44,7 +44,7 @@ class Framework extends \Flake\Core\Framework {
 		
 		# Registering Baikal classloader
 		define("BAIKAL_PATH_FRAMEWORKROOT", dirname(__FILE__) . "/");
-		require_once(BAIKAL_PATH_FRAMEWORKROOT . '/Core/ClassLoader.php');
+		require_once(BAIKAL_PATH_FRAMEWORKROOT . 'Core/ClassLoader.php');
 		\Baikal\Core\ClassLoader::register();
 
 		\Baikal\Core\Tools::assertEnvironmentIsOk();
