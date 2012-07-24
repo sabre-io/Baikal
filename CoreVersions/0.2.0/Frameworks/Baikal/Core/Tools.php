@@ -61,17 +61,17 @@ class Tools {
 		
 		# Asserting DB file exists
 		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/db.empty.sqlite' to 'Specific/db/.ht.db.sqlite'");
+			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/db.empty.sqlite' to '" . PROJECT_SQLITE_FILE . "'");
 		}
 		
 		# Asserting DB file is readable
 		if(!is_readable(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file is not readable. Please give read permissions to httpd user on file 'Specific/db/.ht.db.sqlite'.");
+			throw new \Exception("DB file is not readable. Please give read permissions to httpd user on file '" . PROJECT_SQLITE_FILE . "'.");
 		}
 		
 		# Asserting DB file is writable
 		if(!is_writable(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file is not writable. Please give write permissions to httpd user on file 'Specific/db/.ht.db.sqlite'.");
+			throw new \Exception("DB file is not writable. Please give write permissions to httpd user on file '" . PROJECT_SQLITE_FILE . "'.");
 		}
 		
 		# Asserting config file exists
