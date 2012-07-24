@@ -180,6 +180,10 @@ define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
 define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
+
+# Define path to Baïkal Database SQLite file
+define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
+
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;
