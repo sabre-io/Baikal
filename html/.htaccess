@@ -14,8 +14,3 @@
 <IfModule mod_expires.c>
 	ExpiresActive Off
 </IfModule>
-
-<Directory "Specific">
-	Order allow,deny
-	Deny from all
-</Directory>
