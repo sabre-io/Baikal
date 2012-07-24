@@ -105,27 +105,9 @@ class Framework extends \Flake\Core\Framework {
 		define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
 		define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
 
-		# Define path to Baïkal SQLite file
-		define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/.ht.db.sqlite");
-		
 		# Activate Flake class loader
 		require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
 		\Flake\Core\ClassLoader::register();
-		
-		# Asserting DB file exists
-		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
-		}
-		
-		# Asserting DB file is readable
-		if(!is_readable(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file is not readable. Please give read permissions on file '<span style='font-family: monospace; background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
-		}
-		
-		# Asserting DB file is writable
-		if(!is_writable(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>Specific/db/.ht.db.sqlite</span>'</h3>");
-		}
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
 
@@ -156,16 +138,54 @@ class Framework extends \Flake\Core\Framework {
 
 		setlocale(LC_ALL, FLAKE_LOCALE);
 		date_default_timezone_set(FLAKE_TIMEZONE);
-
-		if(file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
-			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
-		}
-
+		
 		$GLOBALS["TEMPLATESTACK"] = array();
 
 		$aUrlInfo = parse_url(PROJECT_URI);
 		define("FLAKE_DOMAIN", $_SERVER["HTTP_HOST"]);
 		define("FLAKE_URIPATH", \Flake\Util\Tools::stripBeginSlash($aUrlInfo["path"]));
 		unset($aUrlInfo);
+		
+		
+		# Include Project config
+		$sConfigPath = PROJECT_PATH_SPECIFIC . "config.php";
+		$sConfigSystemPath = PROJECT_PATH_SPECIFIC . "config.system.php";
+		
+		if(file_exists($sConfigPath)) {
+			require_once($sConfigPath);
+		}
+		
+		if(file_exists($sConfigSystemPath)) {
+			require_once($sConfigSystemPath);
+		}
+		
+		self::initDb();
+	}
+	
+	protected static function initDb() {
+		
+		# Asserting DB filepath is set
+		if(!defined("PROJECT_SQLITE_FILE")) {
+			return;
+		}
+		
+		# Asserting DB file exists
+		if(!file_exists(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+		}
+		
+		# Asserting DB file is readable
+		if(!is_readable(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file is not readable. Please give read permissions on file '<span style='font-family: monospace; background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+		}
+		
+		# Asserting DB file is writable
+		if(!is_writable(PROJECT_SQLITE_FILE)) {
+			die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+		}
+		
+		if(file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
+			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
+		}
 	}
 }
