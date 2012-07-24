@@ -9,7 +9,6 @@ echo "#"
 echo "#"
 
 BRANCH="master"
-TARGETFILE="/tmp/package.zip"
 SRCDIR="../../../../"
 TEMPDIR="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`-temp"
 TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
@@ -60,7 +59,9 @@ mv html/.htaccess .
 rm -Rf html
 
 # Tagging Distrib
-cat Core/Distrib.php | sed -e "s/\"regular\"/\"flat\"/g" > Core/Distrib.php
+cat Core/Distrib.php | sed -e "s/\"regular\"/\"flat\"/g" > Core/Distrib2.php && \
+rm -f Core/Distrib.php && \
+mv Core/Distrib2.php Core/Distrib.php
 
 # Displaying result
 echo "#     "$TEMPDIR
