@@ -6,7 +6,7 @@
 	<Directory "/var/www/dav.mydomain.com/html">
 		Options None
 		Options +FollowSymlinks
-		AllowOverride None
+		AllowOverride All
 	</Directory>
 
 </VirtualHost>
