@@ -47,6 +47,9 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_STANDALONE_PORT" => array(
 			"type" => "integer",
 		),
+		"PROJECT_SQLITE_FILE" => array(
+			"type" => "litteral",
+		),
 	);
 		
 	protected $aData = array(
@@ -56,6 +59,7 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_CAL_BASEURI" => "",
 		"BAIKAL_STANDALONE_ALLOWED" => "",
 		"BAIKAL_STANDALONE_PORT" => "",
+		"PROJECT_SQLITE_FILE" => "",
 	);
 	
 	public function formMorphologyForThisModelInstance() {
@@ -84,19 +88,6 @@ class System extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "BAIKAL_PATH_SABREDAV",
-			"label" => "Path to SabreDAV",
-			"validation" => "required",
-			"inputclass" => "input-xxlarge",
-			"help" => "The absolute server path to SabreDAV API",
-			"popover" => array(
-				"title" => "Path to SabreDAV",
-				"content" => "If Baïkal is hosted in a subfolder, this path should reflect it.<br /><strong>Whatever happens, it should begin and end with a slash.</strong>",
-				"position" => "top"
-			)
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_AUTH_REALM",
 			"label" => "Auth realm",
 			"validation" => "required",
@@ -118,6 +109,27 @@ class System extends \Baikal\Model\Config {
 				"label" => "Standalone Baïkal port"
 			)));
 		}
+		
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_PATH_SABREDAV",
+			"label" => "Path to SabreDAV",
+			"validation" => "required",
+			"inputclass" => "input-xxlarge",
+			"help" => "The absolute server path to SabreDAV API",
+			"popover" => array(
+				"title" => "Path to SabreDAV",
+				"content" => "If Baïkal is hosted in a subfolder, this path should reflect it.<br /><strong>Whatever happens, it should begin and end with a slash.</strong>",
+				"position" => "top"
+			)
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_SQLITE_FILE",
+			"label" => "SQLite file path",
+			"validation" => "required",
+			"inputclass" => "input-xxlarge",
+			"help" => "The absolute server path to the SQLite file",
+		)));
 				
 		return $oMorpho;
 	}

@@ -26,3 +26,4 @@
 
 define("BAIKAL_VERSION", "0.2.0");
 define("BAIKAL_HOMEPAGE", "http://baikal.codr.fr");
+define("PROJECT_PACKAGE", "regular");
