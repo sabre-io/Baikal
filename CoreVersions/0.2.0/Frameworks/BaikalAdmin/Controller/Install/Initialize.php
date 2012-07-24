@@ -41,6 +41,8 @@ class Initialize extends \Flake\Core\Controller {
 		}
 		
 		$this->createDefaultConfigFilesIfNeeded();
+		$this->createHtaccessFilesIfNeeded();
+		
 		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
 		
 		# Assert that config file is writable
@@ -101,6 +103,25 @@ PHP;
 	
 	protected function tagConfiguredVersion() {
 		file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
+	}
+	
+	protected function createHtaccessFilesIfNeeded() {
+
+		if(!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
+			@copy(PROJECT_PATH_CORERESOURCES . "htaccess-documentroot", PROJECT_PATH_DOCUMENTROOT . ".htaccess");
+		}
+		
+		if(!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
+			throw new \Exception("Unable to create " . PROJECT_PATH_DOCUMENTROOT . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "htaccess-documentroot");
+		}
+		
+		if(!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
+			@copy(PROJECT_PATH_CORERESOURCES . "htaccess-specific", PROJECT_PATH_SPECIFIC . ".htaccess");
+		}
+		
+		if(!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
+			throw new \Exception("Unable to create " . PROJECT_PATH_SPECIFIC . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "htaccess-specific");
+		}
 	}
 	
 	protected function createDefaultConfigFilesIfNeeded() {
@@ -180,6 +201,10 @@ define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
 define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
+
+# Define path to Baïkal Database SQLite file
+define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
+
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;

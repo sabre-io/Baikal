@@ -59,5 +59,8 @@ mv html/* .
 mv html/.htaccess .
 rm -Rf html
 
+# Tagging Distrib
+cat Core/Distrib.php | sed -e "s/\"regular\"/\"flat\"/g" > Core/Distrib.php
+
 # Displaying result
 echo "#     "$TEMPDIR
