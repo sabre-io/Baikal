@@ -1,5 +1,5 @@
 Specific/ENABLE_ADMIN
 Specific/config.php
 Specific/config.system.php
-Specific/db/.ht.db.sqlite
+Specific/db/db.sqlite
 Specific/virtualhosts/baikal.apache2
