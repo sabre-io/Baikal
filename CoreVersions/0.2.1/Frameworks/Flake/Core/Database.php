@@ -30,16 +30,16 @@ abstract class Database extends \Flake\Core\FLObject {
 
 	/* common stuff */
 
-	function messageAndDie($sMessage) {
+	protected function messageAndDie($sMessage) {
 		$sError = "<h2>" . get_class($this) . ": " . $sMessage . "</h2>";
 		die($sError);
 	}
 
-	function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
+	public function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 		return $this->query($this->INSERTquery($table,$fields_values,$no_quote_fields));
 	}
 
-	function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
+	public function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_array($fields_values) && count($fields_values))	{
@@ -63,11 +63,11 @@ abstract class Database extends \Flake\Core\FLObject {
 		}
 	}
 
-	function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
+	public function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 		return $this->query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields));
 	}
 
-	function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
+	public function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where))	{
@@ -99,11 +99,11 @@ abstract class Database extends \Flake\Core\FLObject {
 		}
 	}
 
-	function exec_DELETEquery($table,$where)	{
+	public function exec_DELETEquery($table,$where)	{
 		return $this->query($this->DELETEquery($table,$where));
 	}
 
-	function DELETEquery($table,$where)	{
+	public function DELETEquery($table,$where)	{
 		if (is_string($where))	{
 
 				// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
@@ -119,11 +119,11 @@ abstract class Database extends \Flake\Core\FLObject {
 		}
 	}
 
-	function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+	public function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 		return $this->query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit));
 	}
 
-	function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+	public function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
 
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 			// Build basic query:
@@ -154,11 +154,11 @@ abstract class Database extends \Flake\Core\FLObject {
 		return $query;
 	}
 	
-	function fullQuote($str, $table)	{
+	public function fullQuote($str, $table)	{
 		return '\''.$this->quote($str, $table).'\'';
 	}
 
-	function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
+	public function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
 		if (is_string($noQuote))	{
 			$noQuote = explode(',',$noQuote);
 		} elseif (!is_array($noQuote))	{	// sanity check
@@ -173,11 +173,34 @@ abstract class Database extends \Flake\Core\FLObject {
 		return $arr;
 	}
 	
-	/* fonctions abstraites */
+	/* Should be abstract, but we provide a body anyway as PDO abstracts these methods for us */
 	
-	abstract function query($sSql);
+	public function query($sSql) {
+		if(($stmt = $this->oDb->query($sSql)) === FALSE) {
+			$sMessage = print_r($this->oDb->errorInfo(), TRUE);
+			throw new \Exception("SQL ERROR in: '" . $sSql . "'; Message: " . $sMessage);
+		}
+		
+		return new \Flake\Core\Database\Statement($stmt);
+	}
 	
-	abstract function lastInsertId();
+	public function lastInsertId() {
+		return $this->oDb->lastInsertId();
+	}
 
-	abstract function quote($str);
+	public function quote($str) {
+		return substr($this->oDb->quote($str), 1, -1);	# stripping first and last quote
+	}
+	
+	public function getPDO() {
+		return $this->oDb;
+	}
+	
+	public function close() {
+		$this->oDb = null;
+	}
+	
+	public function __destruct() {
+		$this->close();
+	}
 }

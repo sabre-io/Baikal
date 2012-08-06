@@ -37,6 +37,7 @@ abstract class Element {
 		"placeholder" => "",
 		"help" => "",
 		"popover" => "",
+		"refreshonchange" => FALSE,
 	);
 	
 	protected $sValue = "";
@@ -79,6 +80,20 @@ abstract class Element {
 	
 	public function __toString() {
 		return get_class($this) . "<" . $this->option("label") . ">";
+	}
+	
+	public function renderWitness() {
+		return '<input type="hidden" name="witness[' . $this->option("prop") . ']" value="1" />';
+	}
+	
+	public function posted() {
+		$aPost = \Flake\Util\Tools::POST("witness");
+		if(is_array($aPost)) {
+			$sProp = $this->option("prop");
+			return (array_key_exists($sProp, $aPost)) && (intval($aPost[$sProp]) === 1);
+		}
+		
+		return FALSE;
 	}
 	
 	public abstract function render();
