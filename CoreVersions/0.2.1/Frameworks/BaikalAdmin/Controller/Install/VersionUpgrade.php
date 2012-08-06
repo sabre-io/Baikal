@@ -39,14 +39,25 @@ class VersionUpgrade extends \Flake\Core\Controller {
 		$sBigIcon = "glyph2x-magic";
 		$sBaikalVersion = BAIKAL_VERSION;
 		$sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
-
+		
+		if(BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
+			$sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
+		} else {
+			$sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
+		}
+		
 		$sHtml = <<<HTML
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="{$sBigIcon}"></i>Baïkal upgrade wizard</h1>
-	<p class="lead">Upgrading Baïkal from version <strong>{$sBaikalConfiguredVersion}</strong> to version <strong>{$sBaikalVersion}</strong></p>
+	<p class="lead">{$sMessage}</p>
 </header>
 HTML;
-
+		
+		$sHtml .= $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
 		return $sHtml;
+	}
+	
+	protected function upgrade($sVersionFrom, $sVersionTo) {
+		return "";
 	}
 }
