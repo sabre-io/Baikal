@@ -38,18 +38,35 @@ class Morphology {
 		$this->oElements->push($oElement);
 	}
 	
-	public function element($sPropName) {
+	protected function keyForPropName($sPropName) {
 		$aKeys = $this->oElements->keys();
 		reset($aKeys);
 		foreach($aKeys as $sKey) {
 			$oElement = $this->oElements->getForKey($sKey);
 			
 			if($oElement->option("prop") === $sPropName) {
-				return $oElement;
+				return $sKey;
 			}
 		}
 		
-		throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
+		return FALSE;
+	}
+	
+	public function &element($sPropName) {
+		if(($sKey = $this->keyForPropName($sPropName)) === FALSE) {
+			throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
+		}
+		
+		$oElement = $this->oElements->getForKey($sKey);
+		return $oElement;
+	}
+	
+	public function remove($sPropName) {
+		if(($sKey = $this->keyForPropName($sPropName)) === FALSE) {
+			throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
+		}
+		
+		$this->oElements->remove($sKey);
 	}
 	
 	public function elements() {

@@ -201,6 +201,21 @@ define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 # Define path to Baïkal Database SQLite file
 define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
 
+# Mysql > Use mysql instead of SQLite ?
+define("PROJECT_DB_MYSQL", FALSE);
+
+# MySQL > Host, including ':portnumber' if port is not the default one (3306)
+define("PROJECT_DB_MYSQL_HOST", "");
+
+# MySQL > Database name
+define("PROJECT_DB_MYSQL_DBNAME", "");
+
+# MySQL > Username
+define("PROJECT_DB_MYSQL_USERNAME", "");
+
+# MySQL > Password
+define("PROJECT_DB_MYSQL_PASSWORD", "");
+
 CODE;
 		$sCode = trim($sCode);
 		return $sCode;

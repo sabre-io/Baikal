@@ -33,6 +33,8 @@ class Form {
 		"action" => "",
 		"close" => TRUE,
 		"closeurl" => "",
+		"hook.validation" => FALSE,
+		"hook.morphology" => FALSE,
 	);
 	protected $oModelInstance = null;
 	protected $oElements = null;
@@ -41,6 +43,8 @@ class Form {
 	
 	protected $sDisplayTitle = "";		# Displayed form title; generated in setModelInstance()
 	protected $sDisplayMessage = "";	# Displayed confirm message; generated in execute()
+	
+	protected $oMorpho = null;
 	
 	public function __construct($sModelClass, $aOptions = array()) {
 		$this->sModelClass = $sModelClass;
@@ -64,6 +68,21 @@ class Form {
 	public function options() {
 		$aOptions = $this->aOptions;
 		return $aOptions;
+	}
+	
+	public function getMorpho() {
+		if(!is_null($this->oMorpho)) {
+			return $this->oMorpho;
+		}
+		
+		$this->oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
+		
+		# Calling validation hook if defined
+		if(($aHook = $this->option("hook.morphology")) !== FALSE) {
+			call_user_func($aHook, $this, $this->oMorpho);
+		}
+
+		return $this->oMorpho;
 	}
 	
 	public function setModelInstance($oModelInstance) {
@@ -104,7 +123,7 @@ class Form {
 	
 	public function execute() {
 		# Obtaining morphology from model object
-		$oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
+		$oMorpho = $this->getMorpho();
 		
 		$this->aErrors = array();
 		$oMorpho->elements()->reset();
@@ -117,15 +136,24 @@ class Form {
 			$sPropName = $oElement->option("prop");
 			
 			# posted value is fetched, then passes to element before persistance
-			$sPostValue = $this->postValue($sPropName);
-			$oElement->setValue($sPostValue);
-			
-			$sValue = $oElement->value();
-			
-			$this->modelInstance()->set(
-				$sPropName,
-				$sValue
-			);
+			if($oElement->posted()) {
+				
+				$sPostValue = $this->postValue($sPropName);
+				$oElement->setValue($sPostValue);
+
+				$sValue = $oElement->value();
+
+				$this->modelInstance()->set(
+					$sPropName,
+					$sValue
+				);
+			} else {
+				$oElement->setValue(
+					$this->modelInstance()->get(
+						$sPropName
+					)
+				);
+			}
 		}
 		
 		$oMorpho->elements()->reset();
@@ -162,16 +190,15 @@ class Form {
 				}
 
 				if($mValid !== TRUE) {
-					$this->aErrors[] = array(
-						"element" => $oElement,
-						"message" => $mValid,
-					);
-					
-					$oElement->setOption("error", TRUE);
-					
+					$this->declareError($oElement, $mValid);
 					break;	# one error per element per submit
 				}
 			}
+		}
+		
+		# Calling validation hook if defined
+		if(($aHook = $this->option("hook.validation")) !== FALSE) {
+			call_user_func($aHook, $this, $oMorpho);
 		}
 		
 		if(empty($this->aErrors)) {
@@ -198,12 +225,22 @@ class Form {
 			$this->modelInstance()->persist();
 			if($bWasFloating === FALSE) {
 				# Title is generated now, as submitted data might have changed the model instance label
-				$this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<strong><i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+				$this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
 			}
 			$this->bPersisted = TRUE;
 		} else {
 			$this->bPersisted = FALSE;
 		}
+	}
+	
+	# public, as it may be called from a hook
+	public function declareError(\Formal\Element $oElement, $sMessage = "") {
+		$this->aErrors[] = array(
+			"element" => $oElement,
+			"message" => $sMessage,
+		);
+		
+		$oElement->setOption("error", TRUE);
 	}
 	
 	public function persisted() {
@@ -279,13 +316,19 @@ class Form {
 	}
 	
 	public function postValue($sPropName) {
-		return \Flake\Util\Tools::POST($sPropName);
+		$aData = \Flake\Util\Tools::POST("data");
+
+		if(is_array($aData) && array_key_exists($sPropName, $aData)) {
+			return $aData[$sPropName];
+		}
+		
+		return "";
 	}
 	
 	public function render() {
 		$aHtml = array();
 		
-		$oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
+		$oMorpho = $this->getMorpho();
 		
 		$oMorpho->elements()->reset();
 		foreach($oMorpho->elements() as $oElement) {
@@ -320,6 +363,10 @@ class Form {
 				$aMessages = array();
 				reset($this->aErrors);
 				foreach($this->aErrors as $aError) {
+					if(trim($aError["message"]) === "") {
+						continue;
+					}
+					
 					$aMessages[] = $aError["message"];
 				}
 				
