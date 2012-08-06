@@ -41,7 +41,11 @@ class Sqlite extends \Flake\Core\Database {
 	}
 	
 	public function query($sSql) {
-		$stmt = $this->oDb->query($sSql);
+		if(($stmt = $this->oDb->query($sSql)) === FALSE) {
+			$sMessage = print_r($this->oDb->errorInfo(), TRUE);
+			throw new \Exception("SQL ERROR in: '" . $sSql . "'; Message: " . $sMessage);
+		}
+		
 		return new \Flake\Core\Database\SqliteStatement($stmt);
 	}
 	

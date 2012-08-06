@@ -26,26 +26,38 @@
 
 namespace Flake\Core;
 
-class CollectionTyped extends \Flake\Core\Collection {
-
-	protected $sTypeClassOrProtocol;
-
-	public function __construct($sTypeClassOrProtocol) {
-		$this->sTypeClassOrProtocol = $sTypeClassOrProtocol;
-		$this->setMetaType($this->sTypeClassOrProtocol);
+abstract class Route extends \Flake\Core\FLObject {
+	
+	# should be abstract, but is not, due to PHP strict standard
+	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+		
 	}
-
-	public function push(&$mMixed) {
-		if(!\Flake\Util\Tools::is_a($mMixed, $this->sTypeClassOrProtocol)) {
-			throw new \Exception("\Flake\Core\CollectionTyped<" . $this->sTypeClassOrProtocol . ">: Given object is not correctly typed.");
-		}
-
-		parent::push($mMixed);
+	public static function parametersMap() {
+		return array();
 	}
 	
-	# Create a new collection like this one
-	public function newCollectionLikeThisOne() {
-		$oCollection = new \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
-		return $oCollection;
+	# converts raw url params "a/b/c/d"=[a, b, c, d] in route params [a=>b, c=>d]
+	
+	public static function getParams() {
+		$aRouteParams = array();
+		
+		$aParametersMap = static::parametersMap();	# static to use method as defined in derived class
+		$aURLParams = $GLOBALS["ROUTER"]::getURLParams();
+		
+		reset($aParametersMap);
+		foreach($aParametersMap as $sParam => $aMap) {
+			$sURLToken = $sParam;
+			
+			if(array_key_exists("urltoken", $aMap)) {
+				$sURLToken = $aMap["urltoken"];
+			}
+			
+			if(($iPos = array_search($sURLToken, $aURLParams)) !== FALSE) {
+				$aRouteParams[$sParam] = $aURLParams[($iPos + 1)];	# the value corresponding to this param is the next one in the URL
+			}
+		}
+		
+		reset($aRouteParams);
+		return $aRouteParams;
 	}
 }

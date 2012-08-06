@@ -32,8 +32,6 @@ class Logout extends \Flake\Core\Controller {
 		\BaikalAdmin\Core\Auth::unAuthenticate();
 		
 		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
-#		debug($sControllerForDefaultRoute);
-#		die();
 		$sLink = $GLOBALS["ROUTER"]::buildRouteForController($sControllerForDefaultRoute, "loggedout");
 		\Flake\Util\Tools::redirect($sLink);
 	}

@@ -27,13 +27,6 @@
 namespace Flake;
 require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Core/Framework.php");	# Manual require as Classloader not included yet
 
-	
-if(!function_exists("debug")) {
-	function debug($mVar, $sHeader=0) {
-		\Flake\Util\Tools::debug($mVar, $sHeader);
-	}
-}
-
 class Framework extends \Flake\Core\Framework {
 	
 	public static function rmBeginSlash($sString) {
@@ -111,14 +104,14 @@ class Framework extends \Flake\Core\Framework {
 		\Flake\Core\ClassLoader::register();
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
-		
+
 		if(PROJECT_PACKAGE === "regular") {
 			define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 		} elseif(PROJECT_PACKAGE === "flat") {
 			define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT);
 		} else {
 			throw new \Exception("Unrecognized PROJECT_PACKAGE value.");
-		}
+ 		}
 
 		# Determine PROJECT_URI
 		$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
@@ -147,7 +140,7 @@ class Framework extends \Flake\Core\Framework {
 
 		setlocale(LC_ALL, FLAKE_LOCALE);
 		date_default_timezone_set(FLAKE_TIMEZONE);
-		
+
 		$GLOBALS["TEMPLATESTACK"] = array();
 
 		$aUrlInfo = parse_url(PROJECT_URI);

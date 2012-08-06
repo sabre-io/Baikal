@@ -5,10 +5,10 @@
 #  (c) 2012 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
-#  http://baikal.codr.fr
+#  http://flake.codr.fr
 #
-#  This script is part of the Baïkal Server project. The Baïkal
-#  Server project is free software; you can redistribute it
+#  This script is part of the Flake project. The Flake
+#  project is free software; you can redistribute it
 #  and/or modify it under the terms of the GNU General Public
 #  License as published by the Free Software Foundation; either
 #  version 2 of the License, or (at your option) any later version.
@@ -24,29 +24,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-namespace BaikalAdmin\Route;
+namespace Flake\Model;
 
-class Users extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$aParams = self::getParams();
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Users($aParams));
-	}
-	
-	public static function parametersMap() {
-		return array(
-			"new" => array(
-				"required" => FALSE,
-			),
-			"edit" => array(
-				"required" => FALSE,
-			),
-			"delete" => array(
-				"required" => FALSE,
-			),
-			"confirm" => array(
-				"required" => FALSE,
-			),
-		);
-	}
+interface IUser {
+	public function isAdmin();
+	public function getDisplayName();
 }
