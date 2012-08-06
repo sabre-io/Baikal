@@ -30,54 +30,47 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 	
 	public static function getCurrentRoute() {
 		
-		$sUrl = \Flake\Util\Tools::trimSlashes(
-			\Flake\Util\Tools::getCurrentUrl()
-		);
+		$aMatches = array();
+		$sRouteTokens = implode("/", self::getRouteTokens());
+		
+		$aRoutes = self::getRoutes();
+		reset($aRoutes);
+		foreach($aRoutes as $sDefinedRoute => $sDefinedController) {
 
-		if(trim($sUrl) === "") {
-			return "default";
-		} else {
-			
-			$aMatches = array();
-			$aURI = parse_url($sUrl);
-			
-			if(array_key_exists("query", $aURI)) {
-				$sRoutePart = \Flake\Util\Tools::stripBeginSlash($aURI["query"]);
-			} else {
-				$sRoutePart = "";
-			}
-			
-			$aRoutes = self::getRoutes();
-			reset($aRoutes);
-			foreach($aRoutes as $sDefinedRoute => $sDefinedController) {
-				if(strpos($sRoutePart, $sDefinedRoute) !== FALSE) {
-					
-					# found a match
-					$iSlashCount = substr_count($sDefinedRoute, "/");
-					if(!array_key_exists($iSlashCount, $aMatches)) {
-						$aMatches[$iSlashCount] = array();
-					}
-					
-					$aMatches[$iSlashCount][] = $sDefinedRoute;
+			if(strpos($sRouteTokens, $sDefinedRoute) === 0) {
+				
+				# found a match
+				$iSlashCount = substr_count($sDefinedRoute, "/");
+				if(!array_key_exists($iSlashCount, $aMatches)) {
+					$aMatches[$iSlashCount] = array();
 				}
+				
+				$aMatches[$iSlashCount][] = $sDefinedRoute;
 			}
-			
-			if(empty($aMatches)) {
-				return "default";
-			}
-			
-			$aBestMatches = array_pop($aMatches);	// obtains the deepest matching route (higher number of slashes)
-			return array_shift($aBestMatches);		// first route amongst best matches
 		}
 		
-		return $sRoute;
+		if(empty($aMatches)) {
+			return "default";
+		}
+		
+		$aBestMatches = array_pop($aMatches);	// obtains the deepest matching route (higher number of slashes)
+		return array_shift($aBestMatches);		// first route amongst best matches
 	}
 	
-	public static function buildRoute($sRoute /* [, $sParam, $sParam2, ...] */) {
-		$aParams = func_get_args();
-		array_shift($aParams);	# Stripping $sRoute
+	public static function buildRoute($sRoute, $aParams = array()/* [, $sParam, $sParam2, ...] */) {
+#		$aParams = func_get_args();
+#		array_shift($aParams);	# Stripping $sRoute
 		
-		$sParams = implode("/", $aParams);
+#		$sParams = implode("/", $aParams);
+		
+		$aParamsSegments = array();
+		reset($aParams);
+		foreach($aParams as $sParamName => $sParamValue) {
+			$aParamsSegments[] = rawurlencode($sParamName) . "/" . rawurlencode($sParamValue);
+		}
+
+		$sParams = implode("/", $aParamsSegments);
+
 		if(trim($sParams) !== "") {
 			$sParams .= "/";
 		}
@@ -88,7 +81,8 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 			$sUrl = "/" . $sRoute . "/" . $sParams;
 		}
 		
-		if(self::getUriPath() === "") {
+		$sUriPath = self::getUriPath();
+		if($sUriPath === "" || $sUriPath === "/") {
 			if($sUrl !== "/") {
 				$sUrl = "?" . $sUrl;
 			}
@@ -103,15 +97,36 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 		return $sUrl;
 	}
 	
-	public static function getURLParams() {
-		$aTokens = \Flake\Util\Tools::getUrlTokens();
+	protected static function getUrlTokens() {
+		$sQuery = "";
+		$sUrl = \Flake\Util\Tools::stripBeginSlash(\Flake\Util\Tools::getCurrentUrl());
+		$aUrlParts = parse_url($sUrl);
 		
-		# stripping route and "?" tokens
-		if(($iPosQuestionMark = array_search("?", $aTokens)) !== FALSE) {
-			# Pos+0 = position of "?"
-			# Pos+1 = position of "route"
-			# Pos+2 = position of first param
-			$sRouteUrl = implode("/", array_slice($aTokens, $iPosQuestionMark + 1));
+		$aParams = array();
+		if(array_key_exists("query", $aUrlParts)) {
+			$aParams = explode("/", "?" . $aUrlParts["query"]);		
+		}
+		
+		return $aParams;
+	}
+	
+	protected static function getRouteTokens() {
+		$aUrlTokens = self::getUrlTokens();
+		
+		if(!empty($aUrlTokens)) {
+			return array_slice($aUrlTokens, 1);
+		}
+		
+		return array();
+	}
+	
+	public static function getURLParams() {
+		$aTokens = self::getRouteTokens();
+		
+		# stripping route
+		if(!empty($aTokens)) {
+			
+			$sRouteUrl = implode("/", $aTokens);
 			$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
 			
 			if(strpos($sRouteUrl, $sCurrentRoute) === FALSE) {
@@ -120,9 +135,17 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 			
 			$sParams = \Flake\Util\Tools::trimSlashes(substr($sRouteUrl, strlen($sCurrentRoute)));
 			
+			$aParams = array();
 			if($sParams !== "") {
-				return explode("/", $sParams);
+				$aParams = explode("/", $sParams);
 			}
+			
+			reset($aParams);
+			foreach($aParams as $sParam => $sValue) {
+				$aParams[$sParam] = rawurldecode($sValue);
+			}
+			
+			return $aParams;
 		}
 
 		return array();

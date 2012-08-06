@@ -28,7 +28,12 @@ namespace Flake\Core;
 
 class FLObject {
 	public function __toString() {
-		return print_r($this, TRUE);
+		ob_start();
+		var_dump($this);
+		$sDump = ob_get_contents();
+		ob_end_clean();
+		
+		return "<pre>" . htmlspecialchars($sDump) . "</pre>";
 	}
 	
 	public function isA($sClassOrProtocolName) {

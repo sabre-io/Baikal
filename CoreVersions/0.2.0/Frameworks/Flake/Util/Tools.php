@@ -52,16 +52,6 @@ class Tools extends \Flake\Core\FLObject {
 		return "http";
 	}
 	
-	public static function getUrlTokens() {
-		$sUrl = self::stripBeginSlash(self::getCurrentUrl());
-
-		if(trim($sUrl) !== "") {
-			return explode("/", $sUrl);
-		}
-		
-		return array();
-	}
-	
 	public static function deCamelCase($sString, $sGlue=" ") {
 		$sSep = md5(rand());
 		$sRes = preg_replace('/(?!^)[[:upper:]][[:lower:]]/', '$0', preg_replace('/(?!^)[[:upper:]]+/', $sSep . '$0', $sString));
@@ -76,7 +66,7 @@ class Tools extends \Flake\Core\FLObject {
 		return "/" . str_replace(PROJECT_PATH_WWWROOT, "", $sAbsPath);
 	}
 
-	public static function view_array($array_in)	{
+	public static function view_array($array_in) {
 		if (is_array($array_in))	{
 			$result='<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (!count($array_in))	{$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>'.htmlspecialchars("EMPTY!").'</b></font></td></tr>';}
@@ -357,8 +347,11 @@ TEST;
 	    if(is_object($object)) return $object instanceof $class;
 	    if(is_string($object)){
 			if(is_object($class)) $class=get_class($class);
-
-			if(class_exists($class)) return is_subclass_of($object, $class) || $object==$class;
+			
+			if(class_exists($class, TRUE)) {	# TRUE to autoload class
+				return @is_subclass_of($object, $class) || $object==$class;
+			}
+			
 			if(interface_exists($class)) {
 				$reflect = new \ReflectionClass($object);
 				return $reflect->implementsInterface($class);
@@ -478,7 +471,10 @@ TEST;
 		$space = "-";
 		$sString = strtr($sString, ' -+_\'', $space . $space . $space . $space . $space); // convert spaces
 		
-		$sString = iconv('UTF-8', 'ASCII//TRANSLIT', $sString);
+		if(function_exists("iconv")) {
+			$sString = iconv('UTF-8', 'ASCII//TRANSLIT', $sString);
+		}
+		
 		$sString = strtolower($sString);
 		
 		$sString = preg_replace('/[^a-zA-Z0-9\\' . $space . ']/', '', $sString);
@@ -575,6 +571,11 @@ TEST;
 	public static function trimStrings($sString, $sAppend) {
 		return self::stripBeginString(self::stripEndString($sString, $sAppend), $sAppend);
 	}
+	
+	public static function stringEndsWith($sHaystack, $sNeedle) {
+		return substr($sHaystack, strlen($sNeedle) * -1) === $sNeedle;
+	}
+	
 	###########
 	
 	public static function router() {
@@ -593,5 +594,154 @@ TEST;
 	
 	public static function arrayIsSeq($aArray) {
 		return !self::arrayIsAssoc($aArray);
+	}
+	
+	public static function echoAndCutClient($sMessage='') {
+		ignore_user_abort(TRUE);
+#		set_time_limit(0); 
+
+		header("Connection: close");
+		header("Content-Length: ".strlen($sMessage)); 
+		echo $sMessage; 
+		echo str_repeat("\r\n", 10); // just to be sure 
+		flush(); 
+	}
+	
+	public static function milliseconds() {
+		return intval((microtime(TRUE) * 1000));
+	}
+	
+	public static function stopWatch($sWhat) {
+#		return;
+		$iStop = \Flake\Util\Tools::milliseconds();
+		
+		$trail = debug_backtrace();
+		$aLastNode = $trail[0];	// l'appel qui nous intéresse
+		$sFile = basename($aLastNode["file"]);
+		$iLine = intval($aLastNode["line"]);
+		
+		if(!array_key_exists("FLAKE_STOPWATCHES", $GLOBALS)) {
+			$GLOBALS["FLAKE_STOPWATCHES"] = array();
+		}
+		
+		if(!array_key_exists($sWhat, $GLOBALS["FLAKE_STOPWATCHES"])) {
+			$GLOBALS["FLAKE_STOPWATCHES"][$sWhat] = $iStop;
+		} else {
+			$iTime = $iStop - $GLOBALS["FLAKE_STOPWATCHES"][$sWhat];
+			echo "<h3 style='color: silver'><span style='display: inline-block; width: 400px;'>@" . $sFile . "+" . $iLine . ":</span>" . $sWhat . ":" . $iTime . " ms</h1>";
+			flush();
+		}
+	}
+	
+	# Taken from http://www.php.net/manual/en/function.gzdecode.php#82930
+	public static function gzdecode($data, &$filename='', &$error='', $maxlength=null) {
+	    $len = strlen($data);
+	    if ($len < 18 || strcmp(substr($data,0,2),"\x1f\x8b")) {
+	        $error = "Not in GZIP format.";
+	        return null;  // Not GZIP format (See RFC 1952)
+	    }
+	    $method = ord(substr($data,2,1));  // Compression method
+	    $flags  = ord(substr($data,3,1));  // Flags
+	    if ($flags & 31 != $flags) {
+	        $error = "Reserved bits not allowed.";
+	        return null;
+	    }
+	    // NOTE: $mtime may be negative (PHP integer limitations)
+	    $mtime = unpack("V", substr($data,4,4));
+	    $mtime = $mtime[1];
+	    $xfl   = substr($data,8,1);
+	    $os    = substr($data,8,1);
+	    $headerlen = 10;
+	    $extralen  = 0;
+	    $extra     = "";
+	    if ($flags & 4) {
+	        // 2-byte length prefixed EXTRA data in header
+	        if ($len - $headerlen - 2 < 8) {
+	            return false;  // invalid
+	        }
+	        $extralen = unpack("v",substr($data,8,2));
+	        $extralen = $extralen[1];
+	        if ($len - $headerlen - 2 - $extralen < 8) {
+	            return false;  // invalid
+	        }
+	        $extra = substr($data,10,$extralen);
+	        $headerlen += 2 + $extralen;
+	    }
+	    $filenamelen = 0;
+	    $filename = "";
+	    if ($flags & 8) {
+	        // C-style string
+	        if ($len - $headerlen - 1 < 8) {
+	            return false; // invalid
+	        }
+	        $filenamelen = strpos(substr($data,$headerlen),chr(0));
+	        if ($filenamelen === false || $len - $headerlen - $filenamelen - 1 < 8) {
+	            return false; // invalid
+	        }
+	        $filename = substr($data,$headerlen,$filenamelen);
+	        $headerlen += $filenamelen + 1;
+	    }
+	    $commentlen = 0;
+	    $comment = "";
+	    if ($flags & 16) {
+	        // C-style string COMMENT data in header
+	        if ($len - $headerlen - 1 < 8) {
+	            return false;    // invalid
+	        }
+	        $commentlen = strpos(substr($data,$headerlen),chr(0));
+	        if ($commentlen === false || $len - $headerlen - $commentlen - 1 < 8) {
+	            return false;    // Invalid header format
+	        }
+	        $comment = substr($data,$headerlen,$commentlen);
+	        $headerlen += $commentlen + 1;
+	    }
+	    $headercrc = "";
+	    if ($flags & 2) {
+	        // 2-bytes (lowest order) of CRC32 on header present
+	        if ($len - $headerlen - 2 < 8) {
+	            return false;    // invalid
+	        }
+	        $calccrc = crc32(substr($data,0,$headerlen)) & 0xffff;
+	        $headercrc = unpack("v", substr($data,$headerlen,2));
+	        $headercrc = $headercrc[1];
+	        if ($headercrc != $calccrc) {
+	            $error = "Header checksum failed.";
+	            return false;    // Bad header CRC
+	        }
+	        $headerlen += 2;
+	    }
+	    // GZIP FOOTER
+	    $datacrc = unpack("V",substr($data,-8,4));
+	    $datacrc = sprintf('%u',$datacrc[1] & 0xFFFFFFFF);
+	    $isize = unpack("V",substr($data,-4));
+	    $isize = $isize[1];
+	    // decompression:
+	    $bodylen = $len-$headerlen-8;
+	    if ($bodylen < 1) {
+	        // IMPLEMENTATION BUG!
+	        return null;
+	    }
+	    $body = substr($data,$headerlen,$bodylen);
+	    $data = "";
+	    if ($bodylen > 0) {
+	        switch ($method) {
+	        case 8:
+	            // Currently the only supported compression method:
+	            $data = gzinflate($body,$maxlength);
+	            break;
+	        default:
+	            $error = "Unknown compression method.";
+	            return false;
+	        }
+	    }  // zero-byte body content is allowed
+	    // Verifiy CRC32
+	    $crc   = sprintf("%u",crc32($data));
+	    $crcOK = $crc == $datacrc;
+	    $lenOK = $isize == strlen($data);
+	    if (!$lenOK || !$crcOK) {
+	        $error = ( $lenOK ? '' : 'Length check FAILED. ') . ( $crcOK ? '' : 'Checksum FAILED.');
+	        return false;
+	    }
+	    return $data;
 	}
 }

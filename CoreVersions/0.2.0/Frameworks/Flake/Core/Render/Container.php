@@ -26,7 +26,7 @@
 
 namespace Flake\Core\Render;
 
-class Container extends \Flake\Core\FLObject {
+abstract class Container extends \Flake\Core\Controller {
 	
 	var $aSequence = array();
 	var $aBlocks = array();
@@ -48,5 +48,35 @@ class Container extends \Flake\Core\FLObject {
 		}
 		
 		return $this->aZones[$sZone];
+	}
+	
+	public function render() {
+		$this->execute();
+		$aRenderedBlocks = $this->renderBlocks();
+		return implode("", $aRenderedBlocks);
+	}
+	
+	public function execute() {
+		reset($this->aSequence);
+		while(list($sKey,) = each($this->aSequence)) {
+			$this->aSequence[$sKey]["block"]->execute();
+		}
+	}
+	
+	protected function renderBlocks() {
+		$aHtml = array();
+		reset($this->aSequence);
+		while(list($sKey,) = each($this->aSequence)) {
+			$this->aSequence[$sKey]["rendu"] = $this->aSequence[$sKey]["block"]->render();
+		}
+		
+		$aHtml = array();
+		reset($this->aBlocks);
+		while(list($sZone,) = each($this->aBlocks)) {
+			$aHtml[$sZone] = implode("", $this->aBlocks[$sZone]);
+		}
+		
+		reset($aHtml);
+		return $aHtml;
 	}
 }

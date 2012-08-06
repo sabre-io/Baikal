@@ -107,8 +107,9 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 			$aKeys = $this->keys();
 			return $this->aCollection[array_shift($aKeys)];
 		}
-
-		return null;
+		
+		$var = null;	# two lines instead of one
+		return $var;	# as PHP needs a variable to return by ref
 	}
 	
 	public function &last() {
@@ -117,18 +118,41 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 			return $this->aCollection[array_pop($aKeys)];
 		}
 
-		return null;
+		$var = null;
+		return $var;
 	}
 	
 	public function toArray() {
 		return $this->aCollection;
 	}
 	
+	public static function fromArray($aData) {
+		$oColl = new \Flake\Core\Collection();
+		reset($aData);
+		foreach($aData as $mData) {
+			$oColl->push($mData);
+		}
+		
+		return $oColl;
+	}
+	
 	# Create a new collection like this one
 	# This abstraction is useful because of CollectionTyped
 	protected function newCollectionLikeThisOne() {
-		$oCollection = \Flake\Core\Collection();
-		return $oCollection;
+		$oCollection = new \Flake\Core\Collection();	# two lines instead of one
+		return $oCollection;							# as PHP needs a variable to return by ref
+	}
+	
+	public function map($sFunc) {
+		$aData = $this->toArray();
+		$oNewColl = $this->fromArray(array_map($sFunc, $aData));
+		return $oNewColl;
+	}
+	
+	public function walk($sFunc, $aParams=array()) {
+		$aData = $this->toArray();
+		$oNewColl = $this->fromArray(array_walk($aData, $sFunc, $aParams));
+		return $oNewColl;
 	}
 	
 	public function &__call($sName, $aArguments) {

@@ -30,70 +30,17 @@ class Users extends \Flake\Core\Controller {
 	
 	protected $aMessages = array();
 	
-	public function __construct() {
-		parent::__construct();
-		
-		if(($iUser = self::editRequested()) !== FALSE) {
-			$this->oModel = new \Baikal\Model\User($iUser);
-			$this->initForm();
-		}
-		
-		if(($iUser = self::newRequested()) !== FALSE) {
-			# building floating object
-			$this->oModel = new \Baikal\Model\User();
-			$this->initForm();
-		}
-	}
-	
 	public function execute() {
-		if(($iUser = self::editRequested()) !== FALSE) {
-			if($this->oForm->submitted()) {
-				$this->oForm->execute();
-			}
+		if($this->actionEditRequested()) {
+			$this->actionEdit();
 		}
 		
-		if(self::newRequested()) {
-			if($this->oForm->submitted()) {
-				$this->oForm->execute();
-				
-				if($this->oForm->persisted()) {
-					$this->oForm->setOption(
-						"action",
-						$this->linkEdit(
-							$this->oForm->modelInstance()
-						)
-					);
-				}
-			}
+		if($this->actionNewRequested()) {
+			$this->actionNew();
 		}
 		
-		if(($iUser = self::deleteRequested()) !== FALSE) {
-			
-			if(self::deleteConfirmed() !== FALSE) {
-				
-				# catching Exception thrown when model already destroyed
-					# happens when user refreshes delete-page, for instance
-					
-				try {
-					$oUser = new \Baikal\Model\User($iUser);
-					$oUser->destroy();				
-				} catch(\Exception $e) {
-					# user is already deleted; silently discarding
-				}
-				
-				# Redirecting to admin home
-				\Flake\Util\Tools::redirectUsingMeta(self::link());
-			} else {
-				
-				$oUser = new \Baikal\Model\User($iUser);
-				$this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
-					"Check twice, you're about to delete " . $oUser->label() . "</strong> from the database !",
-					"<p>You are about to delete a user and all it's calendars / contacts. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
-					self::linkDeleteConfirm($oUser),
-					"Delete <strong><i class='" . $oUser->icon() . " icon-white'></i> " . $oUser->label() . "</strong>",
-					self::link()
-				);
-			}
+		if($this->actionDeleteRequested()) {
+			$this->actionDelete();
 		}
 	}
 	
@@ -128,7 +75,7 @@ class Users extends \Flake\Core\Controller {
 		$oView->setData("messages", $sMessages);
 		
 		# Form
-		if(self::newRequested() || self::editRequested()) {
+		if($this->actionNewRequested() || $this->actionEditRequested()) {
 			$sForm = $this->oForm->render();
 		} else {
 			$sForm = "";
@@ -136,13 +83,13 @@ class Users extends \Flake\Core\Controller {
 		
 		$oView->setData("form", $sForm);
 		$oView->setData("usericon", \Baikal\Model\User::icon());
-		$oView->setData("linknew", \BaikalAdmin\Controller\Users::linkNew());
+		$oView->setData("controller", $this);
 		
 		return $oView->render();
 	}
 	
 	protected function initForm() {
-		if($this->editRequested() || $this->newRequested()) {
+		if($this->actionEditRequested() || $this->actionNewRequested()) {
 			$aOptions = array(
 				"closeurl" => self::link()
 			);
@@ -151,72 +98,144 @@ class Users extends \Flake\Core\Controller {
 		}
 	}
 	
-	protected static function editRequested() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if((count($aParams) >= 2) && ($aParams[0] === "edit") && intval($aParams[1]) > 0) {
-			return intval($aParams[1]);
+	# Action edit
+	protected function actionEditRequested() {
+		$aParams = $this->getParams();
+		if(array_key_exists("edit", $aParams) && intval($aParams["edit"]) > 0) {
+			return TRUE;
 		}
 		
 		return FALSE;
 	}
 	
-	protected static function deleteRequested() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if((count($aParams) >= 2) && ($aParams[0] === "delete") && intval($aParams[1]) > 0) {
-			return intval($aParams[1]);
+	protected function actionEdit() {
+		$aParams = $this->getParams();
+		$this->oModel = new \Baikal\Model\User(intval($aParams["edit"]));
+		$this->initForm();
+		
+		if($this->oForm->submitted()) {
+			$this->oForm->execute();
+		}
+	}
+	
+	# Action delete
+	
+	protected function actionDeleteRequested() {
+		$aParams = $this->getParams();
+		if(array_key_exists("delete", $aParams) && intval($aParams["delete"]) > 0) {
+			return TRUE;
 		}
 		
 		return FALSE;
 	}
 	
-	protected static function deleteConfirmed() {
-		if(($iUser = self::deleteRequested()) === FALSE) {
+	protected function actionDeleteConfirmed() {
+		if($this->actionDeleteRequested() === FALSE) {
 			return FALSE;
 		}
 		
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		if((count($aParams) >= 3) && $aParams[2] === "confirm") {
-			return $iUser;
+		$aParams = $this->getParams();
+		
+		if(array_key_exists("confirm", $aParams) && intval($aParams["confirm"]) === 1) {
+			return TRUE;
 		}
 		
 		return FALSE;
 	}
 	
-	protected static function newRequested() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		return (count($aParams) >= 1) && $aParams[0] === "new";
+	protected function actionDelete() {
+		$aParams = $this->getParams();
+		$iUser = intval($aParams["delete"]);
+		
+		if($this->actionDeleteConfirmed() !== FALSE) {
+			
+			# catching Exception thrown when model already destroyed
+				# happens when user refreshes delete-page, for instance
+				
+			try {
+				$oUser = new \Baikal\Model\User($iUser);
+				$oUser->destroy();				
+			} catch(\Exception $e) {
+				# user is already deleted; silently discarding
+			}
+			
+			# Redirecting to admin home
+			\Flake\Util\Tools::redirectUsingMeta($this->link());
+		} else {
+			
+			$oUser = new \Baikal\Model\User($iUser);
+			$this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
+				"Check twice, you're about to delete " . $oUser->label() . "</strong> from the database !",
+				"<p>You are about to delete a user and all it's calendars / contacts. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
+				$this->linkDeleteConfirm($oUser),
+				"Delete <strong><i class='" . $oUser->icon() . " icon-white'></i> " . $oUser->label() . "</strong>",
+				$this->link()
+			);
+		}
 	}
 	
-	public static function linkNew() {
-		return $GLOBALS["ROUTER"]::buildRouteForController(get_called_class(), "new") . "#form";
+	# Action new
+	protected function actionNewRequested() {
+		$aParams = $this->getParams();
+		if(array_key_exists("new", $aParams) && intval($aParams["new"]) === 1) {
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
+	protected function actionNew() {
+		$this->oModel = new \Baikal\Model\User();
+		$this->initForm();
+		
+		if($this->oForm->submitted()) {
+			$this->oForm->execute();
+			
+			if($this->oForm->persisted()) {
+				$this->oForm->setOption(
+					"action",
+					$this->linkEdit(
+						$this->oForm->modelInstance()
+					)
+				);
+			}
+		}
+	}
+	
+	public function linkNew() {
+		return self::buildRoute(array(
+			"new" => 1
+		)) . "#form";
 	}
 	
 	public static function linkEdit(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController(get_called_class(), "edit", $user->get("id")) . "#form";
+		return self::buildRoute(array(
+			"edit" => $user->get("id")
+		)) . "#form";
 	}
 	
 	public static function linkDelete(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController(
-			get_called_class(),
-			"delete",
-			$user->get("id")
-		) . "#message";
+		return self::buildRoute(array(
+			"delete" => $user->get("id")
+		)) . "#message";
 	}
 	
 	public static function linkDeleteConfirm(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController(
-			get_called_class(),
-			"delete",
-			$user->get("id"),
-			"confirm"
-		) . "#message";
+		return self::buildRoute(array(
+			"delete" => $user->get("id"),
+			"confirm" => 1
+		)) . "#message";
 	}
 	
 	public static function linkCalendars(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController('\BaikalAdmin\Controller\User\Calendars', $user->get("id"));
+		return \BaikalAdmin\Controller\User\Calendars::buildRoute(array(
+			"user" => $user->get("id"),
+		));
 	}
 	
 	public static function linkAddressBooks(\Baikal\Model\User $user) {
-		return $GLOBALS["ROUTER"]::buildRouteForController('\BaikalAdmin\Controller\User\AddressBooks', $user->get("id"));
+		return \BaikalAdmin\Controller\User\AddressBooks::buildRoute(array(
+			"user" => $user->get("id"),
+		));
 	}
 }

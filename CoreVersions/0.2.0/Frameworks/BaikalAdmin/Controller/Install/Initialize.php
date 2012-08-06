@@ -32,9 +32,7 @@ class Initialize extends \Flake\Core\Controller {
 	protected $oModel;
 	protected $oForm;	# \Formal\Form
 	
-	public function __construct() {
-		parent::__construct();
-		
+	public function execute() {
 		# Assert that /Specific is writable
 		if(!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
 			throw new \Exception("Specific/ dir is readonly. Baïkal Admin requires write permissions on this dir.");
@@ -53,9 +51,7 @@ class Initialize extends \Flake\Core\Controller {
 		$this->oForm = $this->oModel->formForThisModelInstance(array(
 			"close" => FALSE
 		));
-	}
-	
-	public function execute() {
+		
 		if($this->oForm->submitted()) {
 			$this->oForm->execute();
 			
