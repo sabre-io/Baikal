@@ -26,9 +26,9 @@
 
 namespace BaikalAdmin\Route\Settings;
 
-class Standard {
+class Standard extends \Flake\Core\Route {
 	
-	public static function execute(\Flake\Core\Render\Container &$oRenderContainer) {
+	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
 		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Settings\Standard());
 	}
 }

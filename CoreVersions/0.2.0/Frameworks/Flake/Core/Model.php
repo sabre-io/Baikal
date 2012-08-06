@@ -34,6 +34,18 @@ abstract class Model extends \Flake\Core\FLObject {
 		return $this->aData;
 	}
 	
+	public function __get($sPropName) {
+		return $this->get($sPropName);
+	}
+	
+	public function __isset($name) {
+		if(array_key_exists($name, $this->aData)) {
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
 	public function get($sPropName) {
 		if(array_key_exists($sPropName, $this->aData)) {
 			return $this->aData[$sPropName];
