@@ -37,7 +37,9 @@ class System extends \Flake\Core\Controller {
 		}
 		
 		$this->oForm = $this->oModel->formForThisModelInstance(array(
-			"close" => FALSE
+			"close" => FALSE,
+			"hook.morphology" => array($this, "morphologyHook"),
+			"hook.validation" => array($this, "validationHook"),
 		));
 		
 		if($this->oForm->submitted()) {
@@ -57,5 +59,53 @@ class System extends \Flake\Core\Controller {
 		$oView->setData("form", $this->oForm->render());
 		
 		return $oView->render();
+	}
+	
+	public function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+		if($oForm->submitted()) {
+			$bMySQL = (intval($oForm->postValue("PROJECT_DB_MYSQL")) === 1);
+		} else {
+			$bMySQL = PROJECT_DB_MYSQL;
+		}
+		
+		if($bMySQL === TRUE) {
+			$oMorpho->remove("PROJECT_SQLITE_FILE");
+		} else {
+			
+			$oMorpho->remove("PROJECT_DB_MYSQL_HOST");
+			$oMorpho->remove("PROJECT_DB_MYSQL_DBNAME");
+			$oMorpho->remove("PROJECT_DB_MYSQL_USERNAME");
+			$oMorpho->remove("PROJECT_DB_MYSQL_PASSWORD");
+		}
+	}
+	
+	public function validationHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+		if(intval($oForm->modelInstance()->get("PROJECT_DB_MYSQL")) === 1) {
+				
+			# We have to check the MySQL connection
+			$sHost = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_HOST");
+			$sDbName = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_DBNAME");
+			$sUsername = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_USERNAME");
+			$sPassword = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_PASSWORD");
+			
+			try {
+				$oDB = new \Flake\Core\Database\Mysql(
+					$sHost,
+					$sDbName,
+					$sUsername,
+					$sPassword
+				);
+				
+				unset($oDB);
+			} catch(\Exception $e) {
+				$sMessage = "<strong>MySQL error:</strong> " . $e->getMessage();
+				$sMessage .= "<br /><strong>Nothing has been saved</strong>";
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_HOST"), $sMessage);
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
+			}
+			
+		}
 	}
 }

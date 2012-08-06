@@ -105,12 +105,29 @@ class Tools extends \Flake\Core\FLObject {
 
 	public static function debug($var="",$brOrHeader=0)	{
 		if($brOrHeader === 0) {
-			$trail = debug_backtrace();
-			$trail = array_reverse($trail);
-			array_pop($trail);	// la ligne d'appel à debug
-			array_pop($trail);	// la ligne d'appel à debug
-			$aLastNode = array_pop($trail);	// l'appel qui nous intéresse
-			$brOrHeader = @strval($aLastNode['class']).@strval($aLastNode['type']).@strval($aLastNode['function']);
+			try {
+				$trail = debug_backtrace();
+				$trail = array_reverse($trail);
+				array_pop($trail);	// la ligne d'appel à debug
+				array_pop($trail);	// la ligne d'appel à debug
+				$aLastNode = array_pop($trail);	// l'appel qui nous intéresse
+
+				if(array_key_exists("class", $aLastNode)) {
+					$sClass = @strval($aLastNode["class"]);
+				} else {
+					$sClass = "";
+				}
+				
+				if(array_key_exists("type", $aLastNode)) {
+					$sType = @strval($aLastNode["type"]);
+				} else {
+					$sType = "";
+				}
+				
+				$brOrHeader = $sClass.$sType.@strval($aLastNode['function']);
+			} catch(\Exception $e) {
+				$brOrHeader = "Undetermined context";
+			}
 		}
 
 		if ($brOrHeader)	{

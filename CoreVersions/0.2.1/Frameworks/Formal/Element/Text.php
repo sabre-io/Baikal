@@ -91,11 +91,11 @@ class Text extends \Formal\Element {
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="{$prop}" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
+		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
 		{$helpblock}
 	</div>
 </div>
 HTML;
-		return $sHtml;
+		return $sHtml . $this->renderWitness();
 	}
 }

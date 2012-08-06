@@ -51,13 +51,14 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 		return ($key !== NULL && $key !== FALSE);
 	}
 	
-	public function getForKey($sKey) {
+	public function &getForKey($sKey) {
 		$aKeys = $this->keys();
 		if(!in_array($sKey, $aKeys)) {
 			throw new \Exception("\Flake\Core\Collection->getForKey(): key '" . $sKey . "' not found in Collection");
 		}
 		
-		return $this->aCollection[$sKey];
+		$oRes = $this->aCollection[$sKey];
+		return $oRes;
 	}
 
 	public function &each() {
@@ -153,6 +154,16 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
 		$aData = $this->toArray();
 		$oNewColl = $this->fromArray(array_walk($aData, $sFunc, $aParams));
 		return $oNewColl;
+	}
+	
+	public function remove($sKey) {
+		$aKeys = $this->keys();
+		if(!in_array($sKey, $aKeys)) {
+			throw new \Exception("\Flake\Core\Collection->remove(): key '" . $sKey . "' not found in Collection");
+		}
+		
+		unset($this->aCollection[$sKey]);
+		$this->aCollection = array_values($this->aCollection);
 	}
 	
 	public function &__call($sName, $aArguments) {
