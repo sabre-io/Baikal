@@ -28,8 +28,7 @@ namespace BaikalAdmin\Controller\Settings;
 
 class System extends \Flake\Core\Controller {
 	
-	public function __construct() {
-		parent::__construct();
+	public function execute() {
 		$this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
 		
 		# Assert that config file is writable
@@ -40,9 +39,7 @@ class System extends \Flake\Core\Controller {
 		$this->oForm = $this->oModel->formForThisModelInstance(array(
 			"close" => FALSE
 		));
-	}
 		
-	public function execute() {
 		if($this->oForm->submitted()) {
 			$this->oForm->execute();
 		}

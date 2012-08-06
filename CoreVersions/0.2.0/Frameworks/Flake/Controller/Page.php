@@ -91,13 +91,6 @@ class Page extends \Flake\Core\Render\Container {
 
 		return $sHtml;
 	}
-
-	public function execute() {
-		reset($this->aSequence);
-		while(list($sKey,) = each($this->aSequence)) {
-			$this->aSequence[$sKey]["block"]->execute();
-		}
-	}
 	
 	public function addCss($sCssAbsPath) {
 		
@@ -126,22 +119,5 @@ class Page extends \Flake\Core\Render\Container {
 		
 		$sHtml = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $sCssUrl . "\" media=\"all\"/>";
 		$this->zone("head")->addBlock(new \Flake\Controller\HtmlBlock($sHtml));
-	}
-	
-	protected function renderBlocks() {
-		$aHtml = array();
-		reset($this->aSequence);
-		while(list($sKey,) = each($this->aSequence)) {
-			$this->aSequence[$sKey]["rendu"] = $this->aSequence[$sKey]["block"]->render();
-		}
-		
-		$aHtml = array();
-		reset($this->aBlocks);
-		while(list($sZone,) = each($this->aBlocks)) {
-			$aHtml[$sZone] = implode("", $this->aBlocks[$sZone]);
-		}
-		
-		reset($aHtml);
-		return $aHtml;
 	}
 }
