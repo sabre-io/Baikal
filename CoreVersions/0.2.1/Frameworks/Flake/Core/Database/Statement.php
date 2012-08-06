@@ -26,16 +26,18 @@
 
 namespace Flake\Core\Database;
 
-class Sqlite extends \Flake\Core\Database {
+class Statement extends \Flake\Core\FLObject {
+	protected $stmt = null;
 
-	protected $oDb = FALSE;	// current DB link
-	protected $debugOutput = FALSE;
-	protected $store_lastBuiltQuery = TRUE;
-	protected $debug_lastBuiltQuery = "";
-	protected $sDbPath = "";
+	public function __construct($stmt) {
+		$this->stmt = $stmt;
+	}
 
-	public function __construct($sDbPath) {
-		$this->sDbPath = $sDbPath;
-		$this->oDb = new \PDO('sqlite:' . $this->sDbPath);
+	public function fetch() {
+		if($this->stmt !== FALSE) {
+			return $this->stmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_FIRST);
+		}
+
+		return FALSE;
 	}
 }

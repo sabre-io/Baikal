@@ -166,6 +166,14 @@ class Framework extends \Flake\Core\Framework {
 	
 	protected static function initDb() {
 		
+		if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
+			self::initDbMysql();
+		} else {
+			self::initDbSqlite();
+		}
+	}
+	
+	protected static function initDbSqlite() {
 		# Asserting DB filepath is set
 		if(!defined("PROJECT_SQLITE_FILE")) {
 			return;
@@ -173,7 +181,7 @@ class Framework extends \Flake\Core\Framework {
 		
 		# Asserting DB file exists
 		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/Db/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
 		}
 		
 		# Asserting DB file is readable
@@ -189,5 +197,38 @@ class Framework extends \Flake\Core\Framework {
 		if(file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
 			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
 		}
+	}
+	
+	protected static function initDbMysql() {
+		
+		if(!defined("PROJECT_DB_MYSQL_HOST")) {
+			die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+		}
+		
+		if(!defined("PROJECT_DB_MYSQL_DBNAME")) {
+			die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+		}
+		
+		if(!defined("PROJECT_DB_MYSQL_USERNAME")) {
+			die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in Specific/config.system.php</h3>");
+		}
+		
+		if(!defined("PROJECT_DB_MYSQL_PASSWORD")) {
+			die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
+		}
+		
+		try {
+			$GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
+				PROJECT_DB_MYSQL_HOST,
+				PROJECT_DB_MYSQL_DBNAME,
+				PROJECT_DB_MYSQL_USERNAME,
+				PROJECT_DB_MYSQL_PASSWORD
+			);
+		} catch(\Exception $e) {
+			die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in Specific/config.system.php).</h3>");
+		}
+		
+		# We now setup the connexion to use UTF8
+		$GLOBALS["DB"]->query("SET NAMES UTF8");
 	}
 }

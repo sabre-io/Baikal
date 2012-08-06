@@ -92,13 +92,13 @@ class Listbox extends \Formal\Element {
 	<div class="control-group{$groupclass}">
 		<label class="control-label" for="{$prop}">{$label}</label>
 		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" name="{$prop}"{$disabled}{$popover}>
+			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}>
 				{$sRenderedOptions}
 			</select>
 			{$helpblock}
 		</div>
 	</div>
 HTML;
-		return $sHtml;
+		return $sHtml . $this->renderWitness();
 	}
 }

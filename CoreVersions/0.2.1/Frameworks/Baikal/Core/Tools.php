@@ -61,7 +61,7 @@ class Tools {
 		
 		# Asserting DB file exists
 		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/db.empty.sqlite' to '" . PROJECT_SQLITE_FILE . "'");
+			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/Db/db.empty.sqlite' to '" . PROJECT_SQLITE_FILE . "'");
 		}
 		
 		# Asserting DB file is readable

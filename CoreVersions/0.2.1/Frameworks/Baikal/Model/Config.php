@@ -202,7 +202,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
 		asort($aNewConfig);
 		asort($aWrittenConfig);
-
+		
 		if($aNewConfig != $aWrittenConfig) {
 			throw new \Exception("New config does not correspond to expected config. Aborting, nothing has been changed.");
 		}

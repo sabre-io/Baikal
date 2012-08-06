@@ -26,16 +26,27 @@
 
 namespace Flake\Core\Database;
 
-class Sqlite extends \Flake\Core\Database {
+class Mysql extends \Flake\Core\Database {
 
 	protected $oDb = FALSE;	// current DB link
 	protected $debugOutput = FALSE;
 	protected $store_lastBuiltQuery = TRUE;
 	protected $debug_lastBuiltQuery = "";
-	protected $sDbPath = "";
+	protected $sHost = "";
+	protected $sDbName = "";
+	protected $sUsername = "";
+	protected $sPassword = "";
 
-	public function __construct($sDbPath) {
-		$this->sDbPath = $sDbPath;
-		$this->oDb = new \PDO('sqlite:' . $this->sDbPath);
+	public function __construct($sHost, $sDbName, $sUsername, $sPassword) {
+		$this->sHost = $sHost;
+		$this->sDbName = $sDbName;
+		$this->sUsername = $sUsername;
+		$this->sPassword = $sPassword;
+		
+		$this->oDb = new \PDO(
+			'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
+			$this->sUsername,
+			$this->sPassword
+		);
 	}
 }

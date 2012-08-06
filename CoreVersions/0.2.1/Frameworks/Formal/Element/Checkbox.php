@@ -37,14 +37,15 @@ class Checkbox extends \Formal\Element {
 		$disabled = "";
 		$inputclass = "";
 		$groupclass = "";
+		$onchange = "";
+		$helpblock = "";
+		$popover = "";
 		
 		$value = $this->value();
 		
 		$checked = ($value === TRUE ? " checked=\"checked\" " : "");
 		$label = $this->option("label");
 		$prop = $this->option("prop");
-		$helpblock = "";
-		$popover = "";
 
 		if($this->option("readonly") === TRUE) {
 			$inputclass .= " disabled";
@@ -65,15 +66,19 @@ class Checkbox extends \Formal\Element {
 			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
 		}
 		
+		if($this->option("refreshonchange") === TRUE) {
+			$onchange = " onchange=\"document.getElementsByTagName('form')[0].submit();\" ";
+		}
+		
 		$sHtml =<<<HTML
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="{$prop}" value="1"{$checked}{$disabled}{$popover}/>
+		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="data[{$prop}]" value="1"{$checked}{$disabled}{$popover}{$onchange}/>
 		{$helpblock}
 	</div>
 </div>
 HTML;
-		return $sHtml;
+		return $sHtml . $this->renderWitness();
 	}
 }
