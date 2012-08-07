@@ -150,6 +150,12 @@ class Framework extends \Flake\Core\Framework {
 		
 		
 		# Include Project config
+		# NOTE: DB initialization and App config files inclusion
+		# do not break execution if not properly executed, as
+		# these errors will have to be caught later in the process
+		# notably by the App install tool, if available; breaking right now
+		# would forbid such install tool forwarding, for instance
+		
 		$sConfigPath = PROJECT_PATH_SPECIFIC . "config.php";
 		$sConfigSystemPath = PROJECT_PATH_SPECIFIC . "config.system.php";
 		
@@ -165,7 +171,7 @@ class Framework extends \Flake\Core\Framework {
 	}
 	
 	protected static function initDb() {
-		
+
 		if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
 			self::initDbMysql();
 		} else {
@@ -176,7 +182,7 @@ class Framework extends \Flake\Core\Framework {
 	protected static function initDbSqlite() {
 		# Asserting DB filepath is set
 		if(!defined("PROJECT_SQLITE_FILE")) {
-			return;
+			return FALSE;
 		}
 		
 		# Asserting DB file exists
@@ -196,7 +202,10 @@ class Framework extends \Flake\Core\Framework {
 		
 		if(file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
 			$GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
+			return TRUE;
 		}
+		
+		return FALSE;
 	}
 	
 	protected static function initDbMysql() {
@@ -230,5 +239,10 @@ class Framework extends \Flake\Core\Framework {
 		
 		# We now setup the connexion to use UTF8
 		$GLOBALS["DB"]->query("SET NAMES UTF8");
+		return TRUE;
+	}
+	
+	public static function isDBInitialized() {
+		return \Flake\Util\Tools::is_a($GLOBALS["DB"], "\Flake\Core\Database");
 	}
 }

@@ -65,6 +65,9 @@ class System extends \Baikal\Model\Config {
 		"PROJECT_DB_MYSQL_PASSWORD" => array(
 			"type" => "string",
 		),
+		"BAIKAL_CONFIGURED_VERSION" => array(
+			"type" => "string",
+		),
 	);
 		
 	protected $aData = array(
@@ -80,6 +83,7 @@ class System extends \Baikal\Model\Config {
 		"PROJECT_DB_MYSQL_DBNAME" => "",
 		"PROJECT_DB_MYSQL_USERNAME" => "",
 		"PROJECT_DB_MYSQL_PASSWORD" => "",
+		"BAIKAL_CONFIGURED_VERSION" => "",
 	);
 	
 	public function formMorphologyForThisModelInstance() {

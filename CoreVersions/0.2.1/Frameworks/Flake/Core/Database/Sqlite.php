@@ -38,4 +38,23 @@ class Sqlite extends \Flake\Core\Database {
 		$this->sDbPath = $sDbPath;
 		$this->oDb = new \PDO('sqlite:' . $this->sDbPath);
 	}
+	
+	# Taken from http://dev.kohanaframework.org/issues/2985
+	public function tables() {
+		$aTables = array();
+		
+		# Find all user level table names
+		$oStmt = $this->query('SELECT name '
+		.'FROM sqlite_master '
+		.'WHERE type=\'table\' AND name NOT LIKE \'sqlite_%\' '
+		.'ORDER BY name');
+		
+		while(($aRs = $oStmt->fetch()) !== FALSE) {
+			// Get the table name from the results
+			$aTables[] = array_shift($aRs);
+		}
+		
+		reset($aTables);
+		return $aTables;
+    }
 }
