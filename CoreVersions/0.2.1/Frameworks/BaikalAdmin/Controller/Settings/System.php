@@ -95,8 +95,6 @@ class System extends \Flake\Core\Controller {
 					$sUsername,
 					$sPassword
 				);
-				
-				unset($oDB);
 			} catch(\Exception $e) {
 				$sMessage = "<strong>MySQL error:</strong> " . $e->getMessage();
 				$sMessage .= "<br /><strong>Nothing has been saved</strong>";
@@ -104,8 +102,17 @@ class System extends \Flake\Core\Controller {
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
+				return;
 			}
 			
+			if(($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDB)) !== TRUE) {
+				$sMessage = "<strong>MySQL error:</strong> These tables, required by Baïkal, are missing: <strong>" . implode(", ", $aMissingTables) . "</strong><br />";
+				$sMessage .= "You may want create these tables using the file <strong>Core/Resources/Db/db.empty.mysql.sql</strong>";
+				$sMessage .= "<br /><br /><strong>Nothing has been saved</strong>";
+				
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL"), $sMessage);
+				return;
+			}
 		}
 	}
 }
