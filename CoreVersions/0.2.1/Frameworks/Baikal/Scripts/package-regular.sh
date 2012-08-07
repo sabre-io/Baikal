@@ -7,7 +7,7 @@ echo "#     Packaging project for regular distribution"
 echo "#"
 echo "#"
 
-BRANCH="flakemerge"
+BRANCH="master"
 SRCDIR="../../../../"
 TEMPDIR="/tmp/baikal-regular-`date +%Y-%m-%d-%H-%M-%S`"
 
