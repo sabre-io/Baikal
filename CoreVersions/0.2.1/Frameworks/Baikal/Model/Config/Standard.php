@@ -31,21 +31,27 @@ class Standard extends \Baikal\Model\Config {
 	protected $aConstants = array(
 		"PROJECT_TIMEZONE" => array(
 			"type" => "string",
-		),
-		"BAIKAL_ADMIN_ENABLED" => array(
-			"type" => "boolean",
-		),
-		"BAIKAL_ADMIN_AUTOLOCKENABLED" => array(
-			"type" => "boolean",
-		),
-		"BAIKAL_CAL_ENABLED" => array(
-			"type" => "boolean",
+			"comment" => "Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
 		),
 		"BAIKAL_CARD_ENABLED" => array(
 			"type" => "boolean",
+			"comment" => "CardDAV ON/OFF switch; default TRUE",
+		),
+		"BAIKAL_CAL_ENABLED" => array(
+			"type" => "boolean",
+			"comment" => "CalDAV ON/OFF switch; default TRUE",
+		),
+		"BAIKAL_ADMIN_ENABLED" => array(
+			"type" => "boolean",
+			"comment" => "Baïkal Web Admin ON/OFF switch; default TRUE",
+		),
+		"BAIKAL_ADMIN_AUTOLOCKENABLED" => array(
+			"type" => "boolean",
+			"comment" => "Baïkal Web Admin autolock ON/OFF switch; default FALSE",
 		),
 		"BAIKAL_ADMIN_PASSWORDHASH" => array(
 			"type" => "string",
+			"comment" => "Baïkal Web admin password hash; Set via Baïkal Web Admin",
 		)
 	);
 	
