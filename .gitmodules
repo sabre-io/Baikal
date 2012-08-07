@@ -1,0 +1,3 @@
+[submodule "CoreVersions/0.2.1/Frameworks/Flake"]
+	path = CoreVersions/0.2.1/Frameworks/Flake
+	url = https://github.com/jeromeschneider/Flake.git
