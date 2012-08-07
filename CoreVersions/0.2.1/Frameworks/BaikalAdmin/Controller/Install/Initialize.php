@@ -104,19 +104,19 @@ PHP;
 	protected function createHtaccessFilesIfNeeded() {
 
 		if(!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
-			@copy(PROJECT_PATH_CORERESOURCES . "htaccess-documentroot", PROJECT_PATH_DOCUMENTROOT . ".htaccess");
+			@copy(PROJECT_PATH_CORERESOURCES . "System/htaccess-documentroot", PROJECT_PATH_DOCUMENTROOT . ".htaccess");
 		}
 		
 		if(!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
-			throw new \Exception("Unable to create " . PROJECT_PATH_DOCUMENTROOT . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "htaccess-documentroot");
+			throw new \Exception("Unable to create " . PROJECT_PATH_DOCUMENTROOT . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "System/htaccess-documentroot");
 		}
 		
 		if(!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
-			@copy(PROJECT_PATH_CORERESOURCES . "htaccess-specific", PROJECT_PATH_SPECIFIC . ".htaccess");
+			@copy(PROJECT_PATH_CORERESOURCES . "System/htaccess-specific", PROJECT_PATH_SPECIFIC . ".htaccess");
 		}
 		
 		if(!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
-			throw new \Exception("Unable to create " . PROJECT_PATH_SPECIFIC . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "htaccess-specific");
+			throw new \Exception("Unable to create " . PROJECT_PATH_SPECIFIC . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "System/htaccess-specific");
 		}
 	}
 	
