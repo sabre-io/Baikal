@@ -69,16 +69,17 @@ class System extends \Baikal\Model\Config {
 			"type" => "string",
 		),
 	);
-		
+	
+	# Default values
 	protected $aData = array(
-		"BAIKAL_PATH_SABREDAV" => "",
-		"BAIKAL_AUTH_REALM" => "",
-		"BAIKAL_CARD_BASEURI" => "",
-		"BAIKAL_CAL_BASEURI" => "",
-		"BAIKAL_STANDALONE_ALLOWED" => "",
-		"BAIKAL_STANDALONE_PORT" => "",
-		"PROJECT_SQLITE_FILE" => "",
-		"PROJECT_DB_MYSQL" => "",
+		"BAIKAL_PATH_SABREDAV" => 'PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/"',
+		"BAIKAL_AUTH_REALM" => "BaikalDAV",
+		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
+		"BAIKAL_CAL_BASEURI" => 'PROJECT_BASEURI . "cal.php/"',
+		"BAIKAL_STANDALONE_ALLOWED" => FALSE,
+		"BAIKAL_STANDALONE_PORT" => 8888,
+		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
+		"PROJECT_DB_MYSQL" => FALSE,
 		"PROJECT_DB_MYSQL_HOST" => "",
 		"PROJECT_DB_MYSQL_DBNAME" => "",
 		"PROJECT_DB_MYSQL_USERNAME" => "",
