@@ -139,57 +139,62 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
 	public function persist() {
 		$aLines = explode(LF, $this->getConfigAsString());
-
+		$iLines = count($aLines);
+		
 		foreach(array_keys($this->aData) as $prop) {
-			$iLines = count($aLines);
 			$sPattern = '/\s*define\(\s*["|\']' . $prop . '["|\']\s*\,\s*(.*?)\s*\);\s*/ix';
 			$sValue = $this->aData[$prop];
 			
-			for($k = ($iLines - 1); $k >= 0; $k--) {
-				if(preg_match($sPattern, $aLines[$k])) {
-					# Found the last matching line
-					
-					$bCalculated = (isset($this->aConstants[$prop]["type"]["calculated"]) && $this->aConstants[$prop]["type"]["calculated"] === TRUE);
+			
+			# We replace value by it's native PHP notation
+			switch($this->aConstants[$prop]["type"]) {
+				case "string": {
+					$sValue = '"' . addcslashes($sValue, "\"\\\0\n\r") . '"';	# Add quotes, and escape " and all string-termination chars
+					break;
+				}
+				case "integer": {
+					$sValue = intval($sValue);	# Cast as integer
+					break;
+				}
+				case "boolean": {
 
-					switch($this->aConstants[$prop]["type"]) {
-						case "string": {
-							$sValue = '"' . addcslashes($sValue, "\"\\\0\n\r") . '"';	# Add quotes, and escape " and all string-termination chars
-							break;
-						}
-						case "integer": {
-							$sValue = intval($sValue);	# Cast as integer
-							break;
-						}
-						case "boolean": {
-
-							if(intval($sValue) === 1) {	# Note as a BOOLEAN PHP constant
-								$sValue = "TRUE";
-							} else {
-								$sValue = "FALSE";
-							}
-
-							break;
-						}
-						case "litteral": {
-							$sValue = trim($sValue);
-							break;
-						}
-						default: {
-							$sValue = '""';
-							break;
-						}
+					if(intval($sValue) === 1) {	# Note as a BOOLEAN PHP constant
+						$sValue = "TRUE";
+					} else {
+						$sValue = "FALSE";
 					}
 
-					$aLines[$k] = "define(\"" . $prop . "\", " . $sValue . ");";
-				} else {
-					# Adding line at the end of the file
-					$aLines[] = "\n" . "# " . $this->aConstants[$prop]["comment"] . "\n" . define(\"" . $prop . "\", " . $sValue . ");"
+					break;
 				}
+				case "litteral": {
+					$sValue = trim($sValue);
+					break;
+				}
+				default: {
+					$sValue = '""';
+					break;
+				}
+			}
+			
+			$mFound = FALSE;
+			for($k = ($iLines - 1); $k >= 0; $k--) {
+				if(preg_match($sPattern, $aLines[$k])) {
+					
+					# Found the last matching line
+					$mFound = $k;
+					break;
+				}
+			}
+			
+			if($mFound === FALSE) {
+				# Adding line at the end of the file
+				$aLines[] = "\n" . "# " . $this->aConstants[$prop]["comment"] . "\ndefine(\"" . $prop . "\", " . $sValue . ");";
+			} else {
+				$aLines[$mFound] = "define(\"" . $prop . "\", " . $sValue . ");";
 			}
 		}
 
 		$sLines = implode("\n", $aLines);
-
 		$sSandboxedCode = str_replace(array("<?php", "<?", "?>"), "", $sLines);
 		$sRand = (string)rand();
 		$sCode = "if(0) {" . $sSandboxedCode . "}; echo '" . $sRand . "';";
@@ -199,6 +204,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 		ob_end_clean();
 
 		if($sRes !== $sRand) {
+			echo "<pre>" . htmlspecialchars($sLines) . "</pre>";
 			throw new \Exception("Parse error in new config file. Aborting, nothing has been changed.");
 		}
 		
