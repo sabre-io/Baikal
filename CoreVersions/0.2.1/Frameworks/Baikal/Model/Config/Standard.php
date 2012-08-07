@@ -48,15 +48,14 @@ class Standard extends \Baikal\Model\Config {
 			"type" => "string",
 		)
 	);
-		
+	
+	# Default values
 	protected $aData = array(
-		"PROJECT_TIMEZONE" => "",
-		"BAIKAL_CARD_ENABLED" => "",
-		"BAIKAL_CAL_ENABLED" => "",
-		"BAIKAL_CARD_ENABLED" => "",
-		"BAIKAL_CAL_ENABLED" => "",
-		"BAIKAL_ADMIN_ENABLED" => "",
-		"BAIKAL_ADMIN_AUTOLOCKENABLED" => "",
+		"PROJECT_TIMEZONE" => "Europe/Paris",
+		"BAIKAL_CARD_ENABLED" => TRUE,
+		"BAIKAL_CAL_ENABLED" => TRUE,
+		"BAIKAL_ADMIN_ENABLED" => TRUE,
+		"BAIKAL_ADMIN_AUTOLOCKENABLED" => FALSE,
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
 	);
 	
