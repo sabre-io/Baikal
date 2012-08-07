@@ -8,7 +8,7 @@ echo "#     by their target). Useful for FTP deployment"
 echo "#"
 echo "#"
 
-BRANCH="master"
+BRANCH="flakemerge"
 SRCDIR="../../../../"
 TEMPDIR="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`-temp"
 TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
@@ -62,6 +62,10 @@ rm -Rf html
 cat Core/Distrib.php | sed -e "s/\"regular\"/\"flat\"/g" > Core/Distrib2.php && \
 rm -f Core/Distrib.php && \
 mv Core/Distrib2.php Core/Distrib.php
+
+# Deploy empty DB
+mkdir -p Specific/db
+cp Core/Resources/Db/SQLite/db.sqlite Specific/db
 
 # Displaying result
 echo "#     "$TEMPDIR
