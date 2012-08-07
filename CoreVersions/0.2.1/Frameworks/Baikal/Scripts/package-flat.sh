@@ -8,7 +8,7 @@ echo "#     by their target). Useful for FTP deployment"
 echo "#"
 echo "#"
 
-BRANCH="flakemerge"
+BRANCH="master"
 SRCDIR="../../../../"
 TEMPDIR="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`-temp"
 TEMPDIRDEREFERENCE="/tmp/baikal-flat-`date +%Y-%m-%d-%H-%M-%S`"
