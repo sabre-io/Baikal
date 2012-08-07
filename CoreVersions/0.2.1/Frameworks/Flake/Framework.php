@@ -187,7 +187,7 @@ class Framework extends \Flake\Core\Framework {
 		
 		# Asserting DB file exists
 		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/Db/db.empty.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/Db/SQLite/db.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
 		}
 		
 		# Asserting DB file is readable
