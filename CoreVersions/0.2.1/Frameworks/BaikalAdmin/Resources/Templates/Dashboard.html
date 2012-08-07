@@ -1,4 +1,7 @@
 {% autoescape false %}
+<style>
+	.label-intext { vertical-align: top;}
+</style>
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-circle-info"></i>Dashboard</h1>
 </header>
@@ -10,7 +13,7 @@
 	<div class="row">
 		<div class="span3">
 			<h2>Version</h2>
-			<p>This systems runs Baïkal <span class="label label-info">{{ BAIKAL_VERSION }}</span></p>
+			<p>This systems runs<br />Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span>, <em>{{ PROJECT_PACKAGE }}</em> package</p>
 		</div>
 		<div class="span3">
 			<h2>Services</h2>
@@ -34,22 +37,22 @@
 				<tbody>
 					<tr>
 						<td>Web admin</td>
-						<td><span class="label label-success">On</span></p></td>
+						<td><span class="label label-success label-intext">On</span></p></td>
 					</tr>
 					<tr>
 						<td>CalDAV</td>
-						<td><span class="label {{ caldavclass }}">{{ caldavtext }}</span></td>
+						<td><span class="label {{ caldavclass }} label-intext">{{ caldavtext }}</span></td>
 					</tr>
 					<tr>
 						<td>CardDAV</td>
-						<td><span class="label {{ carddavclass }}">{{ carddavtext }}</span></td>
+						<td><span class="label {{ carddavclass }} label-intext">{{ carddavtext }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="span6">
 			<h2>License and credits</h2>
-			{% set url = 'http://baikal.codr.fr/version/' ~ BAIKAL_VERSION ~ '/about' %}
+			{% set url = 'http://baikal.codr.fr/version/' ~ BAIKAL_VERSION ~ '/' ~ PROJECT_PACKAGE ~ '/about' %}
 			<p>Baïkal is open source software, and released under the terms of the GNU GPL v3.</p>
 			<p>Baïkal is developped by Jérôme Schneider. You can contact him at <a href="mailto:mail@jeromeschneider.fr">mail@jeromeschneider.fr</a>.</p>
 			<p>Baïkal is based upon other open source projects. Read the README.md file to learn about that.</p>
