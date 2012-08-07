@@ -162,7 +162,7 @@ define("BAIKAL_ADMIN_ENABLED", TRUE);
 # Baïkal Web Admin autolock ON/OFF switch; default FALSE
 define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
 
-# Baïkal Web admin password hash; Set by Core/Scripts/adminpassword.php or via Baïkal Web Admin
+# Baïkal Web admin password hash; Set via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");
 CODE;
 		$sCode = trim($sCode);
@@ -201,7 +201,7 @@ define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 # Define path to Baïkal Database SQLite file
 define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
 
-# Mysql > Use mysql instead of SQLite ?
+# MySQL > Use mysql instead of SQLite ?
 define("PROJECT_DB_MYSQL", FALSE);
 
 # MySQL > Host, including ':portnumber' if port is not the default one (3306)

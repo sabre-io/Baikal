@@ -29,61 +29,79 @@ namespace Baikal\Model\Config;
 class System extends \Baikal\Model\Config {
 	
 	protected $aConstants = array(
-		"BAIKAL_PATH_SABREDAV" => array(
-			"type" => "litteral",
-		),
-		"BAIKAL_AUTH_REALM" => array(
-			"type" => "string",
-		),
-		"BAIKAL_CARD_BASEURI" => array(
-			"type" => "litteral",
-		),
-		"BAIKAL_CAL_BASEURI" => array(
-			"type" => "litteral",
-		),
 		"BAIKAL_STANDALONE_ALLOWED" => array(
 			"type" => "boolean",
+			"comment" => "Standalone Server, allowed or not; default FALSE",
 		),
 		"BAIKAL_STANDALONE_PORT" => array(
 			"type" => "integer",
+			"comment" => "Standalone Server, port number; default 8888";
+		),
+		"BAIKAL_PATH_SABREDAV" => array(
+			"type" => "litteral",
+			"comment" => "PATH to SabreDAV",
+		),
+		"BAIKAL_AUTH_REALM" => array(
+			"type" => "string",
+			"comment" => "If you change this value, you'll have to re-generate passwords for all your users",
+		),
+		"BAIKAL_CARD_BASEURI" => array(
+			"type" => "litteral",
+			"comment" => 'Should begin and end with a "/"',
+		),
+		"BAIKAL_CAL_BASEURI" => array(
+			"type" => "litteral",
+			"comment" => 'Should begin and end with a "/"',
 		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",
+			"comment" => "Define path to Baïkal Database SQLite file",
 		),
 		"PROJECT_DB_MYSQL" => array(
 			"type" => "boolean",
+			"comment" => "MySQL > Use mysql instead of SQLite ?",
 		),
 		"PROJECT_DB_MYSQL_HOST" => array(
 			"type" => "string",
+			"comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)"
 		),
 		"PROJECT_DB_MYSQL_DBNAME" => array(
 			"type" => "string",
+			"comment" => "MySQL > Database name",
 		),
 		"PROJECT_DB_MYSQL_USERNAME" => array(
 			"type" => "string",
+			"comment" => "MySQL > Username",
 		),
 		"PROJECT_DB_MYSQL_PASSWORD" => array(
 			"type" => "string",
+			"comment" => "MySQL > Password",
+		),
+		"BAIKAL_ENCRYPTION_KEY" => array(
+			"type" => "string",
+			"comment" => "A random 32 bytes key that will be used to encrypt data",
 		),
 		"BAIKAL_CONFIGURED_VERSION" => array(
 			"type" => "string",
+			"comment" => "The currently configured Baïkal version",
 		),
 	);
 	
 	# Default values
 	protected $aData = array(
+		"BAIKAL_STANDALONE_ALLOWED" => FALSE,
+		"BAIKAL_STANDALONE_PORT" => 8888,
 		"BAIKAL_PATH_SABREDAV" => 'PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/"',
 		"BAIKAL_AUTH_REALM" => "BaikalDAV",
 		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
 		"BAIKAL_CAL_BASEURI" => 'PROJECT_BASEURI . "cal.php/"',
-		"BAIKAL_STANDALONE_ALLOWED" => FALSE,
-		"BAIKAL_STANDALONE_PORT" => 8888,
 		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
 		"PROJECT_DB_MYSQL" => FALSE,
 		"PROJECT_DB_MYSQL_HOST" => "",
 		"PROJECT_DB_MYSQL_DBNAME" => "",
 		"PROJECT_DB_MYSQL_USERNAME" => "",
 		"PROJECT_DB_MYSQL_PASSWORD" => "",
+		"BAIKAL_ENCRYPTION_KEY" => "",
 		"BAIKAL_CONFIGURED_VERSION" => "",
 	);
 	

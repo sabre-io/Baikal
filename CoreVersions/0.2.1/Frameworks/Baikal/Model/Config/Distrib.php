@@ -31,12 +31,15 @@ class Distrib extends \Baikal\Model\Config {
 	protected $aConstants = array(
 		"BAIKAL_VERSION" => array(
 			"type" => "string",
+			"comment" => "The version of the packaged system"
 		),
 		"BAIKAL_HOMEPAGE" => array(
 			"type" => "string",
+			"comment" => "The URL to the project homepage",
 		),
 		"PROJECT_PACKAGE" => array(
 			"type" => "string",
+			"comment" => "The type of the current package (one of 'flat', 'regular')"
 		),
 	);
 	
