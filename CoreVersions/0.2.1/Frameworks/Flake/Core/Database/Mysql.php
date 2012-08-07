@@ -49,4 +49,19 @@ class Mysql extends \Flake\Core\Database {
 			$this->sPassword
 		);
 	}
+	
+	public function tables() {
+		$aTables = array();
+		
+		$sSql = "SHOW TABLES FROM " . $this->sDbName;
+		$oStmt = $this->query($sSql);
+		
+		while(($aRs = $oStmt->fetch()) !== FALSE) {
+			$aTables[] = array_shift($aRs);
+		}
+		
+		asort($aTables);
+		reset($aTables);
+		return $aTables;
+	}
 }

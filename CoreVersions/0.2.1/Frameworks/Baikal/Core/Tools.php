@@ -43,8 +43,9 @@ class Tools {
 		}
 
 		# Asserting PDO::SQLite
-		if(!in_array('sqlite', \PDO::getAvailableDrivers())) {
-			die('Baikal Fatal Error: PDO::sqlite is unavailable. It\'s required by Baikal.');
+		$aPDODrivers = \PDO::getAvailableDrivers();
+		if(!in_array('sqlite', $aPDODrivers) && !in_array('mysql', $aPDODrivers)) {
+			die('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
 		}
 	}
 	
@@ -59,19 +60,15 @@ class Tools {
 	
 	public static function assertBaikalIsOk() {
 		
-		# Asserting DB file exists
-		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file does not exist. To create it, please copy 'Core/Resources/Db/db.empty.sqlite' to '" . PROJECT_SQLITE_FILE . "'");
+		# DB connexion has not been asserted earlier by Flake, to give us a chance to trigger the install tool
+		# We assert it right now
+		if(!\Flake\Framework::isDBInitialized()) {
+			throw new \Exception("<strong>Fatal error</strong>: no connection to a database is available.");
 		}
 		
-		# Asserting DB file is readable
-		if(!is_readable(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file is not readable. Please give read permissions to httpd user on file '" . PROJECT_SQLITE_FILE . "'.");
-		}
-		
-		# Asserting DB file is writable
-		if(!is_writable(PROJECT_SQLITE_FILE)) {
-			throw new \Exception("DB file is not writable. Please give write permissions to httpd user on file '" . PROJECT_SQLITE_FILE . "'.");
+		# Asserting that the database is structurally complete
+		if(($aMissingTables = self::isDBStructurallyComplete($GLOBALS["DB"])) !== TRUE) {
+			throw new \Exception("<strong>Fatal error</strong>: Database is not structurally complete; missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong>");
 		}
 		
 		# Asserting config file exists
@@ -103,6 +100,28 @@ class Tools {
 		if(!is_writable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
 			throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
 		}
+	}
+	
+	public static function isDBStructurallyComplete(\Flake\Core\Database $oDB) {
+		
+		$aRequiredTables = array(
+			"addressbooks",
+			"calendarobjects",
+			"calendars",
+			"cards",
+			"groupmembers",
+			"locks",
+			"principals",
+			"users",
+		);
+		
+		$aPresentTables = $oDB->tables();
+		$aIntersect = array_intersect($aRequiredTables, $aPresentTables);
+		if(count($aIntersect) !== count($aRequiredTables)) {
+			return array_diff($aRequiredTables, $aIntersect);
+		}
+		
+		return TRUE;
 	}
 	
 	public static function bashPrompt($prompt) {
