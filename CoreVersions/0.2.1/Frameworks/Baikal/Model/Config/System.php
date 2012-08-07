@@ -35,7 +35,7 @@ class System extends \Baikal\Model\Config {
 		),
 		"BAIKAL_STANDALONE_PORT" => array(
 			"type" => "integer",
-			"comment" => "Standalone Server, port number; default 8888";
+			"comment" => "Standalone Server, port number; default 8888",
 		),
 		"BAIKAL_PATH_SABREDAV" => array(
 			"type" => "litteral",
@@ -63,7 +63,7 @@ class System extends \Baikal\Model\Config {
 		),
 		"PROJECT_DB_MYSQL_HOST" => array(
 			"type" => "string",
-			"comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)"
+			"comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)",
 		),
 		"PROJECT_DB_MYSQL_DBNAME" => array(
 			"type" => "string",
