@@ -39,7 +39,8 @@ class Distrib extends \Baikal\Model\Config {
 			"type" => "string",
 		),
 	);
-		
+	
+	# Default values
 	protected $aData = array(
 		"BAIKAL_VERSION" => "",
 		"BAIKAL_HOMEPAGE" => "",

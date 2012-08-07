@@ -99,10 +99,14 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 					}
 				}
 
-				$aRes[$sConstant] = $sValue;
-			} elseif($iNbRes === 0) {
-				throw new \Exception("Baikal\Model\Config->parseConfig(): Unable to find constant '" . $sConstant . "' in config file");
+			} elseif($iNbRes > 1) {
+				throw new \Exception("Baikal\Model\Config->parseConfig(): constant '" . $sConstant . "' has been found multiple times in the config file; stopping execution");
+			} else {
+				# $iNbRes === 0
+				# We do nothing, to keep the default value (the one already set in $aData)
 			}
+			
+			$aRes[$sConstant] = $sValue;
 		}
 
 		reset($aRes);
