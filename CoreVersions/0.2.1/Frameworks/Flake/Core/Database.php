@@ -203,4 +203,6 @@ abstract class Database extends \Flake\Core\FLObject {
 	public function __destruct() {
 		$this->close();
 	}
+	
+	public abstract function tables();
 }
