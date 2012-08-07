@@ -28,5 +28,9 @@ rm .gitignore
 rm -Rf Core/Scripts
 rm -Rf Core/Frameworks/Baikal/Scripts
 
+# Deploy empty DB
+mkdir -p Specific/db
+cp Core/Resources/Db/SQLite/db.sqlite Specific/db
+
 # Displaying result
 echo "#     "$TEMPDIR
