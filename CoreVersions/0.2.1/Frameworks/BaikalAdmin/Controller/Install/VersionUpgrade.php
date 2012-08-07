@@ -106,6 +106,12 @@ HTML;
 	}
 	
 	protected function updateConfiguredVersion($sVersionTo) {
+		
+		# Create new settings
+		$oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+		$oConfig->persist();
+		
+		# Update BAIKAL_CONFIGURED_VERSION
 		$oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
 		$oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
 		$oConfig->persist();

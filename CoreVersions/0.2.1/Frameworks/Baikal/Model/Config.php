@@ -98,15 +98,15 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 						break;
 					}
 				}
-
+				
+				$aRes[$sConstant] = $sValue;
+				
 			} elseif($iNbRes > 1) {
 				throw new \Exception("Baikal\Model\Config->parseConfig(): constant '" . $sConstant . "' has been found multiple times in the config file; stopping execution");
 			} else {
 				# $iNbRes === 0
 				# We do nothing, to keep the default value (the one already set in $aData)
 			}
-			
-			$aRes[$sConstant] = $sValue;
 		}
 
 		reset($aRes);
@@ -143,12 +143,12 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 		foreach(array_keys($this->aData) as $prop) {
 			$iLines = count($aLines);
 			$sPattern = '/\s*define\(\s*["|\']' . $prop . '["|\']\s*\,\s*(.*?)\s*\);\s*/ix';
-
+			$sValue = $this->aData[$prop];
+			
 			for($k = ($iLines - 1); $k >= 0; $k--) {
 				if(preg_match($sPattern, $aLines[$k])) {
 					# Found the last matching line
-
-					$sValue = $this->aData[$prop];
+					
 					$bCalculated = (isset($this->aConstants[$prop]["type"]["calculated"]) && $this->aConstants[$prop]["type"]["calculated"] === TRUE);
 
 					switch($this->aConstants[$prop]["type"]) {
@@ -181,6 +181,9 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 					}
 
 					$aLines[$k] = "define(\"" . $prop . "\", " . $sValue . ");";
+				} else {
+					# Adding line at the end of the file
+					$aLines[] = "\n" . "# " . $this->aConstants[$prop]["comment"] . "\n" . define(\"" . $prop . "\", " . $sValue . ");"
 				}
 			}
 		}
