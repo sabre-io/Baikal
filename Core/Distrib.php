@@ -24,6 +24,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKAL_VERSION", "0.2.1");
+define("BAIKAL_VERSION", "0.2.2");
 define("BAIKAL_HOMEPAGE", "http://baikal.codr.fr");
 define("PROJECT_PACKAGE", "regular");
