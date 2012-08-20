@@ -1,1 +1,7 @@
 
+[submodule "Core/Frameworks/Formal"]
+	path = Core/Frameworks/Formal
+	url = https://jeromeschneider@github.com/jeromeschneider/Formal.git
+[submodule "Core/Frameworks/Flake"]
+	path = Core/Frameworks/Flake
+	url = https://jeromeschneider@github.com/jeromeschneider/Flake.git
