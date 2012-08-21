@@ -21,7 +21,7 @@ The following configuration is the minimum required:
 - an hosted webserver running apache 2 and PHP 5.3.0
 
 - PHP 5.3.0 or newer with the following extensions: 
-	- PDO and SQLite3
+	- PDO and SQLite3 or MySQL 
         - DOM (php-xml)  
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function.
@@ -42,14 +42,12 @@ The following configuration is the minimum required:
 	interfaces will be produced in the future. 
 
 - PHP 5.3.0 or newer with the following extensions: 
-	- PDO and SQLite3 
+	- PDO and SQLite3 or MySQL 
         - DOM (php-xml) 
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function. 
 
 - 30 MB of disk space 
-
-- Apache configuration that activates "FollowSymlinks" 
 
 # 2 - Obtaining Baïkal
 
