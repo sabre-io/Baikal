@@ -25,26 +25,35 @@ To troubleshoot user auth / data access, you may use curl to debug server respon
 (Be sure that the username exists, has the right password set, and has a calendar named default first).
 
 If you see this, auth works for this username/password/calendar, so it has to be client-related:
+
 	GET is only implemented on File objects
 
 If you see this, password is wrong (case-sensitive) (despite the message indicating that it's the username):
+
 	Incorrect username
 
 If you see this, username is wrong:
+
 	The supplied username was not on file
 
 If you see this, auth works but the "principals" part of the URL is wrong (the /username/ after "calendars" in the URL):
+
 	Principal with name username not found
 
 If you see this, auth works but the calendar does not exist for this user:
+
 	Calendar with name 'defaults' could not be found
 
 If you see this, auth works and the calendar exists, but the provided user has no permission to access this calendar:
+
 	Sabre_DAVACL_Exception_NeedPrivileges
 
 If you see one of these, the URL is not well formed / invalid:
+
 	File not found: XXXXX in 'root'
-	Or
+	
+Or
+	
 	The requested URL XXXXX was not found on this server.
 
 If you see nothing at all, curl cannot resolve your host.
