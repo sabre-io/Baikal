@@ -39,7 +39,9 @@ Please read INSTALL.md in this folder.
 Please read TROUBLESHOOTING.md in this folder.
 
 # 8. Credits
-Jérôme Schneider (@jeromeschneider) is admin and lead developper. 
+
+Baïkal is developed by Base8 (http://base8.fr). 
+Jérôme Schneider (@jeromeschneider) is admin and lead developer. 
 Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal.codr.fr). Much appreciated, Daniel :) 
 
--- Jérôme Schneider <mail@jeromeschneider.fr>  Mon, 23 Jul 2012 08:26:00 +0100
+-- Jérôme Schneider <contact@base8.fr>  Mon, 21 Aug 2012 12:17:00 +0100
