@@ -42,7 +42,7 @@ class Tools {
 			die('Baikal Fatal Error: PDO is unavailable. It\'s required by Baikal.');
 		}
 
-		# Asserting PDO::SQLite
+		# Asserting PDO::SQLite or PDO::MySQL
 		$aPDODrivers = \PDO::getAvailableDrivers();
 		if(!in_array('sqlite', $aPDODrivers) && !in_array('mysql', $aPDODrivers)) {
 			die('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
@@ -62,7 +62,7 @@ class Tools {
 		
 		# DB connexion has not been asserted earlier by Flake, to give us a chance to trigger the install tool
 		# We assert it right now
-		if(!\Flake\Framework::isDBInitialized()) {
+		if(!\Flake\Framework::isDBInitialized() && (!defined("BAIKAL_CONTEXT_INSTALL") || BAIKAL_CONTEXT_INSTALL === FALSE)) {
 			throw new \Exception("<strong>Fatal error</strong>: no connection to a database is available.");
 		}
 		

@@ -14,6 +14,3 @@
 <IfModule mod_expires.c>
 	ExpiresActive Off
 </IfModule>
-
-# Disabling PHP Magic quotes, we handle this ourself
-php_flag magic_quotes_gpc Off
