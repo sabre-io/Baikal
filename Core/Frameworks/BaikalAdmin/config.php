@@ -31,7 +31,6 @@ $GLOBALS["ROUTES"] = array(
 	"users" => "\BaikalAdmin\Route\Users",
 	"users/calendars" => "\BaikalAdmin\Route\User\Calendars",
 	"users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
-	"install" => "\BaikalAdmin\Route\Install",
 	"settings/standard" => "\BaikalAdmin\Route\Settings\Standard",
 	"settings/system" => "\BaikalAdmin\Route\Settings\System",
 	"logout" => "\BaikalAdmin\Route\Logout"

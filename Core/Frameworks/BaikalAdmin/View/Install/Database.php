@@ -24,11 +24,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-namespace BaikalAdmin\Route;
+namespace BaikalAdmin\View\Install;
 
-class Install extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install());
-	}
+class Database extends \BaikalAdmin\Core\View {
 }

@@ -31,7 +31,7 @@ class Standard extends \Baikal\Model\Config {
 	protected $aConstants = array(
 		"PROJECT_TIMEZONE" => array(
 			"type" => "string",
-			"comment" => "Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
+			"comment" => "Timezone of the server; if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
 		),
 		"BAIKAL_CARD_ENABLED" => array(
 			"type" => "boolean",
@@ -70,29 +70,11 @@ class Standard extends \Baikal\Model\Config {
 		
 		$oMorpho->add(new \Formal\Element\Listbox(array(
 			"prop" => "PROJECT_TIMEZONE",
-			"label" => "Time zone",
+			"label" => "Server Time zone",
 			"validation" => "required",
 			"options" => \Baikal\Core\Tools::timezones(),
-			"help" => "Time zone of the server"
 		)));
 		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_ENABLED",
-			"label" => "Enable Web Admin",
-			"popover" => array(
-				"title" => "Warning !",
-				"content" => "If disabled, you'll lose access to this very admin interface !",
-			),
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_AUTOLOCKENABLED",
-			"label" => "Enable Web Admin autolock",
-			"popover" => array(
-				"title" => "Web admin autolock",
-				"content" => "If enabled, you'll have to create a file named ENABLE_ADMIN in Specific/ prior to every admin use."
-			)
-		)));
 		
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
 			"prop" => "BAIKAL_CAL_ENABLED",
@@ -106,12 +88,12 @@ class Standard extends \Baikal\Model\Config {
 		
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "BAIKAL_ADMIN_PASSWORDHASH",
-			"label" => "Web admin password",
+			"label" => "Admin password",
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "BAIKAL_ADMIN_PASSWORDHASH_CONFIRM",
-			"label" => "Web admin password confirmation",
+			"label" => "Admin password, confirmation",
 			"validation" => "sameas:BAIKAL_ADMIN_PASSWORDHASH",
 		)));
 		
@@ -124,6 +106,24 @@ class Standard extends \Baikal\Model\Config {
 			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("placeholder", $sNotice);
 			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH_CONFIRM")->setOption("placeholder", $sNotice);
 		}
+
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "BAIKAL_ADMIN_ENABLED",
+			"label" => "Enable Web interface (recommended)",
+			"popover" => array(
+				"title" => "Warning !",
+				"content" => "If disabled, you'll lose access to this very admin interface !",
+			),
+		)));
+		
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "BAIKAL_ADMIN_AUTOLOCKENABLED",
+			"label" => "Web interface autolock",
+			"popover" => array(
+				"title" => "Web admin autolock",
+				"content" => "If enabled, you'll have to create a file named <strong>ENABLE_ADMIN</strong> in the folder <strong>Specific/</strong> prior to every admin use.<br /><br />This enforces security, but might be uncomfortable if you use the admin frequently."
+			)
+		)));
 		
 		return $oMorpho;
 	}
@@ -155,5 +155,54 @@ class Standard extends \Baikal\Model\Config {
 		}
 		
 		return parent::get($sProp);
+	}
+
+	protected function createDefaultConfigFilesIfNeeded() {
+
+		# Create empty config.php if needed
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.php");
+			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
+			$sContent .= $this->getDefaultConfig();
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
+		}
+		
+		# Create empty config.system.php if needed
+		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
+			@touch(PROJECT_PATH_SPECIFIC . "config.system.php");
+			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
+			$sContent .= $this->getDefaultSystemConfig();
+			file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
+		}
+	}
+	
+	protected static function getDefaultConfig() {
+
+		$sCode =<<<CODE
+##############################################################################
+# Required configuration
+# You *have* to review these settings for Baïkal to run properly
+#
+
+# Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+define("PROJECT_TIMEZONE", "Europe/Paris");
+
+# CardDAV ON/OFF switch; default TRUE
+define("BAIKAL_CARD_ENABLED", TRUE);
+
+# CalDAV ON/OFF switch; default TRUE
+define("BAIKAL_CAL_ENABLED", TRUE);
+
+# Baïkal Web Admin ON/OFF switch; default TRUE
+define("BAIKAL_ADMIN_ENABLED", TRUE);
+
+# Baïkal Web Admin autolock ON/OFF switch; default FALSE
+define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
+
+# Baïkal Web admin password hash; Set via Baïkal Web Admin
+define("BAIKAL_ADMIN_PASSWORDHASH", "");
+CODE;
+		$sCode = trim($sCode);
+		return $sCode;
 	}
 }

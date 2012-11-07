@@ -37,16 +37,10 @@ class Initialize extends \Flake\Core\Controller {
 		if(!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
 			throw new \Exception("Specific/ dir is readonly. Baïkal Admin requires write permissions on this dir.");
 		}
-		
-		$this->createDefaultConfigFilesIfNeeded();
+
 		$this->createHtaccessFilesIfNeeded();
 		
 		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
-		
-		# Assert that config file is writable
-		if(!$this->oModel->writable()) {
-			throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
-		}
 		
 		$this->oForm = $this->oModel->formForThisModelInstance(array(
 			"close" => FALSE
@@ -56,22 +50,19 @@ class Initialize extends \Flake\Core\Controller {
 			$this->oForm->execute();
 			
 			if($this->oForm->persisted()) {
-				$sContent = file_get_contents(PROJECT_PATH_SPECIFIC . "config.system.php");
-				
-				$sBaikalVersion = BAIKAL_VERSION;
-				$sEncryptionKey = md5(microtime() . rand());
-				
-				# Setting "BAIKAL_CONFIGURED_VERSION"
-				$sNewConstants =<<<PHP
-# A random 32 bytes key that will be used to encrypt data
-define("BAIKAL_ENCRYPTION_KEY", "{$sEncryptionKey}");
 
-# The currently configured Baïkal version
-define("BAIKAL_CONFIGURED_VERSION", "{$sBaikalVersion}");
-PHP;
-				
-				# Writing results to file
-				file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent . "\n\n" . $sNewConstants);
+				# Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
+				$oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+				$oSystemConfig->set("BAIKAL_ENCRYPTION_KEY",  md5(microtime() . rand()));
+				$oSystemConfig->persist();
+
+				# Using default PROJECT_SQLITE_FILE
+				$PROJECT_SQLITE_FILE = PROJECT_PATH_SPECIFIC . "db/db.sqlite";
+
+				if(!file_exists($PROJECT_SQLITE_FILE)) {
+					# Installing default sqlite database
+					@copy(PROJECT_PATH_CORERESOURCES . "Db/SQLite/db.sqlite", $PROJECT_SQLITE_FILE);
+				}
 			}
 		}
 	}
@@ -84,8 +75,12 @@ PHP;
 		$oView->setData("baikalversion", BAIKAL_VERSION);
 		
 		if($this->oForm->persisted()) {
-			$sMessage = "<p>Baïkal is now configured. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></h2>";
-			$sForm = "";
+			$sLink = PROJECT_URI . "admin/install/?/database";
+			\Flake\Util\Tools::redirect($sLink);
+			exit(0);
+
+			#$sMessage = "<p>Baïkal is now configured. You may <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></p>";
+			#$sForm = "";
 		} else {
 			$sMessage = "";
 			$sForm = $this->oForm->render();
@@ -95,10 +90,6 @@ PHP;
 		$oView->setData("form", $sForm);
 		
 		return $oView->render();
-	}
-	
-	protected function tagConfiguredVersion() {
-		file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
 	}
 	
 	protected function createHtaccessFilesIfNeeded() {
@@ -118,106 +109,5 @@ PHP;
 		if(!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
 			throw new \Exception("Unable to create " . PROJECT_PATH_SPECIFIC . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "System/htaccess-specific");
 		}
-	}
-	
-	protected function createDefaultConfigFilesIfNeeded() {
-
-		# Create empty config.php if needed
-		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-			@touch(PROJECT_PATH_SPECIFIC . "config.php");
-			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-			$sContent .= $this->getDefaultConfig();
-			file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
-		}
-		
-		# Create empty config.system.php if needed
-		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-			@touch(PROJECT_PATH_SPECIFIC . "config.system.php");
-			$sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-			$sContent .= $this->getDefaultSystemConfig();
-			file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
-		}
-	}
-	
-	protected function getDefaultConfig() {
-
-		$sCode =<<<CODE
-##############################################################################
-# Required configuration
-# You *have* to review these settings for Baïkal to run properly
-#
-
-# Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-define("PROJECT_TIMEZONE", "Europe/Paris");
-
-# CardDAV ON/OFF switch; default TRUE
-define("BAIKAL_CARD_ENABLED", TRUE);
-
-# CalDAV ON/OFF switch; default TRUE
-define("BAIKAL_CAL_ENABLED", TRUE);
-
-# Baïkal Web Admin ON/OFF switch; default TRUE
-define("BAIKAL_ADMIN_ENABLED", TRUE);
-
-# Baïkal Web Admin autolock ON/OFF switch; default FALSE
-define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
-
-# Baïkal Web admin password hash; Set via Baïkal Web Admin
-define("BAIKAL_ADMIN_PASSWORDHASH", "");
-CODE;
-		$sCode = trim($sCode);
-		return $sCode;
-	}
-	
-	protected function getDefaultSystemConfig() {
-		$sCode =<<<CODE
-##############################################################################
-# System configuration
-# Should not be changed, unless YNWYD
-#
-# RULES
-#	0. All folder pathes *must* be suffixed by "/"
-#	1. All URIs *must* be suffixed by "/" if pointing to a folder
-#
-
-# Standalone Server, allowed or not; default FALSE
-define("BAIKAL_STANDALONE_ALLOWED", FALSE);
-
-# Standalone Server, port number; default 8888
-define("BAIKAL_STANDALONE_PORT", 8888);
-
-# PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
-
-# If you change this value, you'll have to re-generate passwords for all your users
-define("BAIKAL_AUTH_REALM", "BaikalDAV");
-
-# Should begin and end with a "/"
-define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
-
-# Should begin and end with a "/"
-define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
-
-# Define path to Baïkal Database SQLite file
-define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
-
-# MySQL > Use mysql instead of SQLite ?
-define("PROJECT_DB_MYSQL", FALSE);
-
-# MySQL > Host, including ':portnumber' if port is not the default one (3306)
-define("PROJECT_DB_MYSQL_HOST", "");
-
-# MySQL > Database name
-define("PROJECT_DB_MYSQL_DBNAME", "");
-
-# MySQL > Username
-define("PROJECT_DB_MYSQL_USERNAME", "");
-
-# MySQL > Password
-define("PROJECT_DB_MYSQL_PASSWORD", "");
-
-CODE;
-		$sCode = trim($sCode);
-		return $sCode;
 	}
 }

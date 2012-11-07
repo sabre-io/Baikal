@@ -47,8 +47,16 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 	}
 
 	protected function getConfigAsString() {
-		$sContent = file_get_contents($this->sConfigFilePath);
-		return str_replace(LF . CR, LF, $sContent);
+		if(file_exists($this->sConfigFilePath)) {
+			$sContent = file_get_contents($this->sConfigFilePath);
+			return str_replace(LF . CR, LF, $sContent);
+		} else {
+
+			$sConfig = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
+			$sConfig .= static::getDefaultConfig();
+
+			return $sConfig;
+		}
 	}
 
 	protected function parseConfig($sString) {
@@ -222,8 +230,11 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
 		file_put_contents($this->sConfigFilePath, $sLines);
 	}
-	
+
 	public function destroy() {
 
+	}
+
+	protected static function getDefaultConfig() {
 	}
 }
