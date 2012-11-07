@@ -15,6 +15,8 @@ TEMPDIRDEREFERENCE="/tmp/baikal-flat-$TEMPDATE"
 
 # Export Project
 # Requires the git-archive-all script by https://github.com/Kentzo (https://github.com/Kentzo/git-archive-all)
+rm -rf /tmp/baikal-flat
+
 mkdir $TEMPDIR && \
 git-archive-all --force-submodules $TEMPARCHIVE && \
 cd $TEMPDIR && tar -xzf $TEMPARCHIVE && rm $TEMPARCHIVE && \
@@ -57,5 +59,11 @@ mv Core/Distrib2.php Core/Distrib.php && \
 mkdir -p Specific/db && \
 cp Core/Resources/Db/SQLite/db.sqlite Specific/db && \
 
+# Zipping package
+cd .. && \
+mv $TEMPDIR baikal-flat && \
+zip -r baikal-flat.zip baikal-flat && \
+mv baikal-flat.zip ~/Desktop/ && \
+
 # Displaying result
-echo "#     "$TEMPDIR
+echo "# Success: ~/Desktop/baikal-flat.zip"
