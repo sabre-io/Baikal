@@ -36,19 +36,22 @@ class Auth {
 	}
 	
 	public static function assertUnlocked() {
-		
-		if(!defined("BAIKAL_ADMIN_AUTOLOCKENABLED") || BAIKAL_ADMIN_AUTOLOCKENABLED === FALSE) {
-			return TRUE;
-		}
-		
+
 		if(defined("BAIKAL_CONTEXT_INSTALL") && BAIKAL_CONTEXT_INSTALL === TRUE) {
 			$sToolName = "Ba&iuml;kal Install Tool";
+			$sFileName = "ENABLE_INSTALL";
 		} else {
+			if(!defined("BAIKAL_ADMIN_AUTOLOCKENABLED") || BAIKAL_ADMIN_AUTOLOCKENABLED === FALSE) {
+				return TRUE;
+			}
+
 			$sToolName = "Ba&iuml;kal Admin";
+			$sFileName = "ENABLE_ADMIN";
 		}
+
+		$sEnableFile = PROJECT_PATH_SPECIFIC . $sFileName;
 		
 		$bLocked = TRUE;
-		$sEnableFile = PROJECT_PATH_SPECIFIC . "ENABLE_ADMIN";
 		if(file_exists($sEnableFile)) {
 
 			clearstatcache();
@@ -63,13 +66,13 @@ class Auth {
 				// file has been created more than an hour ago
 				// delete and declare locked
 				if(!@unlink($sEnableFile)) {
-					die("<h1>" . $sToolName . " is locked.</h1>To unlock it, delete and re-create an empty file named ENABLE_ADMIN in <b>Specific/config.php</b>");
+					die("<h1>" . $sToolName . " is locked.</h1>To unlock it, create (or re-create if it exists already) an empty file named <strong>" . $sFileName . "</strong> (uppercase, no file extension) in the <b>Specific/</b> folder of Ba&iuml;kal.");
 				}
 			}
 		}
 
 		if($bLocked) {
-			die("<h1>" . $sToolName . " is locked.</h1>To unlock it, create an empty file named ENABLE_ADMIN in <b>Specific/</b>");
+			die("<h1>" . $sToolName . " is locked.</h1>To unlock it, create (or re-create if it exists already) an empty file named <strong>" . $sFileName . "</strong> (uppercase, no file extension) in the <b>Specific/</b> folder of Ba&iuml;kal.");
 		}
 	}
 	
@@ -106,6 +109,20 @@ class Auth {
 	}
 
 	public static function hashAdminPassword($sPassword) {
-		return md5('admin:' . BAIKAL_AUTH_REALM . ':' . $sPassword);
+		if(defined("BAIKAL_AUTH_REALM")) {
+			$sAuthRealm = BAIKAL_AUTH_REALM;
+		} else {
+			$sAuthRealm = "BaikalDAV";	# Fallback to default value; useful when initializing App, as all constants are not set yet
+		}
+
+		return md5('admin:' . $sAuthRealm . ':' . $sPassword);
+	}
+
+	public static function lockAdmin() {
+		@unlink(PROJECT_PATH_SPECIFIC . "ENABLE_ADMIN");
+	}
+
+	public static function lockInstall() {
+		@unlink(PROJECT_PATH_SPECIFIC . "ENABLE_INSTALL");
 	}
 }

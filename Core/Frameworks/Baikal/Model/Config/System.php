@@ -29,14 +29,6 @@ namespace Baikal\Model\Config;
 class System extends \Baikal\Model\Config {
 	
 	protected $aConstants = array(
-		"BAIKAL_STANDALONE_ALLOWED" => array(
-			"type" => "boolean",
-			"comment" => "Standalone Server, allowed or not; default FALSE",
-		),
-		"BAIKAL_STANDALONE_PORT" => array(
-			"type" => "integer",
-			"comment" => "Standalone Server, port number; default 8888",
-		),
 		"BAIKAL_PATH_SABREDAV" => array(
 			"type" => "litteral",
 			"comment" => "PATH to SabreDAV",
@@ -59,7 +51,7 @@ class System extends \Baikal\Model\Config {
 		),
 		"PROJECT_DB_MYSQL" => array(
 			"type" => "boolean",
-			"comment" => "MySQL > Use mysql instead of SQLite ?",
+			"comment" => "MySQL > Use MySQL instead of SQLite ?",
 		),
 		"PROJECT_DB_MYSQL_HOST" => array(
 			"type" => "string",
@@ -89,8 +81,6 @@ class System extends \Baikal\Model\Config {
 	
 	# Default values
 	protected $aData = array(
-		"BAIKAL_STANDALONE_ALLOWED" => FALSE,
-		"BAIKAL_STANDALONE_PORT" => 8888,
 		"BAIKAL_PATH_SABREDAV" => 'PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/"',
 		"BAIKAL_AUTH_REALM" => "BaikalDAV",
 		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
@@ -140,18 +130,6 @@ class System extends \Baikal\Model\Config {
 				"content" => "If you change this, you'll loose your access to this interface.<br />In other words: <strong>you should not change this, unless YKWYD.</strong>"
 			)
 		)));
-		
-		if(\Flake\Util\Frameworks::enabled("BaikalStandalone")) {
-			$oMorpho->add(new \Formal\Element\Checkbox(array(
-				"prop" => "BAIKAL_STANDALONE_ALLOWED",
-				"label" => "Allow Standalone Baïkal execution"
-			)));
-
-			$oMorpho->add(new \Formal\Element\Text(array(
-				"prop" => "BAIKAL_STANDALONE_PORT",
-				"label" => "Standalone Baïkal port"
-			)));
-		}
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_PATH_SABREDAV",
@@ -207,5 +185,60 @@ class System extends \Baikal\Model\Config {
 		
 	public function label() {
 		return "Baïkal Settings";
+	}
+
+	protected static function getDefaultConfig() {
+
+		$sBaikalVersion = BAIKAL_VERSION;
+
+		$sCode =<<<CODE
+##############################################################################
+# System configuration
+# Should not be changed, unless YNWYD
+#
+# RULES
+#	0. All folder pathes *must* be suffixed by "/"
+#	1. All URIs *must* be suffixed by "/" if pointing to a folder
+#
+
+# PATH to SabreDAV
+define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
+
+# If you change this value, you'll have to re-generate passwords for all your users
+define("BAIKAL_AUTH_REALM", "BaikalDAV");
+
+# Should begin and end with a "/"
+define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
+
+# Should begin and end with a "/"
+define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
+
+# Define path to Baïkal Database SQLite file
+define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
+
+# MySQL > Use MySQL instead of SQLite ?
+define("PROJECT_DB_MYSQL", FALSE);
+
+# MySQL > Host, including ':portnumber' if port is not the default one (3306)
+define("PROJECT_DB_MYSQL_HOST", "");
+
+# MySQL > Database name
+define("PROJECT_DB_MYSQL_DBNAME", "");
+
+# MySQL > Username
+define("PROJECT_DB_MYSQL_USERNAME", "");
+
+# MySQL > Password
+define("PROJECT_DB_MYSQL_PASSWORD", "");
+
+# A random 32 bytes key that will be used to encrypt data
+define("BAIKAL_ENCRYPTION_KEY", "");
+
+# The currently configured Baïkal version
+define("BAIKAL_CONFIGURED_VERSION", "{$sBaikalVersion}");
+
+CODE;
+		$sCode = trim($sCode);
+		return $sCode;
 	}
 }

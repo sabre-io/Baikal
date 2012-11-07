@@ -65,8 +65,12 @@ if(!defined("BAIKAL_CONFIGURED_VERSION")) {
 	# we have to set an admin password
 	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
-	# we have to upgrade Baïkal
-	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+	if(BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
+		# we have to upgrade Baïkal
+		$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+	} else {
+		$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
+	}
 }
 
 # Render the page

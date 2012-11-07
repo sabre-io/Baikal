@@ -67,9 +67,9 @@ class Tools {
 		}
 		
 		# Asserting that the database is structurally complete
-		if(($aMissingTables = self::isDBStructurallyComplete($GLOBALS["DB"])) !== TRUE) {
-			throw new \Exception("<strong>Fatal error</strong>: Database is not structurally complete; missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong>");
-		}
+		#if(($aMissingTables = self::isDBStructurallyComplete($GLOBALS["DB"])) !== TRUE) {
+		#	throw new \Exception("<strong>Fatal error</strong>: Database is not structurally complete; missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong>");
+		#}
 		
 		# Asserting config file exists
 		if(!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
@@ -101,10 +101,9 @@ class Tools {
 			throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
 		}
 	}
-	
-	public static function isDBStructurallyComplete(\Flake\Core\Database $oDB) {
-		
-		$aRequiredTables = array(
+
+	public static function getRequiredTablesList() {
+		return array(
 			"addressbooks",
 			"calendarobjects",
 			"calendars",
@@ -114,8 +113,13 @@ class Tools {
 			"principals",
 			"users",
 		);
+	}
+	
+	public static function isDBStructurallyComplete(\Flake\Core\Database $oDB) {
 		
+		$aRequiredTables = self::getRequiredTablesList();
 		$aPresentTables = $oDB->tables();
+
 		$aIntersect = array_intersect($aRequiredTables, $aPresentTables);
 		if(count($aIntersect) !== count($aRequiredTables)) {
 			return array_diff($aRequiredTables, $aIntersect);
