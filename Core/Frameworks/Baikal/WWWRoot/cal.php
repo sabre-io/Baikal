@@ -65,7 +65,7 @@ $server->setBaseUri(BAIKAL_CAL_BASEURI);
 $server->addPlugin(new Sabre_DAV_Auth_Plugin($authBackend, BAIKAL_AUTH_REALM));
 $server->addPlugin(new Sabre_DAVACL_Plugin());
 $server->addPlugin(new Sabre_CalDAV_Plugin());
-
+$server->addPlugin(new Sabre_CalDAV_ICSExportPlugin());
 
 # And off we go!
 $server->exec();
