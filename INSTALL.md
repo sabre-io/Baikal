@@ -101,14 +101,16 @@ running Apache is www-data:www-data
 	# e. Change permissions on the files
 	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
 
-### 3.2.2 - Setting up the Apache virtualhost
+### 3.2.2 - Setting up a Web Server
 
-Baïkal must be bound to a domain/subdomain in order to run properly. 
-This package provides a default virtualhost configuration file for Apache 2 in
-	Specific/virtualhosts/baikal.apache2
+Baikal must be bound to a domain/subdomain in order to run properly. 
+This package provides default virtualhost configuration files for Apache 2 and for nginx in
+	Specific/virtualhosts/
 
-To enable your host to run Baïkal, you'll have to add the Baïkal virtualhost
-to your Apache environment.
+To enable your host to run Baikal, you'll have to add the Baikal virtualhost
+to your Web Server environment.
+
+#### Setting up the Apache virtualhost
 
 In our example, we will assume that the apache2 configuration directory is: 
 	/etc/apache2
@@ -119,7 +121,7 @@ In our example, we will assume that the apache2 configuration directory is:
 	# b. Enter the sites-available directory
 	$ root:/etc/apache2> cd sites-available
 	
-	# c. Symlink the Baïkal virtualhost file to this directory
+	# c. Symlink the Baikal virtualhost file to this directory
 	$ root:/etc/apache2/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.apache2
 	
 	# d. Customize the virtualhost config file
@@ -133,7 +135,33 @@ In our example, we will assume that the apache2 configuration directory is:
 	
 	# h. Restart apache
 	$ root:/etc/apache2/sites-enabled> /etc/init.d/apache2 restart
+	
+#### Setting up the nginx virtualhost
 
+In our example, we will assume that the nginx configuration directory is: 
+	/etc/nginx
+
+	# a. Enter the nginx configuration directory
+	$ root:/var/www> cd /etc/nginx
+	
+	# b. Enter the sites-available directory
+	$ root:/etc/nginx> cd sites-available
+	
+	# c. Symlink the Baikal virtualhost file to this directory
+	$ root:/etc/nginx/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.nginx
+	
+	# d. Customize the virtualhost config file
+	$ root:/etc/nginx/sites-available> nano baikal.nginx
+	
+	# e. In baikal.nginx, replace references to dav.mydomain.com with your own domain name
+	
+	# f. Activate the new virtualhost
+	$ root:/etc/nginx/sites-available> cd ../sites-enabled
+	$ root:/etc/nginx/sites-enabled> ln -s ../sites-available/baikal.nginx
+	
+	# h. Restart nginx
+	$ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
+	
 ### 3.2.3 - Setting up Baïkal
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
