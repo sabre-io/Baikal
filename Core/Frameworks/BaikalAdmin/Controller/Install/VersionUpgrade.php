@@ -67,9 +67,9 @@ HTML;
 		}
 		
 		if($bSuccess === FALSE) {
-			$sHtml .= "<p><span class='label label-error'>Error</span> Baïkal has not been upgraded. See the section 'Errors' for details.</p>";
+			$sHtml .= "<p>&nbsp;</p><p><span class='label label-important'>Error</span> Baïkal has not been upgraded. See the section 'Errors' for details.</p>";
 		} else {
-			$sHtml .= "<p>Baïkal has been successfully upgraded. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></p>";
+			$sHtml .= "<p>&nbsp;</p><p>Baïkal has been successfully upgraded. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></p>";
 		}
 		
 		return $sHtml;
@@ -77,7 +77,7 @@ HTML;
 	
 	protected function upgrade($sVersionFrom, $sVersionTo) {
 		
-		if($sVersionFrom === "0.2.0" && $sVersionTo === "0.2.1") {
+		if($sVersionFrom === "0.2.0") {
 			
 			$sOldDbFilePath = PROJECT_PATH_SPECIFIC . "Db/.ht.db.sqlite";
 			
@@ -98,6 +98,51 @@ HTML;
 					
 					$this->aSuccess[] = "SQLite database has been renamed from '" . $sOldDbFilePath . "' to '" . $sNewDbFilePath . "'";
 				}
+			}
+		}
+
+		if(version_compare($sVersionFrom, '2.3.0', '<=')) {
+			# Upgrading DB
+
+			#	etag VARCHAR(32),
+			#	size INT(11) UNSIGNED NOT NULL,
+			#	componenttype VARCHAR(8),
+			#	firstoccurence INT(11) UNSIGNED,
+			#	lastoccurence INT(11) UNSIGNED,
+
+			if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
+				$aSql = array(
+					"ALTER TABLE calendarobjects ADD COLUMN etag VARCHAR(32)",
+					"ALTER TABLE calendarobjects ADD COLUMN size INT(11) UNSIGNED NOT NULL",
+					"ALTER TABLE calendarobjects ADD COLUMN componenttype VARCHAR(8)",
+					"ALTER TABLE calendarobjects ADD COLUMN firstoccurence INT(11) UNSIGNED",
+					"ALTER TABLE calendarobjects ADD COLUMN lastoccurence INT(11) UNSIGNED",
+					"ALTER TABLE calendars ADD COLUMN transparent TINYINT(1) NOT NULL DEFAULT '0'",
+				);
+
+				$this->aSuccess[] = "MySQL database has been successfuly upgraded.";
+			} else {
+				$aSql = array(
+					"ALTER TABLE calendarobjects ADD COLUMN etag text",
+					"ALTER TABLE calendarobjects ADD COLUMN size integer",
+					"ALTER TABLE calendarobjects ADD COLUMN componenttype text",
+					"ALTER TABLE calendarobjects ADD COLUMN firstoccurence integer",
+					"ALTER TABLE calendarobjects ADD COLUMN lastoccurence integer",
+					"ALTER TABLE calendars ADD COLUMN transparent bool",
+					"ALTER TABLE principals ADD COLUMN vcardurl VARCHAR(80)",	# This one is added in SQLite but not MySQL, because it is already there since the beginning in MySQL
+				);
+
+				$this->aSuccess[] = "SQLite database has been successfuly upgraded.'";
+			}
+
+			try{
+				foreach($aSql as $sAlterTableSql) {
+					$GLOBALS["DB"]->query($sAlterTableSql);
+				}
+			} catch(\Exception $e) {
+				$this->aSuccess = array();
+				$this->aErrors[] = "<p>Database cannot be upgraded.<br />Caught exception: " . $e->getMessage() . "</p>";
+				return FALSE;
 			}
 		}
 		

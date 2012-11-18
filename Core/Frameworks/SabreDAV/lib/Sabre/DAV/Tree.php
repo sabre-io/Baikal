@@ -1,34 +1,34 @@
 <?php
 
+namespace Sabre\DAV;
+
 /**
- * Abstract tree object 
- * 
- * @package Sabre
- * @subpackage DAV
+ * Abstract tree object
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-abstract class Sabre_DAV_Tree {
-    
+abstract class Tree {
+
     /**
      * This function must return an INode object for a path
-     * If a Path doesn't exist, thrown an Exception_FileNotFound
-     * 
-     * @param string $path 
-     * @throws Exception_FileNotFound
-     * @return Sabre_DAV_INode 
+     * If a Path doesn't exist, thrown a Exception_NotFound
+     *
+     * @param string $path
+     * @throws Exception\NotFound
+     * @return INode
      */
     abstract function getNodeForPath($path);
 
     /**
      * This function allows you to check if a node exists.
      *
-     * Implementors of this class should override this method to make 
+     * Implementors of this class should override this method to make
      * it cheaper.
-     * 
-     * @param string $path 
-     * @return bool 
+     *
+     * @param string $path
+     * @return bool
      */
     public function nodeExists($path) {
 
@@ -37,7 +37,7 @@ abstract class Sabre_DAV_Tree {
             $this->getNodeForPath($path);
             return true;
 
-        } catch (Sabre_DAV_Exception_FileNotFound $e) {
+        } catch (Exception\NotFound $e) {
 
             return false;
 
@@ -50,14 +50,14 @@ abstract class Sabre_DAV_Tree {
      *
      * @param string $sourcePath The source location
      * @param string $destinationPath The full destination path
-     * @return void 
+     * @return void
      */
     public function copy($sourcePath, $destinationPath) {
 
         $sourceNode = $this->getNodeForPath($sourcePath);
-       
+
         // grab the dirname and basename components
-        list($destinationDir, $destinationName) = Sabre_DAV_URLUtil::splitPath($destinationPath);
+        list($destinationDir, $destinationName) = URLUtil::splitPath($destinationPath);
 
         $destinationParent = $this->getNodeForPath($destinationDir);
         $this->copyNode($sourceNode,$destinationParent,$destinationName);
@@ -67,16 +67,16 @@ abstract class Sabre_DAV_Tree {
     }
 
     /**
-     * Moves a file from one location to another 
-     * 
-     * @param string $sourcePath The path to the file which should be moved 
+     * Moves a file from one location to another
+     *
+     * @param string $sourcePath The path to the file which should be moved
      * @param string $destinationPath The full destination path, so not just the destination parent node
      * @return int
      */
     public function move($sourcePath, $destinationPath) {
 
-        list($sourceDir, $sourceName) = Sabre_DAV_URLUtil::splitPath($sourcePath);
-        list($destinationDir, $destinationName) = Sabre_DAV_URLUtil::splitPath($destinationPath);
+        list($sourceDir, $sourceName) = URLUtil::splitPath($sourcePath);
+        list($destinationDir, $destinationName) = URLUtil::splitPath($destinationPath);
 
         if ($sourceDir===$destinationDir) {
             $renameable = $this->getNodeForPath($sourcePath);
@@ -91,26 +91,26 @@ abstract class Sabre_DAV_Tree {
     }
 
     /**
-     * Deletes a node from the tree 
-     * 
-     * @param string $path 
+     * Deletes a node from the tree
+     *
+     * @param string $path
      * @return void
      */
     public function delete($path) {
 
         $node = $this->getNodeForPath($path);
         $node->delete();
-        
-        list($parent) = Sabre_DAV_URLUtil::splitPath($path);
+
+        list($parent) = URLUtil::splitPath($path);
         $this->markDirty($parent);
 
     }
 
     /**
-     * Returns a list of childnodes for a given path. 
-     * 
-     * @param string $path 
-     * @return array 
+     * Returns a list of childnodes for a given path.
+     *
+     * @param string $path
+     * @return array
      */
     public function getChildren($path) {
 
@@ -127,14 +127,14 @@ abstract class Sabre_DAV_Tree {
      *   * node creations
      *   * copy
      *   * move
-     *   * renaming nodes 
-     * 
+     *   * renaming nodes
+     *
      * If Tree classes implement a form of caching, this will allow
      * them to make sure caches will be expired.
-     * 
+     *
      * If a path is passed, it is assumed that the entire subtree is dirty
      *
-     * @param string $path 
+     * @param string $path
      * @return void
      */
     public function markDirty($path) {
@@ -143,17 +143,18 @@ abstract class Sabre_DAV_Tree {
     }
 
     /**
-     * copyNode 
-     * 
-     * @param Sabre_DAV_INode $source 
-     * @param Sabre_DAV_ICollection $destination 
+     * copyNode
+     *
+     * @param INode $source
+     * @param ICollection $destinationParent
+     * @param string $destinationName
      * @return void
      */
-    protected function copyNode(Sabre_DAV_INode $source,Sabre_DAV_ICollection $destinationParent,$destinationName = null) {
+    protected function copyNode(INode $source,ICollection $destinationParent,$destinationName = null) {
 
         if (!$destinationName) $destinationName = $source->getName();
 
-        if ($source instanceof Sabre_DAV_IFile) {
+        if ($source instanceof IFile) {
 
             $data = $source->get();
 
@@ -163,14 +164,14 @@ abstract class Sabre_DAV_Tree {
                 fwrite($stream,$data);
                 rewind($stream);
                 $data = $stream;
-            } 
+            }
             $destinationParent->createFile($destinationName,$data);
             $destination = $destinationParent->getChild($destinationName);
 
-        } elseif ($source instanceof Sabre_DAV_ICollection) {
+        } elseif ($source instanceof ICollection) {
 
             $destinationParent->createDirectory($destinationName);
-            
+
             $destination = $destinationParent->getChild($destinationName);
             foreach($source->getChildren() as $child) {
 
@@ -179,7 +180,7 @@ abstract class Sabre_DAV_Tree {
             }
 
         }
-        if ($source instanceof Sabre_DAV_IProperties && $destination instanceof Sabre_DAV_IProperties) {
+        if ($source instanceof IProperties && $destination instanceof IProperties) {
 
             $props = $source->getProperties(array());
             $destination->updateProperties($props);

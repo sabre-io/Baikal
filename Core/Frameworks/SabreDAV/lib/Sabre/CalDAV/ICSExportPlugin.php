@@ -1,34 +1,37 @@
 <?php
 
+namespace Sabre\CalDAV;
+
+use Sabre\DAV;
+use Sabre\VObject;
+
 /**
  * ICS Exporter
  *
  * This plugin adds the ability to export entire calendars as .ics files.
- * This is useful for clients that don't support CalDAV yet. They often do 
+ * This is useful for clients that don't support CalDAV yet. They often do
  * support ics files.
- * 
- * @package Sabre
- * @subpackage CalDAV
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
+class ICSExportPlugin extends DAV\ServerPlugin {
 
     /**
-     * Reference to Server class 
-     * 
-     * @var Sabre_DAV_Server 
+     * Reference to Server class
+     *
+     * @var \Sabre\DAV\Server
      */
-    private $server;
+    protected $server;
 
     /**
-     * Initializes the plugin and registers event handlers 
-     * 
-     * @param Sabre_DAV_Server $server 
+     * Initializes the plugin and registers event handlers
+     *
+     * @param \Sabre\DAV\Server $server
      * @return void
      */
-    public function initialize(Sabre_DAV_Server $server) {
+    public function initialize(DAV\Server $server) {
 
         $this->server = $server;
         $this->server->subscribeEvent('beforeMethod',array($this,'beforeMethod'), 90);
@@ -38,10 +41,10 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
     /**
      * 'beforeMethod' event handles. This event handles intercepts GET requests ending
      * with ?export
-     * 
+     *
      * @param string $method
      * @param string $uri
-     * @return void
+     * @return bool
      */
     public function beforeMethod($method, $uri) {
 
@@ -53,7 +56,7 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
 
         $node = $this->server->tree->getNodeForPath($uri);
 
-        if (!($node instanceof Sabre_CalDAV_Calendar)) return;
+        if (!($node instanceof Calendar)) return;
 
         // Checking ACL, if available.
         if ($aclPlugin = $this->server->getPlugin('acl')) {
@@ -64,7 +67,7 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
         $this->server->httpResponse->sendStatus(200);
 
         $nodes = $this->server->getPropertiesForPath($uri, array(
-            '{' . Sabre_CalDAV_Plugin::NS_CALDAV . '}calendar-data',
+            '{' . Plugin::NS_CALDAV . '}calendar-data',
         ),1);
 
         $this->server->httpResponse->sendBody($this->generateICS($nodes));
@@ -75,16 +78,20 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
     }
 
     /**
-     * Merges all calendar objects, and builds one big ics export 
-     * 
-     * @param array $nodes 
-     * @return void
+     * Merges all calendar objects, and builds one big ics export
+     *
+     * @param array $nodes
+     * @return string
      */
     public function generateICS(array $nodes) {
 
-        $calendar = new Sabre_VObject_Component('vcalendar');
+        $calendar = new VObject\Component('vcalendar');
         $calendar->version = '2.0';
-        $calendar->prodid = '-//SabreDAV//SabreDAV ' . Sabre_DAV_Version::VERSION . '//EN';
+        if (DAV\Server::$exposeVersion) {
+            $calendar->prodid = '-//SabreDAV//SabreDAV ' . DAV\Version::VERSION . '//EN';
+        } else {
+            $calendar->prodid = '-//SabreDAV//SabreDAV//EN';
+        }
         $calendar->calscale = 'GREGORIAN';
 
         $collectedTimezones = array();
@@ -94,12 +101,12 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
 
         foreach($nodes as $node) {
 
-            if (!isset($node[200]['{' . Sabre_CalDAV_Plugin::NS_CALDAV . '}calendar-data'])) {
+            if (!isset($node[200]['{' . Plugin::NS_CALDAV . '}calendar-data'])) {
                 continue;
             }
-            $nodeData = $node[200]['{' . Sabre_CalDAV_Plugin::NS_CALDAV . '}calendar-data'];
+            $nodeData = $node[200]['{' . Plugin::NS_CALDAV . '}calendar-data'];
 
-            $nodeComp = Sabre_VObject_Reader::read($nodeData);
+            $nodeComp = VObject\Reader::read($nodeData);
 
             foreach($nodeComp->children() as $child) {
 
@@ -130,6 +137,6 @@ class Sabre_CalDAV_ICSExportPlugin extends Sabre_DAV_ServerPlugin {
 
         return $calendar->serialize();
 
-    } 
+    }
 
 }

@@ -1,49 +1,48 @@
 <?php
 
+namespace Sabre\DAV;
+
 /**
  * SimpleCollection
  *
  * The SimpleCollection is used to quickly setup static directory structures.
  * Just create the object with a proper name, and add children to use it.
  *
- * @package Sabre
- * @subpackage DAV
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_DAV_SimpleCollection extends Sabre_DAV_Collection {
+class SimpleCollection extends Collection {
 
     /**
-     * List of childnodes 
+     * List of childnodes
      *
      * @var array
      */
     protected $children = array();
 
     /**
-     * Name of this resource 
-     * 
-     * @var string 
+     * Name of this resource
+     *
+     * @var string
      */
     protected $name;
 
     /**
      * Creates this node
      *
-     * The name of the node must be passed, child nodes can also be bassed.
-     * This nodes must be instances of Sabre_DAV_INode
-     * 
-     * @param string $name 
-     * @param array $children 
-     * @return void
+     * The name of the node must be passed, child nodes can also be passed.
+     * This nodes must be instances of INode
+     *
+     * @param string $name
+     * @param array $children
      */
     public function __construct($name,array $children = array()) {
 
         $this->name = $name;
         foreach($children as $child) {
 
-            if (!($child instanceof Sabre_DAV_INode)) throw new Sabre_DAV_Exception('Only instances of Sabre_DAV_INode are allowed to be passed in the children argument');
+            if (!($child instanceof INode)) throw new Exception('Only instances of Sabre\DAV\INode are allowed to be passed in the children argument');
             $this->addChild($child);
 
         }
@@ -51,21 +50,21 @@ class Sabre_DAV_SimpleCollection extends Sabre_DAV_Collection {
     }
 
     /**
-     * Adds a new childnode to this collection 
-     * 
-     * @param Sabre_DAV_INode $child 
+     * Adds a new childnode to this collection
+     *
+     * @param INode $child
      * @return void
      */
-    public function addChild(Sabre_DAV_INode $child) {
+    public function addChild(INode $child) {
 
         $this->children[$child->getName()] = $child;
 
     }
 
     /**
-     * Returns the name of the collection 
-     * 
-     * @return string 
+     * Returns the name of the collection
+     *
+     * @return string
      */
     public function getName() {
 
@@ -76,24 +75,27 @@ class Sabre_DAV_SimpleCollection extends Sabre_DAV_Collection {
     /**
      * Returns a child object, by its name.
      *
-     * This method makes use of the getChildren method to grab all the child nodes, and compares the name. 
+     * This method makes use of the getChildren method to grab all the child nodes, and compares the name.
      * Generally its wise to override this, as this can usually be optimized
-     * 
+     *
+     * This method must throw Sabre\DAV\Exception\NotFound if the node does not
+     * exist.
+     *
      * @param string $name
-     * @throws Sabre_DAV_Exception_FileNotFound
-     * @return Sabre_DAV_INode 
+     * @throws Exception\NotFound
+     * @return INode
      */
     public function getChild($name) {
 
         if (isset($this->children[$name])) return $this->children[$name];
-        throw new Sabre_DAV_Exception_FileNotFound('File not found: ' . $name . ' in \'' . $this->getName() . '\'');
+        throw new Exception\NotFound('File not found: ' . $name . ' in \'' . $this->getName() . '\'');
 
     }
 
     /**
-     * Returns a list of children for this collection 
-     * 
-     * @return array 
+     * Returns a list of children for this collection
+     *
+     * @return array
      */
     public function getChildren() {
 

@@ -1,27 +1,25 @@
 <?php
 
 /**
- * SabreDAV's PHP autoloader
+ * SabreDAV's autoloader
  *
- * If you love the autoloader, and don't care as much about performance, this
- * file register a new autoload function using spl_autoload_register.
+ * This file is kept for backwards compatibility purposes.
+ * SabreDAV now uses the composer autoloader.
  *
- * @package Sabre
- * @subpackage DAV
+ * You should stop including this file, and include 'vendor/autoload.php'
+ * instead.
+ *
+ * @deprecated Will be removed in a future version!
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 
-function Sabre_autoload($className) {
+/**
+ * We are assuming that the composer autoloader is just 2 directories up.
+ *
+ * This is not the case when sabredav is installed as a dependency. But, in
+ * those cases it's not expected that people will look for this file anyway.
+ */
 
-    if(strpos($className,'Sabre_')===0) {
-
-        include dirname(__FILE__) . '/' . str_replace('_','/',substr($className,6)) . '.php';
-
-    }
-
-}
-
-spl_autoload_register('Sabre_autoload');
-
+require __DIR__ . '/../../vendor/autoload.php';

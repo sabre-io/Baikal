@@ -1,21 +1,22 @@
 <?php
 
+namespace Sabre\DAVACL\Property;
+use Sabre\DAV;
+
 /**
  * Principal property
  *
  * The principal property represents a principal from RFC3744 (ACL).
- * The property can be used to specify a principal or pseudo principals. 
+ * The property can be used to specify a principal or pseudo principals.
  *
- * @package Sabre
- * @subpackage DAVACL
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabre_DAV_Property_IHref {
+class Principal extends DAV\Property implements DAV\Property\IHref {
 
     /**
-     * To specify a not-logged-in user, use the UNAUTHENTICTED principal
+     * To specify a not-logged-in user, use the UNAUTHENTICATED principal
      */
     const UNAUTHENTICATED = 1;
 
@@ -25,16 +26,21 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
     const AUTHENTICATED = 2;
 
     /**
-     * Specific princpals can be specified with the HREF
+     * Specific principals can be specified with the HREF
      */
     const HREF = 3;
+
+    /**
+     * Everybody, basically
+     */
+    const ALL = 4;
 
     /**
      * Principal-type
      *
      * Must be one of the UNAUTHENTICATED, AUTHENTICATED or HREF constants.
-     * 
-     * @var int 
+     *
+     * @var int
      */
     private $type;
 
@@ -42,8 +48,8 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
      * Url to principal
      *
      * This value is only used for the HREF principal type.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     private $href;
 
@@ -53,26 +59,25 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
      * The 'type' argument must be one of the type constants defined in this class.
      *
      * 'href' is only required for the HREF type.
-     * 
-     * @param int $type 
-     * @param string $href 
-     * @return void
+     *
+     * @param int $type
+     * @param string|null $href
      */
     public function __construct($type, $href = null) {
 
         $this->type = $type;
 
         if ($type===self::HREF && is_null($href)) {
-            throw new Sabre_DAV_Exception('The href argument must be specified for the HREF principal type.');
+            throw new DAV\Exception('The href argument must be specified for the HREF principal type.');
         }
         $this->href = $href;
 
     }
 
     /**
-     * Returns the principal type 
-     * 
-     * @return int 
+     * Returns the principal type
+     *
+     * @return int
      */
     public function getType() {
 
@@ -81,8 +86,8 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
     }
 
     /**
-     * Returns the principal uri. 
-     * 
+     * Returns the principal uri.
+     *
      * @return string
      */
     public function getHref() {
@@ -92,13 +97,13 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
     }
 
     /**
-     * Serializes the property into a DOMElement. 
-     * 
-     * @param Sabre_DAV_Server $server 
-     * @param DOMElement $node 
+     * Serializes the property into a DOMElement.
+     *
+     * @param DAV\Server $server
+     * @param \DOMElement $node
      * @return void
      */
-    public function serialize(Sabre_DAV_Server $server, DOMElement $node) {
+    public function serialize(DAV\Server $server, \DOMElement $node) {
 
         $prefix = $server->xmlNamespaces['DAV:'];
         switch($this->type) {
@@ -124,19 +129,19 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
     }
 
     /**
-     * Deserializes a DOM element into a property object. 
-     * 
-     * @param DOMElement $dom 
-     * @return Sabre_DAV_Property_Principal 
+     * Deserializes a DOM element into a property object.
+     *
+     * @param \DOMElement $dom
+     * @return Principal
      */
-    static public function unserialize(DOMElement $dom) {
+    static public function unserialize(\DOMElement $dom) {
 
         $parent = $dom->firstChild;
-        while(!Sabre_DAV_XMLUtil::toClarkNotation($parent)) {
+        while(!DAV\XMLUtil::toClarkNotation($parent)) {
             $parent = $parent->nextSibling;
         }
 
-        switch(Sabre_DAV_XMLUtil::toClarkNotation($parent)) {
+        switch(DAV\XMLUtil::toClarkNotation($parent)) {
 
             case '{DAV:}unauthenticated' :
                 return new self(self::UNAUTHENTICATED);
@@ -144,8 +149,10 @@ class Sabre_DAVACL_Property_Principal extends Sabre_DAV_Property implements Sabr
                 return new self(self::AUTHENTICATED);
             case '{DAV:}href':
                 return new self(self::HREF, $parent->textContent);
+            case '{DAV:}all':
+                return new self(self::ALL);
             default :
-                throw new Sabre_DAV_Exception_BadRequest('Unexpected element (' . Sabre_DAV_XMLUtil::toClarkNotation($parent) . '). Could not deserialize');
+                throw new DAV\Exception\BadRequest('Unexpected element (' . DAV\XMLUtil::toClarkNotation($parent) . '). Could not deserialize');
 
         }
 

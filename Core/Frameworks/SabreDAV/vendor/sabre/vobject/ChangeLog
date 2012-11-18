@@ -1,0 +1,48 @@
+2.0.5-stable (2012-11-05)
+	* Fixed: The FreeBusyGenerator is now properly using the factory methods
+	  for creation of components and properties.
+
+2.0.4-stable (2012-11-02)
+	* Added: Known Lotus Notes / Domino timezone id's.
+
+2.0.3-stable (2012-10-29)
+	* Added: Support for 'GMT+????' format in TZID's.
+	* Added: Support for formats like SystemV/EST5EDT in TZID's.
+	* Fixed: RecurrenceIterator now repairs recurrence rules where UNTIL < DTSTART.
+	* Added: Support for BYHOUR in FREQ=DAILY (@hollodk).
+	* Added: Support for BYHOUR and BYDAY in FREQ=WEEKLY.
+
+2.0.2-stable (2012-10-06)
+	* Added: includes.php file, to load the entire library in one go.
+	* Fixed: A problem with determining alarm triggers for TODO's.
+
+2.0.1-stable (2012-09-22)
+	* Removed: Element class. It wasn't used.
+	* Added: Basic validation and repair methods for broken input data.
+	* Fixed: RecurrenceIterator could infinitely loop when an INTERVAL of 0
+	  was specified.
+	* Added: A cli script that can validate and automatically repair vcards
+	  and iCalendar objects.
+	* Added: A new 'Compound' property, that can automatically split up parts
+	  for properties such as N, ADR, ORG and CATEGORIES.
+	* Added: Splitter classes, that can split up large objects (such as exports)
+	  into individual objects (thanks @DominikTO and @armin-hackmann).
+	* Added: VFREEBUSY component, which allows easily checking wether
+	  timeslots are available.
+	* Added: The Reader class now has a 'FORGIVING' option, which allows it to
+	  parse properties with incorrect characters in the name (at this time, it
+	  just allows underscores).
+	* Added: Also added the 'IGNORE_INVALID_LINES' option, to completely
+	  disregard any invalid lines.
+	* Fixed: A bug in Windows timezone-id mappings for times created in
+	  Greenlands timezone (sorry Greenlanders! I do care!).
+	* Fixed: DTEND was not generated correctly for VFREEBUSY reports.
+	* Fixed: Parser is at least 25% faster with real-world data.
+
+2.0.0-stable (2012-08-08)
+	* VObject is now a separate project from SabreDAV. See the SabreDAV
+	  changelog for version information before 2.0.
+	* New: VObject library now uses PHP 5.3 namespaces.
+	* New: It's possible to specify lists of parameters when constructing
+	  properties.
+	* New: made it easier to construct the FreeBusyGenerator.

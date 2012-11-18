@@ -1,24 +1,24 @@
 <?php
 
+namespace Sabre\DAV;
+
 /**
  * Node class
  *
- * This is a helper class, that should aid in getting nodes setup. 
- * 
- * @package Sabre
- * @subpackage DAV
+ * This is a helper class, that should aid in getting nodes setup.
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-abstract class Sabre_DAV_Node implements Sabre_DAV_INode {
+abstract class Node implements INode {
 
     /**
-     * Returns the last modification time 
+     * Returns the last modification time
      *
      * In this case, it will simply return the current time
      *
-     * @return int 
+     * @return int
      */
     public function getLastModified() {
 
@@ -27,27 +27,27 @@ abstract class Sabre_DAV_Node implements Sabre_DAV_INode {
     }
 
     /**
-     * Deleted the current node
+     * Deletes the current node
      *
-     * @throws Sabre_DAV_Exception_Forbidden
-     * @return void 
+     * @throws Sabre\DAV\Exception\Forbidden
+     * @return void
      */
     public function delete() {
 
-        throw new Sabre_DAV_Exception_Forbidden('Permission denied to delete node');
+        throw new Exception\Forbidden('Permission denied to delete node');
 
     }
 
     /**
      * Renames the node
-     * 
-     * @throws Sabre_DAV_Exception_Forbidden
+     *
+     * @throws Sabre\DAV\Exception\Forbidden
      * @param string $name The new name
      * @return void
      */
     public function setName($name) {
 
-        throw new Sabre_DAV_Exception_Forbidden('Permission denied to rename file');
+        throw new Exception\Forbidden('Permission denied to rename file');
 
     }
 

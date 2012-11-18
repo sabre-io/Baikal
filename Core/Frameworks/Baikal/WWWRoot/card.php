@@ -47,24 +47,24 @@ if(!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== TRUE) {
 }
 
 # Backends
-$authBackend = new Sabre_DAV_Auth_Backend_PDO($GLOBALS["DB"]->getPDO());
-$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($GLOBALS["DB"]->getPDO());
-$carddavBackend = new Sabre_CardDAV_Backend_PDO($GLOBALS["DB"]->getPDO()); 
+$authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
+$principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($GLOBALS["DB"]->getPDO());
+$carddavBackend = new \Sabre\CardDAV\Backend\PDO($GLOBALS["DB"]->getPDO()); 
 
 # Setting up the directory tree
 $nodes = array(
-    new Sabre_DAVACL_PrincipalCollection($principalBackend),
-    new Sabre_CardDAV_AddressBookRoot($principalBackend, $carddavBackend),
+    new \Sabre\DAVACL\PrincipalCollection($principalBackend),
+    new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend),
 );
 
 # The object tree needs in turn to be passed to the server class
-$server = new Sabre_DAV_Server($nodes);
+$server = new \Sabre\DAV\Server($nodes);
 $server->setBaseUri(BAIKAL_CARD_BASEURI);
 
 # Plugins 
-$server->addPlugin(new Sabre_DAV_Auth_Plugin($authBackend, BAIKAL_AUTH_REALM));
-$server->addPlugin(new Sabre_CardDAV_Plugin());
-$server->addPlugin(new Sabre_DAVACL_Plugin());
+$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, BAIKAL_AUTH_REALM));
+$server->addPlugin(new \Sabre\CardDAV\Plugin());
+$server->addPlugin(new \Sabre\DAVACL\Plugin());
 
 # And off we go!
 $server->exec();
