@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
+TEMPDATE="`date +%Y-%m-%d-%H-%M-%S`"
+TEMPDIR="/tmp/baikal-flat-$TEMPDATE-temp"
+TEMPARCHIVE="$TEMPDIR/temparchive.tgz"
+TEMPDIRDEREFERENCE="/tmp/baikal-flat-$TEMPDATE"
+
 echo "########################################################################"
 echo "#"
 echo "#     Baïkal Packaging script"
@@ -6,16 +11,12 @@ echo "#"
 echo "#     Packaging project for flat distribution (replacing symlinks"
 echo "#     by their target). Useful for FTP deployment"
 echo "#"
-echo "#"
+echo "#     TEMPDIR: $TEMPDIR"
 
-TEMPDATE="`date +%Y-%m-%d-%H-%M-%S`"
-TEMPDIR="/tmp/baikal-flat-$TEMPDATE-temp"
-TEMPARCHIVE="$TEMPDIR/temparchive.tgz"
-TEMPDIRDEREFERENCE="/tmp/baikal-flat-$TEMPDATE"
+rm -rf /tmp/baikal-flat
 
 # Export Project
 # Requires the git-archive-all script by https://github.com/Kentzo (https://github.com/Kentzo/git-archive-all)
-rm -rf /tmp/baikal-flat
 
 mkdir $TEMPDIR && \
 git-archive-all --force-submodules $TEMPARCHIVE && \
@@ -25,7 +26,7 @@ cd $TEMPDIR && tar -xzf $TEMPARCHIVE && rm $TEMPARCHIVE && \
 cp -RfL $TEMPDIR $TEMPDIRDEREFERENCE && \
 rm -Rf $TEMPDIR && \
 
-TEMPDIR=$TEMPDIRDEREFERENCE && \
+TEMPDIR=$TEMPDIRDEREFERENCE/temparchive && \
 
 # Jump to tempdir
 cd $TEMPDIR && \
