@@ -1,17 +1,17 @@
 <?php
 
+namespace Sabre\HTTP;
+
 /**
  * HTTP Basic Authentication handler
  *
  * Use this class for easy http authentication setup
- * 
- * @package Sabre
- * @subpackage HTTP 
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_HTTP_BasicAuth extends Sabre_HTTP_AbstractAuth {
+class BasicAuth extends AbstractAuth {
 
     /**
      * Returns the supplied username and password.
@@ -22,7 +22,7 @@ class Sabre_HTTP_BasicAuth extends Sabre_HTTP_AbstractAuth {
      *
      * If nothing was supplied, 'false' will be returned
      *
-     * @return mixed 
+     * @return mixed
      */
     public function getUserPass() {
 
@@ -33,14 +33,20 @@ class Sabre_HTTP_BasicAuth extends Sabre_HTTP_AbstractAuth {
 
         }
 
-        // Most other webservers 
+        // Most other webservers
         $auth = $this->httpRequest->getHeader('Authorization');
+
+        // Apache could prefix environment variables with REDIRECT_ when urls
+        // are passed through mod_rewrite
+        if (!$auth) {
+            $auth = $this->httpRequest->getRawServerValue('REDIRECT_HTTP_AUTHORIZATION');
+        }
 
         if (!$auth) return false;
 
-        if (strpos(strtolower($auth),'basic')!==0) return false; 
+        if (strpos(strtolower($auth),'basic')!==0) return false;
 
-        return explode(':', base64_decode(substr($auth, 6)));
+        return explode(':', base64_decode(substr($auth, 6)),2);
 
     }
 

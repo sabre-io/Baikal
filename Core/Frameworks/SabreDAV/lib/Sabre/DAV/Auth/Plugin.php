@@ -1,51 +1,51 @@
 <?php
 
+namespace Sabre\DAV\Auth;
+use Sabre\DAV;
+
 /**
  * This plugin provides Authentication for a WebDAV server.
- * 
+ *
  * It relies on a Backend object, which provides user information.
  *
  * Additionally, it provides support for:
  *  * {DAV:}current-user-principal property from RFC5397
  *  * {DAV:}principal-collection-set property from RFC3744
- * 
- * @package Sabre
- * @subpackage DAV
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
+class Plugin extends DAV\ServerPlugin {
 
     /**
-     * Reference to main server object 
-     * 
-     * @var Sabre_DAV_Server 
+     * Reference to main server object
+     *
+     * @var Sabre\DAV\Server
      */
-    private $server;
+    protected $server;
 
     /**
      * Authentication backend
-     * 
-     * @var Sabre_DAV_Auth_Backend_Abstract 
+     *
+     * @var Backend\BackendInterface
      */
-    private $authBackend;
+    protected $authBackend;
 
     /**
-     * The authentication realm. 
-     * 
-     * @var string 
+     * The authentication realm.
+     *
+     * @var string
      */
     private $realm;
 
     /**
-     * __construct 
-     * 
-     * @param Sabre_DAV_Auth_Backend_Abstract $authBackend 
-     * @param string $realm 
-     * @return void
+     * __construct
+     *
+     * @param Backend\BackendInterface $authBackend
+     * @param string $realm
      */
-    public function __construct(Sabre_DAV_Auth_IBackend $authBackend, $realm) {
+    public function __construct(Backend\BackendInterface $authBackend, $realm) {
 
         $this->authBackend = $authBackend;
         $this->realm = $realm;
@@ -53,12 +53,12 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
     }
 
     /**
-     * Initializes the plugin. This function is automatically called by the server  
-     * 
-     * @param Sabre_DAV_Server $server 
+     * Initializes the plugin. This function is automatically called by the server
+     *
+     * @param DAV\Server $server
      * @return void
      */
-    public function initialize(Sabre_DAV_Server $server) {
+    public function initialize(DAV\Server $server) {
 
         $this->server = $server;
         $this->server->subscribeEvent('beforeMethod',array($this,'beforeMethod'),10);
@@ -67,11 +67,11 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
     /**
      * Returns a plugin name.
-     * 
+     *
      * Using this name other plugins will be able to access other plugins
-     * using Sabre_DAV_Server::getPlugin 
-     * 
-     * @return string 
+     * using DAV\Server::getPlugin
+     *
+     * @return string
      */
     public function getPluginName() {
 
@@ -81,10 +81,10 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
     /**
      * Returns the current users' principal uri.
-     * 
-     * If nobody is logged in, this will return null. 
-     * 
-     * @return string|null 
+     *
+     * If nobody is logged in, this will return null.
+     *
+     * @return string|null
      */
     public function getCurrentUser() {
 
@@ -97,10 +97,11 @@ class Sabre_DAV_Auth_Plugin extends Sabre_DAV_ServerPlugin {
 
     /**
      * This method is called before any HTTP method and forces users to be authenticated
-     * 
+     *
      * @param string $method
-     * @throws Sabre_DAV_Exception_NotAuthenticated
-     * @return bool 
+     * @param string $uri
+     * @throws Sabre\DAV\Exception\NotAuthenticated
+     * @return bool
      */
     public function beforeMethod($method, $uri) {
 

@@ -1,17 +1,17 @@
 <?php
 
+namespace Sabre\DAV;
+
 /**
  * IProperties interface
  *
  * Implement this interface to support custom WebDAV properties requested and sent from clients.
- * 
- * @package Sabre
- * @subpackage DAV
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-interface Sabre_DAV_IProperties extends Sabre_DAV_INode {
+interface IProperties extends INode {
 
     /**
      * Updates properties on this node,
@@ -26,7 +26,7 @@ interface Sabre_DAV_IProperties extends Sabre_DAV_INode {
      * If the operation was successful, true can be returned.
      * If the operation failed, false can be returned.
      *
-     * Deletion of a non-existant property is always succesful.
+     * Deletion of a non-existent property is always successful.
      *
      * Lastly, it is optional to return detailed information about any
      * failures. In this case an array should be returned with the following
@@ -41,12 +41,12 @@ interface Sabre_DAV_IProperties extends Sabre_DAV_INode {
      *   )
      * )
      *
-     * In this example it was forbidden to update {DAV:}displayname. 
+     * In this example it was forbidden to update {DAV:}displayname.
      * (403 Forbidden), which in turn also caused {DAV:}owner to fail
      * (424 Failed Dependency) because the request needs to be atomic.
      *
-     * @param array $mutations 
-     * @return bool|array 
+     * @param array $mutations
+     * @return bool|array
      */
     function updateProperties($mutations);
 
@@ -58,7 +58,11 @@ interface Sabre_DAV_IProperties extends Sabre_DAV_INode {
      *
      * If the array is empty, it means 'all properties' were requested.
      *
-     * @param array $properties 
+     * Note that it's fine to liberally give properties back, instead of
+     * conforming to the list of requested properties.
+     * The Server class will filter out the extra.
+     *
+     * @param array $properties
      * @return void
      */
     function getProperties($properties);

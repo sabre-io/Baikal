@@ -47,25 +47,24 @@ if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
 }
 
 # Backends
-$authBackend = new Sabre_DAV_Auth_Backend_PDO($GLOBALS["DB"]->getPDO());
-$principalBackend = new Sabre_DAVACL_PrincipalBackend_PDO($GLOBALS["DB"]->getPDO());
-$calendarBackend = new Sabre_CalDAV_Backend_PDO($GLOBALS["DB"]->getPDO());
+$authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
+$principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($GLOBALS["DB"]->getPDO());
+$calendarBackend = new \Sabre\CalDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
 
 # Directory structure
 $nodes = array(
-    new Sabre_CalDAV_Principal_Collection($principalBackend),
-    new Sabre_CalDAV_CalendarRootNode($principalBackend, $calendarBackend),
+    new \Sabre\CalDAV\Principal\Collection($principalBackend),
+    new \Sabre\CalDAV\CalendarRootNode($principalBackend, $calendarBackend),
 );
 
 # Initializing server
-$server = new Sabre_DAV_Server($nodes);
+$server = new \Sabre\DAV\Server($nodes);
 $server->setBaseUri(BAIKAL_CAL_BASEURI);
 
 # Server Plugins
-$server->addPlugin(new Sabre_DAV_Auth_Plugin($authBackend, BAIKAL_AUTH_REALM));
-$server->addPlugin(new Sabre_DAVACL_Plugin());
-$server->addPlugin(new Sabre_CalDAV_Plugin());
-
+$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, BAIKAL_AUTH_REALM));
+$server->addPlugin(new \Sabre\DAVACL\Plugin());
+$server->addPlugin(new \Sabre\CalDAV\Plugin());
 
 # And off we go!
 $server->exec();

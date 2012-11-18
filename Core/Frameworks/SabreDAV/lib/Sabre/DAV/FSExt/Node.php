@@ -1,95 +1,30 @@
 <?php
 
+namespace Sabre\DAV\FSExt;
+
+use Sabre\DAV;
+
 /**
- * Base node-class 
+ * Base node-class
  *
- * The node class implements the method used by both the File and the Directory classes 
- * 
- * @package Sabre
- * @subpackage DAV
+ * The node class implements the method used by both the File and the Directory classes
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_DAV_ILockable, Sabre_DAV_IProperties {
-
-    /**
-     * Returns all the locks on this node
-     * 
-     * @return array 
-     */
-    function getLocks() {
-
-        $resourceData = $this->getResourceData();
-        $locks = $resourceData['locks'];
-        foreach($locks as $k=>$lock) {
-            if (time() > $lock->timeout + $lock->created) unset($locks[$k]); 
-        }
-        return $locks;
-
-    }
-
-    /**
-     * Locks this node 
-     * 
-     * @param Sabre_DAV_Locks_LockInfo $lockInfo 
-     * @return void
-     */
-    function lock(Sabre_DAV_Locks_LockInfo $lockInfo) {
-
-        // We're making the lock timeout 30 minutes
-        $lockInfo->timeout = 1800;
-        $lockInfo->created = time();
-
-        $resourceData = $this->getResourceData();
-        if (!isset($resourceData['locks'])) $resourceData['locks'] = array();
-        $current = null;
-        foreach($resourceData['locks'] as $k=>$lock) {
-            if ($lock->token === $lockInfo->token) $current = $k;
-        }
-        if (!is_null($current)) $resourceData['locks'][$current] = $lockInfo;
-        else $resourceData['locks'][] = $lockInfo;
-
-        $this->putResourceData($resourceData);
-
-    }
-
-    /**
-     * Removes a lock from this node
-     * 
-     * @param Sabre_DAV_Locks_LockInfo $lockInfo 
-     * @return bool 
-     */
-    function unlock(Sabre_DAV_Locks_LockInfo $lockInfo) {
-
-        //throw new Sabre_DAV_Exception('bla');
-        $resourceData = $this->getResourceData();
-        foreach($resourceData['locks'] as $k=>$lock) {
-
-            if ($lock->token === $lockInfo->token) {
-
-                unset($resourceData['locks'][$k]);
-                $this->putResourceData($resourceData);
-                return true;
-
-            }
-        }
-        return false;
-
-    }
+abstract class Node extends DAV\FS\Node implements DAV\IProperties {
 
     /**
      * Updates properties on this node,
      *
-     * @param array $mutations
-     * @see Sabre_DAV_IProperties::updateProperties
-     * @return bool|array 
+     * @param array $properties
+     * @see Sabre\DAV\IProperties::updateProperties
+     * @return bool|array
      */
     public function updateProperties($properties) {
 
         $resourceData = $this->getResourceData();
-        
-        $result = array();
 
         foreach($properties as $propertyName=>$propertyValue) {
 
@@ -101,11 +36,11 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
             } else {
                 $resourceData['properties'][$propertyName] = $propertyValue;
             }
-               
+
         }
 
         $this->putResourceData($resourceData);
-        return true; 
+        return true;
     }
 
     /**
@@ -114,8 +49,8 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      * The properties list is a list of propertynames the client requested, encoded as xmlnamespace#tagName, for example: http://www.example.org/namespace#author
      * If the array is empty, all properties should be returned
      *
-     * @param array $properties 
-     * @return void
+     * @param array $properties
+     * @return array
      */
     function getProperties($properties) {
 
@@ -134,26 +69,26 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
     }
 
     /**
-     * Returns the path to the resource file 
-     * 
-     * @return string 
+     * Returns the path to the resource file
+     *
+     * @return string
      */
     protected function getResourceInfoPath() {
 
-        list($parentDir) = Sabre_DAV_URLUtil::splitPath($this->path);
+        list($parentDir) = DAV\URLUtil::splitPath($this->path);
         return $parentDir . '/.sabredav';
 
     }
 
     /**
-     * Returns all the stored resource information 
-     * 
-     * @return array 
+     * Returns all the stored resource information
+     *
+     * @return array
      */
     protected function getResourceData() {
 
         $path = $this->getResourceInfoPath();
-        if (!file_exists($path)) return array('locks'=>array(), 'properties' => array());
+        if (!file_exists($path)) return array('properties' => array());
 
         // opening up the file, and creating a shared lock
         $handle = fopen($path,'r');
@@ -171,20 +106,19 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
         // Unserializing and checking if the resource file contains data for this file
         $data = unserialize($data);
         if (!isset($data[$this->getName()])) {
-            return array('locks'=>array(), 'properties' => array());
+            return array('properties' => array());
         }
 
         $data = $data[$this->getName()];
-        if (!isset($data['locks'])) $data['locks'] = array();
         if (!isset($data['properties'])) $data['properties'] = array();
         return $data;
 
     }
 
     /**
-     * Updates the resource information 
-     * 
-     * @param array $newData 
+     * Updates the resource information
+     *
+     * @param array $newData
      * @return void
      */
     protected function putResourceData(array $newData) {
@@ -222,8 +156,8 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
      */
     public function setName($name) {
 
-        list($parentPath, ) = Sabre_DAV_URLUtil::splitPath($this->path);
-        list(, $newName) = Sabre_DAV_URLUtil::splitPath($name);
+        list($parentPath, ) = DAV\URLUtil::splitPath($this->path);
+        list(, $newName) = DAV\URLUtil::splitPath($name);
         $newPath = $parentPath . '/' . $newName;
 
         // We're deleting the existing resourcedata, and recreating it
@@ -238,6 +172,9 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
 
     }
 
+    /**
+     * @return bool
+     */
     public function deleteResourceData() {
 
         // When we're deleting this node, we also need to delete any resource information
@@ -264,6 +201,7 @@ abstract class Sabre_DAV_FSExt_Node extends Sabre_DAV_FS_Node implements Sabre_D
         fwrite($handle,serialize($data));
         fclose($handle);
 
+        return true;
     }
 
     public function delete() {

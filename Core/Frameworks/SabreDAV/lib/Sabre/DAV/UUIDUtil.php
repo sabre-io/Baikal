@@ -1,27 +1,27 @@
 <?php
 
+namespace Sabre\DAV;
+
 /**
  * UUID Utility
  *
  * This class has static methods to generate and validate UUID's.
- * UUIDs are used a decent amount within various *DAV standards, so it made 
+ * UUIDs are used a decent amount within various *DAV standards, so it made
  * sense to include it.
- * 
- * @package Sabre
- * @subpackage DAV
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
- * @author Evert Pot (http://www.rooftopsolutions.nl/) 
+ * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_DAV_UUIDUtil {
+class UUIDUtil {
 
     /**
      * Returns a pseudo-random v4 UUID
      *
-     * This function is based on a comment by Andrew Moore on php.net 
-     * 
+     * This function is based on a comment by Andrew Moore on php.net
+     *
      * @see http://www.php.net/manual/en/function.uniqid.php#94959
-     * @return void
+     * @return string
      */
     static function getUUID() {
 
@@ -48,9 +48,9 @@ class Sabre_DAV_UUIDUtil {
 
     /**
      * Checks if a string is a valid UUID.
-     * 
-     * @param string $uuid 
-     * @return bool 
+     *
+     * @param string $uuid
+     * @return bool
      */
     static function validateUUID($uuid) {
 

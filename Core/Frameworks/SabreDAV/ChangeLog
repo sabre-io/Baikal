@@ -1,3 +1,315 @@
+1.8.0-stable (2012-11-08)
+    * The zip release ships with sabre/vobject 2.0.5.
+	* BC Break: Moved the entire codebase to PHP namespaces.
+	* BC Break: Every backend package (CalDAV, CardDAV, Auth, Locks,
+	  Principals) now has consistent naming conventions. There's a
+	  BackendInterface, and an AbstractBackend class.
+	* BC Break: Changed a bunch of constructor signatures in the CalDAV
+	  package, to reduce dependencies on the ACL package.
+	* BC Break: Sabre_CalDAV_ISharedCalendar now also has a getShares method,
+	  so sharees can figure out who is also on a shared calendar.
+
+	* Added: Sabre_DAVACL_IPrincipalCollection interface, to advertise support
+	  for principal-property-search on any node.
+	* Added: Simple console script to fire up a fileserver in the current
+	  directory using PHP 5.4's built-in webserver.
+	* Added: Sharee's can now also read out the list of invites for a shared
+	  calendar.
+	* Added: The Proxy principal classes now both implement an interface, for
+	  greater flexiblity.
+
+1.7.2-stable (2012-11-08)
+    * The zip release ships with sabre/vobject 2.0.5.
+	* Added: ACL plugin advertises support for 'calendarserver-principal-
+	  property-search'.
+	* Fixed: [#153] Allowing for relative http principals in iMip requests.
+	* Added: Support for cs:first-name and cs:last-name properties in sharing
+	  invites.
+	* Fixed: Made a bunch of properties protected, where they were private
+	  before.
+	* Added: Some non-standard properties for sharing to improve
+	  compatibility.
+	* Fixed: some bugfixes in postgres sql script.
+	* Fixed: When requesting some properties using PROPFIND, they could show
+	  up as both '200 Ok' and '403 Forbidden'.
+	* Fixed: calendar-proxy principals were not checked for deeper principal
+	  membership than 1 level.
+	* Fixed: setGroupMemberSet argument now correctly receives relative
+	  principal urls, instead of the absolute ones.
+	* Fixed: Server class will filter out any bonus properties if any extra
+	  were returned. This means the implementor of the IProperty class can be
+	  a bit lazier when implementing.
+
+Note: bug numbers after this line refer to Google Code tickets. We're using
+github now.
+
+1.7.1-stable (2012-10-07)
+	* Fixed: include path problem in the migration script.
+
+1.7.0-stable (2012-10-06)
+    * BC Break: The calendarobjects database table has a bunch of new
+	  fields, and a migration script is required to ensure everything will
+	  keep working. Read the wiki for more details.
+	* BC Break: The ICalendar interface now has a new method: calendarQuery.
+	* BC Break: In this version a number of classes have been deleted, that
+	  have been previously deprecated. Namely:
+		- Sabre_DAV_Directory (now: Sabre_DAV_Collection)
+		- Sabre_DAV_SimpleDirectory (now: Sabre_DAV_SimpleCollection)
+	* BC Break: Sabre_CalDAV_Schedule_IMip::sendMessage now has an extra
+	  argument. If you extended this class, you should fix this method. It's
+	  only used for informational purposes.
+	* BC Break: The DAV: namespace is no longer converted to urn:DAV. This was
+	  a workaround for a bug in older PHP versions (pre-5.3).
+	* Removed: Sabre.includes.php was deprecated, and is now removed.
+	* Removed: Sabre_CalDAV_Server was deprecated, and is now removed. Please
+	  use Sabre_DAV_Server and check the examples in the examples/ directory.
+	* Changed: The Sabre_VObject library now spawned into it's own project!
+	  The VObject library is still included in the SabreDAV zip package.
+	* Added: Experimental interfaces to allow implementation of caldav-sharing.
+	  Note that no implementation is provided yet, just the api hooks.
+	* Added: Free-busy reporting compliant with the caldav-scheduling
+	  standard. This allows iCal and other clients to fetch other users'
+	  free-busy data.
+	* Added: Experimental NotificationSupport interface to add
+	  caldav notifications.
+	* Added: VCF Export plugin. If enabled, it can generate an export of an
+	  entire addressbook.
+	* Added: Support for PATCH using a SabreDAV format, to live-patch files.
+	* Added: Support for Prefer: return-minimal and Brief: t headers for
+	  PROPFIND and PROPPATCH requests.
+	* Changed: Responsibility for dealing with the calendar-query is now
+	  moved from the CalDAV plugin to the CalDAV backends. This allows for
+	  heavy optimizations.
+	* Changed: The CalDAV PDO backend is now a lot faster for common
+	  calendar queries.
+	* Changed: We are now using the composer autoloader.
+	* Changed: The CalDAV backend now all implement an interface.
+	* Changed: Instead of Sabre_DAV_Property, Sabre_DAV_PropertyInterface is
+	  now the basis of every property class.
+	* Update: Caching results for principal lookups. This should cut down
+	  queries and performance for a number of heavy requests.
+	* Update: ObjectTree caches lookups much more aggresively, which will help
+	  especially speeding up a bunch of REPORT queries.
+	* Added: Support for the schedule-calendar-transp property.
+	* Fixed: Marking both the text/calendar and text/x-vcard as UTF-8
+	  encoded.
+	* Fixed: Workaround for the SOGO connector, as it doesn't understand
+	  receiving "text/x-vcard; charset=utf-8" for a contenttype.
+	* Added: Sabre_DAV_Client now throws more specific exceptions in cases
+	  where we already has an exception class.
+	* Added: Sabre_DAV_PartialUpdate. This plugin allows you to use the
+	  PATCH method to update parts of a file.
+	* Added: Tons of timezone name mappings for Microsoft Exchange.
+	* Added: Support for an 'exception' event in the server class.
+	* Fixed: Uploaded VCards without a UID are now rejected. (thanks Dominik!)
+	* Fixed: Rejecting calendar objects if they are not in the
+	  supported-calendar-component list. (thanks Armin!)
+	* Fixed: Issue 219: serialize() now reorders correctly.
+	* Fixed: Sabre_DAV_XMLUtil no longer returns empty $dom->childNodes
+	  if there is whitespace in $dom.
+	* Fixed: Returning 409 Conflict instead of 500 when an attempt is made to
+	  create a file as a child of something that's not a collection.
+	* Fixed: Issue 237: xml-encoding values in SabreDAV error responses.
+	* Fixed: Returning 403, instead of 501 when an unknown REPORT is
+	  requested.
+	* Fixed: Postfixing slash on {DAV:}owner properties.
+	* Fixed: Several embarrassing spelling mistakes in docblocks.
+
+1.6.5-stable (2012-10-04)
+	* Fixed: Workaround for line-ending bug OS X 10.8 addressbook has.
+	* Added: Ability to allow users to set SSL certificates for the Client
+	  class. (Thanks schiesbn!).
+	* Fixed: Directory indexes with lots of nodes should be a lot faster.
+	* Fixed: Issue 235: E_NOTICE thrown when doing a propfind request with
+	  Sabre_DAV_Client, and no valid properties are returned.
+	* Fixed: Issue with filtering on alarms in tasks.
+
+1.6.4-stable (2012-08-02)
+	* Fixed: Issue 220: Calendar-query filters may fail when filtering on
+	  alarms, if an overridden event has it's alarm removed.
+	* Fixed: Compatibility for OS/X 10.8 iCal in the IMipHandler.
+	* Fixed: Issue 222: beforeWriteContent shouldn't be called for lock
+	  requests.
+	* Fixed: Problem with POST requests to the outbox if mailto: was not lower
+	  cased.
+	* Fixed: Yearly recurrence rule expansion on leap-days no behaves
+	  correctly.
+	* Fixed: Correctly checking if recurring, all-day events with no dtstart
+	  fall in a timerange if the start of the time-range exceeds the start of
+	  the instance of an event, but not the end.
+	* Fixed: All-day recurring events wouldn't match if an occurence ended
+	  exactly on the start of a time-range.
+	* Fixed: HTTP basic auth did not correctly deal with passwords containing
+	  colons on some servers.
+	* Fixed: Issue 228: DTEND is now non-inclusive for all-day events in the
+	  calendar-query REPORT and free-busy calculations.
+
+1.6.3-stable (2012-06-12)
+	* Added: It's now possible to specify in Sabre_DAV_Client which type of
+	  authentication is to be used.
+	* Fixed: Issue 206: Sabre_DAV_Client PUT requests are fixed.
+	* Fixed: Issue 205: Parsing an iCalendar 0-second date interval.
+	* Fixed: Issue 112: Stronger validation of iCalendar objects. Now making
+	  sure every iCalendar object only contains 1 component, and disallowing
+	  vcards, forcing every component to have a UID.
+	* Fixed: Basic validation for vcards in the CardDAV plugin.
+	* Fixed: Issue 213: Workaround for an Evolution bug, that prevented it
+	  from updating events.
+	* Fixed: Issue 211: A time-limit query on a non-relative alarm trigger in
+	  a recurring event could result in an endless loop.
+	* Fixed: All uri fields are now a maximum of 200 characters. The Bynari
+	  outlook plugin used much longer strings so this should improve
+	  compatibility.
+	* Fixed: Added a workaround for a bug in KDE 4.8.2 contact syncing. See
+	  https://bugs.kde.org/show_bug.cgi?id=300047
+	* Fixed: Issue 217: Sabre_DAV_Tree_FileSystem was pretty broken.
+
+1.6.2-stable (2012-04-16)
+	* Fixed: Sabre_VObject_Node::$parent should have been public.
+	* Fixed: Recurrence rules of events are now taken into consideration when
+	  doing time-range queries on alarms.
+	* Fixed: Added a workaround for the fact that php's DateInterval cannot
+	  parse weeks and days at the same time.
+	* Added: Sabre_DAV_Server::$exposeVersion, allowing you to hide SabreDAV's
+	  version number from various outputs.
+	* Fixed: DTSTART values would be incorrect when expanding events.
+	* Fixed: DTSTART and DTEND would be incorrect for expansion of WEEKLY
+	  BYDAY recurrences.
+	* Fixed: Issue 203: A problem with overridden events hitting the exact
+	  date and time of a subsequent event in the recurrence set.
+	* Fixed: There was a problem with recurrence rules, for example the 5th
+	  tuesday of the month, if this day did not exist.
+	* Added: New HTTP status codes from draft-nottingham-http-new-status-04.
+
+1.6.1-stable (2012-03-05)
+	* Added: createFile and put() can now return an ETag.
+	* Added: Sending back an ETag on for operations on CardDAV backends. This
+	  should help with OS X 10.6 Addressbook compatibility.
+	* Fixed: Fixed a bug where an infinite loop could occur in the recurrence
+	  iterator if the recurrence was YEARLY, with a BYMONTH rule, and either
+	  BYDAY or BYMONTHDAY match the first day of the month.
+	* Fixed: Events that are excluded using EXDATE are still counted in the
+	  COUNT= parameter in the RRULE property.
+	* Added: Support for time-range filters on VALARM components.
+	* Fixed: Correctly filtering all-day events.
+	* Fixed: Sending back correct mimetypes from the browser plugin (thanks
+	  Jürgen).
+	* Fixed: Issue 195: Sabre_CardDAV pear package had an incorrect dependency.
+	* Fixed: Calendardata would be destroyed when performing a MOVE request.
+
+1.6.0-stable (2012-02-22)
+	* BC Break: Now requires PHP 5.3
+	* BC Break: Any node that implemented Sabre_DAVACL_IACL must now also
+	  implement the getSupportedPrivilegeSet method. See website for details.
+	* BC Break: Moved functions from Sabre_CalDAV_XMLUtil to
+	  Sabre_VObject_DateTimeParser.
+	* BC Break: The Sabre_DAVACL_IPrincipalCollection now has two new methods:
+	  'searchPrincipals' and 'updatePrincipal'.
+	* BC Break: Sabre_DAV_ILockable is removed and all related per-node
+	  locking functionality.
+	* BC Break: Sabre_DAV_Exception_FileNotFound is now deprecated in favor of
+	  Sabre_DAV_Exception_NotFound. The former will be removed in a later
+	  version.
+	* BC Break: Removed Sabre_CalDAV_ICalendarUtil, use Sabre_VObject instead.
+	* BC Break: Sabre_CalDAV_Server is now deprecated, check out the
+	  documentation on how to setup a caldav server with just
+	  Sabre_DAV_Server.
+	* BC Break: Default Principals PDO backend now needs a new field in the
+	  'principals' table. See the website for details.
+	* Added: Ability to create new calendars and addressbooks from within the
+	  browser plugin.
+	* Added: Browser plugin: icons for various nodes.
+	* Added: Support for FREEBUSY reports!
+	* Added: Support for creating principals with admin-level privileges.
+	* Added: Possibility to let server send out invitation emails on behalf of
+	  CalDAV client, using Sabre_CalDAV_Schedule_IMip.
+	* Changed: beforeCreateFile event now passes data argument by reference.
+	* Changed: The 'propertyMap' property from Sabre_VObject_Reader, must now
+	  be specified in Sabre_VObject_Property::$classMap.
+	* Added: Ability for plugins to tell the ACL plugin which principal
+	  plugins are searchable.
+	* Added: [DAVACL] Per-node overriding of supported privileges. This allows
+	  for custom privileges where needed.
+	* Added: [DAVACL] Public 'principalSearch' method on the DAVACL plugin,
+	  which allows for easy searching for principals, based on their
+	  properties.
+	* Added: Sabre_VObject_Component::getComponents() to return a list of only
+	  components and not properties.
+	* Added: An includes.php file in every sub-package (CalDAV, CardDAV, DAV,
+	  DAVACL, HTTP, VObject) as an alternative to the autoloader. This often
+	  works much faster.
+	* Added: Support for the 'Me card', which allows Addressbook.app users
+	  specify which vcard is their own.
+	* Added: Support for updating principal properties in the DAVACL principal
+	  backends.
+	* Changed: Major refactoring in the calendar-query REPORT code. Should
+	  make things more flexible and correct.
+	* Changed: The calendar-proxy-[read|write] principals will now only appear
+	  in the tree, if they actually exist in the Principal backend. This should
+	  reduce some problems people have been having with this.
+	* Changed: Sabre_VObject_Element_* classes are now renamed to
+	  Sabre_VObject_Property. Old classes are retained for backwards
+	  compatibility, but this will be removed in the future.
+	* Added: Sabre_VObject_FreeBusyGenerator to generate free-busy reports
+	  based on lists of events.
+	* Added: Sabre_VObject_RecurrenceIterator to find all the dates and times
+	  for recurring events.
+	* Fixed: Issue 97: Correctly handling RRULE for the calendar-query REPORT.
+	* Fixed: Issue 154: Encoding of VObject parameters with no value was
+	  incorrect.
+	* Added: Support for {DAV:}acl-restrictions property from RFC3744.
+	* Added: The contentlength for calendar objects can now be supplied by a
+	  CalDAV backend, allowing for more optimizations.
+	* Fixed: Much faster implementation of Sabre_DAV_URLUtil::encodePath.
+	* Fixed: {DAV:}getcontentlength may now be not specified.
+	* Fixed: Issue 66: Using rawurldecode instead of urldecode to decode paths
+	  from clients. This means that + will now be treated as a literal rather
+	  than a space, and this should improve compatibility with the Windows
+	  built-in client.
+	* Added: Sabre_DAV_Exception_PaymentRequired exception, to emit HTTP 402
+	  status codes.
+	* Added: Some mysql unique constraints to example files.
+	* Fixed: Correctly formatting HTTP dates.
+	* Fixed: Issue 94: Sending back Last-Modified header for 304 responses.
+	* Added: Sabre_VObject_Component_VEvent, Sabre_VObject_Component_VJournal,
+	  Sabre_VObject_Component_VTodo and Sabre_VObject_Component_VCalendar.
+	* Changed: Properties are now also automatically mapped to their
+	  appropriate classes, if they are created using the add() or __set()
+	  methods.
+	* Changed: Cloning VObject objects now clones the entire tree, rather than
+      just the default shallow copy.
+	* Added: Support for recurrence expansion in the CALDAV:calendar-multiget
+	  and CALDAV:calendar-query REPORTS.
+	* Changed: CalDAV PDO backend now sorts calendars based on the internal
+	  'calendarorder' field.
+	* Added: Issue 181: Carddav backends may no optionally not supply the carddata in
+	  getCards, if etag and size are specified. This may speed up certain
+	  requests.
+	* Added: More arguments to beforeWriteContent and beforeCreateFile (see
+	  WritingPlugins wiki document).
+	* Added: Hook for iCalendar validation. This allows us to validate
+	  iCalendar objects when they're uploaded. At the moment we're just
+	  validating syntax.
+	* Added: VObject now support Windows Timezone names correctly (thanks
+	  mrpace2).
+	* Added: If a timezonename could not be detected, we fall back on the
+	  default PHP timezone.
+	* Added: Now a Composer package (thanks willdurand).
+	* Fixed: Support for \N as a newline character in the VObject reader.
+	* Added: afterWriteContent, afterCreateFile and afterUnbind events.
+	* Added: Postgresql example files. Not part of the unittests though, so
+	  use at your own risk.
+	* Fixed: Issue 182: Removed backticks from sql queries, so it will work
+	  with Postgres.
+
+1.5.9-stable (2012-04-16)
+	* Fixed: Issue with parsing timezone identifiers that were surrounded by
+	  quotes. (Fixes emClient compatibility).
+
+1.5.8-stable (2012-02-22)
+	* Fixed: Issue 95: Another timezone parsing issue, this time in
+	  calendar-query.
+
 1.5.7-stable (2012-02-19)
 	* Fixed: VObject properties are now always encoded before components.
 	* Fixed: Sabre_DAVACL had issues with multiple levels of privilege
@@ -187,11 +499,11 @@
 	  string)
 	* Fixed: Sabre_DAV_ObjectTree::nodeExist always returned false for the
 	  root node.
-	* Added: Global way to easily supply new resourcetypes for cetain node
+	* Added: Global way to easily supply new resourcetypes for certain node
 	  classes.
 	* Fixed: Issue 59: Allowing the user to override the authentication realm
 	  in Sabre_CalDAV_Server.
-	* Update: Issue 97: Looser time-range checking if there's a reccurrence
+	* Update: Issue 97: Looser time-range checking if there's a recurrence
 	  rule in an event. This fixes 'missing recurring events'.
 
 1.3.0 (2010-10-14)
@@ -264,14 +576,14 @@
 	  private.
 
 1.2.0beta3 (2010-05-14)
-	* Fixed: Custom properties were not propertly sent back for allprops
+	* Fixed: Custom properties were not properly sent back for allprops
 	  requests.
 	* Fixed: Issue 49, incorrect parsing of PROPPATCH, affecting Office 2007.
 	* Changed: Removed CalDAV items from includes.php, and added a few missing
 	  ones.
 
 1.2.0beta2 (2010-05-04)
-	* Fixed: Issue 46: Fatal error for some non-existant nodes.
+	* Fixed: Issue 46: Fatal error for some non-existent nodes.
 	* Updated: some example sql to include email address.
 	* Added: 208 and 508 statuscodes from RFC5842.
 	* Added: Apache2 configuration examples
@@ -367,6 +679,8 @@
 	* Added: support for calendar-timezone property.
 
 1.1.0-alpha (2010-03-01)
+	* Note: This version is forked from version 1.0.5, so release dates may be
+	  out of order.
 	* Added: CalDAV - RFC 4791
 	* Removed: Sabre_PHP_Exception. PHP has a built-in ErrorException for
 	  this.
@@ -392,6 +706,55 @@
 	* Fixed: Issue 19: HEAD requests on Collections
 	* Fixed: Issue 21: Typo in Sabre_DAV_Property_Response
 	* Fixed: Issue 18: Doesn't work with Evolution Contacts
+
+1.0.15-stable (2010-05-28)
+	* Added: Issue 31: Hiding exception information by default. Can be turned
+	  on with the Sabre_DAV_Server::$debugExceptions property.
+	* Added: Moved autoload from lib/ to lib/Sabre/autoload.php. This is also
+	  the case in the upcoming 1.2.0, so it will improve future compatibility.
+
+1.0.14-stable (2010-04-15)
+	* Fixed: double namespace declaration in multistatus responses.
+
+1.0.13-stable (2010-03-30)
+	* Fixed: Issue 40: Last references to basename/dirname
+
+1.0.12-stable (2010-03-30)
+	* Fixed: Issue 37: Incorrect smultron regex in temporary filefilter.
+	* Fixed: Issue 26: Workaround for broken GVFS behaviour with encoded
+	  special characters.
+	* Fixed: Issue 33: Converting ISO-8859-1 characters to UTF-8.
+	* Fixed: Issue 39: Basename fails on non-utf-8 locales.
+	* Added: More unittests.
+	* Added: SabreDAV version to all error responses.
+	* Added: URLUtil class for decoding urls.
+	* Updated: Now using pear.sabredav.org pear channel.
+
+1.0.11-stable (2010-03-23)
+	* Non-public release. This release is identical to 1.0.10, but it is used
+	  to test releasing packages to pear.sabredav.org.
+
+1.0.10-stable (2010-03-22)
+	* Fixed: Issue 34: Invalid Lock-Token header response.
+	* Added: Issue 35: Addign SabreDAV version to HTTP OPTIONS responses.
+
+1.0.9-stable (2010-03-19)
+	* Fixed: Issue 27: Entities not being encoded in PROPFIND responses.
+	* Fixed: Issue 29: Added missing TIMEOUT_INFINITE constant.
+
+1.0.8-stable (2010-03-03)
+	* Fixed: Issue 21: typos causing errors
+	* Fixed: Issue 23: Comma's between methods in Allow header.
+	* Added: Sabre_DAV_ICollection interface, to aid in future compatibility.
+	* Added: Sabre_DAV_Exception_Forbidden exception. This will replace
+	  Sabre_DAV_Exception_PermissionDenied in the future, and can already be
+	  used to ensure future compatibility.
+
+1.0.7-stable (2010-02-24)
+	* Fixed: Issue 19 regression for MS Office
+
+1.0.6-stable (2010-02-23)
+	* Fixed: Issue 19: HEAD requests on Collections
 
 1.0.5-stable (2010-01-22)
 	* Fixed: Fatal error when a malformed url was used for unlocking, in
@@ -487,7 +850,7 @@
 	  authentication. (Issue 11)
 	* Changed: Made more methods in Sabre_DAV_Server public.
 	* Fixed: TemporaryFileFilter plugin now intercepts HTTP LOCK requests
-	  to non-existant files. (Issue 12)
+	  to non-existent files. (Issue 12)
 	* Added: Central list of defined xml namespace prefixes. This can reduce
 	  Bandwidth and legibility for xml bodies with user-defined namespaces.
 	* Added: now a PEAR-compatible package again, thanks to Michael Gauthier
@@ -502,7 +865,7 @@
 	  into a separate plugin.
 	* Changed: TemporaryFileFilter is now a plugin.
 	* Added: Comes with an autoloader script. This can be used instead of
-	  the includer script, and is preferered by some people.
+	  the includer script, and is preferred by some people.
 	* Added: AWS Authentication class.
 	* Added: simpleserversetup.py script. This will quickly get a fileserver
 	  up and running.
@@ -586,7 +949,7 @@
 	  file streams. This should allow easy implementation of for example a
 	  WebDAV to FTP proxy.
 	* Added: HTTP Basic Authentication helper class.
-	* Added: Sabre_HTTP_Reponse class. This centralizes HTTP operations and
+	* Added: Sabre_HTTP_Response class. This centralizes HTTP operations and
 	  will be a start towards the creating of a testing framework.
 	* Updated: Backwards compatibility break: all require_once() statements
 	  are removed
@@ -608,7 +971,7 @@
 	* Added: Custom property support
 	* Added: Shared lock support
 	* Added: Depth support to locks
-	* Added: Locking on unmapped urls (non-existant nodes)
+	* Added: Locking on unmapped urls (non-existent nodes)
 	* Fixed: Advertising as WebDAV class 3 support
 
 0.3-alpha (2008-06-29)
@@ -616,7 +979,7 @@
 	* Added: temporary file filter: support for smultron files.
 	* Added: Phing build scripts
 	* Added: PEAR package
-	* Fixed: MOVE bug identied using finder.
+	* Fixed: MOVE bug identified using finder.
 	* Fixed: Using gzuncompress instead of gzdecode in the temporary file
 	  filter. This seems more common.
 

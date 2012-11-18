@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS locks (
 	token VARCHAR(100),
 	scope TINYINT,
 	depth TINYINT,
-	uri text
+	uri VARCHAR(1000),
+	INDEX(token),
+    INDEX(uri)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS calendarobjects (
@@ -44,6 +46,11 @@ CREATE TABLE IF NOT EXISTS calendarobjects (
 	uri VARCHAR(200),
 	calendarid INTEGER UNSIGNED NOT NULL,
 	lastmodified INT(11),
+	etag VARCHAR(32),
+	size INT(11) UNSIGNED NOT NULL,
+	componenttype VARCHAR(8),
+	firstoccurence INT(11) UNSIGNED,
+	lastoccurence INT(11) UNSIGNED,
 	UNIQUE(calendarid, uri)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -58,6 +65,7 @@ CREATE TABLE IF NOT EXISTS calendars (
 	calendarcolor VARCHAR(10),
 	timezone TEXT,
 	components VARCHAR(20),
+	transparent TINYINT(1) NOT NULL DEFAULT '0',
 	UNIQUE(principaluri, uri)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -1,20 +1,20 @@
 <?php
 
+namespace Sabre\HTTP;
+
 /**
- * This class contains the Sabre_HTTP version constants.
- * 
- * @package Sabre
- * @subpackage HTTP 
+ * This class contains the Sabre\HTTP version constants.
+ *
  * @copyright Copyright (C) 2007-2012 Rooftop Solutions. All rights reserved.
  * @author Evert Pot (http://www.rooftopsolutions.nl/)
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class Sabre_HTTP_Version {
+class Version {
 
     /**
      * Full version number
      */
-    const VERSION = '1.5.3';
+    const VERSION = '1.8.0';
 
     /**
      * Stability : alpha, beta, stable
