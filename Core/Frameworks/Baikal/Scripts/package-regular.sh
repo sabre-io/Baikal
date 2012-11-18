@@ -1,23 +1,26 @@
 #!/usr/bin/env sh
+TEMPDATE="`date +%Y-%m-%d-%H-%M-%S`"
+TEMPDIR="/tmp/baikal-regular-$TEMPDATE"
+TEMPARCHIVE="$TEMPDIR/temparchive.tgz"
+
 echo "########################################################################"
 echo "#"
 echo "#     Baïkal Packaging script"
 echo "#"
 echo "#     Packaging project for regular distribution"
 echo "#"
-echo "#"
-
-TEMPDATE="`date +%Y-%m-%d-%H-%M-%S`"
-TEMPDIR="/tmp/baikal-regular-$TEMPDATE"
-TEMPARCHIVE="$TEMPDIR/temparchive.tgz"
+echo "#     TEMPDIR: $TEMPDIR"
 
 rm -rf /tmp/baikal-regular
 
 # Export Project
 # Requires the git-archive-all script by https://github.com/Kentzo (https://github.com/Kentzo/git-archive-all)
-mkdir $TEMPDIR && \
+
+mkdir -p $TEMPDIR && \
 git-archive-all --force-submodules $TEMPARCHIVE && \
 cd $TEMPDIR && tar -xzf $TEMPARCHIVE && rm $TEMPARCHIVE && \
+
+TEMPDIR=$TEMPDIR/temparchive && \
 
 # Jump to tempdir
 cd $TEMPDIR && \
