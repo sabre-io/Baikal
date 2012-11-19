@@ -204,7 +204,7 @@ class User extends \Flake\Core\Model\Db {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "username",
 			"label" => "Username",
-			"validation" => "required,tokenid,unique",
+			"validation" => "required,unique",
 			"popover" => array(
 				"title" => "Username",
 				"content" => "The login for this user account.<br />It has to be unique.",
@@ -239,7 +239,7 @@ class User extends \Flake\Core\Model\Db {
 		)));
 		
 		if($this->floating()) {
-			$oMorpho->element("username")->setOption("help", "Allowed characters are digits, lowercase letters and the dash symbol '-'.");
+			$oMorpho->element("username")->setOption("help", "May be an email, but not forcibly.");
 			$oMorpho->element("password")->setOption("validation", "required");
 		} else {
 			$sNotice = "-- Leave empty to keep current password --";
