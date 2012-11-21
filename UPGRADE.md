@@ -7,10 +7,10 @@ This document explains how to upgrade your Baïkal installation
 3. Download and unzip baïkal to exact folder of your old installation: `/var/baikal` in our example.
 4. If working on SSH, apply correct ownership/permissions to files. 
 	1. For the ownership, you can refer to the old installation `baikal-old`. Use `ls -l baikal-old/` command to see the ownership (for example `root:www-data`), and then set them with `sudo chown -Rf root:www-data baikal`
-	2. For the permissions, you can eecute the following command: `sudo chmod -Rf 770 baikal`
-5. If you are using SQLite, replace the folder `baikal/Specific` (the new one) by `baikal-old/Specific` (the old one)
+	2. For the permissions, you can execute the following command: `sudo chmod -Rf 770 baikal`
+5. Replace the folder `baikal/Specific` (the new one) by `baikal-old/Specific` (the old one) (even for MySQL)
 6. Using your browser, navigate to your baikal admin, the Upgrade wizard should start.
 
 ## Troubleshooting
 
-See Troubelshooting.md
+See Troubleshooting.md
