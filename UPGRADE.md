@@ -13,4 +13,4 @@ This document explains how to upgrade your Baïkal installation
 
 ## Troubleshooting
 
-See Troubleshooting.md
+See TROUBLESHOOTING.md
