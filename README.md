@@ -34,11 +34,15 @@ Please read INSTALL.md in this folder.
 
 Please read INSTALL.md in this folder.
 
-# 7. Troubleshooting
+# 7. How to upgrade my Baïkal server to a new version ?
+
+Please read UPGRADE.md in this folder.
+
+# 8. Troubleshooting
 
 Please read TROUBLESHOOTING.md in this folder.
 
-# 8. Credits
+# 9. Credits
 
 Baïkal is developed by Base8 (http://base8.fr). 
 Jérôme Schneider (@jeromeschneider) is admin and lead developer. 
