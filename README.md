@@ -1,12 +1,12 @@
 # 1. About this package
 
 This package contains a release of Baïkal.
-Go to http://baikal.codr.fr to get more information about this package, and upgrades.
+Go to http://baikal-server.com to get more information about this package, and upgrades.
 
 # 2. What is Baïkal ?
 
 Baïkal is an open source lightweight CalDAV and CardDAV server. It's developped
-by Jérôme Schneider (http://jerome.io) and based on the SabreDAV library. Baïkal
+by Base8 (http://base8.fr) and based on the SabreDAV library. Baïkal
 is distributed under the GPL license. 
 
 To get more info about the GPL license, visit 
@@ -46,6 +46,6 @@ Please read TROUBLESHOOTING.md in this folder.
 
 Baïkal is developed by Base8 (http://base8.fr). 
 Jérôme Schneider (@jeromeschneider) is admin and lead developer. 
-Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal.codr.fr). Much appreciated, Daniel :) 
+Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal-server.com). Much appreciated, Daniel :) 
 
 -- Jérôme Schneider <contact@base8.fr>  Mon, 21 Aug 2012 12:17:00 +0100
