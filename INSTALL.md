@@ -4,7 +4,7 @@ This document is a part of the Baïkal project. Baïkal is an open
 source lightweight CalDAV and CardDAV server released under the GNU GPL. Baïkal
 is copyright (c) 2012 by Jérôme Schneider.
 
-Baïkal homepage is http://baikal.codr.fr
+Baïkal homepage is http://baikal-server.com
 
 This document describes the system requirements for Baïkal and the
 installation routine.
@@ -52,7 +52,7 @@ The following configuration is the minimum required:
 # 2 - Obtaining Baïkal
 
 To get Baïkal, navigate to the following location: 
-	http://baikal.codr.fr/
+	http://baikal-server.com
 
 # 3 - Installation
 
