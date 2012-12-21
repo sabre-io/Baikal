@@ -1,7 +1,7 @@
 # 1. About this package
 
 This package contains a release of Baïkal.
-Go to http://baikal.codr.fr to get more information about this package, and upgrades.
+Go to http://baikal-server.com to get more information about this package, and upgrades.
 
 # 2. Problem with authentication (CalDAV and CardDAV)
 
