@@ -25,7 +25,6 @@
 #################################################################
 
 namespace Flake;
-require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Core/Framework.php");	# Manual require as Classloader not included yet
 
 class Framework extends \Flake\Core\Framework {
 	
@@ -111,10 +110,6 @@ class Framework extends \Flake\Core\Framework {
 		define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
 		define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
 		define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
-
-		# Activate Flake class loader
-		require_once(FLAKE_PATH_ROOT . 'Core/ClassLoader.php');
-		\Flake\Core\ClassLoader::register();
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
 
