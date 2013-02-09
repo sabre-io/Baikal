@@ -18,7 +18,9 @@
     },
     "autoload": {
         "psr-0" : {
-            "Baikal"         : "Core/Frameworks/"
+            "Baikal"         : "Core/Frameworks/",
+            "Flake"          : "Core/Frameworks/",
+            "Formal"         : "Core/Frameworks/"
         }
     },
     "support" : {

@@ -80,8 +80,6 @@ class Framework extends \Flake\Core\Framework {
 
 					set_error_handler("\Baikal\Framework::exception_error_handler");
 					
-					# SabreDAV Autoloader 
-					require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');
 				}
 			}
 		}

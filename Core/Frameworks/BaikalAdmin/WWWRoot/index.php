@@ -31,7 +31,7 @@ define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
 define("PROJECT_CONTEXT_BASEURI", "/admin/");
 
-if(file_exists(dirname(getcwd()) . "/Core")) {
+if(file_exists(getcwd(). "/Core")) {
 	# Flat FTP mode
 	define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
 } else {
@@ -39,8 +39,9 @@ if(file_exists(dirname(getcwd()) . "/Core")) {
 	define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");	#../../
 }
 
+require PROJECT_PATH_ROOT . '/vendor/autoload.php';
+
 # Bootstraping Flake
-require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");	# ../../
 \Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin
