@@ -60,7 +60,31 @@ class Framework extends \Flake\Core\Framework {
 
 		return $sString;
 	}
-	
+
+	public static function rmQuery($sString) {
+		$iStart = strpos($sString, "?");
+		return ($iStart === FALSE) ? $sString : substr($sString, 0, $iStart);
+	}
+
+	public static function rmScriptName($sString, $sScriptName) {
+		$sScriptBaseName = basename($sScriptName);
+		if( self::endswith($sString, $sScriptBaseName) )
+			return substr($sString, 0, -strlen($sScriptBaseName));
+		return $sString;
+	}
+
+	public static function rmProjectContext($sString) {
+		return self::appendSlash(
+			substr($sString, 0, -1 * strlen(PROJECT_CONTEXT_BASEURI))
+		);
+	}
+
+	public static function endsWith($sString, $sTest) {
+		$iTestLen = strlen($sTest);
+		if ($iTestLen > strlen($sString)) return false;
+		return substr_compare($sString, $sTest, -$iTestLen) === 0;
+	}
+
 	public static function bootstrap() {
 		
 		# Asserting PHP 5.3.0+
@@ -126,7 +150,7 @@ class Framework extends \Flake\Core\Framework {
 			throw new \Exception("Unrecognized PROJECT_PACKAGE value.");
  		}
 
-		# Determine PROJECT_URI
+		# Determine PROJECT_BASEURI
 		$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
 		$sDirName = str_replace("\\", "/", dirname($sScript));	# fix windows backslashes
 
@@ -136,12 +160,17 @@ class Framework extends \Flake\Core\Framework {
 			$sDirName = "/";
 		}
 		
-		$sBaseUrl = self::rmBeginSlash(self::appendSlash(substr($sDirName, 0, -1 * strlen(PROJECT_CONTEXT_BASEURI))));
+		$sBaseUrl = self::rmBeginSlash(self::rmProjectContext($sDirName));
 		define("PROJECT_BASEURI", self::prependSlash($sBaseUrl));	# SabreDAV needs a "/" at the beginning of BASEURL
 
+		# Determine PROJECT_URI
 		$sProtocol = \Flake\Util\Tools::getCurrentProtocol();
-		define("PROJECT_URI", $sProtocol . "://" . self::appendSlash($_SERVER["HTTP_HOST"]) . $sBaseUrl);
-		unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol);
+		$sHttpBaseUrl = strtolower($_SERVER["REQUEST_URI"]);
+		$sHttpBaseUrl = self::rmQuery($sHttpBaseUrl);
+		$sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
+		$sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);
+		define("PROJECT_URI", $sProtocol . "://" . $_SERVER["HTTP_HOST"] . $sHttpBaseUrl);
+		unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($sHttpBaseUrl);
 
 		#################################################################################################
 		
