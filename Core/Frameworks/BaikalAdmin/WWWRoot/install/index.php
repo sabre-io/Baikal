@@ -40,7 +40,7 @@ if(file_exists(dirname(dirname(getcwd())) . "/Core")) {
 }
 
 # Bootstraping Flake
-require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
+require PROJECT_PATH_ROOT . "vendor/autoload.php";
 \Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin

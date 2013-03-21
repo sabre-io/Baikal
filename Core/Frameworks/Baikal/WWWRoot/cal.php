@@ -35,10 +35,10 @@ if(file_exists(getcwd() . "/Core")) {
 	define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
 }
 
-# Bootstraping Flake
-require_once(PROJECT_PATH_ROOT . "Core/Frameworks/Flake/Framework.php");
-\Flake\Framework::bootstrap();
+require PROJECT_PATH_ROOT . '/vendor/autoload.php';
 
+# Bootstraping Flake
+\Flake\Framework::bootstrap();
 # Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
 
