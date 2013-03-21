@@ -2,3 +2,7 @@ Specific/ENABLE_ADMIN
 Specific/config.php
 Specific/config.system.php
 Specific/virtualhosts/baikal.apache2
+
+# Composer stuff
+composer.lock
+vendor

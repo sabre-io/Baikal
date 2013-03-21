@@ -34,10 +34,6 @@ class Framework extends \Flake\Core\Framework {
 		\Baikal\Framework::bootstrap();
 		\Formal\Framework::bootstrap();
 
-		# Registering BaikalAdmin classloader
-		require_once(BAIKALADMIN_PATH_ROOT . '/Core/ClassLoader.php');
-		\BaikalAdmin\Core\ClassLoader::register();
-		
 		$GLOBALS["ROUTER"]::setURIPath("admin/");
 
 		# Include BaikalAdmin Framework config

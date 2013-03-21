@@ -44,8 +44,6 @@ class Framework extends \Flake\Core\Framework {
 		
 		# Registering Baikal classloader
 		define("BAIKAL_PATH_FRAMEWORKROOT", dirname(__FILE__) . "/");
-		require_once(BAIKAL_PATH_FRAMEWORKROOT . 'Core/ClassLoader.php');
-		\Baikal\Core\ClassLoader::register();
 
 		\Baikal\Core\Tools::assertEnvironmentIsOk();
 		\Baikal\Core\Tools::configureEnvironment();
@@ -82,8 +80,6 @@ class Framework extends \Flake\Core\Framework {
 
 					set_error_handler("\Baikal\Framework::exception_error_handler");
 					
-					# SabreDAV Autoloader 
-					require_once(BAIKAL_PATH_SABREDAV . 'autoload.php');
 				}
 			}
 		}
