@@ -1,5 +1,5 @@
 {% autoescape false %}
-{% set url = 'http://baikal.codr.fr/version/' ~ BAIKAL_VERSION ~ '/' ~ PROJECT_PACKAGE ~ '/about' %}
+{% set url = 'http://baikal-server.com' %}
 <style>
 	.label-intext { vertical-align: top;}
 </style>
@@ -14,8 +14,10 @@
 	<div class="row">
 		<div class="span3">
 			<h2>Version</h2>
-			<p>This systems runs Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span>, <em>{{ PROJECT_PACKAGE }}</em> package</p>
-			<p><small><a href="{{ url }}">{{ url }}</a></small></p>
+			<p>This systems runs<br />
+				Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span>, <em>{{ PROJECT_PACKAGE }}</em> package<br />
+				<small><a href="{{ url }}">{{ url }}</a></small>
+			</p>
 		</div>
 		<div class="span3">
 			<h2>Services</h2>
@@ -56,7 +58,7 @@
 			<h2>License and credits</h2>
 			<p>Baïkal is open source software licensed under the terms of the GNU GPL v3.</p>
 			<p>Baïkal is based upon other open source projects.<br />Read the <a href="https://github.com/jeromeschneider/Baikal/blob/master/README.md" target="_blank">README.md</a> file to learn about that.</p>
-			<p>Baïkal is happily developed by <a href="http://base8.fr" target="_blank"><img src="res/core/BaikalAdmin/Images/logo-framboise.png" style="height: 32px; vertical-align:text-bottom;" /></a> <a href="http://base8.fr" target="_blank">Base8</a>.<br />We'd love to hear from you at <a href="mailto:contact@base8.fr">contact@base8.fr</a></p>
+			<p>Baïkal is developed by <a href="https://github.com/jeromeschneider" target="_blank">Jérôme Schneider</a>.
 		</div>
 	</div>
 </section>

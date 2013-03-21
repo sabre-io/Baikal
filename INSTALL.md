@@ -68,9 +68,11 @@ To install Baïkal on a FTP-driven hosting:
 
 ## 3.2 - Installing Baïkal on a dedicated host
 
-### 3.2.1 - Unpacking files
+### 3.2.1 Using the Baïkal "regular package"
 
-To install Baïkal on a dedicated host, download the "Baïkal package".
+#### 3.2.1.1 - Unpacking files
+
+To install Baïkal on a dedicated host, download the "Regular package".
 Unpack the source package outside of the web site root
 directory on your server. The location must be accessible to the web server. 
 Usually, it will be something like /var/www/
@@ -101,7 +103,7 @@ running Apache is www-data:www-data
 	# e. Change permissions on the files
 	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
 
-### 3.2.2 - Setting up a Web Server
+#### 3.2.1.2 - Setting up a Web Server
 
 Baikal must be bound to a domain/subdomain in order to run properly. 
 This package provides default virtualhost configuration files for Apache 2 and for nginx in
@@ -110,7 +112,7 @@ This package provides default virtualhost configuration files for Apache 2 and f
 To enable your host to run Baikal, you'll have to add the Baikal virtualhost
 to your Web Server environment.
 
-#### Setting up the Apache virtualhost
+##### Setting up the Apache virtualhost
 
 In our example, we will assume that the apache2 configuration directory is: 
 	/etc/apache2
@@ -136,7 +138,7 @@ In our example, we will assume that the apache2 configuration directory is:
 	# h. Restart apache
 	$ root:/etc/apache2/sites-enabled> /etc/init.d/apache2 restart
 	
-#### Setting up the nginx virtualhost
+##### Setting up the nginx virtualhost
 
 In our example, we will assume that the nginx configuration directory is: 
 	/etc/nginx
@@ -162,9 +164,32 @@ In our example, we will assume that the nginx configuration directory is:
 	# h. Restart nginx
 	$ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
 	
-### 3.2.3 - Setting up Baïkal
+#### 3.2.1.3 - Setting up Baïkal
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
+
+### 3.2.2 Using Baïkal "Bleeding-edge" version for developpers (requires git and composer)
+
+Baïkal "Bleeding-edge" is using composer to install its dependencies. Please check that you have git and composer installed on your system before going any further.
+
+	# a. Checkout the Baïkal source code
+	$ root:/var/www> git clone https://github.com/jeromeschneider/Baikal.git dav.mydomain.com
+
+	# b. Enter the new dav.mydomain.com directory
+	$ root:/var/www> cd dav.mydomain.com
+
+In order to grant Apache access to the files of your Baïkal installation,
+you'll have to grant the user running the apache process r+w permissions on
+the Baïkal files. In our example, we will suppose the linux username/usergroup
+running Apache is www-data:www-data
+
+	# c. Install Baïkal dependencies using composer
+	$ root:/var/www/dav.mydomain.com> composer install
+
+	# d. Change permissions on the files
+	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
+
+Yoy now have to declare Baïkal in your webserver. You may follow instructions in **"3.2.1.2 - Setting up a Web Server"** above to do so.
 
 # 4 - Accessing the Baïkal Web Admin
 
