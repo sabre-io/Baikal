@@ -2,7 +2,7 @@
 
 This document is a part of the Baïkal project. Baïkal is an open
 source lightweight CalDAV and CardDAV server released under the GNU GPL. Baïkal
-is copyright (c) 2012 by Jérôme Schneider.
+is copyright (c) 2013 by Jérôme Schneider.
 
 Baïkal homepage is http://baikal-server.com
 
