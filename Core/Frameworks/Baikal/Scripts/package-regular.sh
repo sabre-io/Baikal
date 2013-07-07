@@ -33,6 +33,10 @@ rm -Rf Core/Frameworks/Baikal/Scripts && \
 mkdir -p Specific/db && \
 cp Core/Resources/Db/SQLite/db.sqlite Specific/db && \
 
+# Add ENABLE_INSTALL
+
+touch Specific/ENABLE_INSTALL && \
+
 # GZipping package
 cd .. && \
 mv $TEMPDIR baikal-regular && \

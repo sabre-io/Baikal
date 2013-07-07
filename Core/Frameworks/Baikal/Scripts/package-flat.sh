@@ -46,6 +46,12 @@ rm -Rf Core/Frameworks/BaikalAdmin/WWWRoot && \
 # Cleaning Specific/Virtualhosts
 rm -Rf Specific/virtualhosts && \
 
+# Installing dependencies (composer)
+composer install && \
+
+# Removing composer stuff
+rm -f composer.* && \
+
 # Moving HTML roots
 mv html/* . && \
 mv html/.htaccess . && \
@@ -59,6 +65,10 @@ mv Core/Distrib2.php Core/Distrib.php && \
 # Deploy empty DB
 mkdir -p Specific/db && \
 cp Core/Resources/Db/SQLite/db.sqlite Specific/db && \
+
+# Add ENABLE_INSTALL
+
+touch Specific/ENABLE_INSTALL && \
 
 # Zipping package
 cd .. && \
