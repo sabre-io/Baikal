@@ -2,10 +2,10 @@
 #################################################################
 #  Copyright notice
 #
-#  (c) 2012 Jérôme Schneider <mail@jeromeschneider.fr>
+#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
-#  http://baikal.codr.fr
+#  http://baikal-server.com
 #
 #  This script is part of the Baïkal Server project. The Baïkal
 #  Server project is free software; you can redistribute it
@@ -25,5 +25,5 @@
 #################################################################
 
 define("BAIKAL_VERSION", "0.2.4");
-define("BAIKAL_HOMEPAGE", "http://baikal.codr.fr");
+define("BAIKAL_HOMEPAGE", "http://baikal-server.com");
 define("PROJECT_PACKAGE", "regular");

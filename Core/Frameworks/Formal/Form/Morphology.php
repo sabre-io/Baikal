@@ -2,7 +2,7 @@
 #################################################################
 #  Copyright notice
 #
-#  (c) 2012 Jérôme Schneider <mail@jeromeschneider.fr>
+#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
 #  http://formal.codr.fr
