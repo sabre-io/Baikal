@@ -101,7 +101,7 @@ HTML;
 			}
 		}
 
-		if(version_compare($sVersionFrom, '2.3.0', '<=')) {
+		if(version_compare($sVersionFrom, '0.2.3', '<=')) {
 			# Upgrading DB
 
 			#	etag VARCHAR(32),
@@ -129,7 +129,7 @@ HTML;
 					"ALTER TABLE calendarobjects ADD COLUMN firstoccurence integer",
 					"ALTER TABLE calendarobjects ADD COLUMN lastoccurence integer",
 					"ALTER TABLE calendars ADD COLUMN transparent bool",
-					"ALTER TABLE principals ADD COLUMN vcardurl VARCHAR(80)",	# This one is added in SQLite but not MySQL, because it is already there since the beginning in MySQL
+					"ALTER TABLE principals ADD COLUMN vcardurl text",	# This one is added in SQLite but not MySQL, because it is already there since the beginning in MySQL
 				);
 
 				$this->aSuccess[] = "SQLite database has been successfuly upgraded.'";
@@ -144,6 +144,10 @@ HTML;
 				$this->aErrors[] = "<p>Database cannot be upgraded.<br />Caught exception: " . $e->getMessage() . "</p>";
 				return FALSE;
 			}
+		}
+
+		if(version_compare($sVersionFrom, '0.2.4', '<=')) {
+			# Nothing to do :)
 		}
 		
 		$this->updateConfiguredVersion($sVersionTo);
