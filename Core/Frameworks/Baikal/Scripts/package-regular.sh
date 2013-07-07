@@ -37,6 +37,12 @@ cp Core/Resources/Db/SQLite/db.sqlite Specific/db && \
 
 touch Specific/ENABLE_INSTALL && \
 
+# Installing dependencies (composer)
+composer install && \
+
+# Removing composer stuff
+rm -f composer.* && \
+
 # GZipping package
 cd .. && \
 mv $TEMPDIR baikal-regular && \
