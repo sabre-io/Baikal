@@ -31,7 +31,7 @@ define("BAIKAL_CONTEXT", TRUE);
 define("BAIKAL_CONTEXT_ADMIN", TRUE);
 define("PROJECT_CONTEXT_BASEURI", "/admin/");
 
-if(file_exists(getcwd(). "/Core")) {
+if(file_exists(dirname(getcwd()). "/Core")) {
 	# Flat FTP mode
 	define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
 } else {
