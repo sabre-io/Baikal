@@ -11,7 +11,7 @@ installation routine.
 
 # 1 - System requirements
 
-Baïkal is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. This
+Baïkal is based on PHP 5.3.1+, and uses a SQLite3 or MySQL with PHP PDO. This
 document does not cover the installation of these requirements.
 
 ## 1.1 - System requirements for FTP-driven hosting
@@ -20,9 +20,9 @@ The following configuration is the minimum required:
 
 - an hosted webserver running apache 2 and PHP 5.3.0
 
-- PHP 5.3.0 or newer with the following extensions: 
+- PHP 5.3.1 or newer with the following extensions: 
 	- PDO and SQLite3 or MySQL 
-        - DOM (php-xml)  
+	- DOM (php-xml)  
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function.
 
@@ -41,9 +41,9 @@ The following configuration is the minimum required:
 	NOTE: tools to create and manage users are command line only. Web-based
 	interfaces will be produced in the future. 
 
-- PHP 5.3.0 or newer with the following extensions: 
+- PHP 5.3.1 or newer with the following extensions: 
 	- PDO and SQLite3 or MySQL 
-        - DOM (php-xml) 
+	- DOM (php-xml) 
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function. 
 
@@ -163,7 +163,7 @@ In our example, we will assume that the nginx configuration directory is:
 	
 	# h. Restart nginx
 	$ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
-	
+
 #### 3.2.1.3 - Setting up Baïkal
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
@@ -228,8 +228,8 @@ Add a new CardDAV account:
 Add a new CardDAV account:
 
 	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
- 	* Select "CardDAV" 
-  	* Server: dav.mydomain.com/card.php          (note: no http:// nor https://, and no trailing slash) 
+	* Select "CardDAV" 
+	* Server: dav.mydomain.com/card.php          (note: no http:// nor https://, and no trailing slash) 
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 
@@ -244,7 +244,7 @@ Add a new CalDAV account:
 
 # 6 - You're done
 
-You may now create new calendars, new events, new visit cards :) Enjoy.
+You may now create new calendars, new events, new contact (: Enjoy.
 
 # 7 - Troubleshooting
 

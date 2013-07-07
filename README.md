@@ -6,15 +6,15 @@ Go to http://baikal-server.com to get more information about this package, and u
 # 2. What is Baïkal ?
 
 Baïkal is an open source lightweight CalDAV and CardDAV server. It's developped
-by Jérôme Schneider and based on the SabreDAV library. Baïkal
-is distributed under the GPL license. 
+by Jérôme Schneider and based on the excellent [http://code.google.com/p/sabredav/](SabreDAV) project.
+Baïkal is distributed under the GPL license. 
 
 To get more info about the GPL license, visit 
 http://www.opensource.org/licenses/gpl-license.php.
 
 # 3. Baïkal requirements
 
-Baïkal is based on PHP 5.3.0, and uses a SQLite3 with PHP PDO. For more
+Baïkal is based on PHP 5.3.1+, and uses a SQLite3 or MySQL with PHP PDO. For more
 information regarding these requirements see the INSTALL.md file in this folder.
 
 # 4. What should you do if you have a problem ?
@@ -48,4 +48,4 @@ Baïkal is developed by Jérôme Schneider.
 Jérôme Schneider (@jeromeschneider) is admin and lead developer. 
 Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal-server.com). Much appreciated, Daniel :) 
 
--- Jérôme Schneider <contact@base8.fr>  Mon, 21 Aug 2012 12:17:00 +0100
+-- Jérôme Schneider <mail@jeromeschneider.fr>  Mon, 21 Aug 2012 12:17:00 +0100
