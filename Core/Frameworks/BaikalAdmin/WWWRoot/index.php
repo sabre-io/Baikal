@@ -39,7 +39,11 @@ if(file_exists(dirname(getcwd()). "/Core")) {
 	define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");	#../../
 }
 
-require PROJECT_PATH_ROOT . '/vendor/autoload.php';
+if(!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+	die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependancies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
+}
+
+require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 
 # Bootstraping Flake
 \Flake\Framework::bootstrap();
