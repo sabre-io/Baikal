@@ -45,6 +45,10 @@ class Tools extends \Flake\Core\FLObject {
 	}
 	
 	public static function getCurrentProtocol() {
+		if(isset($GLOBALS['_SERVER']['HTTP_X_FORWARDED_PROTO']) && !empty($GLOBALS['_SERVER']['HTTP_X_FORWARDED_PROTO'])) {
+			return $GLOBALS['_SERVER']['HTTP_X_FORWARDED_PROTO'];
+		}
+		
 		if((!empty($GLOBALS["_SERVER"]["HTTPS"]) && $GLOBALS["_SERVER"]['HTTPS'] !== 'off') || intval($_SERVER['SERVER_PORT']) === 443) {
 			return "https";
 		}
