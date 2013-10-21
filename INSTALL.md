@@ -242,7 +242,7 @@ Add a new CardDAV account:
 	  of and replace the domain name, and the username with the correct values
 	* When asked, provide user/password; your CalDAV account should be up and running
 
-## 5.6 - Thunderbird/Lighning:
+## 5.6 - Thunderbird/Lightning:
 
 Add a new CalDAV account:
 
