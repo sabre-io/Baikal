@@ -207,7 +207,7 @@ Add a new CalDAV account:
 
 ## 5.2 - Apple Calendar (iOS):
 
-Add a new CardDAV account:
+Add a new CalDAV account:
 
 	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
  	* Select "CalDAV" 
@@ -233,12 +233,21 @@ Add a new CardDAV account:
 	* username: the username you just created (in our example, jerome) 
 	* password: the password you just defined 
 
-## 5.5 - Thunderbird/Lighning:
+## 5.5 - Thunderbird:
+
+Add a new CardDAV account:
+
+	* Navigate to "Address book" > "New" > "Remote address book"
+	* paste this URL: http://dav.mydomain.com/card.php/addressbooks/username/default/
+	  of and replace the domain name, and the username with the correct values
+	* When asked, provide user/password; your CalDAV account should be up and running
+
+## 5.6 - Thunderbird/Lightning:
 
 Add a new CalDAV account:
 
 	* Navigate to "Lightning" > "New account" > "On the network" > "URL"
-	* paste this URL: http://yourdomain.com/cal.php/calendars/username/default
+	* paste this URL: http://dav.mydomain.com/cal.php/calendars/username/default
 	  of and replace the domain name, and the username with the correct values
 	* When asked, provide user/password; your CalDAV account should be up and running
 
