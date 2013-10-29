@@ -251,6 +251,27 @@ Add a new CalDAV account:
 	  of and replace the domain name, and the username with the correct values
 	* When asked, provide user/password; your CalDAV account should be up and running
 
+## 5.7 BlackBerry OS10
+
+Add a new CalDAV account:
+
+  * in Settings > Accounts > Add Account > Advanced > CalDAV
+  * Username: the username you just created
+  * Password: the password you just defined
+  * Server Address: http://dav.mydomain.com/cal.php/calendars/username/default
+    and replace domain and username with the correct values
+
+Add a new CardDAV account:
+
+  * in Settings > Accounts > Add Account > Advanced > CardDAV
+  * Username: the username you just created
+  * Password: the password you just defined
+  * Email Address: an email address you want this CardDAV account to be assigned to
+  * Server Address: dav.mydomain.com/card.php/addressbooks/username/default
+    and replace domain and username with the correct values
+
+__Note:__ Its required to use SSL for CardDAV!
+
 # 6 - You're done
 
 You may now create new calendars, new events, new contact (: Enjoy.
