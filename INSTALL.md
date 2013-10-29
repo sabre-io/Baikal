@@ -258,7 +258,7 @@ Add a new CalDAV account:
 	* in Settings > Accounts > Add Account > Advanced > CalDAV
 	* Username: the username you just created
 	* Password: the password you just defined
-	* Server Address: http://dav.mydomain.com/cal.php/calendars/username/default
+	* Server Address: dav.mydomain.com/cal.php/calendars/username/default
 	  and replace domain and username with the correct values
 
 Add a new CardDAV account:
