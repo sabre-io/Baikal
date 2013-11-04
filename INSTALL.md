@@ -258,3 +258,55 @@ You may now create new calendars, new events, new contact (: Enjoy.
 # 7 - Troubleshooting
 
 Please read TROUBLESHOOTING.md in this folder.
+
+# 8 - User contributed quick & dirty install guides
+
+## Ubuntu 12.04 - James Lay
+
+* Get the latest flat file
+* unzip and move to /var/www/baikal
+
+* cd /var/www
+
+* sudo chown -R www-data:www-data baikal*
+
+* mysql -u root -p
+
+* create database balkal;
+
+* GRANT ALL PRIVILEGES ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY ‘password' WITH GRANT OPTION;
+
+* exit
+
+* mysql -u baikal -p <password> -D baikal < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
+
+* sudo touch /var/www/baikal/Specfic/ENABLE_INSTALL
+
+* sudo chown www-data /var/www/baikal/Specific/ENABLE_INSTALL
+
+* sudo vi /etc/apache2/sites-available/baikal
+
+```plain
+<VirtualHost *:80>
+
+   ServerName baikal
+
+   DocumentRoot /var/www/baikal
+
+   ErrorLog /var/logsbaikal.error_log
+   TransferLog /var/log/baikal.access_log
+   LogLevel warn
+
+   <Directory "/var/www/baikal">
+     Order allow,deny
+     Allow from all
+   </Directory>
+
+</VirtualHost>
+```
+
+* sudo ln -s /etc/apache2/sites-available/baikal /etc/apache2/sites-enabled
+
+* sudo service apache2 restart
+
+* Point your browser to http://hostname/baikal and there you go.
