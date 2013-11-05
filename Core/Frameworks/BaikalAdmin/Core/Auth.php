@@ -59,7 +59,7 @@ class Auth {
 			if((time() - $iTime) < 3600) {
 				# file has been created/updated less than an hour ago; update it's mtime
 				if(is_writable($sEnableFile)) {
-					@touch($sEnableFile);
+					@file_put_contents($sEnableFile, '');
 				}
 				$bLocked = FALSE;
 			} else {
