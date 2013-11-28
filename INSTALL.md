@@ -237,10 +237,11 @@ Add a new CardDAV account:
 
 Add a new CardDAV account:
 
+	* Install "SOGo Connector Thunderbird extension" (http://sogo.nu/downloads/frontends.html)
 	* Navigate to "Address book" > "New" > "Remote address book"
 	* paste this URL: http://dav.mydomain.com/card.php/addressbooks/username/default/
 	  of and replace the domain name, and the username with the correct values
-	* When asked, provide user/password; your CalDAV account should be up and running
+	* When asked, provide user/password; your CardDAV account should be up and running
 
 ## 5.6 - Thunderbird/Lightning:
 
