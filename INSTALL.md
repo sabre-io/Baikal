@@ -201,56 +201,55 @@ Navigate to http://dav.mydomain.com/admin/
 
 Add a new CalDAV account:
 
-	* username: the username you just created (in our example, jerome) 
-	* password: the password you just defined 
-	* In server address (replace domain and username): http://dav.mydomain.com/cal.php/principals/jerome 
+* username: the username you just created (in our example, jerome) 
+* password: the password you just defined 
+* In server address (replace domain and username): http://dav.mydomain.com/cal.php/principals/jerome 
 
 ## 5.2 - Apple Calendar (iOS):
 
 Add a new CalDAV account:
 
-	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
- 	* Select "CalDAV" 
-  	* Server: http://dav.mydomain.com/cal.php/principals/jerome 
-	* username: the username you just created (in our example, jerome) 
-	* password: the password you just defined 
+* in Settings > Mail, Contacts, Calendar > Add an account > Other 
+* Select "CalDAV" 
+* Server: http://dav.mydomain.com/cal.php/principals/jerome 
+* username: the username you just created (in our example, jerome) 
+* password: the password you just defined 
 
 ## 5.3 - Apple Address Book (OSX):
 
 Add a new CardDAV account:
 
-	* username: the username you just created (in our example, jerome) 
-	* password: the password you just defined 
-	* In server address (replace domain and username): http://dav.mydomain.com/card.php/addressbooks/jerome/default 
+* username: the username you just created (in our example, jerome) 
+* password: the password you just defined 
+* In server address (replace domain and username): http://dav.mydomain.com/card.php/addressbooks/jerome/default 
 
 ## 5.4 - Apple Contacts (iOS):
 
 Add a new CardDAV account:
 
-	* in Settings > Mail, Contacts, Calendar > Add an account > Other 
-	* Select "CardDAV" 
-	* Server: dav.mydomain.com/card.php          (note: no http:// nor https://, and no trailing slash) 
-	* username: the username you just created (in our example, jerome) 
-	* password: the password you just defined 
+* in Settings > Mail, Contacts, Calendar > Add an account > Other 
+* Select "CardDAV" 
+* Server: dav.mydomain.com/card.php          (note: no http:// nor https://, and no trailing slash) 
+* username: the username you just created (in our example, jerome) 
+* password: the password you just defined 
 
-## 5.5 - Thunderbird:
+## 5.5 - Thunderbird/SOGo connector:
 
 Add a new CardDAV account:
 
-	* Install "SOGo Connector Thunderbird extension" (http://sogo.nu/downloads/frontends.html)
-	* Navigate to "Address book" > "New" > "Remote address book"
-	* paste this URL: http://dav.mydomain.com/card.php/addressbooks/username/default/
-	  of and replace the domain name, and the username with the correct values
-	* When asked, provide user/password; your CardDAV account should be up and running
+* Install "SOGo Connector Thunderbird extension" (http://sogo.nu/downloads/frontends.html)
+* Navigate to "Address book" > "New" > "Remote address book"
+* paste this URL: http://dav.mydomain.com/card.php/addressbooks/username/default/ of and replace the domain name, and the username with the correct values
+* When asked, provide user/password; your CardDAV account should be up and running
+* **Important notes**: some users reported that, for SOGo to work, you have to host your baikal on a **https** line, and keep usernames simple (no '@' in the username or any non ascii-alphanumeric char)
 
 ## 5.6 - Thunderbird/Lightning:
 
 Add a new CalDAV account:
 
-	* Navigate to "Lightning" > "New account" > "On the network" > "URL"
-	* paste this URL: http://dav.mydomain.com/cal.php/calendars/username/default
-	  of and replace the domain name, and the username with the correct values
-	* When asked, provide user/password; your CalDAV account should be up and running
+* Navigate to "Lightning" > "New account" > "On the network" > "URL"
+* paste this URL: http://dav.mydomain.com/cal.php/calendars/username/default of and replace the domain name, and the username with the correct values
+* When asked, provide user/password; your CalDAV account should be up and running
 
 # 6 - You're done
 
