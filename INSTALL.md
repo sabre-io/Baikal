@@ -274,8 +274,8 @@ Add a new CardDAV account:
 
 __Important notes:__
 
-	* Make sure you've configured Baikal to use `basic` as authentication mechanism.
-	* Its required to use SSL for CardDAV!
+* Make sure you've configured Baikal to use `basic` as authentication mechanism.
+* Its required to use SSL for CardDAV!
 
 # 6 - You're done
 
