@@ -197,41 +197,61 @@ Navigate to http://dav.mydomain.com/admin/
 
 # 5 - Connecting your CalDAV / CardDAV client to Baïkal
 
-## 5.1 - Apple iCal (OSX):
+## 5.1 - Apple Calendar (OS X):
+
+Note: Calendar is called iCal on older OS X versions.
 
 Add a new CalDAV account:
 
-* username: the username you just created (in our example, jerome) 
-* password: the password you just defined 
-* In server address (replace domain and username): http://dav.mydomain.com/cal.php/principals/jerome 
+* In Preferences... > Accounts click the `+` button
+* Follow the wizard:
+  * Account Type: CalDAV
+  * User Name: the username you just created (in our example, jerome) 
+  * Password: the password you just defined
+  * Server Address: http://dav.mydomain.com/cal.php/principals/jerome (replace domain and username)
+* Change the account description if you want
 
 ## 5.2 - Apple Calendar (iOS):
 
 Add a new CalDAV account:
 
-* in Settings > Mail, Contacts, Calendar > Add an account > Other 
-* Select "CalDAV" 
-* Server: http://dav.mydomain.com/cal.php/principals/jerome 
-* username: the username you just created (in our example, jerome) 
-* password: the password you just defined 
+* In Settings > Mail, Contacts, Calendar > Add Account > Other 
+* Tap Add CalDAV Account under CALENDARS
+* Configure your account:
+  * Server: http://dav.mydomain.com/cal.php/principals/jerome (replace domain and username)
+  * User Name: the username you just created (in our example, jerome) 
+  * Password: the password you just defined 
+  * Description: optional, whatever you want
+* Tap Next
 
-## 5.3 - Apple Address Book (OSX):
+## 5.3 - Apple Contacts (OS X):
+
+Note: Contacts is called Address Book on older OS X versions.
 
 Add a new CardDAV account:
 
-* username: the username you just created (in our example, jerome) 
-* password: the password you just defined 
-* In server address (replace domain and username): http://dav.mydomain.com/card.php/addressbooks/jerome/default 
+* In Preferences... > Accounts click the `+` button
+* Follow the wizard:
+  * Account Type: CardDAV
+  * User name: the username you just created (in our example, jerome) 
+  * Password: the password you just defined
+  * Server address: http://dav.mydomain.com/card.php/addressbooks/jerome/default (replace domain and username)
+* Change the account description if you want
 
 ## 5.4 - Apple Contacts (iOS):
 
 Add a new CardDAV account:
 
-* in Settings > Mail, Contacts, Calendar > Add an account > Other 
-* Select "CardDAV" 
-* Server: dav.mydomain.com/card.php          (note: no http:// nor https://, and no trailing slash) 
-* username: the username you just created (in our example, jerome) 
-* password: the password you just defined 
+* in Settings > Mail, Contacts, Calendar > Add Account > Other 
+* Tap Add CardDAV Account under CONTACTS
+* Configure your account:
+  * Server: dav.mydomain.com/card.php (note: no http:// nor https://, and no trailing slash) 
+  * User Name: the username you just created (in our example, jerome) 
+  * Password: the password you just defined 
+  * Description: optional, whatever you want
+* Tap Next
+
+It can take a little while as iOS seems to look for a secure connection first. It will show a popup when it doesn't find any certificates. Accept this when you are **not** using Baikal over SSL.
 
 ## 5.5 - Thunderbird/SOGo connector:
 
