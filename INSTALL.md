@@ -272,7 +272,10 @@ Add a new CardDAV account:
 	* Server Address: dav.mydomain.com/card.php/addressbooks/username/default
 	  and replace domain and username with the correct values
 
-__Note:__ Its required to use SSL for CardDAV!
+__Important notes:__
+
+	* Make sure you've configured Baikal to use `basic` as authentication mechanism.
+	* Its required to use SSL for CardDAV!
 
 # 6 - You're done
 
