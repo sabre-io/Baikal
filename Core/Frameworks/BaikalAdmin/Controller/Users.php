@@ -63,6 +63,7 @@ class Users extends \Flake\Core\Controller {
 				"username" => $user->get("username"),
 				"displayname" => $user->get("displayname"),
 				"email" => $user->get("email"),
+				"id" => $user->get("id"),
 			);
 		}
 		

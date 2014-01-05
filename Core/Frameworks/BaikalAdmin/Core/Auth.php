@@ -77,11 +77,19 @@ class Auth {
 	}
 	
 	public static function isAuthenticated() {
-		if(isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
-			return TRUE;
-		}
+		if(isset($_SERVER['PHP_AUTH_USER'])){
+			$sPass = self::hashAdminPassword($_SERVER['PHP_AUTH_PW']);
+			if (md5($sPass) === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
+		    	return TRUE;
+			} else {
+				return FALSE;
+			}
+		} else {
+			if(isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
+				return TRUE;
+			}
 		
-		return FALSE;		
+			return FALSE;
 	}
 	
 	public static function authenticate() {

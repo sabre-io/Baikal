@@ -28,3 +28,10 @@
 {{ messages }}
 {{ form }}
 {% endautoescape %}
+
+<!-- Delete the following to disable the following programatic way to get users ID's by no means the best or most efficient way of doing so. But it's better than nothing.-->
+<div id='magictable' style='display: none;'>
+	{% for user in users %}
+		<div id='username_{{user.username}}'>{{user.id}}</div>
+	{% endfor %}
+</div>
