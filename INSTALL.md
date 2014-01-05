@@ -272,7 +272,7 @@ Please read TROUBLESHOOTING.md in this folder.
 
 * mysql -u root -p
 
-* create database balkal;
+* create database baikal;
 
 * GRANT ALL PRIVILEGES ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY ‘password' WITH GRANT OPTION;
 
