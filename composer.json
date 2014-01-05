@@ -14,7 +14,8 @@
     ],
     "require": {
         "php"           : ">=5.3.1",
-        "sabre/dav"     : "1.8.*"
+        "sabre/dav"     : "1.8.*",
+        "twig/twig"	    : "1.*"
     },
     "autoload": {
         "psr-0" : {
