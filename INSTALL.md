@@ -32,7 +32,7 @@ The following configuration is the minimum required:
 
 The following configuration is the minimum required:
 
-- an Apache2 web server capable of running PHP, and accessible thru a
+- an Apache2 web server capable of running PHP, and accessible through a
  dedicated subdomain (something like "dav.mydomainname.com") 
 	NOTE: this document only covers sub-domain based installations. Other
 	installations modes are possible, though not documented (yet). 
@@ -168,7 +168,7 @@ In our example, we will assume that the nginx configuration directory is:
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
 
-### 3.2.2 Using Baïkal "Bleeding-edge" version for developpers (requires git and composer)
+### 3.2.2 Using Baïkal "Bleeding-edge" version for developers (requires git and composer)
 
 Baïkal "Bleeding-edge" is using composer to install its dependencies. Please check that you have git and composer installed on your system before going any further.
 
@@ -189,7 +189,7 @@ running Apache is www-data:www-data
 	# d. Change permissions on the files
 	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
 
-Yoy now have to declare Baïkal in your webserver. You may follow instructions in **"3.2.1.2 - Setting up a Web Server"** above to do so.
+You now have to declare Baïkal in your webserver. You may follow instructions in **"3.2.1.2 - Setting up a Web Server"** above to do so.
 
 # 4 - Accessing the Baïkal Web Admin
 
