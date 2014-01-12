@@ -124,7 +124,7 @@ In our example, we will assume that the apache2 configuration directory is:
 	$ root:/etc/apache2> cd sites-available
 	
 	# c. Symlink the Baikal virtualhost file to this directory
-	$ root:/etc/apache2/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.apache2
+	$ root:/etc/apache2/sites-available> cp /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.apache2 .
 	
 	# d. Customize the virtualhost config file
 	$ root:/etc/apache2/sites-available> nano baikal.apache2
