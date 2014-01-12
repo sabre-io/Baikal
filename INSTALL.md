@@ -101,7 +101,7 @@ the Baïkal files. In our example, we will suppose the linux username/usergroup
 running Apache is www-data:www-data
 
 	# e. Change permissions on the files
-	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
+	$ root:/var/www/dav.mydomain.com> chown www-data:www-data Specific -Rf
 
 #### 3.2.1.2 - Setting up a Web Server
 
