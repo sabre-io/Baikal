@@ -30,7 +30,7 @@ class Calendar extends \Flake\Core\Model\Db {
 	const DATATABLE = "calendars";
 	const PRIMARYKEY = "id";
 	const LABELFIELD = "displayname";
-	
+
 	protected $aData = array(
 		"principaluri" => "",
 		"displayname" => "",
@@ -42,19 +42,19 @@ class Calendar extends \Flake\Core\Model\Db {
 		"timezone" => "",
 		"components" => "",
 	);
-	
+
 	public static function icon() {
 		return "icon-calendar";
 	}
-	
+
 	public static function mediumicon() {
 		return "glyph-calendar";
 	}
-	
+
 	public static function bigicon() {
 		return "glyph2x-calendar";
 	}
-	
+
 	public function getEventsBaseRequester() {
 		$oBaseRequester = \Baikal\Model\Calendar\Event::getBaseRequester();
 		$oBaseRequester->addClauseEquals(
@@ -64,9 +64,9 @@ class Calendar extends \Flake\Core\Model\Db {
 
 		return $oBaseRequester;
 	}
-	
+
 	public function get($sPropName) {
-		
+
 		if($sPropName === "todos") {
 			# TRUE if components contains VTODO, FALSE otherwise
 			if(($sComponents = $this->get("components")) !== "") {
@@ -74,23 +74,34 @@ class Calendar extends \Flake\Core\Model\Db {
 			} else {
 				$aComponents = array();
 			}
-			
+
 			return in_array("VTODO", $aComponents);
 		}
-		
-		return parent::get($sPropName);
-	}
-	
-	public function set($sPropName, $sValue) {
-		
-		if($sPropName === "todos") {
-			
+
+		if($sPropName === "notes") {
+			# TRUE if components contains VJOURNAL, FALSE otherwise
 			if(($sComponents = $this->get("components")) !== "") {
 				$aComponents = explode(",", $sComponents);
 			} else {
 				$aComponents = array();
 			}
-			
+
+			return in_array("VJOURNAL", $aComponents);
+		}
+
+		return parent::get($sPropName);
+	}
+
+	public function set($sPropName, $sValue) {
+
+		if($sPropName === "todos") {
+
+			if(($sComponents = $this->get("components")) !== "") {
+				$aComponents = explode(",", $sComponents);
+			} else {
+				$aComponents = array();
+			}
+
 			if($sValue === TRUE) {
 				if(!in_array("VTODO", $aComponents)) {
 					$aComponents[] = "VTODO";
@@ -100,16 +111,37 @@ class Calendar extends \Flake\Core\Model\Db {
 					unset($aComponents[array_search("VTODO", $aComponents)]);
 				}
 			}
-			
+
 			return parent::set("components", implode(",", $aComponents));
 		}
-		
+
+		if($sPropName === "notes") {
+
+			if(($sComponents = $this->get("components")) !== "") {
+				$aComponents = explode(",", $sComponents);
+			} else {
+				$aComponents = array();
+			}
+
+			if($sValue === TRUE) {
+				if(!in_array("VJOURNAL", $aComponents)) {
+					$aComponents[] = "VJOURNAL";
+				}
+			} else {
+				if(in_array("VJOURNAL", $aComponents)) {
+					unset($aComponents[array_search("VJOURNAL", $aComponents)]);
+				}
+			}
+
+			return parent::set("components", implode(",", $aComponents));
+		}
+
 		return parent::set($sPropName, $sValue);
 	}
-	
+
 	public function formMorphologyForThisModelInstance() {
 		$oMorpho = new \Formal\Form\Morphology();
-		
+
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "uri",
 			"label" => "Calendar token ID",
@@ -119,7 +151,7 @@ class Calendar extends \Flake\Core\Model\Db {
 				"content" => "The unique identifier for this calendar.",
 			)
 		)));
-		
+
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "displayname",
 			"label" => "Display name",
@@ -129,19 +161,25 @@ class Calendar extends \Flake\Core\Model\Db {
 				"content" => "This is the name that will be displayed in your CalDAV client.",
 			)
 		)));
-		
+
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "description",
 			"label" => "Description",
 			"validation" => "required"
 		)));
-		
+
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
 			"prop" => "todos",
 			"label" => "Todos",
 			"help" => "If checked, todos will be enabled on this calendar.",
 		)));
-		
+
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "notes",
+			"label" => "Notes",
+			"help" => "If checked, notes will be enabled on this calendar.",
+		)));
+
 		if($this->floating()) {
 			$oMorpho->element("uri")->setOption(
 				"help",
@@ -150,22 +188,22 @@ class Calendar extends \Flake\Core\Model\Db {
 		} else {
 			$oMorpho->element("uri")->setOption("readonly", TRUE);
 		}
-		
+
 		return $oMorpho;
 	}
-	
+
 	public function isDefault() {
 		return $this->get("uri") === "default";
 	}
-	
+
 	public function destroy() {
-		
-		
+
+
 		$oEvents = $this->getEventsBaseRequester()->execute();
 		foreach($oEvents as $event) {
 			$event->destroy();
 		}
-		
+
 		parent::destroy();
 	}
 }
