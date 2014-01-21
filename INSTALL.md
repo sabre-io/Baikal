@@ -317,12 +317,12 @@ mysql -u root -p #password#
 
 ```mysql
 CREATE DATABASE baikal;
-GRANT ALL PRIVILEGES ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+GRANT DELETE, INSERT, SELECT, UPDATE ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY '#password#';
 exit
 ```
 
 ```sh
-mysql -u baikal -p #password# -D baikal < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
+mysql -u root -p #password# -D baikal < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
 sudo touch /var/www/baikal/Specfic/ENABLE_INSTALL
 sudo chown www-data /var/www/baikal/Specific/ENABLE_INSTALL
 sudo vi /etc/apache2/sites-available/baikal
