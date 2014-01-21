@@ -73,6 +73,9 @@ class Page extends \Flake\Core\Render\Container {
 	
 	public function injectHTTPHeaders() {
 		header("Content-Type: text/html; charset=UTF-8");
+
+		header("X-Frame-Options: DENY");	# Prevent Clickjacking attacks
+		header("X-Content-Type-Options: nosniff");	# Prevent code injection via mime type sniffing
 	}
 	
 	public function render() {
