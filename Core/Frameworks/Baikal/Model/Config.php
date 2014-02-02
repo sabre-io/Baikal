@@ -157,7 +157,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 			# We replace value by it's native PHP notation
 			switch($this->aConstants[$prop]["type"]) {
 				case "string": {
-					$sValue = '"' . addcslashes($sValue, "\"\\\0\n\r") . '"';	# Add quotes, and escape " and all string-termination chars
+					$sValue = var_export($sValue, TRUE);	# Add quotes, and escape " and all string-termination chars
 					break;
 				}
 				case "integer": {
@@ -179,7 +179,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 					break;
 				}
 				default: {
-					$sValue = '""';
+					$sValue = "''";
 					break;
 				}
 			}
