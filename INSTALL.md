@@ -309,34 +309,28 @@ Please read TROUBLESHOOTING.md in this folder.
 
 ## Ubuntu 12.04 - James Lay
 
-* Get the latest flat file
-* unzip and move to /var/www/baikal
+```sh
+cd /var/www
+sudo chown -R www-data:www-data baikal
+mysql -u root -p #password#
+```
 
-* cd /var/www
+```mysql
+CREATE DATABASE baikal;
+GRANT DELETE, INSERT, SELECT, UPDATE ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY '#password#';
+exit
+```
 
-* sudo chown -R www-data:www-data baikal*
-
-* mysql -u root -p
-
-* create database baikal;
-
-* GRANT ALL PRIVILEGES ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY ‘password' WITH GRANT OPTION;
-
-* exit
-
-* mysql -u baikal -p <password> -D baikal < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
-
-* sudo touch /var/www/baikal/Specfic/ENABLE_INSTALL
-
-* sudo chown www-data /var/www/baikal/Specific/ENABLE_INSTALL
-
-* sudo vi /etc/apache2/sites-available/baikal
+```sh
+mysql -u root -p #password# -D baikal < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
+sudo touch /var/www/baikal/Specfic/ENABLE_INSTALL
+sudo chown www-data /var/www/baikal/Specific/ENABLE_INSTALL
+sudo vi /etc/apache2/sites-available/baikal
+```
 
 ```plain
 <VirtualHost *:80>
-
    ServerName baikal
-
    DocumentRoot /var/www/baikal
 
    ErrorLog /var/logsbaikal.error_log
@@ -347,12 +341,10 @@ Please read TROUBLESHOOTING.md in this folder.
      Order allow,deny
      Allow from all
    </Directory>
-
 </VirtualHost>
 ```
 
-* sudo ln -s /etc/apache2/sites-available/baikal /etc/apache2/sites-enabled
-
-* sudo service apache2 restart
-
-* Point your browser to http://hostname/baikal and there you go.
+```sh
+sudo ln -s /etc/apache2/sites-available/baikal /etc/apache2/sites-enabled
+sudo service apache2 restart
+```
