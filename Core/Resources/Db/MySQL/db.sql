@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS calendars (
     calendarorder INTEGER UNSIGNED NOT NULL DEFAULT '0',
     calendarcolor VARCHAR(10),
     timezone TEXT,
-    components VARCHAR(20),
+    components VARCHAR(21),
     transparent TINYINT(1) NOT NULL DEFAULT '0',
     UNIQUE(principaluri, uri)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
