@@ -78,6 +78,17 @@ class Calendar extends \Flake\Core\Model\Db {
 			return in_array("VTODO", $aComponents);
 		}
 
+		if($sPropName === "notes") {
+			# TRUE if components contains VJOURNAL, FALSE otherwise
+			if(($sComponents = $this->get("components")) !== "") {
+				$aComponents = explode(",", $sComponents);
+			} else {
+				$aComponents = array();
+			}
+
+			return in_array("VJOURNAL", $aComponents);
+		}
+
 		return parent::get($sPropName);
 	}
 
@@ -98,6 +109,27 @@ class Calendar extends \Flake\Core\Model\Db {
 			} else {
 				if(in_array("VTODO", $aComponents)) {
 					unset($aComponents[array_search("VTODO", $aComponents)]);
+				}
+			}
+
+			return parent::set("components", implode(",", $aComponents));
+		}
+
+		if($sPropName === "notes") {
+
+			if(($sComponents = $this->get("components")) !== "") {
+				$aComponents = explode(",", $sComponents);
+			} else {
+				$aComponents = array();
+			}
+
+			if($sValue === TRUE) {
+				if(!in_array("VJOURNAL", $aComponents)) {
+					$aComponents[] = "VJOURNAL";
+				}
+			} else {
+				if(in_array("VJOURNAL", $aComponents)) {
+					unset($aComponents[array_search("VJOURNAL", $aComponents)]);
 				}
 			}
 
@@ -140,6 +172,13 @@ class Calendar extends \Flake\Core\Model\Db {
 			"label" => "Todos",
 			"help" => "If checked, todos will be enabled on this calendar.",
 		)));
+
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "notes",
+			"label" => "Notes",
+			"help" => "If checked, notes will be enabled on this calendar.",
+		)));
+
 
 		if($this->floating()) {
 			$oMorpho->element("uri")->setOption(
