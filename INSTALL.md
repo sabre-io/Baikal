@@ -77,31 +77,39 @@ Unpack the source package outside of the web site root
 directory on your server. The location must be accessible to the web server. 
 Usually, it will be something like /var/www/
 
-	# a. Enter the directory where the websites are stored
-	$ root:~> cd /var/www
+```sh
+# a. Enter the directory where the websites are stored
+$ root:~> cd /var/www
+```
 
 Unpacking will produce a directory with a name like baikal-x.y.z, where x.y.z
 correspond to the Baïkal version. For example, the Baïkal 0.2.0 source package
 will create a directory named baikal-0.2.0
 
-	# b. Unpack the package using:
-	$ root:/var/www> tar xzf baikal-0.2.0.tgz
+```sh
+# b. Unpack the package using:
+$ root:/var/www> tar xzf baikal-0.2.0.tgz
+```
 
 Rename the untar'd directory to the name of your baikal dedicated subdomain.
 
-	# c. Rename the directory to match your domain (good practice)
-	$ root:/var/www> mv baikal-0.2.0 dav.mydomain.com
+```sh
+# c. Rename the directory to match your domain (good practice)
+$ root:/var/www> mv baikal-0.2.0 dav.mydomain.com
 	
-	# d. Enter the new Baïkal directory
-	$ root:/var/www> cd dav.mydomain.com
+# d. Enter the new Baïkal directory
+$ root:/var/www> cd dav.mydomain.com
+```
 
 In order to grant Apache access to the files of your Baïkal installation,
 you'll have to grant the user running the apache process r+w permissions on
 the Baïkal files. In our example, we will suppose the linux username/usergroup
 running Apache is www-data:www-data
 
-	# e. Change permissions on the files
-	$ root:/var/www/dav.mydomain.com> chown www-data:www-data Specific -Rf
+```sh
+# e. Change permissions on the files
+$ root:/var/www/dav.mydomain.com> chown www-data:www-data Specific -Rf
+```
 
 #### 3.2.1.2 - Setting up a Web Server
 
@@ -114,55 +122,57 @@ to your Web Server environment.
 
 ##### Setting up the Apache virtualhost
 
-In our example, we will assume that the apache2 configuration directory is: 
-	/etc/apache2
+In our example, we will assume that the apache2 configuration directory is: `/etc/apache2`
 
-	# a. Enter the Apache2 configuration directory
-	$ root:/var/www> cd /etc/apache2
+```sh
+# a. Enter the Apache2 configuration directory
+$ root:/var/www> cd /etc/apache2
+
+# b. Enter the sites-available directory
+$ root:/etc/apache2> cd sites-available
 	
-	# b. Enter the sites-available directory
-	$ root:/etc/apache2> cd sites-available
+# c. Symlink the Baikal virtualhost file to this directory
+$ root:/etc/apache2/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.apache2
 	
-	# c. Symlink the Baikal virtualhost file to this directory
-	$ root:/etc/apache2/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.apache2
+# d. Customize the virtualhost config file
+$ root:/etc/apache2/sites-available> nano baikal.apache2
 	
-	# d. Customize the virtualhost config file
-	$ root:/etc/apache2/sites-available> nano baikal.apache2
+# e. In baikal.apache2, replace references to dav.mydomain.com with your own domain name
 	
-	# e. In baikal.apache2, replace references to dav.mydomain.com with your own domain name
+# f. Activate the new virtualhost
+$ root:/etc/apache2/sites-available> cd ../sites-enabled
+$ root:/etc/apache2/sites-enabled> ln -s ../sites-available/baikal.apache2
 	
-	# f. Activate the new virtualhost
-	$ root:/etc/apache2/sites-available> cd ../sites-enabled
-	$ root:/etc/apache2/sites-enabled> ln -s ../sites-available/baikal.apache2
-	
-	# h. Restart apache
-	$ root:/etc/apache2/sites-enabled> /etc/init.d/apache2 restart
+# h. Restart apache
+$ root:/etc/apache2/sites-enabled> /etc/init.d/apache2 restart
+```
 	
 ##### Setting up the nginx virtualhost
 
-In our example, we will assume that the nginx configuration directory is: 
-	/etc/nginx
+In our example, we will assume that the nginx configuration directory is: `/etc/nginx`
 
-	# a. Enter the nginx configuration directory
-	$ root:/var/www> cd /etc/nginx
+```sh
+# a. Enter the nginx configuration directory
+$ root:/var/www> cd /etc/nginx
 	
-	# b. Enter the sites-available directory
-	$ root:/etc/nginx> cd sites-available
+# b. Enter the sites-available directory
+$ root:/etc/nginx> cd sites-available
 	
-	# c. Symlink the Baikal virtualhost file to this directory
-	$ root:/etc/nginx/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.nginx
+# c. Symlink the Baikal virtualhost file to this directory
+$ root:/etc/nginx/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virtualhosts/baikal.nginx
 	
-	# d. Customize the virtualhost config file
-	$ root:/etc/nginx/sites-available> nano baikal.nginx
+# d. Customize the virtualhost config file
+$ root:/etc/nginx/sites-available> nano baikal.nginx
 	
-	# e. In baikal.nginx, replace references to dav.mydomain.com with your own domain name
+# e. In baikal.nginx, replace references to dav.mydomain.com with your own domain name
 	
-	# f. Activate the new virtualhost
-	$ root:/etc/nginx/sites-available> cd ../sites-enabled
-	$ root:/etc/nginx/sites-enabled> ln -s ../sites-available/baikal.nginx
+# f. Activate the new virtualhost
+$ root:/etc/nginx/sites-available> cd ../sites-enabled
+$ root:/etc/nginx/sites-enabled> ln -s ../sites-available/baikal.nginx
 	
-	# h. Restart nginx
-	$ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
+# h. Restart nginx
+$ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
+```
 
 #### 3.2.1.3 - Setting up Baïkal
 
@@ -172,22 +182,26 @@ In a web browser, navigate to http://dav.mydomain.com and follow the instruction
 
 Baïkal "Bleeding-edge" is using composer to install its dependencies. Please check that you have git and composer installed on your system before going any further.
 
-	# a. Checkout the Baïkal source code
-	$ root:/var/www> git clone https://github.com/jeromeschneider/Baikal.git dav.mydomain.com
+```sh
+# a. Checkout the Baïkal source code
+$ root:/var/www> git clone https://github.com/jeromeschneider/Baikal.git dav.mydomain.com
 
-	# b. Enter the new dav.mydomain.com directory
-	$ root:/var/www> cd dav.mydomain.com
+# b. Enter the new dav.mydomain.com directory
+$ root:/var/www> cd dav.mydomain.com
+```
 
 In order to grant Apache access to the files of your Baïkal installation,
-you'll have to grant the user running the apache process r+w permissions on
+you'll have to grant the user running the apache process `r+w` permissions on
 the Baïkal files. In our example, we will suppose the linux username/usergroup
-running Apache is www-data:www-data
+running Apache is `www-data:www-data`
 
-	# c. Install Baïkal dependencies using composer
-	$ root:/var/www/dav.mydomain.com> composer install
+```sh
+# c. Install Baïkal dependencies using composer
+$ root:/var/www/dav.mydomain.com> composer install
 
-	# d. Change permissions on the files
-	$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
+# d. Change permissions on the files
+$ root:/var/www/dav.mydomain.com> chown www-data:www-data . -Rf
+```
 
 You now have to declare Baïkal in your webserver. You may follow instructions in **"3.2.1.2 - Setting up a Web Server"** above to do so.
 
@@ -275,22 +289,20 @@ Add a new CalDAV account:
 
 Add a new CalDAV account:
 
-	* in Settings > Accounts > Add Account > Advanced
-	* Select "CalDAV"
-	* Username: the username you just created
-	* Password: the password you just defined
-	* Server Address: dav.mydomain.com/cal.php/calendars/username/default
-	  and replace domain and username with the correct values
+* in Settings > Accounts > Add Account > Advanced
+* Select "CalDAV"
+* Username: the username you just created
+* Password: the password you just defined
+* Server Address: `dav.mydomain.com/cal.php/calendars/username/default` and replace domain and username with the correct values
 
 Add a new CardDAV account:
 
-	* in Settings > Accounts > Add Account > Advanced
-	* Select "CardDAV"
-	* Username: the username you just created
-	* Password: the password you just defined
-	* Email Address: an email address you want this CardDAV account to be assigned to
-	* Server Address: dav.mydomain.com/card.php/addressbooks/username/default
-	  and replace domain and username with the correct values
+* in Settings > Accounts > Add Account > Advanced
+* Select "CardDAV"
+* Username: the username you just created
+* Password: the password you just defined
+* Email Address: an email address you want this CardDAV account to be assigned to
+* Server Address: `dav.mydomain.com/card.php/addressbooks/username/default` and replace domain and username with the correct values
 
 __Important notes:__
 
