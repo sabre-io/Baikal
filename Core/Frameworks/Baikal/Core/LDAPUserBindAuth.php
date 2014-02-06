@@ -47,7 +47,6 @@ class LDAPUserBindAuth extends AbstractExternalAuth {
 
         /* bind with user */
         $arr = explode('@', $username, 2);
-        print_r($arr);
         $dn = str_replace('%n', $username, BAIKAL_DAV_LDAP_DN_TEMPLATE);
         $dn = str_replace('%u', $arr[0], $dn);
         if(isset($arr[1])) $dn = str_replace('%d', $arr[1], $dn);         

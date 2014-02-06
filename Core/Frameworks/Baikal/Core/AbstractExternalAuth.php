@@ -81,7 +81,10 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * @param string $username
      * @return array ('displayname' => string, 'email' => string)
      */
-    public abstract function getAccountValues($username);
+    public function getAccountValues($username) {
+
+        return array();
+    }
 
     /**
      * create an internal user, when user not exists
