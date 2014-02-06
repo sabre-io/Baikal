@@ -3,12 +3,11 @@
 namespace Baikal\Core;
 
 /**
- * This is an authentication backend that uses a database to manage passwords.
+ * This is an abstract authentication, that allows to create external
+ * authentication backends. User are automatic created, when the does not exists
+ * in baikal.
  *
- * Format of the database tables must match to the one of \Sabre\DAV\Auth\Backend\PDO
- *
- * @copyright Copyright (C) 2013 Lukasz Janyst. All rights reserved.
- * @author Lukasz Janyst <ljanyst@buggybrain.net>
+ * @author Sascha Kuehndel (InuSasha) <dev@inusasha.de>
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {

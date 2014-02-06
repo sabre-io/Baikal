@@ -3,12 +3,9 @@
 namespace Baikal\Core;
 
 /**
- * This is an authentication backend that uses a database to manage passwords.
+ * This is an authentication backend that uses a ldap backend to authenticate user.
  *
- * Format of the database tables must match to the one of \Sabre\DAV\Auth\Backend\PDO
- *
- * @copyright Copyright (C) 2013 Lukasz Janyst. All rights reserved.
- * @author Lukasz Janyst <ljanyst@buggybrain.net>
+ * @author Sascha Kuehndel (InuSasha) <dev@inusasha.de>
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 class LDAPUserBindAuth extends AbstractExternalAuth {
