@@ -56,6 +56,10 @@ class Checkbox extends \Formal\Element {
 			$groupclass .= " error";
 		}
 		
+		if(trim($this->option("class")) !== "") {
+			$groupclass .= " " . $this->option("class");
+		}
+
 		if(($sHelp = trim($this->option("help"))) !== "") {
 			$helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
 		}
