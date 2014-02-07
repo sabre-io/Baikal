@@ -207,7 +207,7 @@ CODE;
 	}
 	
 	public static function timezones() {
-		$aZones = DateTimeZone::listIdentifiers();
+		$aZones = \DateTimeZone::listIdentifiers();
 		
 		reset($aZones);
 		return $aZones;
