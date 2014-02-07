@@ -61,7 +61,7 @@ class Standard extends \Baikal\Model\Config {
 	
 	# Default values
 	protected $aData = array(
-		"PROJECT_TIMEZONE" => "Europe/Paris",
+		"PROJECT_TIMEZONE" => \date_default_timezone_get(),
 		"BAIKAL_CARD_ENABLED" => TRUE,
 		"BAIKAL_CAL_ENABLED" => TRUE,
 		"BAIKAL_DAV_AUTH_TYPE" => "Digest",
