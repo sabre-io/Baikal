@@ -5,12 +5,19 @@ namespace Baikal\Core;
 /**
  * This is an abstract authentication, that allows to create external
  * authentication backends. User are automatic created, when the does not exists
- * in baikal.
+ * in baikal (can disabled).
  *
  * @author Sascha Kuehndel (InuSasha) <dev@inusasha.de>
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
+
+    /**
+     * enable autocreation of user
+     *
+     * @var PDO
+     */
+    protected $enableAutoCreation;
 
     /**
      * Reference to PDO connection
@@ -32,15 +39,14 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * If the filename argument is passed in, it will parse out the specified file fist.
      *
      * @param PDO $pdo
+     * @param string $realm
      * @param string $tableName The PDO table name to use
      */
-    public function __construct(\PDO $pdo, $tableName = NULL) {
+    public function __construct(\PDO $pdo, $realm = 'BaikalDAV', $tableName = 'users') {
 
         $this->pdo = $pdo;
-        if ($tableName == NULL)
-             $this->tableName = $tableName;
-        else
-             $this->tableName = 'users';
+        $this->tableName = $tableName;
+        $this->enableAutoCreation = true;
     }
 
     /**
@@ -59,7 +65,9 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
              return false;
 
         $this->currentUser = $username;
-        $this->autoUserCreation($username);
+        if ($this->enableAutoCreation)
+             $this->autoUserCreation($username);
+
         return true;
     }
 
@@ -97,7 +105,7 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
         $stmt = $this->pdo->prepare('SELECT username FROM '.$this->tableName.' WHERE username = ?');
         $stmt->execute(array($username));
         $result = $stmt->fetchAll();
-        if (count($result))
+        if (count($result) != 0)
              return;
 
         /* get account values from backend */

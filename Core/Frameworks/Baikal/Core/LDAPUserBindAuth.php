@@ -18,18 +18,6 @@ class LDAPUserBindAuth extends AbstractExternalAuth {
     private $accountValues;
 
     /**
-     * Creates the backend object.
-     *
-     * If the filename argument is passed in, it will parse out the specified file fist.
-     *
-     * @param PDO $pdo
-     * @param string $tableName The PDO table name to use
-     */
-    public function __construct(\PDO $pdo, $tableName = NULL) {
-        parent::__construct($pdo, $tableName);
-    }
-
-    /**
      * Validates a username and password over ldap
      *
      * @param string $username
@@ -58,12 +46,12 @@ class LDAPUserBindAuth extends AbstractExternalAuth {
 
         /* read displayname and email from user */
         $this->accountValues = array();
-        $sr = ldap_read($conn, $dn, '(objectclass=*)', array('sn','mail'));
+        $sr = ldap_read($conn, $dn, '(objectclass=*)', array(BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR,BAIKAL_DAV_LDAP_EMAIL_ATTR));
         $entry = ldap_get_entries($conn, $sr);
-        if (isset($entry[0]['sn'][0]))
-             $this->accountValues['displayname'] = $entry[0]['sn'][0];
-        if (isset($entry[0]['mail'][0]))
-             $this->accountValues['email'] = $entry[0]['mail'][0];
+        if (isset($entry[0][BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR][0]))
+             $this->accountValues['displayname'] = $entry[0][BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR][0];
+        if (isset($entry[0][BAIKAL_DAV_LDAP_EMAIL_ATTR][0]))
+             $this->accountValues['email'] = $entry[0][BAIKAL_DAV_LDAP_EMAIL_ATTR][0];
 
         /* close */
         ldap_close($conn);

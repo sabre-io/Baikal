@@ -55,10 +55,17 @@ if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
 }
 
 # Backends
-if( BAIKAL_DAV_AUTH_TYPE == "Basic" || preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT']) )
-    $authBackend = new \Baikal\Core\LDAPUserBindAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
-else
+if( BAIKAL_DAV_AUTH_TYPE == "Digest" && !preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT']))
     $authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
+else {
+    switch (strtoupper(BAIKAL_DAV_AUTH_TYPE)) {
+         case "LDAP-USERBIND":
+              $authBackend = new \Baikal\Core\LDAPUserBindAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM); 
+              break;
+         default:
+              $authBackend = new \Baikal\Core\PDOBasicAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+    }
+}
 
 $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($GLOBALS["DB"]->getPDO());
 $calendarBackend = new \Sabre\CalDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
