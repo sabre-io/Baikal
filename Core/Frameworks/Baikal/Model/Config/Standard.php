@@ -124,7 +124,11 @@ class Standard extends \Baikal\Model\Config {
 
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_LDAP_DN_TEMPLATE",
-			"label" => "DN template"
+			"label" => "LDAP DN template",
+			"popover" => array(
+				"title" => "posible placeholder",
+				"content" => "<strong>%n</strong> - username<br /><strong>%u</strong> - user part of username , when it is an email address)<br /><strong>%d</strong> - domain part",
+			)
 		)));
 
 		$oMorpho->add(new \Formal\Element\Text(array(
