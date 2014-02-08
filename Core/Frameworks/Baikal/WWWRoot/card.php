@@ -52,7 +52,6 @@ if(!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== TRUE) {
 }
 
 # Backends
-error_log(BAIKAL_DAV_AUTH_TYPE);
 if( BAIKAL_DAV_AUTH_TYPE == "Digest" && !preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT']))
     $authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
 else {
