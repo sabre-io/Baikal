@@ -59,6 +59,9 @@ if( BAIKAL_DAV_AUTH_TYPE == "Digest" && !preg_match('/Windows-Phone-WebDAV-Clien
     $authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
 else {
     switch (strtoupper(BAIKAL_DAV_AUTH_TYPE)) {
+         case "MAIL":
+              $authBackend = new \Baikal\Core\MailAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+              break;
          case "LDAP-USERBIND":
               $authBackend = new \Baikal\Core\LDAPUserBindAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM); 
               break;
