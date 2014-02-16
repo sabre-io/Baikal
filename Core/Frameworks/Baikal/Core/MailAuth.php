@@ -41,6 +41,9 @@ class MailAuth extends AbstractExternalAuth {
         if (!$conn)
             return false;
 
+        /* skip notices, warnings and errors */
+        imap_errors();
+
         /* close */
         imap_close($conn);
         return true;
