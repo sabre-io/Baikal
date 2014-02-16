@@ -45,6 +45,22 @@ class Standard extends \Baikal\Model\Config {
 			"type" => "string",
 			"comment" => "HTTP authentication type for WebDAV; default Digest"
 		),
+		"BAIKAL_DAV_LDAP_URI" => array(
+			"type" => "string",
+			"comment" => "URI to LDAP Server (for ldap-userbind auth); default ldapi:///"
+		),
+		"BAIKAL_DAV_LDAP_DN_TEMPLATE" => array(
+			"type" => "string",
+			"comment" => "User DN for bind; with replacments %n => username, %u => user part, %d => domain part of username"
+		),
+		"BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR" => array(
+			"type" => "string",
+			"comment" => "LDAP-attribute for displayname; default cn"
+		),
+		"BAIKAL_DAV_LDAP_EMAIL_ATTR" => array(
+			"type" => "string",
+			"comment" => "LDAP-attribute for email; default mail"
+		),
 		"BAIKAL_ADMIN_ENABLED" => array(
 			"type" => "boolean",
 			"comment" => "Baïkal Web Admin ON/OFF switch; default TRUE",
@@ -65,6 +81,10 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_CARD_ENABLED" => TRUE,
 		"BAIKAL_CAL_ENABLED" => TRUE,
 		"BAIKAL_DAV_AUTH_TYPE" => "Digest",
+		"BAIKAL_DAV_LDAP_URI" => "ldapi:///",
+		"BAIKAL_DAV_LDAP_DN_TEMPLATE" => "uid=%n,dc=example,dc=com",
+		"BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR" => "cn",
+		"BAIKAL_DAV_LDAP_EMAIL_ATTR" => "mail",
 		"BAIKAL_ADMIN_ENABLED" => TRUE,
 		"BAIKAL_ADMIN_AUTOLOCKENABLED" => FALSE,
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
@@ -94,9 +114,33 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Listbox(array(
 			"prop" => "BAIKAL_DAV_AUTH_TYPE",
 			"label" => "WebDAV authentication type",
-			"options" => array( "Digest", "Basic" )
+			"options" => array( "Digest", "Basic", "LDAP-UserBind" )
 		)));
 		
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_LDAP_URI",
+			"label" => "LDAP URI"
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_LDAP_DN_TEMPLATE",
+			"label" => "LDAP DN template",
+			"popover" => array(
+				"title" => "posible placeholder",
+				"content" => "<strong>%n</strong> - username<br /><strong>%u</strong> - user part of username , when it is an email address)<br /><strong>%d</strong> - domain part",
+			)
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR",
+			"label" => "LDAP attribute for DisplayName"
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_LDAP_EMAIL_ATTR",
+			"label" => "LDAP attribute for eMail"
+		)));
+
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "BAIKAL_ADMIN_PASSWORDHASH",
 			"label" => "Admin password",
@@ -206,6 +250,21 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 
 # WebDAV authentication type; default Digest
 define("BAIKAL_DAV_AUTH_TYPE", "Digest");
+
+# Auth Backend LDAP-UserBind; LDAP URI
+define("BAIKAL_DAV_LDAP_URI", 'ldapi:///');
+
+# Auth Backend LDAP-UserBind; Template for userbind
+# %n => username
+# %u => user part of username when it is an email 
+# %u => domain part of username when it is an email 
+define("BAIKAL_DAV_LDAP_DN_TEMPLATE", 'cn=%u,dc=%d,ou=domains,o=server');
+
+# Auth Backend LDAP-UserBind; attribute for displayname
+define("BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR", 'cn');
+
+# Auth Backend LDAP-UserBind; attribute for email
+define("BAIKAL_DAV_LDAP_EMAIL_ATTR", 'mail');
 
 # Baïkal Web Admin ON/OFF switch; default TRUE
 define("BAIKAL_ADMIN_ENABLED", TRUE);
