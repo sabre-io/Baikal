@@ -73,6 +73,10 @@ class Standard extends \Baikal\Model\Config {
 			"type" => "boolean",
 			"comment" => "validate ssl-certificate; default yes"
 		),
+		"BAIKAL_DAV_AUTO_CREATE_USER" => array(
+			"type" => "boolean",
+			"comment" => "automatic creation of users; default yes"
+		),
 		"BAIKAL_ADMIN_ENABLED" => array(
 			"type" => "boolean",
 			"comment" => "Baïkal Web Admin ON/OFF switch; default TRUE",
@@ -100,6 +104,7 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_DAV_MAIL_PROTOCOL" => "imap (unencrypted)",
 		"BAIKAL_DAV_MAIL_SERVER" => "localhost:143",
 		"BAIKAL_DAV_MAIL_CHECK_CERT" => TRUE,
+		"BAIKAL_DAV_AUTO_CREATE_USER" => TRUE,
 		"BAIKAL_ADMIN_ENABLED" => TRUE,
 		"BAIKAL_ADMIN_AUTOLOCKENABLED" => FALSE,
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
@@ -195,6 +200,12 @@ class Standard extends \Baikal\Model\Config {
 				"title" => "Security",
 				"content" => "validate the server certificate"
 			)
+		)));
+
+		$oMorpho->add(new \Formal\Element\Checkbox(array(
+			"prop" => "BAIKAL_DAV_AUTO_CREATE_USER",
+			"label" => "Automatic create users",
+			"class" => "auth_mail auth_ldap-userbind"
 		)));
 
 		$oMorpho->add(new \Formal\Element\Password(array(
@@ -330,6 +341,9 @@ define("BAIKAL_DAV_MAIL_SERVER", 'localhost:143');
 
 # Auth Backend Mail; validate the ssl-certificate
 define("BAIKAL_DAV_MAIL_CHECK_CERT", TRUE);
+
+# Auth Backends: automatic creation of users; default yes"
+define("BAIKAL_DAV_AUTO_CREATE_USER", TRUE);
 
 # Baïkal Web Admin ON/OFF switch; default TRUE
 define("BAIKAL_ADMIN_ENABLED", TRUE);

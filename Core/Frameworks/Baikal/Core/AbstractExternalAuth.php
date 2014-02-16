@@ -61,13 +61,26 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      */
     public function validateUserPass($username, $password) {
 
+        /* auth user agains backend */
         if (!$this->validateUserPassExternal($username, $password))
              return false;
 
-        $this->currentUser = $username;
-        if ($this->enableAutoCreation)
-             $this->autoUserCreation($username);
+        /* check user exists already */
+        $stmt = $this->pdo->prepare('SELECT username FROM '.$this->tableName.' WHERE username = ?');
+        $stmt->execute(array($username));
+        $result = $stmt->fetchAll();
+        if( count($result) == 1) {
+             $this->currentUser = $username;
+             return true;
+        }
 
+        /* failed login, when new user should not create */
+        if( !BAIKAL_DAV_AUTO_CREATE_USER || !$this->enableAutoCreation)
+            return false;
+
+        /* create user */
+        $this->autoUserCreation($username);
+        $this->currentUser = $username;
         return true;
     }
 
@@ -101,13 +114,6 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      */
     private function autoUserCreation($username) {
         
-        /* search user in DB and do nothing, when user exists */
-        $stmt = $this->pdo->prepare('SELECT username FROM '.$this->tableName.' WHERE username = ?');
-        $stmt->execute(array($username));
-        $result = $stmt->fetchAll();
-        if (count($result) != 0)
-             return;
-
         /* get account values from backend */
         $values = $this->getAccountValues($username);
         if (!isset($values['displayname']) OR strlen($values['displayname']) === 0)
