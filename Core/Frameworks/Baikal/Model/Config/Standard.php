@@ -190,7 +190,7 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
 			"prop" => "BAIKAL_DAV_MAIL_CHECK_CERT",
 			"label" => "MailAuth Check SSL-Certificate",
-			"class" => "auth_mail",
+			"class" => "auth_mail auth_mail_ssl",
 			"popover" => array(
 				"title" => "Security",
 				"content" => "validate the server certificate"
