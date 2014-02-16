@@ -135,13 +135,13 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_LDAP_URI",
 			"label" => "LDAP URI",
-			"class" => "ldap"
+			"class" => "auth_ldap-userbind"
 		)));
 
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_LDAP_DN_TEMPLATE",
 			"label" => "LDAP DN template",
-			"class" => "ldap",
+			"class" => "auth_ldap-userbind",
 			"popover" => array(
 				"title" => "posible placeholder",
 				"content" => "<strong>%n</strong> - username<br /><strong>%u</strong> - user part of username , when it is an email address)<br /><strong>%d</strong> - domain part",
@@ -151,19 +151,19 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR",
 			"label" => "LDAP attribute for DisplayName",
-			"class" => "ldap"
+			"class" => "auth_ldap-userbind"
 		)));
 
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_LDAP_EMAIL_ATTR",
 			"label" => "LDAP attribute for eMail",
-			"class" => "ldap"
+			"class" => "auth_ldap-userbind"
 		)));
 
 		$oMorpho->add(new \Formal\Element\Listbox(array(
 			"prop" => "BAIKAL_DAV_MAIL_PROTOCOL",
 			"label" => "MailAuth Protocol",
-			"class" => "mail",
+			"class" => "auth_mail",
 			"options" => array(
 				"imap" => "imap (unencrypted)",
 				"imaps" => "imaps (SSL)",
@@ -180,7 +180,7 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "BAIKAL_DAV_MAIL_SERVER",
 			"label" => "MailAuth Server",
-			"class" => "mail",
+			"class" => "auth_mail",
 			"popover" => array(
 				"title" => "Format",
 				"content" => "host:port"
@@ -190,7 +190,7 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Checkbox(array(
 			"prop" => "BAIKAL_DAV_MAIL_CHECK_CERT",
 			"label" => "MailAuth Check SSL-Certificate",
-			"class" => "mail",
+			"class" => "auth_mail",
 			"popover" => array(
 				"title" => "Security",
 				"content" => "validate the server certificate"

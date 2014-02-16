@@ -48,6 +48,15 @@
 				trigger: 'focus',
 				placement: 'bottom'
 			});
+
+			function toggleStandardAuthParameter() {
+				$(".auth_ldap-userbind").hide();
+				$(".auth_mail").hide();
+				var type = ".auth_" + $("#BAIKAL_DAV_AUTH_TYPE").val().toLowerCase();
+				$(type).show();
+			}
+			$("#BAIKAL_DAV_AUTH_TYPE").change(function() {toggleStandardAuthParameter();});
+			toggleStandardAuthParameter();
 		</script>
 		{{ javascript }}
 	</body>
