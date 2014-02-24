@@ -64,3 +64,15 @@ Using SQLite (the default setup), if you have troubles when putting data in the 
 (an exception "unable to open database file" is thrown) check that:
   * the system user running your Apache/PHP has write permissions on Specific/db/ (*the folder*)
   * the system user running your Apache/PHP has write permissions on Specific/db/db.sqlite (*the file*)
+ 
+# 5. Unmet depnedencies when you try to update
+
+When you try to update your Baikal installation and you end up with a "Incomplete Installation" message use composer to install the dependencies.
+
+First you have to download composer from http://getcomposer.org, when you are on the commandline (inside your baikal folder) of your server you can do the following:
+`$ curl -sS https://getcomposer.org/installer | php`
+after you have done that you find a composer.phar in the current directory.
+Now you can issue the following command to install the missing dependencies:
+`$ php composer.phar install`
+
+If everything went okay you can now releoad your browser and the upgrade wizard will show up. 
