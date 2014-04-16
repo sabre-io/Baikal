@@ -162,6 +162,17 @@ class Calendar extends \Flake\Core\Model\Db {
 			)
 		)));
 
+        $oMorpho->add(new \Formal\Element\Text(array(
+            "prop" => "calendarcolor",
+            "label" => "Calendar color",
+            "validation" => "color",
+            "popover" => array(
+                    "title" => "Calendar color",
+                    "content" => "This is the color that will be displayed in your CalDAV client.</br>".
+                    "Must be supplied in format '#RRGGBBAA' with hexadecimal values. This value is optional.",
+            )
+        )));
+
 		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "description",
 			"label" => "Description"
