@@ -316,7 +316,7 @@ class Form {
 	}
 
 	public function validateColor($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
-		if(!empty($sValue) && !preg_match("/^#[a-fA-F0-9]{8}$/", $sValue)) {
+		if(!empty($sValue) && !preg_match("/^#[a-fA-F0-9]{6}([a-fA-F0-9]{2})?$/", $sValue)) {
 			return "<strong>" . $oElement->option("label") . "</strong> is not a valid color with format '#RRGGBBAA' in hexadecimal values.";
 		}
 		
