@@ -85,6 +85,28 @@ class Framework extends \Flake\Core\Framework {
 		}
 		
 	}
+
+	public static function getAuth() {
+		# Backends
+		if (BAIKAL_DAV_AUTH_TYPE == "Digest" && !preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT'])) {
+			$authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
+		} else {
+			switch (strtoupper(BAIKAL_DAV_AUTH_TYPE)) {
+			case "MAIL":
+				$authBackend = new \Baikal\Core\MailAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+				break;
+			case "LDAP-USERBIND":
+				$authBackend = new \Baikal\Core\LDAPUserBindAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+				break;
+			case "SQL":
+				$authBackend = new \Baikal\Core\SQLAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+				break;
+			default:
+				$authBackend = new \Baikal\Core\PDOBasicAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
+			}
+		}
+		return $authBackend;
+	}
 	
 	# Mapping PHP errors to exceptions; needed by SabreDAV
 	public static function exception_error_handler($errno, $errstr, $errfile, $errline) {
