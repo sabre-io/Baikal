@@ -49,6 +49,10 @@ class Listbox extends \Formal\Element {
 			$groupclass .= " error";
 		}
 
+		if(trim($this->option("class")) !== "") {
+			$groupclass .= " " . $this->option("class");
+		}
+
 		$aOptions = $this->option("options");
 		if(!is_array($aOptions)) {
 			throw new \Exception("\Formal\Element\Listbox->render(): 'options' has to be an array.");
