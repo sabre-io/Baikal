@@ -73,6 +73,10 @@ class Standard extends \Baikal\Model\Config {
 			"type" => "boolean",
 			"comment" => "validate ssl-certificate; default yes"
 		),
+		"BAIKAL_DAV_SQL_AUTH" => array(
+			"type" => "litteral",
+			"comment" => "SQL statement for authentication of users; :username, :password named parameters, default is always false; is litteral so much be quoted."
+		),
 		"BAIKAL_DAV_AUTO_CREATE_USER" => array(
 			"type" => "boolean",
 			"comment" => "automatic creation of users; default yes"
@@ -104,6 +108,7 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_DAV_MAIL_PROTOCOL" => "imap (unencrypted)",
 		"BAIKAL_DAV_MAIL_SERVER" => "localhost:143",
 		"BAIKAL_DAV_MAIL_CHECK_CERT" => TRUE,
+		"BAIKAL_DAV_SQL_AUTH" => "SELECT username FROM users WHERE username=:username AND NULL<>NULL",
 		"BAIKAL_DAV_AUTO_CREATE_USER" => TRUE,
 		"BAIKAL_ADMIN_ENABLED" => TRUE,
 		"BAIKAL_ADMIN_AUTOLOCKENABLED" => FALSE,
@@ -134,7 +139,7 @@ class Standard extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Listbox(array(
 			"prop" => "BAIKAL_DAV_AUTH_TYPE",
 			"label" => "WebDAV authentication type",
-			"options" => array( "Digest", "Basic", "LDAP-UserBind", "Mail" )
+			"options" => array( "Digest", "Basic", "LDAP-UserBind", "Mail", "SQL" )
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
@@ -199,6 +204,17 @@ class Standard extends \Baikal\Model\Config {
 			"popover" => array(
 				"title" => "Security",
 				"content" => "validate the server certificate"
+			)
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_SQL_AUTH",
+			"label" => "SQLAuth SQL Statement",
+			"class" => "sql_auth",
+			"validation" => "quoted",
+			"popover" => array(
+				"title" => "SQL Statement",
+				"content" => "A custom SQL statement to auth users; use :username and :password as params. NOTE: PHP litteral so must be quoted."
 			)
 		)));
 
@@ -341,6 +357,15 @@ define("BAIKAL_DAV_MAIL_SERVER", 'localhost:143');
 
 # Auth Backend Mail; validate the ssl-certificate
 define("BAIKAL_DAV_MAIL_CHECK_CERT", TRUE);
+
+# Auth Backend SQL: The SQL statement to execute
+# Uses PDO named params:
+#  :username, :password, :remote_ip, :server_name
+# The default will always return false.
+# THIS IS SETUP AS A LITERAL FIELD SO IT MUST BE QUOTED
+# WHEN CHANGING IT IN THE BAIKAL ADMIN INTERFACE! GAH!
+# DON'T PUT A SEMICOLON IN THE QUERY!!!
+define("BAIKAL_DAV_SQL_AUTH", "SELECT username FROM users WHERE username=:username AND NULL<>NULL");
 
 # Auth Backends: automatic creation of users; default yes"
 define("BAIKAL_DAV_AUTO_CREATE_USER", TRUE);

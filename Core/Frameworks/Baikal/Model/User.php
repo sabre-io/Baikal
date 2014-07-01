@@ -46,6 +46,31 @@ class User extends \Flake\Core\Model\Db {
 			->addClauseEquals("uri", "principals/" . $this->get("username"))
 			->execute()
 			->first();
+		# With the external auth. backends it is possible for the user table
+		# to be populated by something else - so the principal might not yet
+		# exist. To ensure the principals table displayname and email are 
+		# auto-assigned this assumes they are also fields of the users table.
+		$this->autoCreatePrincipal(TRUE);
+	}
+
+	public function autoCreatePrincipal($persistNow=FALSE) {
+		if (is_null($this->oIdentityPrincipal)) {
+			$this->oIdentityPrincipal = new \Baikal\Model\Principal();
+			foreach( $this->oIdentityPrincipal->getAutoPopulateFields() as $field ) {
+				try {
+					$this->oIdentityPrincipal->set($field, $this->get($field));
+				} catch (\Exception $e) {
+					// the field is not defined by the backend so leave it blank
+					continue;
+				}
+			}
+
+			# if the principal needs to be persisted then do that 
+			if ($persistNow) {
+				$this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
+				$this->oIdentityPrincipal->persist();
+			}
+		}
 	}
 	
 	public function getAddressBooksBaseRequester() {
@@ -72,7 +97,7 @@ class User extends \Flake\Core\Model\Db {
 		parent::initFloating();
 		
 		# Initializing principals
-		$this->oIdentityPrincipal = new \Baikal\Model\Principal();
+		$this->autoCreatePrincipal();
 	}
 	
 	public function get($sPropName) {
@@ -82,6 +107,7 @@ class User extends \Flake\Core\Model\Db {
 			return "";
 		}
 		
+		$sRes = "";
 		try {
 			# does the property exist on the model object ?
 			$sRes = parent::get($sPropName);
@@ -107,14 +133,21 @@ class User extends \Flake\Core\Model\Db {
 			
 			return $this;
 		}
+
+		# we may need to try and set the value on the principal
+		$tryPrincipal = FALSE;
 		
 		try {
 			# does the property exist on the model object ?
 			parent::set($sPropName, $sPropValue);
 		} catch(\Exception $e) {
 			# no, it may belong to the oIdentityPrincipal model object
-			$this->oIdentityPrincipal->set($sPropName, $sPropValue);
+			$tryPrincipal = TRUE;
 		}
+
+		# update the principal with the property if is apart of it (or not of user)
+		if ($tryPrincipal || in_array($sPropName, $this->oIdentityPrincipal->getAutoPopulateFields()))
+			$this->oIdentityPrincipal->set($sPropName, $sPropValue);
 		
 		return $this;
 	}

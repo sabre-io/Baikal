@@ -24,7 +24,7 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      *
      * @var PDO
      */
-    private $pdo;
+    protected $pdo;
 
     /**
      * PDO table name we'll be using

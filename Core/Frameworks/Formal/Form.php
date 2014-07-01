@@ -270,6 +270,14 @@ class Form {
 		
 		return "<strong>" . $oElement->option("label") . "</strong> should be an email.";
 	}
+
+	public function validateQuoted($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+		if (0===strpos($sValue, '"') && 0===strpos(strrev($sValue), '"')) {
+			return TRUE;
+		}
+
+		return "<strong>" . $oElement->option("label") . "<strong> should be &quot;-ed and escaped.";
+	}
 	
 	public function validateSameas($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement, $sReferencePropName) {
 		$sReferenceValue = $oMorpho->element($sReferencePropName)->value();
