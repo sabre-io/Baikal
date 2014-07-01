@@ -133,4 +133,13 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
         $user->persist();
     }
 
+	/**
+	 * Indicates whether this backend allows creating/editing/deleting of accounts.
+	 *
+	 * @return Boolean indicating if backend can manage user accounts (default TRUE).
+	 */
+	public function canManageUsers() {
+		return TRUE;
+	}
+
 }

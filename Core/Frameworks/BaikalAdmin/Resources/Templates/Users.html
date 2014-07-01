@@ -2,7 +2,11 @@
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-group"></i>Users</h1>
 	<p class="lead pull-left">Manage Baïkal user accounts, and associated resources.</p>
+	{% if backendenabled %}
 	<p class="lead pull-right"><a class="btn btn btn-inverse" href="{{ controller.linkNew() }}"><i class="icon-white {{ usericon }}"></i> + Add user</a></p>
+	{% else %}
+	<p class="alert alert-info pull-left">NOTE: User account management is disabled in the authentication backend.</p>
+	{% endif %}
 </header>
 
 <table class="table table-bordered table-striped users">
@@ -16,8 +20,10 @@
 			<p class="pull-right">
 				<nobr><a class="btn" href="{{ user.linkcalendars }}"><i class="{{ calendaricon }}"></i> Calendars</a></nobr>
 				<nobr><a class="btn" href="{{ user.linkaddressbooks }}"><i class="icon-book"></i> Address Books</a></nobr>
+				{% if backendenabled %}
 				<nobr><a class="btn btn-primary" href="{{ user.linkedit }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
 				<nobr><a class="btn btn-danger" href="{{ user.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+				{% endif %}
 			</p>
 		</td>
 	</tr>
