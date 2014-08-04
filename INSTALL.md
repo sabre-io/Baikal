@@ -284,6 +284,7 @@ Add a new CalDAV account:
 * Navigate to "Lightning" > "New account" > "On the network" > "URL"
 * paste this URL: http://dav.mydomain.com/cal.php/calendars/username/default of and replace the domain name, and the username with the correct values
 * When asked, provide user/password; your CalDAV account should be up and running
+* **Hint**: Thunderbird's password manager can only store one authentication per auth realm. Thus you can't use two calendars with two different credentials. This problem can be solved by adding the credentials to the URL, like `http://username:password@dav.mydomain.com/cal.php/calendars/username/default`
 
 ## 5.7 BlackBerry OS10
 
