@@ -87,7 +87,11 @@ class User extends \Flake\Core\Model\Db {
 			$sRes = parent::get($sPropName);
 		} catch(\Exception $e) {
 			# no, it may belong to the oIdentityPrincipal model object
-			$sRes = $this->oIdentityPrincipal->get($sPropName);
+			if ($this->oIdentityPrincipal) {
+			    $sRes = $this->oIdentityPrincipal->get($sPropName);
+			} else {
+			    $sRes = "";
+			}
 		}
 		
 		return $sRes;
@@ -113,7 +117,9 @@ class User extends \Flake\Core\Model\Db {
 			parent::set($sPropName, $sPropValue);
 		} catch(\Exception $e) {
 			# no, it may belong to the oIdentityPrincipal model object
-			$this->oIdentityPrincipal->set($sPropName, $sPropValue);
+			if ($this->oIdentityPrincipal) {
+			    $this->oIdentityPrincipal->set($sPropName, $sPropValue);
+			}
 		}
 		
 		return $this;
