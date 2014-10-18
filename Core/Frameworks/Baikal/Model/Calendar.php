@@ -179,6 +179,27 @@ class Calendar extends \Flake\Core\Model\Db {
 			"help" => "If checked, notes will be enabled on this calendar.",
 		)));
 
+		// new input filed for calendarcolor
+		$oMorpho->add(new \Formal\Element\Colorbox(array(
+		 	"prop" => "calendarcolor",
+			"label" => "Calendar color",
+			"options" => array("#00408A",
+					   "#008A83",
+					   "#008A4A",
+					   "#3AAD2D",
+					   "#F2EE00",
+					   "#F27900",
+					   "#C40606"
+					   ),
+			"validation" => "color",
+			"popover" => array(
+		 		"title" => "Calendar color",
+				"content" => "This is the color that will be displayed in your CalDAV client.</br>".
+		 		"Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.</br>".
+		 		"This value is optional.",
+			)
+		)));
+
 
 		if($this->floating()) {
 			$oMorpho->element("uri")->setOption(

@@ -81,3 +81,22 @@ table.calendars .col-actions { width: 25%;}
 /* Users */
 table.users .col-id { width: 2%;}
 table.users .col-username { width: 45%;}
+
+
+/* colorbox */
+#colorboxOptions {
+	position: relative;
+	margin-top: 2px;
+}
+.colorboxOption {
+	display: inline-block;
+	margin: 0 10px 0 0;
+	height: 18px;
+	width: 18px;
+	cursor: pointer;
+}
+.currentcolor {
+	margin: 0 7px -3px -3px;
+	height: 24px;
+	width: 24px;
+}
