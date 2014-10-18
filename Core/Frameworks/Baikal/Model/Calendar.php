@@ -180,7 +180,7 @@ class Calendar extends \Flake\Core\Model\Db {
 		)));
 
 		// new input filed for calendarcolor
-		$oMorpho->add(new \Formal\Element\Colorbox(array(
+		$oMorpho->add(new \Formal\Element\Listbox(array(
 		 	"prop" => "calendarcolor",
 			"label" => "Calendar color",
 			"options" => array("#00408A",
