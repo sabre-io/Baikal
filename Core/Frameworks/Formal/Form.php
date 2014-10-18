@@ -315,6 +315,15 @@ class Form {
 		return TRUE;
 	}
 	
+	// color 
+	public function validateColor($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+		if(!empty($sValue) && !preg_match("/^#[a-fA-F0-9]{6}([a-fA-F0-9]{2})?$/", $sValue)) {
+	 	return "<strong>" . $oElement->option("label") . "</strong> is not a valid color with format '#RRGGBB' or '#RRGGBBAA' in hexadecimal values.";
+	 }
+
+	 return TRUE;
+	 }
+
 	public function postValue($sPropName) {
 		$aData = \Flake\Util\Tools::POST("data");
 
