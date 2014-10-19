@@ -51,12 +51,11 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 # Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+?><!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>Baïkal Server</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+	<meta charset="UTF-8">
 </head>
 <body>
 	<h2>Baïkal is running allright.</h2>
