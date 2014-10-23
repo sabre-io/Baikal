@@ -275,13 +275,23 @@ class Framework extends \Flake\Core\Framework {
 		if(!defined("PROJECT_DB_MYSQL_PASSWORD")) {
 			die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
 		}
+
+		// set any connection options (i.e. the SSL files)
+		$pOpts = array();
+		if (defined("PROJECT_DB_MYSQL_SSL_KEY") && file_exists(PROJECT_DB_MYSQL_SSL_KEY))
+			$pOpts[\PDO::MYSQL_ATTR_SSL_KEY] = PROJECT_DB_MYSQL_SSL_KEY;
+		if (defined("PROJECT_DB_MYSQL_SSL_CERT") && file_exists(PROJECT_DB_MYSQL_SSL_CERT))
+			$pOpts[\PDO::MYSQL_ATTR_SSL_CERT] = PROJECT_DB_MYSQL_SSL_CERT;
+		if (defined("PROJECT_DB_MYSQL_SSL_CA") && file_exists(PROJECT_DB_MYSQL_SSL_CA))
+			$pOpts[\PDO::MYSQL_ATTR_SSL_CA] = PROJECT_DB_MYSQL_SSL_CA;
 		
 		try {
 			$GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
 				PROJECT_DB_MYSQL_HOST,
 				PROJECT_DB_MYSQL_DBNAME,
 				PROJECT_DB_MYSQL_USERNAME,
-				PROJECT_DB_MYSQL_PASSWORD
+				PROJECT_DB_MYSQL_PASSWORD,
+				$pOpts
 			);
 
 			# We now setup the connexion to use UTF8

@@ -69,6 +69,18 @@ class System extends \Baikal\Model\Config {
 			"type" => "string",
 			"comment" => "MySQL > Password",
 		),
+		"PROJECT_DB_MYSQL_SSL_KEY" => array(
+			"type" => "string",
+			"comment" => "MySQL > Client SSL Key",
+		),
+		"PROJECT_DB_MYSQL_SSL_CERT" => array(
+			"type" => "string",
+			"comment" => "MySQL > Client SSL Cert.",
+		),
+		"PROJECT_DB_MYSQL_SSL_CA" => array(
+			"type" => "string",
+			"comment" => "MySQL > Server SSL CA",
+		),
 		"BAIKAL_ENCRYPTION_KEY" => array(
 			"type" => "string",
 			"comment" => "A random 32 bytes key that will be used to encrypt data",
@@ -91,6 +103,9 @@ class System extends \Baikal\Model\Config {
 		"PROJECT_DB_MYSQL_DBNAME" => "",
 		"PROJECT_DB_MYSQL_USERNAME" => "",
 		"PROJECT_DB_MYSQL_PASSWORD" => "",
+		"PROJECT_DB_MYSQL_SSL_KEY" => "",
+		"PROJECT_DB_MYSQL_SSL_CERT" => "",
+		"PROJECT_DB_MYSQL_SSL_CA" => "",
 		"BAIKAL_ENCRYPTION_KEY" => "",
 		"BAIKAL_CONFIGURED_VERSION" => "",
 	);
@@ -179,6 +194,21 @@ class System extends \Baikal\Model\Config {
 			"prop" => "PROJECT_DB_MYSQL_PASSWORD",
 			"label" => "MySQL password",
 		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_KEY",
+			"label" => "MySQL Client SSL Key path",
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_CERT",
+			"label" => "MySQL Client SSL Cert. path",
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_CA",
+			"label" => "MySQL Server CA path (set to enable)",
+		)));
 		
 		return $oMorpho;
 	}
@@ -230,6 +260,15 @@ define("PROJECT_DB_MYSQL_USERNAME", "");
 
 # MySQL > Password
 define("PROJECT_DB_MYSQL_PASSWORD", "");
+
+# MySQL > Client SSL Key
+define("PROJECT_DB_MYSQL_SSL_KEY", "");
+
+# MySQL > Client SSL Cert.
+define("PROJECT_DB_MYSQL_SSL_CERT", "");
+
+# MySQL > Server CA path - set to enable SSL
+define("PROJECT_DB_MYSQL_SSL_CA", "");
 
 # A random 32 bytes key that will be used to encrypt data
 define("BAIKAL_ENCRYPTION_KEY", "");

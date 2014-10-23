@@ -37,16 +37,18 @@ class Mysql extends \Flake\Core\Database {
 	protected $sUsername = "";
 	protected $sPassword = "";
 
-	public function __construct($sHost, $sDbName, $sUsername, $sPassword) {
+	public function __construct($sHost, $sDbName, $sUsername, $sPassword, $sOptions=array()) {
 		$this->sHost = $sHost;
 		$this->sDbName = $sDbName;
 		$this->sUsername = $sUsername;
 		$this->sPassword = $sPassword;
+		$this->sOptions = $sOptions;
 		
 		$this->oDb = new \PDO(
 			'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
 			$this->sUsername,
-			$this->sPassword
+			$this->sPassword,
+			$this->sOptions
 		);
 	}
 	

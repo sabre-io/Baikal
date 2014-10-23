@@ -53,6 +53,18 @@ class Database extends \Baikal\Model\Config {
 			"type" => "string",
 			"comment" => "MySQL > Password",
 		),
+		"PROJECT_DB_MYSQL_SSL_KEY" => array(
+			"type" => "string",
+			"comment" => "Path to client SSL key file; leave blank for none",
+		),
+		"PROJECT_DB_MYSQL_SSL_CERT" => array(
+			"type" => "string",
+			"comment" => "Path to client SSL certificate; leave blank for none",
+		),
+		"PROJECT_DB_MYSQL_SSL_CA" => array(
+			"type" => "string",
+			"comment" => "Path to server CA certificate; set to enable SSL",
+		),
 	);
 	
 	# Default values
@@ -63,6 +75,9 @@ class Database extends \Baikal\Model\Config {
 		"PROJECT_DB_MYSQL_DBNAME" => "",
 		"PROJECT_DB_MYSQL_USERNAME" => "",
 		"PROJECT_DB_MYSQL_PASSWORD" => "",
+		"PROJECT_DB_MYSQL_SSL_KEY" => "",
+		"PROJECT_DB_MYSQL_SSL_CERT" => "",
+		"PROJECT_DB_MYSQL_SSL_CA" => "",
 	);
 	
 	public function formMorphologyForThisModelInstance() {
@@ -102,6 +117,21 @@ class Database extends \Baikal\Model\Config {
 		$oMorpho->add(new \Formal\Element\Password(array(
 			"prop" => "PROJECT_DB_MYSQL_PASSWORD",
 			"label" => "MySQL password",
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_KEY",
+			"label" => "SSL Client Key",
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_CERT",
+			"label" => "SSL Client Cert.",
+		)));
+
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "PROJECT_DB_MYSQL_SSL_CA",
+			"label" => "SSL Server CA",
 		)));
 
 		return $oMorpho;

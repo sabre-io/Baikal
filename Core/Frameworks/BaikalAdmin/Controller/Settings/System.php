@@ -76,6 +76,10 @@ class System extends \Flake\Core\Controller {
 			$oMorpho->remove("PROJECT_DB_MYSQL_DBNAME");
 			$oMorpho->remove("PROJECT_DB_MYSQL_USERNAME");
 			$oMorpho->remove("PROJECT_DB_MYSQL_PASSWORD");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_KEY");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_CERT");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_CA");
+
 		}
 	}
 	
@@ -87,13 +91,35 @@ class System extends \Flake\Core\Controller {
 			$sDbName = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_DBNAME");
 			$sUsername = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_USERNAME");
 			$sPassword = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_PASSWORD");
+
+			# And setup connection SSL options if necessary - plus check file exists
+			$sslCheckFailed = FALSE;
+			$sslError = '<strong>MySQL SSL error:</strong> this path does not exist!';
+			$testConnOpts = array();
+			$setup = array(\PDO::MYSQL_ATTR_SSL_KEY=>"KEY", \PDO::MYSQL_ATTR_SSL_CERT=>"CERT",
+				\PDO::MYSQL_ATTR_SSL_CA=>"CA");
+			foreach( $setup as $opt => $suffix ) {
+				$v = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_SSL_$suffix");
+				if (!empty($v)) {
+					if (file_exists($v)) {
+						$testConnOpts[$opt] = $v;
+					} else {
+						$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_$suffix"), $sslError);
+						$sslCheckFailed = TRUE;
+					}
+				}
+			}
 			
+			# If the checks failed then don't try to connect
+			if ($sslCheckFailed) return;
+
 			try {
 				$oDB = new \Flake\Core\Database\Mysql(
 					$sHost,
 					$sDbName,
 					$sUsername,
-					$sPassword
+					$sPassword,
+					$testConnOpts
 				);
 			} catch(\Exception $e) {
 				$sMessage = "<strong>MySQL error:</strong> " . $e->getMessage();
@@ -102,6 +128,9 @@ class System extends \Flake\Core\Controller {
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_KEY"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_CERT"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_CA"));
 				return;
 			}
 			

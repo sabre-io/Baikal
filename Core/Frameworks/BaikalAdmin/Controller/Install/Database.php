@@ -88,12 +88,34 @@ class Database extends \Flake\Core\Controller {
 			$sUsername = $oMorpho->element("PROJECT_DB_MYSQL_USERNAME")->value();
 			$sPassword = $oMorpho->element("PROJECT_DB_MYSQL_PASSWORD")->value();
 
+			# install needs to validate SSL files exist and use them in connection
+			$sslCheckFailed = FALSE;
+			$sslError = "<strong>Baïkal  was not able to find the specified file</strong>";
+			$testConnOpts = array();
+			$setup = array(\PDO::MYSQL_ATTR_SSL_KEY=>"KEY", \PDO::MYSQL_ATTR_SSL_CERT=>"CERT",
+				\PDO::MYSQL_ATTR_SSL_CA=>"CA");
+			foreach ( $setup as $opt => $suffix ) {
+				$v = $oMorpho->element("PROJECT_DB_MYSQL_SSL_$suffix")->value();
+				if (!empty($v)) {
+					if (file_exists($v)) {
+						$testConnOpts[$opt] = $v;
+					} else {
+						$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_$suffix"), $sslError);
+						$sslCheckFailed = TRUE;
+					}
+				}
+			}
+			
+			# don't try to connect if SSL checks failed
+			if ($sslCheckFailed) return;
+
 			try {
 				$oDb = new \Flake\Core\Database\Mysql(
 					$sHost,
 					$sDbname,
 					$sUsername,
-					$sPassword
+					$sPassword,
+					$testConnOpts
 				);
 
 				if(($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== TRUE) {
@@ -140,6 +162,10 @@ class Database extends \Flake\Core\Controller {
 				$oForm->declareError(
 					$oMorpho->element("PROJECT_DB_MYSQL_PASSWORD")
 				);
+
+				foreach( array("KEY", "CERT", "CA") as $x ) {
+					$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_SSL_$x"));
+				}
 			}
 		}
 	}
@@ -160,6 +186,10 @@ class Database extends \Flake\Core\Controller {
 			$oMorpho->remove("PROJECT_DB_MYSQL_DBNAME");
 			$oMorpho->remove("PROJECT_DB_MYSQL_USERNAME");
 			$oMorpho->remove("PROJECT_DB_MYSQL_PASSWORD");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_KEY");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_CERT");
+			$oMorpho->remove("PROJECT_DB_MYSQL_SSL_CA");
+
 		}
 	}
 }
