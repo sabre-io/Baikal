@@ -32,15 +32,15 @@ define("BAIKAL_CONTEXT", TRUE);
 define("PROJECT_CONTEXT_BASEURI", "/");
 
 if(file_exists(getcwd() . "/Core")) {
-	# Flat FTP mode
-	define("PROJECT_PATH_ROOT", getcwd() . "/");	#./
+    # Flat FTP mode
+    define("PROJECT_PATH_ROOT", getcwd() . "/");    #./
 } else {
-	# Dedicated server mode
-	define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
+    # Dedicated server mode
+    define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");    #../
 }
 
 if(!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
-	die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
+    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
 
 require PROJECT_PATH_ROOT . 'vendor/autoload.php';
@@ -51,15 +51,11 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 \Baikal\Framework::bootstrap();
 
 if(!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== TRUE) {
-	throw new ErrorException("Baikal CalDAV is disabled.", 0, 255, __FILE__, __LINE__);
+    throw new ErrorException("Baikal CalDAV is disabled.", 0, 255, __FILE__, __LINE__);
 }
 
 # Backends
-if( BAIKAL_DAV_AUTH_TYPE == "Basic" || preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT']) )
-    $authBackend = new \Baikal\Core\PDOBasicAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
-else
-    $authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
-
+$authBackend = \Baikal\Framework::getAuth();
 $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($GLOBALS["DB"]->getPDO());
 $calendarBackend = new \Sabre\CalDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
 

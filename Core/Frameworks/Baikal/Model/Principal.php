@@ -34,4 +34,16 @@ class Principal extends \Flake\Core\Model\Db {
 		"displayname" => "",
 		"email" => "",
 	);
+
+	/**
+	 * Returns an array of fields to try and copy from an external
+	 * auth. backend's definition of a user (if it defines them).
+	 * This is basically just a subset of $aData.
+	 *
+	 * @return Array of field keys.
+	 */
+	public function getAutoPopulateFields() {
+		// TODO: Maybe this should be a bit more DRY
+		return array("displayname", "email");
+	}
 }

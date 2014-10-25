@@ -47,6 +47,9 @@ class Users extends \Flake\Core\Controller {
 	public function render() {
 		
 		$oView = new \BaikalAdmin\View\Users();
+
+		# Does the auth. backend allow user management?
+		$uManage = \Baikal\Framework::getAuth()->canManageUsers();
 		
 		# List of users
 		$aUsers = array();
@@ -54,21 +57,30 @@ class Users extends \Flake\Core\Controller {
 		
 		reset($oUsers);
 		foreach($oUsers as $user) {
-			$aUsers[] = array(
+			$uParams = array(
 				"linkcalendars" => \BaikalAdmin\Controller\Users::linkCalendars($user),
 				"linkaddressbooks" => \BaikalAdmin\Controller\Users::linkAddressBooks($user),
-				"linkedit" => \BaikalAdmin\Controller\Users::linkEdit($user),
-				"linkdelete" => \BaikalAdmin\Controller\Users::linkDelete($user),
 				"mailtouri" => $user->getMailtoURI(),
 				"username" => $user->get("username"),
 				"displayname" => $user->get("displayname"),
 				"email" => $user->get("email"),
 			);
+			if ($uManage) {
+				$uParams = array_merge($uParams, array(
+					"linkedit" => \BaikalAdmin\Controller\Users::linkEdit($user),
+					"linkdelete" => \BaikalAdmin\Controller\Users::linkDelete($user)
+				));
+			}
+			$aUsers[] = $uParams;
 		}
 		
 		$oView->setData("users", $aUsers);
 		$oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
 		$oView->setData("usericon", \Baikal\Model\User::icon());
+
+		# note management disabled
+		if ($uManage)
+			$oView->setData("backendenabled", TRUE);
 		
 		# Messages
 		$sMessages = implode("\n", $this->aMessages);
