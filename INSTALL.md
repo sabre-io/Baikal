@@ -328,7 +328,7 @@ Add a CalDAV account:
 * Choose a unique account name (has to be different from the CardDAV one)
 * Tap `✓`
 
-DAVdroid should now start syncing your calendar(s), give it some time.
+Make sure that Privacy Guard doesn't prevent access to your address book or calendars when on CyanogenMod.
 
 Add a CardDAV account:
 
@@ -345,7 +345,7 @@ Add a CardDAV account:
 * Choose a unique account name (has to be different from the CalDAV one)
 * Tap `✓`
 
-DAVdroid should now start syncing your address book, give it some time.
+Make sure that Privacy Guard doesn't prevent access to your address book or calendars when on CyanogenMod.
 
 # 6 - You're done
 
