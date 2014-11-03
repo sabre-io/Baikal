@@ -10,8 +10,8 @@ parameters:
     bootcamp.environment.authorizedkeys:
         - DATABASE_URL
 
-    bootcamp.appname: "Baïkal Server"
-    bootcamp.appversion: "2.0.0-alpha"
+    bootcamp.appname: "Baïkal"
+    bootcamp.appversion: "2.0.0-alpha1"
 
     bootcamp.init.config.handler: baikal.bootcamp.configinithandler
     bootcamp.init.user.handler: baikal.bootcamp.userinithandler
