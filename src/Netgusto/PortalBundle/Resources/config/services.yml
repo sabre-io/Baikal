@@ -1,0 +1,9 @@
+services:
+
+    portal.twigextension:
+        class: Netgusto\PortalBundle\Twig\PortalExtension
+        arguments:
+            # Inject service container to lazyload dependencies
+            - @service_container
+        tags:
+            - { name: twig.extension }

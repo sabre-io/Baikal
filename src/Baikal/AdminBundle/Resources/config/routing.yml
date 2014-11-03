@@ -1,0 +1,104 @@
+# Auth
+
+baikal_admin_login:
+    pattern: /login
+    defaults: { _controller: BaikalAdminBundle:Auth:loginform }
+
+baikal_admin_login_check:
+    pattern: /login_check
+    # no controller, symfony intercepts this
+
+baikal_admin_logout:
+    pattern: /logout
+    # no controller, symfony intercepts this
+
+# Settings
+baikal_admin_settings:
+    pattern:  /settings
+    defaults: { _controller: BaikalAdminBundle:Settings:index }
+
+# Home
+baikal_admin_homepage:
+    pattern:  /
+    defaults: { _controller: BaikalAdminBundle:Dashboard:index }
+
+baikal_admin_dashboard:
+    pattern:  /
+    defaults: { _controller: BaikalAdminBundle:Dashboard:index }
+
+# User
+baikal_admin_user_list:
+    pattern:  /users
+    defaults: { _controller: BaikalAdminBundle:User/List:index }
+
+baikal_admin_user_form_new:
+    pattern:  /users/new
+    defaults: { _controller: BaikalAdminBundle:User/Form:new }
+
+baikal_admin_user_info:
+    pattern:  /users/{id}
+    defaults: { _controller: BaikalAdminBundle:User/Info:index }
+
+baikal_admin_user_form_edit:
+    pattern:  /users/{id}/edit
+    defaults: { _controller: BaikalAdminBundle:User/Form:edit }
+
+baikal_admin_user_list_delete:
+    pattern:  /users/{id}/delete
+    defaults: { _controller: BaikalAdminBundle:User/List:delete }
+
+baikal_admin_user_calendar_list:
+    pattern:  /users/{id}/calendars
+    defaults: { _controller: BaikalAdminBundle:Calendar/List:index }
+
+# Calendar
+baikal_admin_calendar_form_new:
+    pattern:  /users/{user}/calendar/new
+    defaults: { _controller: BaikalAdminBundle:Calendar/Form:new }
+
+baikal_admin_calendar_form_edit:
+    pattern:  /users/{user}/calendar/{calendar}
+    defaults: { _controller: BaikalAdminBundle:Calendar/Form:edit }
+
+baikal_admin_calendar_list_delete:
+    pattern:  /users/{user}/calendar/{calendar}/delete
+    defaults: { _controller: BaikalAdminBundle:Calendar/List:delete }
+
+baikal_admin_calendar_view:
+    pattern:  /users/{user}/calendar/{calendar}/view
+    defaults: { _controller: BaikalAdminBundle:Calendar/View:index }
+
+baikal_admin_calendar_view_fullscreen:
+    pattern:  /users/{user}/calendar/{calendar}/view/fullscreen
+    defaults: { _controller: BaikalAdminBundle:Calendar/View:fullscreen }
+
+baikal_admin_calendar_instructions:
+    pattern:  /users/{user}/calendar/{calendar}/instructions
+    defaults: { _controller: BaikalAdminBundle:Calendar/Instructions:index }
+
+# Addressbook
+baikal_admin_user_addressbook_list:
+    pattern:  /users/{id}/addressbooks
+    defaults: { _controller: BaikalAdminBundle:Addressbook/List:index }
+
+baikal_admin_addressbook_form_new:
+    pattern:  /users/{user}/addressbooks/new
+    defaults: { _controller: BaikalAdminBundle:Addressbook/Form:new }
+
+baikal_admin_addressbook_form_edit:
+    pattern:  /users/{user}/addressbooks/{addressbook}
+    defaults: { _controller: BaikalAdminBundle:Addressbook/Form:edit }
+
+baikal_admin_addressbook_list_delete:
+    pattern:  /users/{user}/addressbooks/{addressbook}/delete
+    defaults: { _controller: BaikalAdminBundle:Addressbook/List:delete }
+
+baikal_admin_addressbook_view:
+    pattern:  /users/{user}/addressbook/{addressbook}/view
+    defaults: { _controller: BaikalAdminBundle:Addressbook/View:index }
+
+
+# Todolist
+baikal_admin_user_todolist_list:
+    pattern:  /users/{id}/todolists
+    defaults: { _controller: BaikalAdminBundle:Todolist/List:index }

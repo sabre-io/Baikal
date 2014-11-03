@@ -1,0 +1,12 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Frontend auth" %}
+
+{% block content %}
+
+    {% embed "BaikalViewComponentsBundle:Components:loginform.html.twig" with {
+        logincheckurl: path('baikal_frontend_login_check'),
+        redirecturl: path('baikal_frontend_homepage')
+    } %}{% endembed %}
+
+{% endblock %}

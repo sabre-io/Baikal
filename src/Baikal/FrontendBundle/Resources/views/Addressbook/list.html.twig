@@ -1,0 +1,31 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Contacts" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "book" %}
+    {% block header %}Addressbooks{% endblock %}
+{% endembed %}
+
+{% if addressbooks|length %}
+    {% embed "BaikalViewComponentsBundle:Components:addbutton.html.twig" %}
+        {% set button_url = path('baikal_frontend_addressbook_form_new') %}
+        {% set button_text = '<i class="fa fa-book"></i> Add book' %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Addressbook/list.html.twig" with {
+        'items': addressbooks,
+        'user': user,
+        'urls': urls
+    } %}{% endembed %}
+{% else %}
+    {% embed "BaikalViewComponentsBundle:Components:nothinghere.html.twig" with {
+        itemname: 'addressbook',
+        actionurl: path('baikal_frontend_addressbook_form_new'),
+        calltoaction: 'Create one now'
+    } %}{% endembed %}
+{% endif %}
+
+{% endblock %}

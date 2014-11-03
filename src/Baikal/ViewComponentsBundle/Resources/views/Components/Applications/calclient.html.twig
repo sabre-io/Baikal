@@ -1,0 +1,42 @@
+<div id="app-calclient"></div>
+
+{{
+    application('calclient', {
+        rootElement: '#app-calclient',
+        parameters: {
+            name: calendar.getDisplayname(),
+            fullscreen: fullscreen,
+            alternativeurl: alternativeurl,
+            url_expandedevents: path('get_calendar_expandedevents', { 'calendar' : calendar.id }),
+            color: calendar.getCalendarColorAsHexRGB(),
+            textcolor: calendar.getTextColorAsHexRGB()
+        }
+    })
+}}
+
+{% if fullscreen %}
+<style type="text/css">
+    #calendar-bottombar {
+        position: absolute;
+        bottom: 1px;    /* compensate for the border */
+        z-index: 999999;
+        width: 100%;
+        height: 32px;
+        line-height: 32px;
+        background-color: white;
+        border-top: 1px solid silver;
+        color: black;
+    }
+
+    #calendar-bottombar .calendartitle {
+        line-height: 1.4em;
+        font-size: 1.4em;
+    }
+
+</style>
+<div id="calendar-bottombar">
+    <div class="text-center">
+        <span class="calendartitle">{{ calendar.getDisplayname() }}</span>
+    </div>
+</div>
+{% endif %}

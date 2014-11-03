@@ -1,0 +1,31 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Addressbook " ~ addressbook.getDisplayname() ~ " of " ~ user.uiLabel() %}
+
+{% block content %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "group" %}
+        {% block header %}
+            <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+            <i class="fa fa-angle-right"></i>
+
+            <i class="fa fa-book"></i> <a href="{{ path('baikal_admin_user_addressbook_list', { id: user.id }) }}">Contact books</a>
+
+            <i class="fa fa-angle-right"></i>
+
+            <i class="fa fa-book"></i> {{ addressbook.getDisplayname() }}
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Applications/cardclient.html.twig" with {
+        addressbook: addressbook,
+        user: user
+    } %}{% endembed %}
+
+{% endblock %}

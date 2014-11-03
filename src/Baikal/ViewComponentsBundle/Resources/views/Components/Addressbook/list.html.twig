@@ -1,0 +1,41 @@
+{% embed "BaikalViewComponentsBundle:Components:list.html.twig" %}
+    {% block payload %}
+        {% set contacts = item.getContacts() %}
+        {% set contactscount = contacts.count() %}
+        <p class="list-itemtitle">
+            <i class="fa fa-book"></i> {{ item.getDisplayname() }}
+        </p>
+        <p>
+            {% if item.getDescription() %} {{ item.getDescription() }} - {% endif %}
+            
+            {% if contactscount == 0 %}
+                No contact yet
+            {% elseif contactscount == 1 %}
+                Only one contact
+            {% else %}
+                {{ contactscount }} contacts
+            {% endif %}
+        </p>
+    {% endblock %}
+    {% block actions %}
+        <nobr>
+            <div class="btn-group btn-group-justified pull-right">
+                <a class="btn btn-default" href="{{ closure(urls.view, user, item) }}"><i class="fa fa-eye"></i> <span class="hidden-xxs-portrait inline-block">View</span></a>
+                <a class="btn btn-primary" href="{{ closure(urls.edit, user, item) }}"><i class="fa fa-edit"></i> <span class="hidden-xxs-portrait inline-block">Edit</span></a>
+                <a class="btn btn-danger delete" href="{{ closure(urls.delete, user, item) }}" data-itemname="{{ item.getDisplayname() | escape() }}"><i class="fa fa-remove"></i> <span class="hidden-xxs-portrait inline-block">Delete</span></a>
+            </div>
+        </nobr>
+    {% endblock %}
+    {% block deletemodal %}
+        {% embed "BaikalViewComponentsBundle:Components:modal.html.twig" %}
+            
+            {% block title %}Delete book <i class="fa fa-book"></i> <span class="itemname">Contact book name</span>{% endblock %}
+    
+            {% block body %}
+                <p>You are about to delete <strong><i class="fa fa-book"></i> <span class="itemname">Addressbook name</span></strong> and all related data.</p>
+                <p><strong>Careful ! This operation is destructive, and cannot be undone.</strong></p>
+            {% endblock %}
+
+        {% endembed %}
+    {% endblock %}
+{% endembed %}

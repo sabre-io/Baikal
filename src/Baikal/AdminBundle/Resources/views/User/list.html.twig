@@ -1,0 +1,21 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Users" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "group" %}
+    {% set header = "Users" %}
+{% endembed %}
+
+{% embed "BaikalViewComponentsBundle:Components:addbutton.html.twig" %}
+    {% set button_url = path('baikal_admin_user_form_new') %}
+    {% set button_text = '<i class="fa fa-user"></i> Add user' %}
+{% endembed %}
+
+{% embed "BaikalViewComponentsBundle:Components:User/list.html.twig" with {
+    'items' : users
+} %}{% endembed %}
+
+{% endblock %}

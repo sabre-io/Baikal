@@ -1,0 +1,16 @@
+baikal_admin:
+    resource: "@BaikalAdminBundle/Resources/config/routing.yml"
+    prefix: /admin
+
+baikal_davservices:
+    resource: "@BaikalDavServicesBundle/Resources/config/routing.yml"
+    prefix: /dav
+
+baikal_rest_api:
+    resource: "@BaikalRestBundle/Resources/config/routing.yml"
+    prefix: /api/v1/
+    type: rest
+
+baikal_frontend:
+    resource: "@BaikalFrontendBundle/Resources/config/routing.yml"
+    prefix: /

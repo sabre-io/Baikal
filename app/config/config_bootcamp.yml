@@ -1,0 +1,19 @@
+imports:
+    - { resource: environment.yml }
+    - { resource: parameters.yml }
+    - { resource: ../../data/environment.yml }
+    - { resource: ../../data/parameters.yml }
+
+parameters:
+    
+    bootcamp.environment.databaseurl_variablename: DATABASE_URL
+    bootcamp.environment.authorizedkeys:
+        - DATABASE_URL
+
+    bootcamp.appname: "Baïkal Server"
+    bootcamp.appversion: "2.0.0-alpha"
+
+    bootcamp.init.config.handler: baikal.bootcamp.configinithandler
+    bootcamp.init.user.handler: baikal.bootcamp.userinithandler
+    
+services:

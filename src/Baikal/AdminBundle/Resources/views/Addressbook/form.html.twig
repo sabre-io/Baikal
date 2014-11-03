@@ -1,0 +1,41 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% block content %}
+
+    {% set new = not (addressbook is defined and addressbook.id) %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "book" %}
+        {% set header = 'Addressbook for <i class="fa fa-user"></i> ' ~ user.uiLabel() %}
+        {% block header %}
+            <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            {% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %} {{ user.uiLabel() }}
+
+            <i class="fa fa-angle-right"></i>
+
+            <i class="fa fa-book"></i> <a href="{{ path('baikal_admin_user_addressbook_list', { id: user.id }) }}">Contact books</a>
+
+            <i class="fa fa-angle-right"></i>
+
+            {% if not new %}
+                <i class="fa fa-book"></i> <a href="{{ path('baikal_admin_addressbook_view', { user: user.id, addressbook: addressbook.id }) }}">{{ addressbook.displayName() }}</a>
+
+                <i class="fa fa-angle-right"></i>
+
+                Edit
+            {% else %}
+                New
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Addressbook/form.html.twig" with {
+        new: new,
+        url_cancel: path('baikal_admin_user_addressbook_list', { id: user.id })
+    } %}{% endembed %}
+
+{% endblock %}

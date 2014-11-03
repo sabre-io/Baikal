@@ -1,0 +1,19 @@
+Baikal\ModelBundle\Entity\ConfigContainer:
+    type: entity
+    table: ~
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+        name:
+            type: string
+            length: 255
+            nullable: false
+
+        config:
+            type: json_array
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,32 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Welcome" %}
+
+{% block content %}
+
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% block header %}
+
+            <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}, Welcome !
+
+        {% endblock %}
+    {% endembed %}
+
+    <div class="container">
+
+        <section id="statistics">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>About me</h3>
+                    <p>TODO:<br />Here, information about my account, some of my next calendar events, and my upcoming todos.</p>
+                </div>
+                <div class="col-sm-6">
+                    <h3>License and credits</h3>
+                    {% embed "BaikalViewComponentsBundle:Components:Dashboard/license.html.twig" %}{% endembed %}
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

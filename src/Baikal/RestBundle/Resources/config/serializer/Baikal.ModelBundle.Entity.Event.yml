@@ -1,0 +1,8 @@
+Baikal\ModelBundle\Entity\Event:
+    exclusion_policy: ALL
+    properties:
+        
+        id:
+            expose: true
+
+        # other properties are exposed in #Baikal\RestBundle\Serializer\EventSerializationSubscriber

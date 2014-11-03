@@ -1,0 +1,14 @@
+Baikal\ModelBundle\Entity\Addressbook:
+    exclusion_policy: ALL
+    accessor_order: custom
+    custom_accessor_order: [id, displayname, description]
+    properties:
+        
+        id:
+            expose: true
+
+        displayname:
+            expose: true
+
+        description:
+            expose: true

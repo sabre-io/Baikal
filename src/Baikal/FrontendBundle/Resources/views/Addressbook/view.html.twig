@@ -1,0 +1,22 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Addressbook " ~ addressbook.getDisplayname() ~ " of " ~ user.uiLabel() %}
+
+{% block content %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "book" %}
+        {% block header %}
+
+            <a href="{{ path('baikal_frontend_addressbook_list') }}">Addressbooks</a>
+
+            <i class="fa fa-angle-right"></i>
+
+            <i class="fa fa-book"></i> {{ addressbook.getDisplayname() }}
+
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Applications/cardclient.html.twig" with { addressbook: addressbook } %}{% endembed %}
+
+{% endblock %}

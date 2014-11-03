@@ -1,0 +1,17 @@
+{% spaceless %}
+    {% if header is not defined %}
+        {% set header = 'Welcome !' %}
+    {% endif %}
+    {% if container is not defined %}
+        {% set container = true %}
+    {% endif %}
+{% endspaceless %}
+{% if container %}<div class="container">{% endif %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                {% if icon is defined %}<i class="fa fa-{% block icon %}{{ icon|raw }}{% endblock %}"></i>{% endif %} {% block header %}{{ header|raw }}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% if container %}</div>{% endif %}

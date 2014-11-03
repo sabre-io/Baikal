@@ -1,0 +1,64 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('vendor/webasset/jquery-minicolors/jquery.minicolors.css') }}" />
+
+<div class="container">
+
+    <form class="form-horizontal" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" method="post" {{ form_enctype(form) }} role="form" novalidate>
+
+        <fieldset>
+
+            <div class="form-group{% if form.displayname.vars.errors|length %} has-error{% endif %}">
+                {{ form_label(form.displayname, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+                <div class="col-sm-8 col-lg-4">
+                    {{ form_widget(form.displayname, { 'attr': { 'class': 'form-control', 'placeholder': 'e.g. "Daily events" or "Piano lessons"' } }) }}
+                    {% if not form.displayname.vars.valid %}<span class="help-block">{{ form.displayname.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group{% if form.description.vars.errors|length %} has-error{% endif %}">
+                {{ form_label(form.description, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+                <div class="col-sm-8 col-lg-4">
+                    {{ form_widget(form.description, { 'attr': { 'class': 'form-control', 'placeholder': 'e.g. "My everyday life" '} }) }}
+                    {% if not form.description.vars.valid %}<span class="help-block">{{ form.description.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group{% if form.calendarcolor.vars.errors|length %} has-error{% endif %}">
+                {{ form_label(form.calendarcolor, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+                <div class="col-sm-8 col-lg-4">
+                    
+                    {{ form_widget(form.calendarcolor, { 'attr': { 'class': 'form-control colorpicker' } }) }}
+                    {% if not form.calendarcolor.vars.valid %}<span class="help-block">{{ form.calendarcolor.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-2 col-lg-offset-2 col-lg-1">
+                    <a href="{{ url_cancel }}" class="btn btn-link btn-large">Cancel</a>
+                </div>
+
+                <div class="col-sm-2 col-lg-1">
+                    {% if new %}
+                    <button type="submit" class="btn btn-primary btn-large">Create calendar</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary btn-large">Update calendar</button>
+                    {% endif %}
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+<script src="{{ asset('vendor/webasset/jquery-minicolors/jquery.minicolors.min.js') }}"></script>
+<script type="text/javascript">
+
+    $('.colorpicker').each(function(i, e) {
+
+        // removing last 2 hexa chars (opacity)
+        var val = $(e).val();
+        val.match(/^\#[a-fA-F0-9]{8}$/) ? $(e).val(val.substr(0, 7)):null;
+        $(e).minicolors();
+    });
+</script>

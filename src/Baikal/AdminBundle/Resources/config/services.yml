@@ -1,0 +1,7 @@
+services:
+    baikal_admin.access_denied_handler:
+        class: Baikal\AdminBundle\Service\AccessDeniedHandler
+        arguments: [@http_kernel, @security.context, @router]
+        tags:
+            - { name: kernel.event_listener, event: security.kernel_response, method: handle }
+

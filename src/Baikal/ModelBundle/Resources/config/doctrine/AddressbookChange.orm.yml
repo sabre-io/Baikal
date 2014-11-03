@@ -1,0 +1,43 @@
+Baikal\ModelBundle\Entity\AddressbookChange:
+    type: entity
+    table: addressbookchanges
+    indexes:
+        addressbookid_synctoken:
+            columns: [ 'addressbookid', 'synctoken' ]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+        uri:
+            type: string
+            length: 255
+            #nullable: false
+            nullable: true
+
+        synctoken:
+            type: integer
+            #nullable: false
+            nullable: true
+
+        operation:
+            type: boolean
+            #nullable: false
+            nullable: true
+
+    manyToOne:
+
+        addressbook:
+            targetEntity: Baikal\ModelBundle\Entity\Addressbook
+            cascade: {  }
+            mappedBy: null
+            inversedBy: changes
+            joinColumns:
+                addressbookid:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+    lifecycleCallbacks: {  }

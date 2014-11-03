@@ -1,0 +1,33 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Users" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "group" %}
+
+    {% block header %}
+
+        <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+        
+        <i class="fa fa-angle-right"></i>
+
+        <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+    {% endblock header %}
+{% endembed %}
+
+<div class="container">
+
+    {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+
+    <h2>{{user.uiLabel()}}</h2>
+
+    <p>{{nbcalendars}} {{ accord('calendar', nbcalendars)}}</p>
+
+    <p>{{nbbooks}} {{ accord('contact book', nbbooks)}}</p>
+
+</div><!-- /.container -->
+
+{% endblock %}

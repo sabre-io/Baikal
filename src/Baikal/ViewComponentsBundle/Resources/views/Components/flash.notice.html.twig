@@ -1,0 +1,6 @@
+{% for flashMessage in app.session.flashbag.get('notice') %}
+<div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ flashMessage|raw }}
+</div>
+{% endfor %}

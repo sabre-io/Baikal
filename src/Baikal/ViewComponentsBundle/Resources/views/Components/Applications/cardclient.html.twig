@@ -1,0 +1,11 @@
+<div class="container">
+    <div id="app-cardclient"></div>
+</div>
+
+{{
+    application('cardclient', {
+        rootElement: '#app-cardclient',
+        addressbookid: addressbook.id,
+        urlapi: (app.request.getSchemeAndHttpHost() ~ path('baikal.rest.root'))|trim('/')
+    })
+}}

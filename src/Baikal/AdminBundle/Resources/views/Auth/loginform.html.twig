@@ -1,0 +1,11 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Auth" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:loginform.html.twig" with {
+    logincheckurl: path('baikal_admin_login_check'),
+    redirecturl: path('baikal_admin_homepage')
+} %}{% endembed %}
+{% endblock %}

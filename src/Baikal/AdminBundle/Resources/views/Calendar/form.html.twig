@@ -1,0 +1,36 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% block content %}
+    
+    {% set new = not (calendar is defined and calendar.id) %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "group" %}
+        {% block header %}
+            <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+            <i class="fa fa-angle-right"></i>
+
+            <i class="fa fa-calendar"></i> <a href="{{ path('baikal_admin_user_calendar_list', { id: user.id }) }}">Calendars</a>
+
+            <i class="fa fa-angle-right"></i>
+
+            {% if new %}
+                New calendar
+            {% else %}
+                Editing {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: calendar } %} {{ calendar.displayName() }}
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Calendar/form.html.twig" with {
+        new: new,
+        url_cancel: path('baikal_admin_user_calendar_list', { 'id' : user.id })
+    } %}{% endembed %}
+
+{% endblock %}

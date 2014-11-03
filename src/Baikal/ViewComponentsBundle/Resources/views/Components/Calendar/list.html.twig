@@ -1,0 +1,50 @@
+{% embed "BaikalViewComponentsBundle:Components:list.html.twig" %}
+    {% block payload %}
+        {% set eventcount = eventcountforcalendar(item) %}
+        <p class="list-itemtitle">
+            {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: item } %} {{ item.getDisplayname() }}
+        </p>
+        <p>
+            {%if item.getDescription() %} {{ item.getDescription() }} - {% endif %}
+            
+            {% if eventcount == 0 %}
+                No event in this calendar yet.
+            {% else %}
+                {% if eventcount == 1 %}
+                    Only one event in the calendar.
+                {% else %}
+                    {{ eventcount }} events in the calendar. !!
+                {% endif %}
+            {% endif %}
+        </p>
+    {% endblock %}
+    {% block actions %}
+        <nobr>
+            <div class="btn-group btn-group-justified pull-right">
+                <a class="btn btn-default" href="{{ closure(urls.view, user, item) }}">
+                    <i class="fa fa-eye"></i> <span class="hidden-xxs-portrait inline-block">View</span>
+                </a>
+                <a class="btn btn-default" href="{{ closure(urls.instructions, user, item) }}">
+                    <i class="fa fa-plug"></i> <span class="hidden-xxs-portrait inline-block">Connect</span>
+                </a>
+                <a class="btn btn-primary" href="{{ closure(urls.edit, user, item) }}">
+                    <i class="fa fa-edit"></i> <span class="hidden-xxs-portrait inline-block">Edit</span>
+                </a>
+                <a class="btn btn-danger delete" href="{{ closure(urls.delete, user, item) }}" data-itemname="{{ item.getDisplayname() | escape() }}">
+                    <i class="fa fa-remove"></i> <span class="hidden-xxs-portrait inline-block">Delete</span>
+                </a>
+            </div>
+        </nobr>
+    {% endblock %}
+    {% block deletemodal %}
+        {% embed "BaikalViewComponentsBundle:Components:modal.html.twig" %}
+            
+            {% block title %}Delete calendar <i class="fa fa-calendar"></i> <span class="itemname">Calendar name</span>{% endblock %}
+            {% block body %}
+                <p>You are about to delete <strong><i class="fa fa-calendar"></i> <span class="itemname">Calendar name</span></strong> and all it's data.</p>
+                <p><strong>Careful ! This operation is destructive, and cannot be undone.</strong></p>
+            {% endblock %}
+
+        {% endembed %}
+    {% endblock %}
+{% endembed %}

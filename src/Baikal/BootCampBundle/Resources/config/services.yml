@@ -1,0 +1,17 @@
+# These services will be available only during composer install
+
+imports:
+    - { resource: ../../../../../app/config/parameters.yml }
+
+services:
+
+    baikal.bootcamp.userinithandler:
+        class: Baikal\BootCampBundle\InitHandler\UserInitHandler
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @baikal.model.sabredav_password_encoder
+
+    baikal.bootcamp.configinithandler:
+        class: Baikal\BootCampBundle\InitHandler\ConfigInitHandler
+        arguments:
+            - @doctrine.orm.entity_manager

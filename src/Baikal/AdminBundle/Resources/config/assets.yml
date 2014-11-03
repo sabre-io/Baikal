@@ -1,0 +1,10 @@
+assetic:
+    assets:
+
+        adminbundle_css:
+            inputs:
+                - "@BaikalFrontendBundle/Resources/sources/less/style.less"
+            filters:
+                - lessphp
+                - cssrewrite
+            output: css/adminbundle.css

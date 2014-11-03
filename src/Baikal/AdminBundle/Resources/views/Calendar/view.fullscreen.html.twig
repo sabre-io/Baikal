@@ -1,0 +1,16 @@
+{% extends "BaikalAdminBundle:Layouts:fullscreen.html.twig" %}
+
+{% set pagetitle = "Calendar " ~ calendar.getDisplayname() ~ " of " ~ user.uiLabel() %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:Applications/calclient.html.twig" with {
+    user: user,
+    calendar: calendar,
+    fullscreen: true,
+    alternativeurl: path('baikal_admin_calendar_view', { user: user.id, calendar: calendar.id })
+} %}{% endembed %}
+
+{% endblock %}
+
+{% block jslibsjquery %}{% endblock %}

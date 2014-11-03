@@ -1,0 +1,35 @@
+Baikal\ModelBundle\Entity\UserPrincipal:
+    type: entity
+    table: principals
+    repositoryClass: Baikal\ModelBundle\Entity\Repository\UserPrincipalRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        uri:
+            type: string
+            length: 200
+            #nullable: false
+            nullable: true
+
+        email:
+            type: string
+            length: 80
+            nullable: true
+
+        displayname:
+            type: string
+            length: 80
+            nullable: true
+
+        vcardurl:
+            type: string
+            length: 255
+            nullable: true
+
+    lifecycleCallbacks: {  }

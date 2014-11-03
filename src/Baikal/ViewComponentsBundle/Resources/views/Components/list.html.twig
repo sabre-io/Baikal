@@ -1,0 +1,37 @@
+<div class="container">
+
+    {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+
+    <div class="bk-stripedlist">
+
+        {% for item in items %}
+
+            <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-6">
+                    {% block payload %}{% endblock %}
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-6">
+                    {% block actions %}{% endblock %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{{ block('deletemodal') }}
+
+<script type="text/javascript">
+    $("a.delete").click(function(e) {
+
+        e.preventDefault();
+        var oButton = $(e.delegateTarget);
+        console.log(oButton);
+
+        $('#modal-danger span.itemname').html(oButton.attr('data-itemname'));
+        $('#modal-danger .btn-execute').attr('href', oButton.attr('href'));
+        $('#modal-danger').modal();
+    });
+</script>

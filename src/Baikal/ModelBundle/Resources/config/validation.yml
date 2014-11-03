@@ -1,0 +1,10 @@
+Baikal\ModelBundle\Entity\Calendar:
+    properties:
+        displayname:
+            - NotBlank: ~
+
+        principaluri:
+            - NotBlank: ~
+
+        uri:
+            - NotBlank: ~

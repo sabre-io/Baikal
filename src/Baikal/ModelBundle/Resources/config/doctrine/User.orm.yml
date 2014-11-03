@@ -1,0 +1,39 @@
+Baikal\ModelBundle\Entity\User:
+    type: entity
+    table: users
+    repositoryClass: Baikal\ModelBundle\Entity\Repository\UserRepository
+    entityListeners:
+        Baikal\ModelBundle\Entity\Listener\UserListener: ~
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        username:
+            type: string
+            length: 255
+            unique: true
+            nullable: true
+
+        digesta1:
+            type: string
+            length: 200
+            nullable: true
+
+    oneToOne:
+        metadata:
+            targetEntity: Baikal\ModelBundle\Entity\UserMetadata
+            cascade:
+                - remove
+                - persist
+                - merge
+            mappedBy: user
+            inversedBy: null
+            joinColumns: {  }
+            orphanRemoval: false
+
+    lifecycleCallbacks: {  }

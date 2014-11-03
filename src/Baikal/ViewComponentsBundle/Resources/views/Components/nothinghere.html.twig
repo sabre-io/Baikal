@@ -1,0 +1,11 @@
+<div class="container">
+    {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+</div>
+
+<div class="text-center">
+    <h3>Nothing here !</h3>
+    <p>
+        It seems that you don't have any {{ singularize(itemname) }}.
+        <a href="{{ actionurl }}" class="btn btn-success">{{ calltoaction }}</a>
+    </p>
+</div>

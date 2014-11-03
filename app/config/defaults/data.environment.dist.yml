@@ -1,0 +1,9 @@
+parameters:
+    environment.user:
+        
+        # ####
+        # Uncomment and define properly the line below to point your database
+        # Valid drivers are: mysql://, mssql://, postgres:// and sqlite://
+        # ####
+
+        # DATABASE_URL: mysql://user:password@hostname/dbname
