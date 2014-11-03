@@ -54,12 +54,6 @@ $ cd web/apps/calclient && ember build --environment=production
 $ cd web/apps/cardclient && grunt build
 ```
 
-## Usage
-
-Baïkal now features a frontend ('/') and an admin ('/admin')
-
-You may log in frontend or backend.
-
 ## Roadmap
 
 * Add unit tests
@@ -76,9 +70,7 @@ If you are willing to participate, and know your way in whatever domain you want
 
 ### Apple Calendar And Apple Contacts
 
-**If https**
-
-> For both http and https
+**For both http and https**
 
 * "Add account ..."
 * Select "Manual"
