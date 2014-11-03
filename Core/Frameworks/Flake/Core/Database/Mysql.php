@@ -53,7 +53,7 @@ class Mysql extends \Flake\Core\Database {
 	public function tables() {
 		$aTables = array();
 		
-		$sSql = "SHOW TABLES FROM " . $this->sDbName;
+		$sSql = "SHOW TABLES FROM `" . $this->sDbName . "`";
 		$oStmt = $this->query($sSql);
 		
 		while(($aRs = $oStmt->fetch()) !== FALSE) {
