@@ -1,1 +1,0 @@
-../../../Core/Frameworks/BaikalAdmin/WWWRoot/install/index.php
