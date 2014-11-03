@@ -6,7 +6,7 @@ This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
 Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://appsdeck.eu/, etc.).
 
-## Production installation on a classic platform (non-PAAS, )
+## Production setup: installation on a classic platform (non-PAAS)
 
 **Note:** for now, composer is required for the installation.
 
@@ -35,7 +35,13 @@ $ composer install
 $ php app/console server:run --env=prod
 ```
 
-## Contributing: Installation on a classic platform (non-PAAS)
+And then open <http://localhost:8000> in your web browser.
+
+Log in using the default account created during initialization (username: **admin**, password: **password**).
+
+First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
+
+## Development setup: Installation on a classic platform (non-PAAS)
 
 **Note:** for now, composer is required for the installation.
 
@@ -74,15 +80,15 @@ $ php app/console server:dev
 
 ```
 
-And then open http://localhost:8000 in your web browser.
+And then open <http://localhost:8000> in your web browser.
 
 Log in using the default account created during initialization (username: **admin**, password: **password**).
 
 First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
 
-## Production usage
+## Packaging for release
 
-Before production usage, if you modified the frontend apps (located in `web/apps/`), make sure to build them:
+If you modified the frontend apps (located in `web/apps/`), make sure to build them before release:
 
 ```sh
 # Build the calendar client (emberjs with embercli)
