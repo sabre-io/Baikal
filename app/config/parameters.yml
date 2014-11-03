@@ -1,0 +1,30 @@
+parameters:
+
+    # Packaged App parameters here
+    # To be modified by the app developer only
+    # To override these parameters for your running application, see /data/parameters.yml
+
+    ###########################################################################
+    # Symfony Stuff
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            en
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    debug_toolbar:          true
+    debug_redirects:        false
+    use_assetic_controller: true
+    # /Symfony Stuff
+    ###########################################################################
+
+    ###########################################################################
+    # Baïkal
+    baikal.app_distrib: regular
+    baikal.dav_caldav_enabled: true
+    baikal.dav_carddav_enabled: true
+    baikal.dav_realm: Baikal
+    # /Baïkal
+    ###########################################################################

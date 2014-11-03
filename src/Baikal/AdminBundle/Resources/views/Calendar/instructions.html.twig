@@ -1,0 +1,38 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Calendar " ~ calendar.getDisplayname() ~ " of " ~ user.uiLabel() %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "group" %}
+    {% block header %}
+        <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+        
+        <i class="fa fa-angle-right"></i>
+
+        <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+        <i class="fa fa-angle-right"></i>
+
+        <i class="fa fa-calendar"></i> <a href="{{ path('baikal_admin_user_calendar_list', { id: user.id }) }}">Calendars</a>
+
+        <i class="fa fa-angle-right"></i>
+
+        {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: calendar } %} {{ calendar.getDisplayname() }}
+
+        <i class="fa fa-angle-right"></i>
+
+        <i class="fa fa-plug"></i> Connect
+
+    {% endblock %}
+{% endembed %}
+
+{% embed "BaikalViewComponentsBundle:Components:Calendar/instructions.html.twig" with {
+    user: user,
+    calendar: calendar
+} %}{% endembed %}
+
+{% endblock %}
+
+{% block jslibsjquery %}{% endblock %}

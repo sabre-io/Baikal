@@ -1,0 +1,63 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Settings" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "cogs" %}
+    {% set header = "Settings" %}
+{% endembed %}
+
+<div class="container">
+
+    {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+    
+    <form class="form-horizontal" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" method="post" {{ form_enctype(form) }} role="form" novalidate>
+        <fieldset>
+
+            <div class="form-group{% if form.server_timezone.vars.errors|length %} has-error{% endif %}">
+                {{ form_label(form.server_timezone, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+                <div class="col-sm-8 col-lg-6">
+                    {{ form_widget(form.server_timezone, { 'attr': { 'class': 'form-control' } }) }}
+                    {% if not form.server_timezone.vars.valid %}<span class="help-block">{{ form.server_timezone.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group{% if form.enable_caldav.vars.errors|length %} has-error{% endif %}">
+                <label class='col-sm-4 col-lg-2 control-label'></label>
+                <div class="col-sm-8 col-lg-6">
+                    {{ form_widget(form.enable_caldav) }} {{ form_label(form.enable_caldav, label|default(null)) }}<br />
+                    {% if not form.enable_caldav.vars.valid %}<span class="help-block">{{ form.enable_caldav.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group{% if form.enable_carddav.vars.errors|length %} has-error{% endif %}">
+                <label class='col-sm-4 col-lg-2 control-label'></label>
+                <div class="col-sm-8 col-lg-6">
+                    {{ form_widget(form.enable_carddav) }} {{ form_label(form.enable_carddav, label|default(null)) }}<br />
+                    {% if not form.enable_carddav.vars.valid %}<span class="help-block">{{ form.enable_carddav.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="form-group{% if form.enable_versioncheck.vars.errors|length %} has-error{% endif %}">
+                <label class='col-sm-4 col-lg-2 control-label'></label>
+                <div class="col-sm-8 col-lg-6">
+                    {{ form_widget(form.enable_versioncheck) }} {{ form_label(form.enable_versioncheck, label|default(null)) }}<br />
+                    {% if not form.enable_versioncheck.vars.valid %}<span class="help-block">{{ form.enable_versioncheck.vars.errors[0].getMessage() }}</span>{% endif %}
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="form-group">
+
+                <div class="col-sm-offset-4 col-sm-2 col-lg-offset-2 col-lg-1">
+                    <button type="submit" class="btn btn-primary btn-large">Update <i class="fa fa-cogs"></i> Settings</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

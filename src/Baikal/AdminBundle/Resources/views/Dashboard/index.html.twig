@@ -1,0 +1,124 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Dashboard" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "dashboard" %}
+    {% block header %}Dashboard{% endblock %}
+{% endembed %}
+
+<div class="container">
+
+    <section id="remoteinfo"></section>
+    
+    <section id="about">
+        <h3>About this system</h3>
+        <div class="row">
+            <section id="version" class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                <h4>Baïkal</h4>
+                <p>This systems runs Baïkal <span class="label label-info label-intext">{{ app_version }}</em></span></p>
+                <p>Get Baïkal at <a href="http://baikal-server.com">http://baikal-server.com</a></p>
+            </section>
+            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                <h4>Services</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Calendar service</td>
+                            <td>
+                                {% if config().getEnable_caldav() %}
+                                <span class="label label-success label-intext pull-right">On</span>
+                                {% else %}
+                                <span class="label label-danger label-intext pull-right">Off</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Contacts service</td>
+                            <td>
+                                {% if config().getEnable_carddav() %}
+                                <span class="label label-success label-intext pull-right">On</span>
+                                {% else %}
+                                <span class="label label-danger label-intext pull-right">Off</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Check for updates</td>
+                            <td>
+                                {% if config().getEnable_versioncheck() %}
+                                <span class="label label-success label-intext pull-right">On</span>
+                                {% else %}
+                                <span class="label label-danger label-intext pull-right">Off</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h4>Statistics</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <h4>Users</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Registered users</td>
+                                    <td><span class="badge pull-right">{{ nbusers }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                        <h4>Calendars</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Calendars</td>
+                                    <td><span class="badge pull-right">{{ nbcalendars }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Events</td>
+                                    <td><span class="badge pull-right">{{ nbevents }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                        <h4>Contacts</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Addressbooks</td>
+                                    <td><span class="badge pull-right">{{ nbaddressbooks }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Contacts</td>
+                                    <td><span class="badge pull-right">{{ nbaddressbookcontacts }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="statistics">
+        <h3>License and credits</h3>
+        {% embed "BaikalViewComponentsBundle:Components:Dashboard/license.html.twig" %}{% endembed %}
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    
+    {% if config().getEnable_versioncheck() %}
+        <script defer="defer" src="http://baikal-server.com/remote/versioncheck.js?version={{ app_version }}&distrib={{ app_distrib }}"></script>
+    {% endif %}
+{% endblock scripts %}

@@ -1,0 +1,32 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% block content %}
+    
+    {% set new = not (addressbook is defined and addressbook.id) %}
+    
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "book" %}
+        {% block header %}
+            <a href="{{ path('baikal_frontend_addressbook_list') }}">Addressbooks</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            {% if new %}
+                New
+            {% else %}
+                {{ addressbook.displayName() }}
+
+                <i class="fa fa-angle-right"></i>
+
+                Edit
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Addressbook/form.html.twig" with {
+        new: new,
+        url_cancel: path('baikal_frontend_addressbook_list')
+    } %}{% endembed %}
+
+{% endblock %}

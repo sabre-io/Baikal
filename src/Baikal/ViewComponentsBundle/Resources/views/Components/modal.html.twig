@@ -1,0 +1,39 @@
+{% spaceless %}
+
+    {% if title is not defined %}
+        {% set title = 'Watch out !' %}
+    {% endif %}
+
+    {% if body is not defined %}
+        {% set body = "<p>You are about to do something dangerous.</p>" %}
+    {% endif %}
+
+    {% if button_text is not defined %}
+        {% set button_text = block('title') %}
+    {% endif %}
+
+    {% if button_class is not defined %}
+        {% set button_class = 'danger' %}
+    {% endif %}
+
+    {% if id is not defined %}
+        {% set id = 'modal-' ~ button_class %}
+    {% endif %}
+
+{% endspaceless %}<div class="modal fade" id="{% block id %}{{ id }}{% endblock %}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% block title %}{{ title|raw }}{% endblock %}</h4>
+            </div>
+            <div class="modal-body">
+                {% block body %}{{ body|raw }}{% endblock %}
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default btn-cancel pull-left" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-{{ button_class }} btn-execute pull-right">{% block button_text %}{{ button_text|raw }}{% endblock %}</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

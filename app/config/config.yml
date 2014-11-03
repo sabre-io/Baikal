@@ -1,0 +1,152 @@
+imports:
+
+    # BootCamp
+    - { resource: config_bootcamp.yml }
+    - { resource: @SymfonyBootCampBundle/ParameterProcessor/Environment.php }
+    - { resource: @SymfonyBootCampBundle/ParameterProcessor/Database.php }
+    # /BootCamp
+
+    - { resource: security.yml }
+    - { resource: @BaikalCoreBundle/Resources/config/config.yml }
+    - { resource: @BaikalDavServicesBundle/Resources/config/config.yml }
+    - { resource: @BaikalAdminBundle/Resources/config/config.yml }
+    - { resource: @BaikalFrontendBundle/Resources/config/config.yml }
+
+framework:
+    #esi:             ~
+    #translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        kernel_root_dir: %kernel.root_dir%
+        app_version: %bootcamp.appversion%
+        app_distrib: %baikal.app_distrib%
+        dav_caldav_enabled: %baikal.dav_caldav_enabled%
+        dav_carddav_enabled: %baikal.dav_carddav_enabled%
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        lessphp: ~
+        coffee: ~
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        path:     "%database_path%"
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# jms_security_extra:
+#     # Whether you want to secure all services (true), or only secure specific
+#     # services (false); see also below
+#     secure_all_services: false
+# 
+#     # Enabling this setting will add an additional special attribute "ROLE_IDDQD".
+#     # Anybody with this attribute will effectively bypass all security checks.
+#     enable_iddqd_attribute: false
+# 
+#     # Enables expression language
+#     expressions: true
+
+sensio_framework_extra:
+    #router:   { annotations: true }
+    #request:  { converters: true, auto_convert: true }
+    #view:     { annotations: true }
+    #cache:    { annotations: true }
+    security: { annotations: true }
+
+# jms_serializer:
+#     metadata:
+#         auto_detection: false
+#         directories:
+#             BaikalModel:
+#                 path: "@BaikalModelBundle/Resources/config/serializer"
+
+nelmio_cors:
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['OPTIONS', 'POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600
+
+fos_rest:
+    param_fetcher_listener: force
+    body_listener: false
+    format_listener: false
+    allowed_methods_listener: true
+    disable_csrf_role: ROLE_API
+    routing_loader:
+        default_format: json
+        include_format: false
+    service:
+        router: router
+        templating: templating
+        serializer: jms_serializer.serializer
+        #serializer: serializer
+        view_handler: fos_rest.view_handler.default
+    serializer:
+        serialize_null: true
+
+jms_serializer:
+    metadata:
+        auto_detection: true
+        directories:
+            Baikal:
+                path: "@BaikalRestBundle/Resources/config/serializer"
+
+netgusto_dev_server:
+    tasks:
+        - { command: php app/console server:run 0.0.0.0:8000 }
+        - { command: php app/console assetic:dump --watch }
+        - { command: ember serve --port 4200, path: web/apps/calclient }
+        - { command: grunt serve, path: web/apps/cardclient }
+
+netgusto_portal:
+    applications:
+        - { name: calclient, path: web/apps/calclient, type: ember-cli, port: 4200 }
+        - { name: cardclient, path: web/apps/cardclient, type: yo-react-webpack, port: 8003 }

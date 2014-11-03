@@ -1,0 +1,127 @@
+security:
+    encoders:
+
+        Baikal\ModelBundle\Entity\User:
+            id: baikal.model.sabredav_password_encoder
+
+    role_hierarchy:
+        ROLE_USER:          ROLE_USER
+        ROLE_API:           ROLE_API
+        ROLE_FRONTEND_USER: [ROLE_API,ROLE_USER]
+        ROLE_ADMIN:         [ROLE_API,ROLE_USER]     # Note that ROLE_ADMIN is not granted ROLE_FRONTEND_USER; one user can cumulate both roles though
+
+    providers:
+
+        sabredav_user_db:
+            entity: { class: Baikal\ModelBundle\Entity\User, property: username }
+
+    access_control:
+        - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: [ROLE_ADMIN] }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: [ROLE_FRONTEND_USER] }
+
+    firewalls:
+
+        # Note: order here does matter, as SF requires firewalls to be
+        # defined in the order they have to be evaluated (if frontend denies
+        # access to ^/, then admin won't be reachable, even if anonymously usable)
+
+        # #####################################################################
+        # Anonymous pages first
+        # #####################################################################
+
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # 'Well-known' service is not under any firewall
+        frontend_catch_apple:
+            pattern: ^/$
+            security: false
+            methods: [PROPFIND]
+
+        # 'Well-known' service is not under any firewall
+        frontend_wellknown:
+            pattern: ^/.well-known/.*$
+            security: false
+
+        # 'Well-known' service is not under any firewall
+        frontend_davrerouting:
+            pattern: ^/principals$
+            security: false
+
+        # DAV services are anonymously accessible
+        # As SabreDAV handles auth
+        davservices:
+            pattern: ^/dav/.*$
+            security: false
+
+        # Page /login is anonymously accessible
+        frontend_login:
+            pattern: ^/login$
+            anonymous: ~
+
+        # Page /admin/login is anonymously accessible
+        admin_login:
+            pattern: ^/admin/login$
+            anonymous: ~
+
+        # Bootcamp
+        bootcamp_init:
+            pattern:  ^/_init/.*$
+            security: false
+
+        # #####################################################################
+        # Admin login section
+        # #####################################################################
+
+        admin:
+            pattern: ^/admin
+            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
+            provider: sabredav_user_db
+            #access_denied_handler: baikal_admin.access_denied_handler
+
+            form_login:
+                login_path: /admin/login
+                check_path: /admin/login_check
+
+
+            logout:
+                path: /admin/logout
+                target: /admin
+                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
+
+            remember_me:
+                key: "%secret%"
+                lifetime: 31536000      # 365 days in seconds
+                path: /
+                domain: ~ # Defaults to the current domain from $_SERVER
+                always_remember_me: true
+
+        # #####################################################################
+        # Frontend login section
+        # Defined after admin login section, because admin is nested in frontend
+        # #####################################################################
+
+        frontend:
+            pattern: ^/
+            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
+            provider: sabredav_user_db
+            #access_denied_handler: baikal_frontend.access_denied_handler
+
+            form_login:
+                login_path: /login
+                check_path: /login_check
+
+            logout:
+                path: /logout
+                target: /
+                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
+
+            remember_me:
+                key: "%secret%"
+                lifetime: 31536000      # 365 days in seconds
+                path: /
+                domain: ~ # Defaults to the current domain from $_SERVER
+                always_remember_me: true

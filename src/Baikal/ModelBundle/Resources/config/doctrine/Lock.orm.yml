@@ -1,0 +1,46 @@
+Baikal\ModelBundle\Entity\Lock:
+    type: entity
+    table: locks
+    indexes:
+        token:
+            columns: [ 'token' ]
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+
+        owner:
+            type: string
+            length: 100
+            nullable: true
+
+        timeout:
+            type: integer
+            nullable: true
+
+        created:
+            type: integer
+            nullable: true
+
+        token:
+            type: string
+            length: 100
+            nullable: true
+
+        scope:
+            type: integer
+            nullable: true
+
+        depth:
+            type: integer
+            nullable: true
+
+        uri:
+            type: text
+            nullable: true
+
+    lifecycleCallbacks: {  }

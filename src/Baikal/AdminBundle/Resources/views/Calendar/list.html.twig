@@ -1,0 +1,41 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Calendars for " ~ user.uiLabel() %}
+
+{% block content %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "group" %}
+        {% block header %}
+            <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+            <i class="fa fa-angle-right"></i>
+            
+            <i class="fa fa-calendar"></i> Calendars
+        {% endblock %}
+    {% endembed %}
+
+    {% if calendars|length %}
+        {% embed "BaikalViewComponentsBundle:Components:addbutton.html.twig" %}
+            {% set button_url = path('baikal_admin_calendar_form_new', { 'user': user.id }) %}
+            {% set button_text = '<i class="fa fa-calendar"></i> Add calendar' %}
+        {% endembed %}
+
+        {% embed "BaikalViewComponentsBundle:Components:Calendar/list.html.twig" with {
+            'user' : user,
+            'items' : calendars,
+            'urls': urls
+        } %}{% endembed %}
+    {% else %}
+        {% embed "BaikalViewComponentsBundle:Components:nothinghere.html.twig" with {
+            itemname: 'calendar',
+            actionurl: path('baikal_admin_calendar_form_new', { user: user.id }),
+            calltoaction: 'Create one now'
+        } %}{% endembed %}
+    {% endif %}
+
+{% endblock %}

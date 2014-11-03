@@ -1,0 +1,43 @@
+Baikal\ModelBundle\Entity\CalendarChange:
+    type: entity
+    table: calendarchanges
+    indexes:
+        calendarid_synctoken:
+            columns: [ 'calendarid', 'synctoken' ]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+        uri:
+            type: string
+            length: 255
+            #nullable: false
+            nullable: true
+
+        synctoken:
+            type: integer
+            #nullable: false
+            nullable: true
+
+        operation:
+            type: boolean
+            #nullable: false
+            nullable: true
+
+    manyToOne:
+
+        calendar:
+            targetEntity: Baikal\ModelBundle\Entity\Calendar
+            cascade: {  }
+            mappedBy: null
+            inversedBy: changes
+            joinColumns:
+                calendarid:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+    lifecycleCallbacks: {  }

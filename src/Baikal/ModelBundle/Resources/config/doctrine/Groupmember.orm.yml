@@ -1,0 +1,24 @@
+Baikal\ModelBundle\Entity\Groupmember:
+    type: entity
+    table: groupmembers
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        principal:
+            type: integer
+            #nullable: false
+            nullable: true
+            column: principal_id
+
+        member_id:
+            type: integer
+            #nullable: false
+            nullable: true
+
+    lifecycleCallbacks: {  }

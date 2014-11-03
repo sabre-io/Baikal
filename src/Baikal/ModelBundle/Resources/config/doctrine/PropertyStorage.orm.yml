@@ -1,0 +1,25 @@
+Baikal\ModelBundle\Entity\PropertyStorage:
+    type: entity
+    table: propertystorage
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+        path:
+            type: string
+            length: 1024
+            nullable: false
+
+        name:
+            type: string
+            length: 100
+            nullable: false
+
+        value:
+            type: blob
+
+    lifecycleCallbacks: {  }

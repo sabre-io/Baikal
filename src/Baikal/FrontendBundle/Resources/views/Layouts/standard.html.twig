@@ -1,0 +1,17 @@
+{% extends "BaikalViewComponentsBundle:Layouts:standard.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/frontendbundle.css') }}" />
+{% endblock stylesheets %}
+
+{% block body %}
+
+    {% include 'BaikalFrontendBundle:Layouts:partials/_header.html.twig' %}
+
+    {% block content %}
+    <p>Content here</p>
+    {% endblock %}
+
+    {% include 'BaikalFrontendBundle:Layouts:partials/_footer.html.twig' %}
+
+{% endblock body %}

@@ -1,0 +1,55 @@
+Baikal\ModelBundle\Entity\Addressbook:
+    type: entity
+    table: addressbooks
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        principaluri:
+            type: string
+            length: 255
+            nullable: true
+
+        displayname:
+            type: string
+            length: 255
+            nullable: true
+
+        uri:
+            type: string
+            length: 255
+            nullable: true
+
+        description:
+            type: text
+            length: 255
+            nullable: true
+
+        synctoken:
+            type: integer
+            nullable: true
+
+    oneToMany:
+
+        contacts:
+            targetEntity: Baikal\ModelBundle\Entity\AddressbookContact
+            cascade:
+                - remove
+            mappedBy: addressbook
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    
+        changes:
+            targetEntity: Baikal\ModelBundle\Entity\AddressbookChange
+            cascade:
+                - remove
+            mappedBy: addressbook
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+
+    lifecycleCallbacks: {  }

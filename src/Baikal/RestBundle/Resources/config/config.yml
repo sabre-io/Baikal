@@ -1,0 +1,20 @@
+#parameters:
+#    jms_serializer.json_serialization_visitor.class: 'Baikal\RestBundle\Serializer\SideLoadJsonSerializationVisitor'
+
+fos_rest:
+    view:
+        view_response_listener: force
+        formats:
+            json: true
+    routing_loader:
+        # no {_format} in the generated routes
+        include_format: false
+        default_format: json
+    format_listener:
+        rules:
+            - priorities: [json]
+            - fallback_format: json
+
+sensio_framework_extra:
+    view:
+        annotations: false

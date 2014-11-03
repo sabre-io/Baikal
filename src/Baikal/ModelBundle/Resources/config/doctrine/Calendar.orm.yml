@@ -1,0 +1,80 @@
+Baikal\ModelBundle\Entity\Calendar:
+    type: entity
+    table: calendars
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        principaluri:
+            type: string
+            length: 255
+            nullable: true
+
+        displayname:
+            type: string
+            length: 255
+            nullable: true
+
+        uri:
+            type: string
+            length: 255
+            nullable: true
+
+        synctoken:
+            type: integer
+            #nullable: false
+            nullable: true
+
+        description:
+            type: text
+            nullable: true
+
+        calendarorder:
+            type: integer
+            #nullable: false
+            nullable: true
+
+        calendarcolor:
+            type: string
+            length: 10
+            nullable: true
+
+        timezone:
+            type: text
+            nullable: true
+
+        components:
+            type: string
+            length: 255
+            nullable: true
+
+        transparent:
+            type: boolean
+            #nullable: false
+
+    oneToMany:
+
+        events:
+            targetEntity: Baikal\ModelBundle\Entity\Event
+            cascade:
+                - remove
+            mappedBy: calendar
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+
+        changes:
+            targetEntity: Baikal\ModelBundle\Entity\CalendarChange
+            cascade:
+                - remove
+            mappedBy: calendar
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+
+    lifecycleCallbacks: {  }

@@ -1,0 +1,23 @@
+{% spaceless %}
+
+    {% if button_url is not defined %}
+        {% set button_url = false %}
+    {% endif %}
+
+    {% if button_text is not defined %}
+        {% set button_text = false %}
+    {% endif %}
+
+    {% set button_url_bis = block('button_url')|raw %}
+    {% set button_text_bis = block('button_text')|raw %}
+
+{% endspaceless %}<div class="container">
+    <div class="row addbutton">
+        <div class="col-lg-12 text-right">
+        {% if button_url and button_text %}
+            <a class="btn btn-success hidden-xs" href="{% block button_url %}{{ button_url|raw }}{% endblock %}">{% block button_text %}{{ button_text|raw }}{% endblock %}</a>
+            <a class="btn btn-success btn-sm visible-xs" href="{{ button_url_bis|raw }}">{{ button_text_bis|raw }}</a>
+        {% endif %}
+        </div>
+    </div>
+</div>

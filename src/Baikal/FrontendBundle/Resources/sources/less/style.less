@@ -1,0 +1,185 @@
+.bk-stripedlist .row {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.bk-stripedlist .row:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+.bk-stripedlist .row:nth-child(even) {
+    background-color: #FEFEFE;
+}
+
+.bk-stripedlist .btn-group {
+    margin-top: 0.3em;
+}
+
+
+.visible-xxs,
+.visible-xxs-portrait,
+.visible-xxs-landscape {
+    display: none !important;
+    &.inline-block {
+        display: none !important;
+    }
+}
+
+.hidden-xxs,
+.hidden-xxs-portrait,
+.hidden-xxs-landscape {
+    display: block !important;
+    &.inline-block {
+        display: inline-block !important;
+    }
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+    and (max-width : 480px) {
+
+    .visible-xxs,
+    .visible-xxs-portrait,
+    .visible-xxs-landscape {
+        display: block !important;
+        &.inline-block {
+            display: inline-block !important;
+        }
+    }
+
+    .hidden-xxs,
+    .hidden-xxs-portrait,
+    .hidden-xxs-landscape {
+        display: none !important;
+        &.inline-block {
+            display: none !important;
+        }
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+    and (max-width : 320px) {
+    .visible-xxs,
+    .visible-xxs-landscape {
+        display: block !important;
+        &.inline-block {
+            display: inline-block !important;
+        }
+    }
+
+    .hidden-xxs,
+    .hidden-xxs-landscape {
+        display: none !important;
+        &.inline-block {
+            display: none !important;
+        }
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+    and (min-width : 321px)
+    and (max-width : 480px) {
+    .visible-xxs,
+    .visible-xxs-portrait {
+        display: block !important;
+        &.inline-block {
+            display: inline-block !important;
+        }
+    }
+
+    .hidden-xxs,
+    .hidden-xxs-portrait {
+        display: none !important;
+        &.inline-block {
+            display: none !important;
+        }
+    }
+}
+
+/*****************************************************************************/
+
+
+.dropdown-menu li i {
+    display: inline-block;
+    width: 1.4em;
+}
+
+#baikallogo {
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+}
+
+.navbar-brand {
+    color: #555555;
+    font-size: 2em;
+    max-width: 400px;   /* Instead of 200px by default in bootstrap 3 */
+
+    font-family: 'Ubuntu', inherit;
+
+    span.colored {
+        color: #F24535;
+    }
+}
+
+@media (max-width: 767px) {
+    #baikallogo {
+        margin-left: 5px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2em;
+        padding-left: 5px;
+    }
+}
+
+.page-header {
+    margin: 0 0 12px 0;
+    padding: 12px 0;
+    font-size: 30px;
+    font-weight: 200;
+}
+
+@media (max-width: 767px) {
+    .page-header {
+        font-size: 25px;
+        line-height: 30px;
+
+        i.fa {
+            display: none;
+
+            &.fa-angle-right {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    margin-top: 0;
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.top-buffer {
+    margin-top:20px;
+}
+
+.list-itemtitle {
+    font-size: 2em;
+    font-weight: 200;
+}
+
+.addbutton {
+    margin-bottom: 12px;
+}

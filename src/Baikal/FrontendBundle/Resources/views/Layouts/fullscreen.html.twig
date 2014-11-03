@@ -1,0 +1,74 @@
+{% extends "BaikalViewComponentsBundle:Layouts:standard.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/frontendbundle.css') }}" />
+    <style>
+        body {
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block body %}
+
+    <style type="text/css">
+        #minimenu {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            /* background: red; */
+            z-index: 99999;
+        }
+
+        #minimenu a,
+        #minimenu a:hover,
+        #minimenu a:active {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        #minimenu>.dropdown>a {
+            color: #777;
+        }
+
+    </style>
+    
+    <div id="minimenu" class="pull-right">
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xxs inline-block"> {{ app.user.getUsername() }}</span> <b class="caret"></b></a>
+            <ul class="dropdown-menu pull-right">
+                
+                <li><a href="{{ path('baikal_frontend_homepage') }}"><img src="{{ asset('bundles/baikalcore/img/matriochka.svg') }}" style="height: 26px; margin-right: 2px;"/> Dashboard</a></li>
+
+                <li class="divider"></li>
+
+                <li><a href="{{ path('baikal_frontend_calendar_list') }}"><i class="fa fa-calendar"></i> Calendars</a></li>
+                <li><a href="{{ path('baikal_frontend_addressbook_list') }}"><i class="fa fa-book"></i> Contacts</a></li>
+
+                <li class="divider"></li>
+
+                <li><a href="{{ path('baikal_frontend_logout') }}"><i class="fa fa-power-off"></i> Signout</a></li>
+
+                {% if app.user.id is defined %}
+                <li class="divider"></li>
+                <li><a href="{{ path('baikal_frontend_profile') }}"><i class="fa fa-smile-o"></i> My profile</a></li>
+                {% endif %}
+
+                {% if is_granted('ROLE_FRONTEND_USER') %}
+
+                <li><a href="{{ path('baikal_admin_homepage') }}"><i class="fa fa-sign-out"></i> Switch to backend</a></li>
+                
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    {% block content %}
+    <p>Content here</p>
+    {% endblock %}
+
+{% endblock body %}

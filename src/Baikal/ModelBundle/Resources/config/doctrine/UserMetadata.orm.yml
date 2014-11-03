@@ -1,0 +1,33 @@
+Baikal\ModelBundle\Entity\UserMetadata:
+    type: entity
+    table: ~
+    repositoryClass: Baikal\ModelBundle\Entity\Repository\UserMetadataRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        roles:
+            type: simple_array
+            #nullable: false
+            nullable: true
+
+    oneToOne:
+        user:
+            targetEntity: Baikal\ModelBundle\Entity\User
+            cascade:
+                - remove
+                - persist
+                - merge
+            mappedBy: null
+            inversedBy: metadata
+            joinColumns:
+                userid:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+    lifecycleCallbacks: {  }

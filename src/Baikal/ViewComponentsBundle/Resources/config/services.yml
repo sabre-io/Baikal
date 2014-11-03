@@ -1,0 +1,28 @@
+services:
+    
+    baikal.twigextension:
+        class: Baikal\ViewComponentsBundle\Twig\BaikalExtension
+        arguments:
+            # Inject service container to lazyload dependencies
+            - @service_container
+        tags:
+            - { name: twig.extension }
+
+    baikal.twigmenuextension:
+        class: Baikal\ViewComponentsBundle\Twig\MenuExtension
+        arguments:
+            helper: @knp_menu.helper
+        tags:
+            - { name: twig.extension }
+
+    baikal.formhandler.calendar:
+        class: Baikal\ViewComponentsBundle\Services\FormHandler\CalendarFormHandler
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory
+
+    baikal.formhandler.addressbook:
+        class: Baikal\ViewComponentsBundle\Services\FormHandler\AddressbookFormHandler
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory

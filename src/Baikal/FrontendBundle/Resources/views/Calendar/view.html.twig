@@ -1,0 +1,29 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Calendar " ~ calendar.getDisplayname() %}
+
+{% block content %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "calendar" %}
+        {% block header %}
+
+            <a href="{{ path('baikal_frontend_calendar_list') }}">Calendars</a>
+
+            <i class="fa fa-angle-right"></i>
+
+            {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: calendar } %} {{ calendar.getDisplayname() }}
+
+        {% endblock %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Applications/calclient.html.twig" with {
+        user: user,
+        calendar: calendar,
+        fullscreen: false,
+        alternativeurl: path('baikal_frontend_calendar_view_fullscreen', { calendar: calendar.id })
+    } %}{% endembed %}
+
+{% endblock %}
+
+{% block jslibsjquery %}{% endblock %}

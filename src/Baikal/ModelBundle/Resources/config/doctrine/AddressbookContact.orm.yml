@@ -1,0 +1,49 @@
+Baikal\ModelBundle\Entity\AddressbookContact:
+    type: entity
+    table: cards
+    repositoryClass: Baikal\ModelBundle\Entity\Repository\AddressbookContactRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        carddata:
+            type: text
+            nullable: true
+
+        uri:
+            type: string
+            length: 255
+            nullable: true
+
+        lastmodified:
+            type: integer
+            nullable: true
+
+        etag:
+            type: string
+            length: 32
+            nullable: true
+
+        size:
+            type: integer
+            #nullable: false
+            nullable: true
+
+    manyToOne:
+        
+        addressbook:
+            targetEntity: Baikal\ModelBundle\Entity\Addressbook
+            cascade: {  }
+            mappedBy: null
+            inversedBy: contacts
+            joinColumns:
+                addressbookid:
+                    referencedColumnName: id
+            orphanRemoval: false
+    
+    lifecycleCallbacks: {  }

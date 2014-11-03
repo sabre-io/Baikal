@@ -1,0 +1,60 @@
+Baikal\ModelBundle\Entity\Event:
+    type: entity
+    table: calendarobjects
+    entityListeners:
+        Baikal\ModelBundle\Entity\Listener\EventListener: ~
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+
+        calendardata:
+            type: text
+            nullable: true
+
+        uri:
+            type: string
+            nullable: true
+
+        lastmodified:
+            type: integer
+            nullable: true
+
+        etag:
+            type: string
+            length: 255
+            nullable: true
+
+        size:
+            type: integer
+            nullable: true
+
+        componenttype:
+            type: string
+            length: 255
+            nullable: true
+
+        firstoccurence:
+            type: integer
+            nullable: true
+
+        lastoccurence:
+            type: integer
+            nullable: true
+
+    manyToOne:
+
+        calendar:
+            targetEntity: Baikal\ModelBundle\Entity\Calendar
+            cascade: {  }
+            mappedBy: null
+            inversedBy: events
+            joinColumns:
+                calendarid:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+    lifecycleCallbacks: {  }

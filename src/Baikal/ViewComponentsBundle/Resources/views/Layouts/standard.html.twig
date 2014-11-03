@@ -1,0 +1,68 @@
+{% spaceless %}
+
+    {# Defining global variables #}
+
+    {% if pagetitle is not defined %}
+        {% set pagetitle = 'Baïkal' %}
+    {% endif %}
+
+    {% if 'Baïkal' not in pagetitle %}
+        {% set pagetitle = pagetitle ~ ' | Baïkal' %}
+    {% endif %}
+
+{% endspaceless %}<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ pagetitle }}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+        <meta name="generator" content="Symfony 2" />
+
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('vendor/webasset/font-awesome/css/font-awesome.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/frontendbundle.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/adminbundle.css') }}" />
+
+        <style>
+            body {
+                padding-top: 60px;
+            }
+
+            .page-header h1 {
+                font-weight: 300;
+            }
+
+            .minicolors-theme-default .minicolors-input {
+                height: auto !important;
+            }
+            .minicolors-theme-default .minicolors-swatch {
+                height: 24px !important;
+            }
+        </style>
+
+        {% block stylesheets %}{% endblock %}
+
+        {% block jslibsjquery %}
+        <script src="{{ asset('vendor/webasset/jquery/jquery-2.1.0.min.js') }}"></script>
+        {% endblock jslibsjquery %}
+    </head>
+    <body>
+        {% block body %}
+        
+        {% endblock %}
+
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+        {% block scripts %}{% endblock %}
+        <script type="text/javascript">
+        {% block js %}{% endblock %}
+        </script>
+    </body>
+</html>

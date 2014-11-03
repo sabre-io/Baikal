@@ -1,0 +1,66 @@
+Baikal\ModelBundle\Entity\CalendarSubscription:
+    type: entity
+    table: calendarsubscriptions
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    fields:
+
+        uri:
+            type: string
+            length: 200
+            #nullable: false
+            nullable: true
+
+        principaluri:
+            type: string
+            length: 100
+            #nullable: false
+            nullable: true
+
+        source:
+            type: text
+            nullable: true
+
+        displayname:
+            type: string
+            length: 100
+            nullable: true
+
+        refreshrate:
+            type: string
+            length: 10
+            nullable: true
+
+        calendarorder:
+            type: integer
+            #nullable: false
+            nullable: true
+
+        calendarcolor:
+            type: string
+            length: 10
+            nullable: true
+
+        striptodos:
+            type: boolean
+            nullable: true
+
+        stripalarms:
+            type: boolean
+            nullable: true
+
+        stripattachments:
+            type: boolean
+            nullable: true
+
+        lastmodified:
+            type: integer
+            #nullable: false
+            nullable: true
+
+    lifecycleCallbacks: {  }

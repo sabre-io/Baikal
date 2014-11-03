@@ -1,0 +1,40 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Addressbooks for " ~ user.getUsername() %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "group" %}
+    {% block header %}
+        <a href="{{ path('baikal_admin_user_list') }}">Users</a>
+        
+        <i class="fa fa-angle-right"></i>
+
+        <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
+
+        <i class="fa fa-angle-right"></i>
+        
+        <i class="fa fa-book"></i> Contact books
+    {% endblock %}
+{% endembed %}
+
+{% if addressbooks|length %}
+    {% embed "BaikalViewComponentsBundle:Components:addbutton.html.twig" %}
+        {% set button_url = path('baikal_admin_addressbook_form_new', { 'user': user.id }) %}
+        {% set button_text = '<i class="fa fa-book"></i> Add book' %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:Addressbook/list.html.twig" with {
+        'items': addressbooks,
+        'user': user
+    } %}{% endembed %}
+{% else %}
+    {% embed "BaikalViewComponentsBundle:Components:nothinghere.html.twig" with {
+        itemname: 'addressbook',
+        actionurl: path('baikal_admin_addressbook_form_new', { user: user.id }),
+        calltoaction: 'Create one now'
+    } %}{% endembed %}
+{% endif %}
+
+{% endblock %}
