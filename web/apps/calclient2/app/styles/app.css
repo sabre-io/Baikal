@@ -1,0 +1,19 @@
+/* fullscreen layout: remove bootstrap gutters */
+
+.calendar-fullscreen .calendarspace > .col-sm-12,
+.calendar-fullscreen .calendarspace > .col-sm-9,
+.calendar-fullscreen .calendarspace > .col-sm-3 {
+    padding: 0;
+}
+
+.calendar-fullscreen .calendarspace > .calendarevent {
+    padding-left: 15px;
+}
+
+.calendar-regular .cal-header:after {
+    border-bottom: none;
+}
+
+.fullscreenlink a {
+    color: #3F3F3F;
+}
