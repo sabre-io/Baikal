@@ -9,15 +9,19 @@ Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable 
 ## Screenshots
 
 **Admin Dashboard**
+
 ![](http://baikal-server.com/res/img/github/01-dash.png)
 
 **User management**
+
 ![](http://baikal-server.com/res/img/github/02-users.png)
 
 **Calendar web client (read-only for now)**
+
 ![](http://baikal-server.com/res/img/github/03-calview.png)
 
 **Contact web client (read-only for now)**
+
 ![](http://baikal-server.com/res/img/github/04-cardview.png)
 
 ## Production setup: installation on a classic platform (non-PAAS)
