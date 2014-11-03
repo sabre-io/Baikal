@@ -26,21 +26,21 @@ $ cp app/config/defaults/data.parameters.dist.yml data/parameters.yml
 $ cp app/config/defaults/data.environment.dist.yml data/environment.yml
 
 # 6. Configure your database connection in data/environment.yml
-// open 'data/environment.yml', uncomment and edit the DATABASE_URL variable
-// By default, Baïkal will use a SQLite database stored in 'data/database.db'
+# // open 'data/environment.yml', uncomment and edit the DATABASE_URL variable
+# // By default, Baïkal will use a SQLite database stored in 'data/database.db'
 
-# 6. Install Baïkal PHP dependencies, and initialize Baïkal
-// at the root of the project
+# 7. Install Baïkal PHP dependencies, and initialize Baïkal
+# // at the root of the project
 $ composer install
 
-# 6. Install required node packages in the global scope:
+# 8. Install required node packages in the global scope:
 $ sudo npm install -g bower ember-cli coffee-script sass
 
-# 7. Install development dependencies for each frontend-app
+# 9. Install development dependencies for each frontend-app
 $ cd web/apps/calclient; npm install; bower install; cd ../../..
 $ cd web/apps/cardclient; npm install; bower install; cd ../../..
 
-# 8. Boot the development server
+# 10. Boot the development server
 $ php app/console server:dev
 
 ```
