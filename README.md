@@ -28,8 +28,8 @@ $ composer install
 $ sudo npm install -g bower ember-cli coffee-script sass
 
 # 7. Install development dependencies for each frontend-app
-$ cd web/apps/calclient && npm install && bower install && cd ../../..
-$ cd web/apps/cardclient && npm install && bower install && cd ../../..
+$ cd web/apps/calclient; npm install; bower install; cd ../../..
+$ cd web/apps/cardclient; npm install; bower install; cd ../../..
 
 # 8. Boot the development server
 $ php app/console server:dev
