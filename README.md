@@ -74,7 +74,7 @@ If you are willing to participate, and know your way in whatever domain you want
 
 ## Calendar client subscription
 
-### Apple Calendar
+### Apple Calendar And Apple Contacts
 
 **If https**
 
