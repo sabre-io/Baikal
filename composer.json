@@ -157,9 +157,6 @@
                 "webasset/font-awesome",
                 "webasset/fullcalendar",
                 "webasset/jquery-minicolors"
-            ],
-            "grunt": [
-                "frontapps/calclient"
             ]
         }
     }
