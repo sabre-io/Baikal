@@ -226,37 +226,43 @@ class User extends \Flake\Core\Model\Db {
 			"label" => "Email",
 			"validation" => "required,email"
 		)));
-		
-		$oMorpho->add(new \Formal\Element\Password(array(
-			"prop" => "password",
-			"label" => "Password",
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Password(array(
-			"prop" => "passwordconfirm",
-			"label" => "Confirm password",
-			"validation" => "sameas:password",
-		)));
-		
+
 		if($this->floating()) {
 			$oMorpho->element("username")->setOption("help", "May be an email, but not forcibly.");
-			$oMorpho->element("password")->setOption("validation", "required");
 		} else {
-			$sNotice = "-- Leave empty to keep current password --";
 			$oMorpho->element("username")->setOption("readonly", true);
+		}
+
+		if( BAIKAL_DAV_AUTH_TYPE == "Digest" || BAIKAL_DAV_AUTH_TYPE == "Basic") {
+			$oMorpho->add(new \Formal\Element\Password(array(
+				"prop" => "password",
+				"label" => "Password",
+			)));
+		
+			$oMorpho->add(new \Formal\Element\Password(array(
+				"prop" => "passwordconfirm",
+				"label" => "Confirm password",
+				"validation" => "sameas:password",
+			)));
+		
+			if($this->floating()) {
+				$oMorpho->element("password")->setOption("validation", "required");
+			} else {
+				$sNotice = "-- Leave empty to keep current password --";
 			
-			$oMorpho->element("password")->setOption("popover", array(
-				"title" => "Password",
-				"content" => "Write something here only if you want to change the user password."
-			));
+				$oMorpho->element("password")->setOption("popover", array(
+					"title" => "Password",
+					"content" => "Write something here only if you want to change the user password."
+				));
 			
-			$oMorpho->element("passwordconfirm")->setOption("popover", array(
-				"title" => "Confirm password",
-				"content" => "Write something here only if you want to change the user password."
-			));
+				$oMorpho->element("passwordconfirm")->setOption("popover", array(
+					"title" => "Confirm password",
+					"content" => "Write something here only if you want to change the user password."
+				));
 			
-			$oMorpho->element("password")->setOption("placeholder", $sNotice);
-			$oMorpho->element("passwordconfirm")->setOption("placeholder", $sNotice);
+				$oMorpho->element("password")->setOption("placeholder", $sNotice);
+				$oMorpho->element("passwordconfirm")->setOption("placeholder", $sNotice);
+			}
 		}
 		
 		return $oMorpho;
