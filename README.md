@@ -1,12 +1,14 @@
-# Baïkal Server - CalDAV+CardDAV Server
+# Baïkal Server 2 - CalDAV+CardDAV Server
 
-This is an incomplete **development version** of Baïkal Server 2 - NOT FOR PRODUCTION USE - seriously.
+**Harder, Better, Faster, Stronger**
+
+This is a **development version** of Baïkal Server 2 - NOT FOR PRODUCTION USE.
 
 Baïkal2 is based on SabreDAV and Symfony2. Baïkal is designed to be usable on PAAS hosting out-of-the-box.
 
 ## Installation (development)
 
-**Note:** for now, composer is required for the installation; ultimately, FLAT packages will be provided.
+**Note:** for now, composer is required for the installation.
 
 ```sh
 # 1. Install composer if not already installed: <https://getcomposer.org/download/>
@@ -14,10 +16,10 @@ Baïkal2 is based on SabreDAV and Symfony2. Baïkal is designed to be usable on 
 # 2. Install node + npm for your system if not already installed: <http://nodejs.org/download/>
 
 # 3. Clone the Baïkal2 source code
-$ git clone https://github.com/netgusto/Baikal2.git
+$ git clone -b 2.0.0 https://github.com/netgusto/Baikal.git
 
-# 4. Enter the Baikal2 folder
-$ cd Baikal2
+# 4. Enter the Baikal folder
+$ cd Baikal
 
 # 5. Install Baïkal PHP dependencies, and initialize Baïkal
 $ composer install
@@ -62,15 +64,11 @@ You may log in frontend or backend.
 ## Roadmap
 
 * Add unit tests
-* Finish backend
-* Finish Calendar and Addressbook View
-* Code frontend
 * Add "Todo list" feature
 * Add "Notes" feature ?
 * Add Import
 * Add export
 * Add calendar sharing
-* Add JSON api.
 * Review B1 github feature requests, and implement the most demanded ones.
 
 If you are willing to participate, and know your way in whatever domain you want to help, please feel free to mail me at contact@netgusto.com (I have little time so please do not lose your patience if I don't answer :p)
