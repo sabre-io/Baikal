@@ -4,7 +4,7 @@
 
 This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
-Baïkal2 is based on SabreDAV and Symfony2. Baïkal is designed to be usable on PAAS hosting out-of-the-box.
+Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://appsdeck.eu/, etc.).
 
 ## Installation (development)
 
