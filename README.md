@@ -1,4 +1,4 @@
-# Baïkal Server 2 - CalDAV+CardDAV Server
+# Baïkal Server 2 - CalDAV+CardDAV Application
 
 **Harder, Better, Faster, Stronger**
 
