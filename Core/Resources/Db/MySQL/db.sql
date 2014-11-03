@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS locks (
     depth TINYINT,
     uri VARCHAR(1000),
     INDEX(token),
-    INDEX(uri)
+    INDEX(uri(100))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS calendarobjects (
