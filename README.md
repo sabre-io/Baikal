@@ -32,7 +32,6 @@ $ cd web/apps/calclient && npm install && bower install && cd ../../..
 $ cd web/apps/cardclient && npm install && bower install && cd ../../..
 
 # 8. Boot the development server
-$ cd ../../..
 $ php app/console server:dev
 
 ```
