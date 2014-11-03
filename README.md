@@ -66,7 +66,7 @@ $ cd web/apps/cardclient && grunt build
 
 If you are willing to participate, and know your way in whatever domain you want to help, please feel free to mail me at contact@netgusto.com (I have little time so please do not lose your patience if I don't answer :p)
 
-## Calendar client subscription
+## Calendar and Contacts client subscription
 
 ### Apple Calendar And Apple Contacts
 
