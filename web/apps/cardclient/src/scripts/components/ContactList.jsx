@@ -31,7 +31,6 @@ var ContactList = React.createClass({
         this.updateDimensions();
     },
     updateDimensions: _.debounce(function() {
-        console.log('updateDimensions !', $(window).height());
         this.setState({windowheight: $(window).height()});
     }, 16),
     componentDidMount: function() {

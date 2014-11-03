@@ -7,7 +7,7 @@
 var React = require('react/addons'),
     ContactList = require('./ContactList'),
     ContactListFilter = require('./ContactList/Filter'),
-    ContactDetail = require('./ContactDetail');
+    ContactDetail = require('./ContactDetail'),
     AddressbookCollection = require('../models/AddressbookCollection');
 
 var keymaster = require('keymaster'),
@@ -77,8 +77,8 @@ var AddressbookInterface = React.createClass({
         return false;
     },
     componentDidMount: function() {
-        this.downHandler = _.debounce(this.handleDown.bind(this), 1000/60);
-        this.upHandler = _.debounce(this.handleUp.bind(this), 1000/60);
+        this.downHandler = _.debounce(this.handleDown, 1000/60);
+        this.upHandler = _.debounce(this.handleUp, 1000/60);
         keymaster('down', this.downHandler);
         keymaster('up', this.upHandler);
     },
