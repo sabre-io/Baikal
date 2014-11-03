@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ember-cli-cal - A Better #Calendar #Component for #EmberJS and ember-cli by @netgusto</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{content-for 'head'}}
+
+    <link rel="stylesheet" href="assets/vendor.css">
+    <link rel="stylesheet" href="assets/ember-cli-cal-demoapp.css">
+  </head>
+  <body>
+    <script src="assets/vendor.js"></script>
+    <script src="assets/ember-cli-cal-demoapp.js"></script>
+    <style>
+      .demo-header {
+        margin-bottom: 0;
+      }
+      .bk-calendar .bk-weekrow,
+      .bk-calendar .bk-daycell {
+          /*min-height: 160px;*/
+          min-height: 135px;
+      }
+
+      .cal-header {
+          white-space: nowrap;
+      }
+
+      .cal-header:after {
+          content: ' ';
+          display: block;
+          margin-top: 5px;
+          border-bottom: 1px solid rgb(223, 155, 153);
+          margin-bottom: 5px;
+      }
+
+      .cal-header button,
+      .cal-header button:hover,
+      .cal-header button:active,
+      .cal-header button:focus {
+        color: rgb(223, 155, 153);
+      }
+
+      .cal-header button,
+      .cal-header .calendartitle {
+          border: 0;
+          vertical-align: middle;
+          display: inline-block;
+          margin: 0;
+          padding: 0;
+          font-size: 1.4em;
+          font-weight: 200;
+          height: 32px;
+          line-height: 32px;
+      }
+
+      .cal-header .calendartitle {
+          color: #3F3F3F;
+          display: inline-block;
+          width: 160px;
+      }
+
+      .bk-calendar .bk-daynames div {
+          color: #A0A0A0;
+          font-weight: 200;
+      }
+
+      .bk-calendar .bk-daynames div,
+      .bk-calendar .bk-dayofmonth {
+          text-align: right;
+      }
+  </style>
+  </body>
+</html>
