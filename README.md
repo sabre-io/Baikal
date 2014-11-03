@@ -1,8 +1,8 @@
-# Baïkal Server 2 - CalDAV+CardDAV Application
+# Baïkal 2 - CalDAV+CardDAV Server Application
 
 **Harder, Better, Faster, Stronger**
 
-This is a **development version** of Baïkal Server 2 - **NOT FOR PRODUCTION USE**.
+This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
 Baïkal2 is based on SabreDAV and Symfony2. Baïkal is designed to be usable on PAAS hosting out-of-the-box.
 
