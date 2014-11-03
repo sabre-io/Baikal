@@ -13,8 +13,8 @@ Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable 
 ```sh
 # 1. Install composer if not already installed: <https://getcomposer.org/download/>
 
-# 2. Clone the Baïkal2 source code
-$ git clone -b 2.0.0 https://github.com/netgusto/Baikal.git
+# 2. Clone the Baïkal 2 source code
+$ git clone -b branch-2 https://github.com/netgusto/Baikal.git
 
 # 4. Enter the Baikal folder
 $ cd Baikal
@@ -51,7 +51,7 @@ First thing to do then is to change your password (Upper right corner of the scr
 # 2. Install node + npm for your system if not already installed: <http://nodejs.org/download/>
 
 # 3. Clone the Baïkal2 source code
-$ git clone -b 2.0.0 https://github.com/netgusto/Baikal.git
+$ git clone -b branch-2 https://github.com/netgusto/Baikal.git
 
 # 4. Enter the Baikal folder
 $ cd Baikal
