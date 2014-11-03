@@ -6,7 +6,7 @@ This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
 Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://appsdeck.eu/, etc.).
 
-## Installation (development)
+## Installation on a classic platform (non-PAAS)
 
 **Note:** for now, composer is required for the installation.
 
@@ -21,7 +21,16 @@ $ git clone -b 2.0.0 https://github.com/netgusto/Baikal.git
 # 4. Enter the Baikal folder
 $ cd Baikal
 
-# 5. Install Baïkal PHP dependencies, and initialize Baïkal
+# 5. Initialize the application settings
+$ cp app/config/defaults/data.parameters.dist.yml data/parameters.yml
+$ cp app/config/defaults/data.environment.dist.yml data/environment.yml
+
+# 6. Configure your database connection in data/environment.yml
+// open 'data/environment.yml', uncomment and edit the DATABASE_URL variable
+// By default, Baïkal will use a SQLite database stored in 'data/database.db'
+
+# 6. Install Baïkal PHP dependencies, and initialize Baïkal
+// at the root of the project
 $ composer install
 
 # 6. Install required node packages in the global scope:
