@@ -492,9 +492,10 @@ TEST;
 		$space = "-";
 		$sString = strtr($sString, ' -+_\'', $space . $space . $space . $space . $space); // convert spaces
 		
-		if(function_exists("iconv")) {
-			$sString = iconv('UTF-8', 'ASCII//TRANSLIT', $sString);
-		}
+		# De-activated; @see https://github.com/netgusto/Baikal/issues/244
+		#if(function_exists("iconv")) {
+		#	$sString = iconv('UTF-8', 'ASCII//TRANSLIT', $sString);
+		#}
 		
 		$sString = strtolower($sString);
 		
