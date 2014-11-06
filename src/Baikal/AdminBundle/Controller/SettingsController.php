@@ -51,11 +51,10 @@ class SettingsController extends Controller
     protected function getFormBase() {
 
         return $this->createFormBuilder()
-            ->add('server_timezone', 'choice', array(
+            ->add('server_timezone', 'timezone', array(
                 'label' => 'Server time zone',
                 'multiple' => FALSE,
                 'expanded' => FALSE,
-                'choices' => BaikalDavServicesBundle::timezones(),
                 'constraints' => array(
                     new NotBlank(),
                 )
