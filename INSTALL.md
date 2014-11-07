@@ -309,6 +309,29 @@ __Important notes:__
 * Make sure you've configured Baikal to use `basic` as authentication mechanism.
 * Its required to use SSL for CardDAV!
 
+## 5.8 Android (4.1.2) SG2
+
+Add a new CalDAV account:
+
+* Download a DAV Sync Client i.e. DAVdroid
+* Add a new DAVdroid account
+* I.e. enter the following URL-Format for CalDAV: http://dav.mydomain.com/cal.php/calendars/YOUR_USERNAME/default/ or http://YOUR_IP/cal.php/calendars/YOUR_USERNAME/default/
+* Use your email-address as account name
+* Mark your calendar as active on your device: In the Calendar-App select Settings/Calendar and activate it.
+* Sync it
+
+Add a new CardDAV account:
+
+* Add a new DAVdroid account
+* I.e. enter the following URL-Format for CalDAV: http://dav.mydomain.com/card.php/addressbooks/YOUR_USERNAME/default/ or http://YOUR_IP/card.php/addressbooks/YOUR_USERNAME/default/
+* Use your email-address as account name
+* In the Phone-App select Contacts/Accounts select the 2nd DAVdroid and Synchronize Contacts.
+* Sync it
+
+__Note__
+* If you want to synchronize your current contacts to the server export it to USB and Import it again as DAVdroid contacts
+* Sync it
+
 # 6 - You're done
 
 You may now create new calendars, new events, new contact (: Enjoy.
