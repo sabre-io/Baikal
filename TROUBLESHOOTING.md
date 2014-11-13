@@ -64,3 +64,31 @@ Using SQLite (the default setup), if you have troubles when putting data in the 
 (an exception "unable to open database file" is thrown) check that:
   * the system user running your Apache/PHP has write permissions on Specific/db/ (*the folder*)
   * the system user running your Apache/PHP has write permissions on Specific/db/db.sqlite (*the file*)
+
+# 5. Problems with PHP and CGI / FastCGI
+
+Quoting @RubenMarsman
+
+> Hi, 
+> 
+> Even with the given workarounds, I still can't authenticate using either Basic or Digest authentication. The problem is that my webhoster runs PHP as CGI and somehow writing the http authenticate header in the (REDIRECT_)HTTP_AUTHORIZATION variable does not work.
+> I've seen similar problems on forums of owncloud.
+
+> There is another workaround that helps, but somehow it only works for Basic authentication. With Digest, the http authenticate header is always empty. I don't know what causes this behaviour at my hoster.
+
+> **My workaround:**
+> in .htaccess add the lines to store the authorization header in the REMOTE_USER variable. 
+> ```
+> <IfModule mod_rewrite.c>
+> 	RewriteEngine On
+> 	RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+> </IfModule>
+> ```
+> In both cal.php and card.php add the lines to use this value:
+> ```
+> if ((isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])==false) && (isset($_SERVER['REDIRECT_REMOTE_USER'])))
+> {
+>    $_SERVER['REDIRECT_HTTP_AUTHORIZATION']=$_SERVER['REDIRECT_REMOTE_USER'];
+> }
+> ```
+>
