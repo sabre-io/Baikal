@@ -92,3 +92,7 @@ Quoting @RubenMarsman
 > }
 > ```
 >
+
+# 6. Problems with nginx when running Baïkal in a subdirectory
+
+See https://github.com/netgusto/Baikal/issues/212
