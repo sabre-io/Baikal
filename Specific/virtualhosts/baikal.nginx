@@ -2,7 +2,7 @@ server {
     listen       80;
     server_name  dav.mydomain.com;
 
-    root  /var/www/dav.mydomain.com;
+    root  /var/www/dav.mydomain.com/html;
     index index.php;
 
 	rewrite ^/.well-known/caldav /cal.php redirect;
