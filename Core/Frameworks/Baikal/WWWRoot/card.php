@@ -74,6 +74,7 @@ $server->setBaseUri(BAIKAL_CARD_BASEURI);
 $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, BAIKAL_AUTH_REALM));
 $server->addPlugin(new \Sabre\CardDAV\Plugin());
 $server->addPlugin(new \Sabre\DAVACL\Plugin());
+$server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
 
 # And off we go!
 $server->exec();
