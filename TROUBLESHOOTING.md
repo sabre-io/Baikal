@@ -96,3 +96,20 @@ Quoting @RubenMarsman
 # 6. Problems with nginx when running Baïkal in a subdirectory
 
 See https://github.com/netgusto/Baikal/issues/212
+
+# 7. Problems with eAccelerator (Function name must be a string [...])
+
+Quoting @jeff-h on https://github.com/netgusto/Baikal/issues/136
+
+> 
+> My web hosting came with eAccelerator already installed. It seems this is incompatible with Baikal (or more accurately the SabreDav library). The error was:
+>
+> Fatal error: Function name must be a string in .../vendor/sabre/dav/lib/Sabre/DAV/Server.php on line 235
+>
+> I fixed this by turning off eAccelerator for my install, by putting the following in my .htaccess:
+>
+> php_flag eaccelerator.enable 0
+> php_flag eaccelerator.optimizer 0
+> 
+
+See also <http://comments.gmane.org/gmane.comp.php.sabredav/670>
