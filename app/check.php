@@ -110,7 +110,7 @@ function echo_style($style, $message)
     );
     $supports = has_color_support();
 
-    echo ($supports ? $styles[$style] : '').$message.($supports ? $styles['reset'] : '');
+    echo($supports ? $styles[$style] : '').$message.($supports ? $styles['reset'] : '');
 }
 
 function echo_block($style, $title, $message)

@@ -440,8 +440,8 @@ class SymfonyRequirements extends RequirementCollection
             }
 
             $this->addRequirement(
-                isset($timezones[date_default_timezone_get()]),
-                sprintf('Configured default timezone "%s" must be supported by your installation of PHP', date_default_timezone_get()),
+                isset($timezones[@date_default_timezone_get()]),
+                sprintf('Configured default timezone "%s" must be supported by your installation of PHP', @date_default_timezone_get()),
                 'Your default timezone is not supported by PHP. Check for typos in your <strong>php.ini</strong> file and have a look at the list of deprecated timezones at <a href="http://php.net/manual/en/timezones.others.php">http://php.net/manual/en/timezones.others.php</a>.'
             );
         }
@@ -529,6 +529,16 @@ class SymfonyRequirements extends RequirementCollection
             'PCRE extension must be available',
             'Install the <strong>PCRE</strong> extension (version 8.0+).'
         );
+
+        if (extension_loaded('mbstring')) {
+            $this->addPhpIniRequirement(
+                'mbstring.func_overload',
+                create_function('$cfgValue', 'return (int) $cfgValue === 0;'),
+                true,
+                'string functions should not be overloaded',
+                'Set "<strong>mbstring.func_overload</strong>" to <strong>0</strong> in php.ini<a href="#phpini">*</a> to disable function overloading by the mbstring extension.'
+            );
+        }
 
         /* optional recommendations follow */
 
