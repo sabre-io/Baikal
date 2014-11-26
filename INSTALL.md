@@ -20,6 +20,8 @@ The following configuration is the minimum required:
 
 - an hosted webserver running apache 2 and PHP 5.3.1+
 
+- SQLite3 or MySQL 5.5+
+
 - PHP 5.3.1 or newer with the following extensions: 
 	- PDO and SQLite3 or MySQL 
 	- DOM (php-xml)  
@@ -46,6 +48,8 @@ The following configuration is the minimum required:
 	- DOM (php-xml) 
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function. 
+
+- SQLite3 or MySQL 5.5+
 
 - 30 MB of disk space 
 
