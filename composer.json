@@ -134,6 +134,10 @@
                 "webasset/font-awesome",
                 "webasset/jquery-minicolors"
             ]
+        },
+        "paas": {
+            "document-root": "web/",
+            "index-document": "app.php"
         }
     }
 }
