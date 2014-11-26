@@ -2,7 +2,7 @@
 
 This document is a part of the Baïkal project. Baïkal is an open
 source lightweight CalDAV and CardDAV server released under the GNU GPL. Baïkal
-is copyright (c) 2013 by Jérôme Schneider.
+is copyright (c) 2013-2014 Net Gusto.
 
 Baïkal homepage is http://baikal-server.com
 
@@ -11,14 +11,14 @@ installation routine.
 
 # 1 - System requirements
 
-Baïkal is based on PHP 5.3.1+, and uses a SQLite3 or MySQL with PHP PDO. This
+Baïkal is based on PHP 5.3.1+, and uses a SQLite3 or MySQL 5.5+ with PHP PDO. This
 document does not cover the installation of these requirements.
 
 ## 1.1 - System requirements for FTP-driven hosting
 
 The following configuration is the minimum required:
 
-- an hosted webserver running apache 2 and PHP 5.3.0
+- an hosted webserver running apache 2 and PHP 5.3.1+
 
 - PHP 5.3.1 or newer with the following extensions: 
 	- PDO and SQLite3 or MySQL 
