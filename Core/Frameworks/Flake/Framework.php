@@ -113,10 +113,27 @@ class Framework extends \Flake\Core\Framework {
 
 		# Undo magic_quotes as this cannot be disabled by .htaccess on PHP ran as CGI
 		# Source: http://stackoverflow.com/questions/517008/how-to-turn-off-magic-quotes-on-shared-hosting
+		# Also: https://github.com/netgusto/Baikal/issues/155
 		if(in_array(strtolower(ini_get('magic_quotes_gpc')), array('1', 'on'))) {
-			$_POST = array_map('stripslashes', $_POST);
-			$_GET = array_map('stripslashes', $_GET);
-			$_COOKIE = array_map('stripslashes', $_COOKIE);
+			$process = array();
+			if(isset($_GET) && is_array($_GET)) { $process[] = &$_GET;}
+			if(isset($_POST) && is_array($_POST)) { $process[] = &$_POST;}
+			if(isset($_COOKIE) && is_array($_COOKIE)) { $process[] = &$_COOKIE;}
+			if(isset($_REQUEST) && is_array($_REQUEST)) { $process[] = &$_REQUEST;}
+
+			while (list($key, $val) = each($process)) {
+				foreach ($val as $k => $v) {
+				    unset($process[$key][$k]);
+				    if (is_array($v)) {
+				        $process[$key][stripslashes($k)] = $v;
+				        $process[] = &$process[$key][stripslashes($k)];
+				    } else {
+				        $process[$key][stripslashes($k)] = stripslashes($v);
+				    }
+				}
+			}
+			
+			unset($process);
 		}
 
 		# Fixing some CGI environments, that prefix HTTP_AUTHORIZATION (forwarded in .htaccess) with "REDIRECT_"
