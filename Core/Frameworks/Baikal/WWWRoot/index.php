@@ -59,6 +59,6 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 </head>
 <body>
-	<h2>Baïkal is running allright.</h2>
+	<h2>Baïkal is running alright.</h2>
 </body>
 </html>
