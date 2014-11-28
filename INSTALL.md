@@ -329,6 +329,29 @@ Add a new CalDAV/CardDAV account:
 * Calendar server (CalDAV): `dav.mydomain.com/cal.php/calendars/username/default` and replace domain and username with the correct values
 * You can optional activate/deactivate content that will be synced
 
+## 5.9 Android (4.1.2) SG2
+
+Add a new CalDAV account:
+
+* Download a DAV Sync Client i.e. DAVdroid
+* Add a new DAVdroid account
+* I.e. enter the following URL-Format for CalDAV: `http://dav.mydomain.com/cal.php/calendars/<username>/default/ or http://YOUR_IP/cal.php/calendars/<username>/default/`
+* Use your email-address as account name
+* Mark your calendar as active on your device: In the Calendar-App select Settings/Calendar and activate it.
+* Sync it
+
+Add a new CardDAV account:
+
+* Add a new DAVdroid account
+* I.e. enter the following URL-Format for CalDAV: `http://dav.mydomain.com/card.php/addressbooks/<username>/default/ or http://YOUR_IP/card.php/addressbooks/<username>/default/`
+* Use your email-address as account name
+* In the Phone-App select Contacts/Accounts select the 2nd DAVdroid and Synchronize Contacts.
+* Sync it
+
+__Note__
+* If you want to synchronize your current contacts to the server export it to USB and Import it again as DAVdroid contacts
+* Sync it
+
 
 # 6 - You're done
 
