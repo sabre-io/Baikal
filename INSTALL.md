@@ -333,7 +333,7 @@ Add a new CalDAV/CardDAV account:
 
 Add a new CalDAV account:
 
-* Download a DAV Sync Client i.e. DAVdroid
+* Download a DAV Sync Client (i.e. DAVdroid; if DAVdroid, see 5.10 below also)
 * Add a new DAVdroid account
 * I.e. enter the following URL-Format for CalDAV: `http://dav.mydomain.com/cal.php/calendars/<username>/default/ or http://YOUR_IP/cal.php/calendars/<username>/default/`
 * Use your email-address as account name
@@ -352,6 +352,44 @@ __Note__
 * If you want to synchronize your current contacts to the server export it to USB and Import it again as DAVdroid contacts
 * Sync it
 
+
+## 5.10 DAVdroid (Android)
+
+Android does not support CardDAV or CalDAV out of the box so you'll need a 3rd party client. There are multiple options available. Here we'll have a look at [DAVdroid](http://davdroid.bitfire.at/), an open-source CalDAV/CardDAV synchronization app for Android 4+. The app is available on [many different stores](http://davdroid.bitfire.at/download), and even on the FOSS [F-Droid](https://f-droid.org/repository/browse/?fdfilter=carddav&fdid=at.bitfire.davdroid) one. Install the app from your favourite store.
+
+Add a CalDAV account:
+
+* In Settings > Accounts > Add account
+* Tap DAVdroid
+* Follow the wizard
+    * Select `http://` or `https://` and add the path to your CalDAV server: `dav.mydomain.com/cal.php/principals/jerome` (replace domain and username)
+    * User name: the username you just created (in our example, jerome)
+    * Password: the password you just defined
+    * Leave the preemptive authentication `checked`
+    * Tap `→`
+* Select the calendar(s) you want to sync
+* Tap `→`
+* Choose a unique account name (has to be different from the CardDAV one)
+* Tap `✓`
+
+DAVdroid should now start syncing your calendar(s), give it some time.
+
+Add a CardDAV account:
+
+* In Settings > Accounts > Add account
+* Tap DAVdroid
+* Follow the wizard
+    * Select `http://` or `https://` and add the path to your CardDAV server: `dav.mydomain.com/card.php/addressbooks/jerome/default` (replace domain and username)
+    * User name: the username you just created (in our example, jerome)
+    * Password: the password you just defined
+    * Leave the preemptive authentication `checked`
+    * Tap `→`
+* Select the address book you want to sync
+* Tap `→`
+* Choose a unique account name (has to be different from the CalDAV one)
+* Tap `✓`
+
+DAVdroid should now start syncing your address book, give it some time.
 
 # 6 - You're done
 
