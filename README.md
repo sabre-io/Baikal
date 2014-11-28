@@ -6,6 +6,14 @@ This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
 Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://appsdeck.eu/, etc.).
 
+## Contribute !
+
+Fellow backend and frontend developers, we need your help !
+
+The roadmap to version 2.0 is here: https://github.com/netgusto/Baikal/milestones/Ba%C3%AFkal%202.0.0
+
+If you want to help, and you have a strong experience in Symfony, ReactJS, EmberJS, or HTML/CSS, please contact us at contact@netgusto.com or on Twitter http://twitter.com/BaikalServer
+
 ## Screenshots
 
 **Admin Dashboard**
