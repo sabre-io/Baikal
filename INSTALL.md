@@ -317,6 +317,19 @@ __Important notes:__
 * Make sure you've configured Baikal to use `basic` as authentication mechanism.
 * Its required to use SSL for CardDAV!
 
+## 5.8 Windows Phone 8.1 (Developer Preview)
+
+Add a new CalDAV/CardDAV account:
+
+* in Settings > email+accounts > Add an Account > iCloud
+* Username: the username you just created
+* Password: the password you just defined
+* Select Advanced Settings
+* Contacts server (CardDAV): `dav.mydomain.com/card.php/addressbooks/username/default` and replace domain and username with the correct values
+* Calendar server (CalDAV): `dav.mydomain.com/cal.php/calendars/username/default` and replace domain and username with the correct values
+* You can optional activate/deactivate content that will be synced
+
+
 # 6 - You're done
 
 You may now create new calendars, new events, new contact (: Enjoy.
