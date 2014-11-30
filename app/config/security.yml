@@ -19,6 +19,7 @@ security:
         - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: [ROLE_ADMIN] }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
         - { path: ^/, roles: [ROLE_FRONTEND_USER] }
 
     firewalls:
@@ -72,6 +73,32 @@ security:
             pattern:  ^/_init/.*$
             security: false
 
+        # OAuth2: authorize application
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
+            provider: sabredav_user_db
+
+            form_login:
+                login_path: /oauth/v2/auth/login
+                check_path: /oauth/v2/auth/login_check
+
+            logout:
+                path: /logout
+                target: /
+                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
+
+        # OAuth2: request token
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # can be omitted as its default value
+
         # #####################################################################
         # Admin login section
         # #####################################################################
@@ -85,7 +112,6 @@ security:
             form_login:
                 login_path: /admin/login
                 check_path: /admin/login_check
-
 
             logout:
                 path: /admin/logout

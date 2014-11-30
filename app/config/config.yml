@@ -139,6 +139,15 @@ jms_serializer:
             Baikal:
                 path: "@BaikalRestBundle/Resources/config/serializer"
 
+fos_oauth_server:
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    client_class:        Baikal\RestBundle\Entity\Client
+    access_token_class:  Baikal\RestBundle\Entity\AccessToken
+    refresh_token_class: Baikal\RestBundle\Entity\RefreshToken
+    auth_code_class:     Baikal\RestBundle\Entity\AuthCode
+    service:
+        user_provider: sabredav_user_db
+
 netgusto_dev_server:
     tasks:
         - { command: php app/console server:run 0.0.0.0:8000 }

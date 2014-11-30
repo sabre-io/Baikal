@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
 
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+
             new Baikal\ModelBundle\BaikalModelBundle(),
             new Baikal\CoreBundle\BaikalCoreBundle(),
             new Baikal\DavServicesBundle\BaikalDavServicesBundle(),

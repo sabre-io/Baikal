@@ -14,3 +14,9 @@ baikal_rest_api:
 baikal_frontend:
     resource: "@BaikalFrontendBundle/Resources/config/routing.yml"
     prefix: /
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
