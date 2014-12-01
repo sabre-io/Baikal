@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\RestBundle\Entity;
+namespace Baikal\ModelBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="OAuth_RefreshToken")
  */
-class RefreshToken extends BaseRefreshToken {
+class OAuthRefreshToken extends BaseRefreshToken {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

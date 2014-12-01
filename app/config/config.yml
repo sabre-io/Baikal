@@ -141,10 +141,10 @@ jms_serializer:
 
 fos_oauth_server:
     db_driver: orm       # Driver availables: orm, mongodb, or propel
-    client_class:        Baikal\RestBundle\Entity\Client
-    access_token_class:  Baikal\RestBundle\Entity\AccessToken
-    refresh_token_class: Baikal\RestBundle\Entity\RefreshToken
-    auth_code_class:     Baikal\RestBundle\Entity\AuthCode
+    client_class:        Baikal\ModelBundle\Entity\OAuthClient
+    access_token_class:  Baikal\ModelBundle\Entity\OAuthAccessToken
+    refresh_token_class: Baikal\ModelBundle\Entity\OAuthRefreshToken
+    auth_code_class:     Baikal\ModelBundle\Entity\OAuthAuthCode
     service:
         user_provider: sabredav_user_db
 

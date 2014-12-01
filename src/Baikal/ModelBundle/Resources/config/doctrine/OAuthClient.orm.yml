@@ -1,0 +1,27 @@
+Baikal\ModelBundle\Entity\OAuthClient:
+    type: entity
+    table: OAuthClient
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    # Other standard properties are defined in FOS/OAUthServerBundle
+
+    fields:
+
+        name:
+            type: string
+            length: 255
+            nullable: false
+
+        description:
+            type: text
+            nullable: true
+
+        homepageurl:
+            type: string
+            length: 255
+            nullable: true

@@ -1,0 +1,27 @@
+Baikal\ModelBundle\Entity\OAuthAccessToken:
+    type: entity
+    table: OAuthAccessToken
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    manyToOne:
+
+        client:
+            targetEntity: Baikal\ModelBundle\Entity\OAuthClient
+            cascade: { }
+            joinColumns:
+                client_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+        client:
+            targetEntity: Baikal\ModelBundle\Entity\User
+            cascade: { }
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+            orphanRemoval: false

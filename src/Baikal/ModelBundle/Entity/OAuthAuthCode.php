@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\RestBundle\Entity;
+namespace Baikal\ModelBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="OAuth_AuthCode")
  */
-class AuthCode extends BaseAuthCode {
+class OAuthAuthCode extends BaseAuthCode {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

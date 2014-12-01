@@ -6,21 +6,11 @@
 
         <fieldset>
 
-            <div class="form-group{% if form.displayname.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(form.displayname, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                <div class="col-sm-8 col-lg-4">
-                    {{ form_widget(form.displayname, { 'attr': { 'class': 'form-control', 'placeholder': 'e.g. "Daily events" or "Piano lessons"' } }) }}
-                    {% if not form.displayname.vars.valid %}<span class="help-block">{{ form.displayname.vars.errors[0].getMessage() }}</span>{% endif %}
-                </div>
-            </div>
+            {% import '::forms.html.twig' as forms %}
 
-            <div class="form-group{% if form.description.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(form.description, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                <div class="col-sm-8 col-lg-4">
-                    {{ form_widget(form.description, { 'attr': { 'class': 'form-control', 'placeholder': 'e.g. "My everyday life" '} }) }}
-                    {% if not form.description.vars.valid %}<span class="help-block">{{ form.description.vars.errors[0].getMessage() }}</span>{% endif %}
-                </div>
-            </div>
+            {{ forms.text(form.displayname) }}
+
+            {{ forms.text(form.description) }}
 
             <div class="form-group{% if form.calendarcolor.vars.errors|length %} has-error{% endif %}">
                 {{ form_label(form.calendarcolor, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}

@@ -1,0 +1,9 @@
+Baikal\ModelBundle\Entity\OAuthRefreshToken:
+    type: entity
+    table: OAuthRefreshToken
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY

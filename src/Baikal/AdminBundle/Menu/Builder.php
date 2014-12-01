@@ -15,6 +15,7 @@ class Builder extends ContainerAware {
         $menu = $factory->createItem('root', array('childrenAttributes' => array('class' => 'nav navbar-nav')));
 
         $menu->addChild('Users+Data', array('route' => 'baikal_admin_user_list'));
+        $menu->addChild('Applications', array('route' => 'baikal_admin_application_list'));
         $menu->addChild('Settings', array('route' => 'baikal_admin_settings'));
 
         $currentpath = $this->container->get('request')->getPathInfo();
