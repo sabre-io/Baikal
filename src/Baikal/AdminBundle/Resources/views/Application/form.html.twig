@@ -27,11 +27,16 @@
 
     <div class="container">
 
+        {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+
+        {% if not new %}
         <div class="row">
             <div class="col-sm-8">
                 <p>{{nbusers}} {{accord('user', nbusers)}}</p>
                 <p>Client ID: {{application.publicid}}</p>
                 <p>Client Secret: {{application.secret}}</p>
+                <p>OAuth2 auth endpoint: {{url('fos_oauth_server_authorize')}}</p>
+                <p>OAuth2 token endpoint: {{url('fos_oauth_server_token')}}</p>
             </div>
             <div class="col-sm-4">
                 <p><button class="btn btn-danger">TODO: Revoke all user tokens</button></p>
@@ -39,6 +44,7 @@
                 <p><button class="btn btn-danger">TODO: Delete application</button></p>
             </div>
         </div>
+        {% endif %}
 
         <form class="form-horizontal" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" method="post" {{ form_enctype(form) }} role="form" novalidate>
 
@@ -53,6 +59,8 @@
                 {{ forms.text(form.redirecturi) }}
 
                 {{ forms.text(form.homepageurl) }}
+
+                {{ forms.checkboxes(form.allowed_grant_types) }}
 
                 {{ form_rest(form) }}
 

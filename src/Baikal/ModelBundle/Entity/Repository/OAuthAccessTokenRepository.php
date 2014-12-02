@@ -37,6 +37,8 @@ class OAuthAccessTokenRepository {
     }
 
     public function countForClient(OAuthClient $client) {
+        if(is_null($client->getId())) return 0;
+        
         return intval($this->qb_countForClient($client)
             ->getQuery()
             ->getSingleScalarResult());

@@ -3,6 +3,12 @@
 {% set pagetitle = "Frontend auth" %}
 
 {% block content %}
+    
+    <div class="container">
+        {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" with { container: false, header: "Please sign in", icon: "lock" } %}{% endembed %}
+    </div>
+    
+    <p>&nbsp;</p>
 
     {% embed "BaikalViewComponentsBundle:Components:loginform.html.twig" with {
         logincheckurl: path('baikal_frontend_login_check'),

@@ -1,12 +1,12 @@
+{% spaceless %}
+    {% if header is not defined %}
+        {% set header = "Please sign in" %}
+    {% endif %}
+{% endspaceless %}
 <div class="container">
     <div class="row">
 
         <div class="col-sm-offset-3 col-sm-6 login">
-
-            {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" with {container: false } %}
-                {% set icon = "lock" %}
-                {% set header = "Please sign in" %}
-            {% endembed %}
 
             {% if error %}
                 <div class="col-md-offset-2 alert alert-danger alert-dismissable">
@@ -36,7 +36,9 @@
                     </div>
                 </div>
 
+                {% if redirecturl is defined %}
                 <input type="hidden" name="_target_path" value="{{ redirecturl }}" />
+                {% endif %}
             </form>
         </div>
         <div class="col-sm-6"></div>

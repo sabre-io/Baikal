@@ -33,7 +33,7 @@ class FormController extends Controller {
 
         return function($form, Application $application, $isNew) use($that) {
             $that->get('session')->getFlashBag()->add('notice', 'Application <i class="fa fa-cube"></i> <strong>' . htmlspecialchars($application->getName()) . '</strong> has been ' . ($isNew ? 'created' : 'updated') . '.');
-            return $that->redirect($this->generateUrl('baikal_admin_application_list'));
+            return $that->redirect($this->generateUrl('baikal_admin_application_form_edit', array('application' => $application->getId())));
         };
     }
 

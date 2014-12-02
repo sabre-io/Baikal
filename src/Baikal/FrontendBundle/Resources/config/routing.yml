@@ -76,6 +76,8 @@ baikal_frontend_wellknown:
     pattern:  /.well-known/{service}
     defaults: { _controller: BaikalFrontendBundle:WellKnown:index }
 
+
+
 baikal_frontend_login:
     pattern: /login
     defaults: { _controller: BaikalFrontendBundle:Auth:loginform }
@@ -86,4 +88,12 @@ baikal_frontend_login_check:
 
 baikal_frontend_logout:
     pattern: /logout
+    # no controller, symfony intercepts this
+
+baikal_frontend_oauth_login:
+    pattern: /oauth/v2/auth/login
+    defaults: { _controller: BaikalFrontendBundle:Auth:oauthloginform }
+
+baikal_frontend_oauth_login_check:
+    pattern: /oauth/v2/auth/login_check
     # no controller, symfony intercepts this

@@ -19,6 +19,7 @@ security:
         - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: [ROLE_ADMIN] }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/v2/auth/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
         - { path: ^/, roles: [ROLE_FRONTEND_USER] }
 
@@ -63,6 +64,11 @@ security:
             pattern: ^/login$
             anonymous: ~
 
+        # Page for oauth login is anonymously accessible
+        frontend_oauth_login:
+            pattern: ^/oauth/v2/auth/login$
+            anonymous: ~
+
         # Page /admin/login is anonymously accessible
         admin_login:
             pattern: ^/admin/login$
@@ -79,14 +85,15 @@ security:
             context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
             provider: sabredav_user_db
 
+            #
+            # TODO: http://stackoverflow.com/questions/10089816/symfony2-how-to-check-if-an-action-is-secured
+            #
+            entry_point: baikal_frontend.oauth_preloginredirect_formauthenticationentrypoint
+
             form_login:
+                use_forward: false
                 login_path: /oauth/v2/auth/login
                 check_path: /oauth/v2/auth/login_check
-
-            logout:
-                path: /logout
-                target: /
-                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
 
         # OAuth2: request token
         oauth_token:
