@@ -43,7 +43,7 @@ Appsdeck is the trendy European PAAS provider. See their offer here <http://apps
 3. Add the **MySQL** addon to your container
 4. In the **Environment** tab, add the environment variable `DATABASE_URL` with the value `$APPSDECK_MYSQL_URL`
 4. `cd Baikal.git`
-5. `git add remote appsdeck it remote add appsdeck git@appsdeck.eu:my-baikal.git`
+5. `git remote add appsdeck git@appsdeck.eu:my-baikal.git`
 6. `git push appsdeck branch-2:master`
 7. Once the app has booted, open <http://my-baikal.appsdeck.eu> in your web browser.
 8. Log in using the default account created during initialization (username: **admin**, password: **password**).
