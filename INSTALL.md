@@ -411,7 +411,7 @@ mysql -u root -p #password#
 
 ```mysql
 CREATE DATABASE baikal;
-GRANT DELETE, INSERT, SELECT, UPDATE ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY '#password#';
+GRANT DELETE, INSERT, SELECT, UPDATE, CREATE ON baikal.* TO 'baikal'@'localhost' IDENTIFIED BY '#password#';
 exit
 ```
 
