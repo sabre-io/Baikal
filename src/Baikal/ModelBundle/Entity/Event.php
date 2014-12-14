@@ -291,7 +291,8 @@ class Event
     public function getVObject() {
         if(is_null($this->vobject)) {
             
-            if(empty($this->getCalendardata())) {
+            $calendarData = $this->getCalendardata();
+            if(empty($calendarData)) {
                 $this->vobject = new VObject\Component\VCalendar();
                 $this->vobject->add('VEVENT', [
                     'SUMMARY' => 'Empty',
@@ -301,7 +302,7 @@ class Event
                 $this->setCalendardata($this->vobject->serialize());
             }
 
-            $this->vobject = VObject\Reader::read($this->getCalendardata());
+            $this->vobject = VObject\Reader::read($calendarData);
         }
 
         return $this->vobject;
