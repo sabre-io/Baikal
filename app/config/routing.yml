@@ -7,8 +7,13 @@ baikal_davservices:
     prefix: /dav
 
 baikal_rest_api:
-    resource: "@BaikalRestBundle/Resources/config/routing.yml"
+    resource: "@BaikalRestBundle/Resources/config/routing.restapi.yml"
     prefix: /api/v1/
+    type: rest
+
+baikal_rest_webapi:
+    resource: "@BaikalRestBundle/Resources/config/routing.webapi.yml"
+    prefix: /webapi/v1/
     type: rest
 
 baikal_frontend:

@@ -5,22 +5,27 @@ baikal.rest.root:
 baikal.rest.route.calendar:
     resource: baikal.rest.controller.calendar
     type: rest
+    name_prefix: webapi_
 
 baikal.rest.route.event:
     resource: baikal.rest.controller.event
     parent: baikal.rest.route.calendar
     type: rest
+    name_prefix: webapi_
 
 baikal.rest.route.expandedevent:
     resource: baikal.rest.controller.expandedevent
     parent: baikal.rest.route.calendar
     type: rest
+    name_prefix: webapi_
 
 baikal.rest.route.addressbook:
     resource: baikal.rest.controller.addressbook
     type: rest
+    name_prefix: webapi_
 
 baikal.rest.route.contact:
     resource: baikal.rest.controller.contact
     parent: baikal.rest.route.addressbook
     type: rest
+    name_prefix: webapi_
