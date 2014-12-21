@@ -1,0 +1,18 @@
+{% extends "BaikalFrontendBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "OAuth authentication" %}
+
+{% block content %}
+    
+    <div class="container">
+        {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" with { container: false, header: "Please sign in to proceed", icon: "lock" } %}{% endembed %}
+        <p>A third party application has requested access to your Baïkal account. Please, sign in to proceed with the application authorization.</p>
+    </div>
+    
+    <p>&nbsp;</p>
+
+    {% embed "BaikalViewComponentsBundle:Components:loginform.html.twig" with {
+        logincheckurl: path('baikal_frontend_oauth_login_check')
+    } %}{% endembed %}
+
+{% endblock %}

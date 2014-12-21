@@ -102,3 +102,19 @@ baikal_admin_addressbook_view:
 baikal_admin_user_todolist_list:
     pattern:  /users/{id}/todolists
     defaults: { _controller: BaikalAdminBundle:Todolist/List:index }
+
+baikal_admin_application_list:
+    pattern: /applications
+    defaults: { _controller: BaikalAdminBundle:Application/List:index }
+
+baikal_admin_application_list_delete:
+    pattern:  /applications/{application}/delete
+    defaults: { _controller: BaikalAdminBundle:Application/List:delete }
+
+baikal_admin_application_form_new:
+    pattern:  /applications/new
+    defaults: { _controller: BaikalAdminBundle:Application/Form:new }
+
+baikal_admin_application_form_edit:
+    pattern:  /applications/{application}/edit
+    defaults: { _controller: BaikalAdminBundle:Application/Form:edit }

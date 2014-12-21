@@ -8,3 +8,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.kernel_response, method: handle }
 
+
+    baikal_frontend.oauth_preloginredirect_formauthenticationentrypoint:
+        class: Baikal\FrontendBundle\Service\OAuthPreLoginRedirectFormAuthenticationEntryPoint
+        arguments:
+            - @http_kernel
+            - @security.http_utils
+            - 'hello'
+            - false

@@ -1,0 +1,60 @@
+{% macro text(field) %}
+    <div class="form-group{% if field.vars.errors|length %} has-error{% endif %}">
+        {{ form_label(field, null, { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+        <div class="col-sm-8 col-lg-4">
+            {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+            {% if not field.vars.valid %}<span class="help-block">{{ field.vars.errors[0].getMessage() }}</span>{% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro checkbox(field) %}
+    <div class="form-group{% if field.vars.errors|length %} has-error{% endif %}">
+        <label class='col-sm-4 col-lg-2 control-label'></label>
+        <div class="col-sm-8 col-lg-6">
+            {{ form_widget(field) }} {{ form_label(field) }}<br />
+            {% if not field.vars.valid %}<span class="help-block">{{ field.vars.errors[0].getMessage() }}</span>{% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro checkboxes(field) %}
+    <div class="form-group{% if field.vars.errors|length %} has-error{% endif %}">
+        {{ form_label(field, null, { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+        <div class="col-sm-8 col-lg-4">
+            {% for name, choice in field %}
+                {{ form_widget(choice) }} {{ form_label(choice) }}<br />
+            {% endfor %}
+
+            {% if not field.vars.valid %}<span class="help-block">{{ field.vars.errors[0].getMessage() }}</span>{% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro confirmedpassword(field, showplaceholder = false) %}
+    {% for passwordField in field %}
+        <div class="form-group{% if passwordField.vars.errors|length %} has-error{% endif %}">
+            {{ form_label(passwordField, null, { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
+            <div class="col-sm-8 col-lg-4">
+                
+                {% if showplaceholder %}
+                    {% set passwordplaceholder = '-- Leave empty to keep current password --' %}
+                {% else %}
+                    {% set passwordplaceholder = '' %}
+                {% endif %}
+
+                {{ form_widget(passwordField, { 'attr': { 'class': 'form-control' , 'placeholder': passwordplaceholder } }) }}
+                {% if not passwordField.vars.valid %}<span class="help-block">{{ passwordField.vars.errors[0].getMessage() }}</span>{% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro syntheticreadonly(value, label) %}
+    <div class="form-group">
+        <label class="col-sm-4 col-lg-2 control-label">{{ label }}</label>
+        <div class="col-sm-8 col-lg-4">
+            <p class="form-control-static">{{ value }}
+        </div>
+    </div>
+{% endmacro %}

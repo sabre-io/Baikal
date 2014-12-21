@@ -19,6 +19,9 @@ security:
         - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: [ROLE_ADMIN] }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/oauth/v2/auth/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/webapi, roles: [ IS_AUTHENTICATED_FULLY ] }
         - { path: ^/, roles: [ROLE_FRONTEND_USER] }
 
     firewalls:
@@ -62,6 +65,11 @@ security:
             pattern: ^/login$
             anonymous: ~
 
+        # Page for oauth login is anonymously accessible
+        frontend_oauth_login:
+            pattern: ^/oauth/v2/auth/login$
+            anonymous: ~
+
         # Page /admin/login is anonymously accessible
         admin_login:
             pattern: ^/admin/login$
@@ -71,6 +79,32 @@ security:
         bootcamp_init:
             pattern:  ^/_init/.*$
             security: false
+
+        # OAuth2: authorize application
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
+            provider: sabredav_user_db
+
+            #
+            # TODO: http://stackoverflow.com/questions/10089816/symfony2-how-to-check-if-an-action-is-secured
+            #
+            entry_point: baikal_frontend.oauth_preloginredirect_formauthenticationentrypoint
+
+            form_login:
+                use_forward: false
+                login_path: /oauth/v2/auth/login
+                check_path: /oauth/v2/auth/login_check
+
+        # OAuth2: request token
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
 
         # #####################################################################
         # Admin login section
@@ -86,11 +120,10 @@ security:
                 login_path: /admin/login
                 check_path: /admin/login_check
 
-
             logout:
                 path: /admin/logout
                 target: /admin
-                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
+                #invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
 
             remember_me:
                 key: "%secret%"
@@ -103,6 +136,8 @@ security:
         # Frontend login section
         # Defined after admin login section, because admin is nested in frontend
         # #####################################################################
+
+        # webapi: is handled by frontend firewall
 
         frontend:
             pattern: ^/
@@ -117,7 +152,7 @@ security:
             logout:
                 path: /logout
                 target: /
-                invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
+                #invalidate_session: false   # to circumvent https://github.com/symfony/symfony/issues/5868
 
             remember_me:
                 key: "%secret%"

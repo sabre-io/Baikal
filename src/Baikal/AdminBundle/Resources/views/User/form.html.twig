@@ -36,66 +36,21 @@
 
         <fieldset>
 
+            {% import '::forms.html.twig' as forms %}
+
             {% if user is defined %}
-                <div class="form-group">
-                    <label class="col-sm-4 col-lg-2 control-label">Username</label>
-                    <div class="col-sm-8 col-lg-4">
-                        <p class="form-control-static">{{ user.username() }}
-                    </div>
-                </div>
+                {{ forms.syntheticreadonly(user.username(), 'Username') }}
             {% else %}
-                <div class="form-group{% if form.username.vars.errors|length %} has-error{% endif %}">
-                    {{ form_label(form.username, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                    <div class="col-sm-8 col-lg-4">
-                        {{ form_widget(form.username, { 'attr': { 'class': 'form-control' } }) }}
-                        {% if not form.username.vars.valid %}<span class="help-block">{{ form.username.vars.errors[0].getMessage() }}</span>{% endif %}
-                    </div>
-                </div>
+                {{ forms.text(form.username) }}
             {% endif %}
 
-            <div class="form-group{% if form.displayname.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(form.displayname, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                <div class="col-sm-8 col-lg-4">
-                    {{ form_widget(form.displayname, { 'attr': { 'class': 'form-control' } }) }}
-                    {% if not form.displayname.vars.valid %}<span class="help-block">{{ form.displayname.vars.errors[0].getMessage() }}</span>{% endif %}
-                </div>
-            </div>
+            {{ forms.text(form.displayname) }}
 
-            <div class="form-group{% if form.email.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(form.email, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                <div class="col-sm-8 col-lg-4">
-                    {{ form_widget(form.email, { 'attr': { 'class': 'form-control' } }) }}
-                    {% if not form.email.vars.valid %}<span class="help-block">{{ form.email.vars.errors[0].getMessage() }}</span>{% endif %}
-                </div>
-            </div>
+            {{ forms.text(form.email) }}
 
-            <div class="form-group{% if form.roles.vars.errors|length %} has-error{% endif %}">
-                {{ form_label(form.roles, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                <div class="col-sm-8 col-lg-4">
-                    {% for name, choice in form.roles %}
-                        {{ form_widget(choice) }} {{ form_label(choice, label|default(null)) }}<br />
-                    {% endfor %}
+            {{ forms.checkboxes(form.roles) }}
 
-                    {% if not form.roles.vars.valid %}<span class="help-block">{{ form.roles.vars.errors[0].getMessage() }}</span>{% endif %}
-                </div>
-            </div>
-
-            {% for passwordField in form.password %}
-                <div class="form-group{% if passwordField.vars.errors|length %} has-error{% endif %}">
-                    {{ form_label(passwordField, label|default(null), { 'label_attr': { 'class': 'col-sm-4 col-lg-2 control-label' } }) }}
-                    <div class="col-sm-8 col-lg-4">
-                        
-                        {% if user is defined %}
-                            {% set passwordplaceholder = '-- Leave empty to keep current password --' %}
-                        {% else %}
-                            {% set passwordplaceholder = '' %}
-                        {% endif %}
-
-                        {{ form_widget(passwordField, { 'attr': { 'class': 'form-control' , 'placeholder': passwordplaceholder } }) }}
-                        {% if not passwordField.vars.valid %}<span class="help-block">{{ passwordField.vars.errors[0].getMessage() }}</span>{% endif %}
-                    </div>
-                </div>
-            {% endfor %}
+            {{ forms.confirmedpassword(form.password, user is defined) }}
 
             {{ form_rest(form) }}
 

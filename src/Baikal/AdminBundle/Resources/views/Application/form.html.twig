@@ -1,0 +1,84 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% block content %}
+
+    {% set new = not (application is defined and application.id) %}
+
+    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+        {% set icon = "cubes" %}
+        {% set header = "Application" %}
+        {% block header %}
+            <a href="{{ path('baikal_admin_application_list') }}">Applications</a>
+            
+            <i class="fa fa-angle-right"></i>
+
+            {% if not new %}
+                <i class="fa fa-cube"></i> {{ application.name }}
+
+                <i class="fa fa-angle-right"></i>
+
+                Edit
+            {% else %}
+                New
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+    <div class="container">
+
+        {% include "BaikalViewComponentsBundle:Components:flash.notice.html.twig" %}
+
+        {% if not new %}
+        <div class="row">
+            <div class="col-sm-8">
+                <p>{{nbusers}} {{accord('user', nbusers)}}</p>
+                <p>Client ID: {{application.publicid}}</p>
+                <p>Client Secret: {{application.secret}}</p>
+                <p>OAuth2 auth endpoint: {{url('fos_oauth_server_authorize')}}</p>
+                <p>OAuth2 token endpoint: {{url('fos_oauth_server_token')}}</p>
+            </div>
+            <div class="col-sm-4">
+                <p><button class="btn btn-danger">TODO: Revoke all user tokens</button></p>
+                <p><button class="btn btn-danger">TODO: Reset client secret</button></p>
+                <p><button class="btn btn-danger">TODO: Delete application</button></p>
+            </div>
+        </div>
+        {% endif %}
+
+        <form class="form-horizontal" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" method="post" {{ form_enctype(form) }} role="form" novalidate>
+
+            <fieldset>
+
+                {% import '::forms.html.twig' as forms %}
+
+                {{ forms.text(form.name) }}
+
+                {{ forms.text(form.description) }}
+
+                {{ forms.text(form.redirecturi) }}
+
+                {{ forms.text(form.homepageurl) }}
+
+                {{ forms.checkboxes(form.allowed_grant_types) }}
+
+                {{ form_rest(form) }}
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-2 col-lg-offset-2 col-lg-1">
+                        <a href="{{ path('baikal_admin_application_list') }}" class="btn btn-link btn-large">Back to list</a>
+                    </div>
+
+                    <div class="col-sm-2 col-lg-1">
+                        {% if new %}
+                        <button type="submit" class="btn btn-primary btn-large">Create <i class="fa fa-cube"></i> application</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-primary btn-large">Update <i class="fa fa-cube"></i> {{ application.name }}</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+{% endblock %}

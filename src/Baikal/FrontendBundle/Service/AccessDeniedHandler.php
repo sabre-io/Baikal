@@ -35,7 +35,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface {
      */
     public function handle(Request $request, AccessDeniedException $accessDeniedException) {
 
-        # First we check if user has an access granted to the frontend
+        # First we check if user has an access granted to the admin
         if($this->securityContext->isGranted('ROLE_ADMIN') || $this->securityContext->isGranted('ROLE_STATIC_ADMIN')) {
             return new RedirectResponse($this->router->generate('baikal_admin_homepage'));
         }

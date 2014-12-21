@@ -1,0 +1,29 @@
+Baikal\ModelBundle\Entity\OAuthRefreshToken:
+    type: entity
+    table: OAuthRefreshToken
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+
+    # Other standard properties are defined in FOS/OAUthServerBundle
+
+    manyToOne:
+
+        client:
+            targetEntity: Baikal\ModelBundle\Entity\OAuthClient
+            cascade: { }
+            joinColumns:
+                client_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+        user:
+            targetEntity: Baikal\ModelBundle\Entity\User
+            cascade: { }
+            joinColumns:
+                user_id:
+                    referencedColumnName: id
+            orphanRemoval: false

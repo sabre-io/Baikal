@@ -1,0 +1,61 @@
+{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+
+{% set pagetitle = "Registered applications" %}
+
+{% block content %}
+
+{% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+    {% set icon = "cubes" %}
+    {% block header %}Applications (OAuth){% endblock %}
+{% endembed %}
+
+{% if apps|length %}
+
+    {% embed "BaikalViewComponentsBundle:Components:addbutton.html.twig" %}
+        {% set button_url = path('baikal_admin_application_form_new') %}
+        {% set button_text = '<i class="fa fa-cube"></i> Add Application' %}
+    {% endembed %}
+
+    {% embed "BaikalViewComponentsBundle:Components:list.html.twig" with { items: apps } %}
+        {% block payload %}
+
+            <p class="list-itemtitle">
+                <i class="fa fa-cube"></i> {{ item.name }}
+            </p>
+            <p>{{ item.description }}</p>
+            
+        {% endblock %}
+        {% block actions %}
+            <nobr>
+                <div class="btn-group btn-group-justified pull-right">
+                    <a class="btn btn-primary" href="{{ closure(urls.edit, item) }}">
+                        <i class="fa fa-edit"></i> <span class="hidden-xxs-portrait inline-block">Edit</span>
+                    </a>
+                    <a class="btn btn-danger delete" href="{{ closure(urls.delete, item) }}" data-itemname="{{ item.name | escape() }}">
+                        <i class="fa fa-remove"></i> <span class="hidden-xxs-portrait inline-block">Delete</span>
+                    </a>
+                </div>
+            </nobr>
+        {% endblock %}
+        {% block deletemodal %}
+            {% embed "BaikalViewComponentsBundle:Components:modal.html.twig" %}
+                
+                {% block title %}Delete application <i class="fa fa-cube"></i> <span class="itemname">Application name</span>{% endblock %}
+                {% block body %}
+                    <p>You are about to delete <strong><i class="fa fa-cube"></i> <span class="itemname">Application name</span></strong> and all it's data.</p>
+                    <p><strong>Careful ! This operation is destructive, and cannot be undone.</strong></p>
+                {% endblock %}
+
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+
+{% else %}
+    {% embed "BaikalViewComponentsBundle:Components:nothinghere.html.twig" with {
+        itemname: 'application',
+        actionurl: path('baikal_admin_application_form_new'),
+        calltoaction: 'Create one now'
+    } %}{% endembed %}
+{% endif %}
+
+{% endblock %}

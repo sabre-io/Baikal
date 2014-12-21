@@ -24,6 +24,16 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
 
+    baikal.repository.oauthclient:
+        class: Baikal\ModelBundle\Entity\Repository\OAuthClientRepository
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    baikal.repository.oauthaccesstoken:
+        class: Baikal\ModelBundle\Entity\Repository\OAuthAccessTokenRepository
+        arguments:
+            - @doctrine.orm.entity_manager
+
     baikal.doctrine.entity_listener_resolver:
         class: Baikal\ModelBundle\Doctrine\EntityListenerResolver
         arguments:
