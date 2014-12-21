@@ -1,4 +1,4 @@
-baikal.rest.root:
+baikal.webapi.root:
     pattern: /
     defaults: { _controller: BaikalRestBundle:Root:index }
 

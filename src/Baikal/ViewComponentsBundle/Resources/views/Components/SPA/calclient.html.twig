@@ -7,7 +7,7 @@
             name: calendar.getDisplayname(),
             fullscreen: fullscreen,
             alternativeurl: alternativeurl,
-            url_expandedevents: path('get_calendar_expandedevents', { 'calendar' : calendar.id }),
+            url_expandedevents: path('webapi_get_calendar_expandedevents', { 'calendar' : calendar.id }),
             color: calendar.getCalendarColorAsHexRGB(),
             textcolor: calendar.getTextColorAsHexRGB()
         }

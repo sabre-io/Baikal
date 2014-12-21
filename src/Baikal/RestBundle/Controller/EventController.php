@@ -130,7 +130,8 @@ class EventController extends AbstractEventController {
         );
 
         return new RedirectResponse(
-            $this->router->generate('get_calendar_event', array(
+            # TODO: distinguish between webapi and restapi
+            $this->router->generate('webapi_get_calendar_event', array(
                 'calendar' => $calendar->getId(),
                 'event' => $event->getId(),
             )),
