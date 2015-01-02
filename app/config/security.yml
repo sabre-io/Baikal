@@ -16,12 +16,12 @@ security:
             entity: { class: Baikal\ModelBundle\Entity\User, property: username }
 
     access_control:
-        - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/admin, roles: [ROLE_ADMIN] }
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/oauth/v2/auth/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
-        - { path: ^/webapi, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/oauth/v2/auth/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/api, roles: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/webapi, roles: [ROLE_FRONTEND_USER] }
         - { path: ^/, roles: [ROLE_FRONTEND_USER] }
 
     firewalls:

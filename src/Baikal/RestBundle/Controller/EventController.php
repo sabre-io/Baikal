@@ -141,7 +141,7 @@ class EventController extends AbstractEventController {
 
     public function putEventAction(Request $request, Calendar $calendar, Event $event) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
 
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -152,7 +152,7 @@ class EventController extends AbstractEventController {
 
     public function patchEventAction(Request $request, Calendar $calendar, Event $event) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
         
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -192,8 +192,13 @@ class EventController extends AbstractEventController {
         if(isset($data['start'])) {
             $start = new \Datetime($data['start']);
             $start->setTimezone($calendartimezone);
+            $vevent->remove('DTSTART');
+            $elem = $vobject->createProperty('DTSTART');
+            $elem['VALUE'] = 'DATETIME';
+            $elem->setDateTime($start);
+            $vevent->add($elem);
 
-            if($start->format('H:i:s') === '00:00:00') {
+            /*if($start->format('H:i:s') === '00:00:00') {
                 $vevent->remove('DTSTART');
 
                 $elem = $vobject->createProperty('DTSTART');
@@ -203,14 +208,19 @@ class EventController extends AbstractEventController {
                 $vevent->add($elem);
             } else {
                 $vevent->DTSTART->setDatetime($start);
-            }
+            }*/
         }
 
         if(isset($data['end'])) {
             $end = new \Datetime($data['end']);
             $end->setTimezone($calendartimezone);
+            $vevent->remove('DTEND');
+            $elem = $vobject->createProperty('DTEND');
+            $elem['VALUE'] = 'DATETIME';
+            $elem->setDateTime($end);
+            $vevent->add($elem);
 
-            if($end->format('H:i:s') === '00:00:00') {
+            /*if($end->format('H:i:s') === '00:00:00') {
                 $vevent->remove('DTEND');
                 
                 $elem = $vobject->createProperty('DTEND');
@@ -220,7 +230,7 @@ class EventController extends AbstractEventController {
                 $vevent->add($elem);
             } else {
                 $vevent->DTEND->setDatetime($end);
-            }
+            }*/
         }
 
         $rrule = $this->getRRULEFromEventDTO($data);
