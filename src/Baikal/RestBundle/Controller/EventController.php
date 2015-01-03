@@ -103,7 +103,7 @@ class EventController extends AbstractEventController {
 
     public function postEventAction(Request $request, Calendar $calendar) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
         
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -123,19 +123,24 @@ class EventController extends AbstractEventController {
         $this->em->flush();
 
         # Updating the sync-state for the calendar
-        $this->davbackend->publicAddChange(
+        $this->davbackend->declareAddChange(
             $calendar->getId(),
-            $event->getUri(),
-            1   # 1: Creation
+            $event->getUri()
         );
 
-        return new RedirectResponse(
+        /*return new RedirectResponse(
             # TODO: distinguish between webapi and restapi
             $this->router->generate('webapi_get_calendar_event', array(
                 'calendar' => $calendar->getId(),
                 'event' => $event->getId(),
             )),
             Response::HTTP_CREATED
+        );*/
+        
+        return $this->viewhandler->handle(
+            View::create([
+                'event' => $event,
+            ], Response::HTTP_CREATED)
         );
     }
 
@@ -164,11 +169,29 @@ class EventController extends AbstractEventController {
         $this->em->persist($event);
         $this->em->flush();
 
-        $this->davbackend->publicAddChange(
+        $this->davbackend->declareModifyChange(
             $calendar->getId(),
-            $event->getUri(),
-            2   # 2: Update
+            $event->getUri()
         );
+
+        return Response::create()->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function deleteEventAction(Request $request, Calendar $calendar, Event $event) {
+
+        //throw new HttpException(501, 'Not implemented.');
+        
+        if(!$this->securityContext->isGranted('dav.write', $calendar)) {
+            throw new HttpException(401, 'Unauthorized access.');
+        }
+
+        $this->davbackend->declareDeleteChange(
+            $calendar->getId(),
+            $event->getUri()
+        );
+
+        $this->em->remove($event);
+        $this->em->flush();
 
         return Response::create()->setStatusCode(Response::HTTP_ACCEPTED);
     }
