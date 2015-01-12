@@ -23,4 +23,8 @@ RUN chmod -R 775 baikal
 RUN rm /etc/apache2/sites-enabled/000-default.conf
 COPY baikal.conf /etc/apache2/sites-available/
 RUN ln -s /etc/apache2/sites-available/baikal.conf /etc/apache2/sites-enabled/baikal.conf
-RUN echo "service apache2 start" >> ~/.bashrc
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+EXPOSE 8000
+CMD ["service", "apache2", "start"]
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
