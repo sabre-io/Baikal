@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
+{#    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
         {% set icon = "calendar" %}
         {% block header %}
 
@@ -15,7 +15,7 @@
             {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: calendar } %} {{ calendar.getDisplayname() }}
 
         {% endblock %}
-    {% endembed %}
+    {% endembed %}#}
 
     {% embed "BaikalViewComponentsBundle:Components:SPA/calclient.html.twig" with {
         user: user,

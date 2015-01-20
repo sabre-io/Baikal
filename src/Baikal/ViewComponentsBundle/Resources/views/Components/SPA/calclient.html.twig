@@ -4,12 +4,29 @@
     application('calclient', {
         rootElement: '#app-calclient',
         parameters: {
-            name: calendar.getDisplayname(),
-            fullscreen: fullscreen,
-            alternativeurl: alternativeurl,
-            url_expandedevents: path('webapi_get_calendar_expandedevents', { 'calendar' : calendar.id }),
-            color: calendar.getCalendarColorAsHexRGB(),
-            textcolor: calendar.getTextColorAsHexRGB()
+            apiendpoint: '/webapi/v1',
+            calendarsEnabledAtStart: [calendar.getId()],
+            calendarFocusedAtStart: calendar.getId(),
+            starttime: 0,
+            endtime: 23,
+            businessstarttime: 7,
+            businessendtime: 20,
+            hourbarwidth: 30,
+            hourheight: 30,
+            allowMovingToAdjacentWeeks: true,
+            windowed: false,
+            cosmetic: {
+                gutterwidth: 16,
+                event: {
+                    marginLeft: 2,
+                    marginTop: 2,
+                    marginBottom: 3
+                },
+                popup: {
+                    width: 300,
+                    height: 170
+                }
+            }
         }
     })
 }}
