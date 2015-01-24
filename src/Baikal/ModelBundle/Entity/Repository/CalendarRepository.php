@@ -25,6 +25,12 @@ class CalendarRepository
         return $query->getSingleScalarResult();
     }
 
+    public function findById($id) {
+        $query = $this->em->createQuery('SELECT o FROM BaikalModelBundle:Calendar o WHERE o.id = :id')
+            ->setParameter('id', intval($id));
+        return $query->getSingleResult();
+    }
+
     public function findByUser(User $user) {
 
         $identityprincipal = $user->getIdentityPrincipal();

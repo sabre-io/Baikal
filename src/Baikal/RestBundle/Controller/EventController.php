@@ -19,6 +19,7 @@ use Sabre\VObject,
     Sabre\CalDAV\Backend\BackendInterface as CalDAVBackendInterface;
 
 use Baikal\ModelBundle\Entity\Repository\EventRepository,
+    Baikal\ModelBundle\Entity\Repository\CalendarRepository,
     Baikal\ModelBundle\Entity\Calendar,
     Baikal\ModelBundle\Entity\Event,
     Baikal\ModelBundle\Form\Type\Calendar\EventType,
@@ -33,6 +34,7 @@ class EventController extends AbstractEventController {
     protected $formFactory;
     protected $viewhandler;
     protected $securityContext;
+    protected $calendarRepo;
     protected $eventRepo;
     protected $mainconfig;
     protected $timezonehelper;
@@ -43,6 +45,7 @@ class EventController extends AbstractEventController {
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewhandler,
         SecurityContextInterface $securityContext,
+        CalendarRepository $calendarRepo,
         EventRepository $eventRepo,
         MainConfigService $mainconfig,
         DavTimeZoneHelper $timezonehelper,
@@ -53,6 +56,7 @@ class EventController extends AbstractEventController {
         $this->formFactory = $formFactory;
         $this->viewhandler = $viewhandler;
         $this->securityContext = $securityContext;
+        $this->calendarRepo = $calendarRepo;
         $this->eventRepo = $eventRepo;
         $this->mainconfig = $mainconfig;
         $this->timezonehelper = $timezonehelper;
@@ -127,15 +131,6 @@ class EventController extends AbstractEventController {
             $calendar->getId(),
             $event->getUri()
         );
-
-        /*return new RedirectResponse(
-            # TODO: distinguish between webapi and restapi
-            $this->router->generate('webapi_get_calendar_event', array(
-                'calendar' => $calendar->getId(),
-                'event' => $event->getId(),
-            )),
-            Response::HTTP_CREATED
-        );*/
         
         return $this->viewhandler->handle(
             View::create([
@@ -166,13 +161,50 @@ class EventController extends AbstractEventController {
         $data = json_decode($request->getContent(), TRUE);
         $this->updateEventFromEventDTO($event, $data);
 
-        $this->em->persist($event);
-        $this->em->flush();
+        if(
+            array_key_exists('calendar', $data) &&
+            ($newcalendarid = intval($data['calendar'])) &&
+            $calendar->getId() !== $newcalendarid
+        ) {
 
-        $this->davbackend->declareModifyChange(
-            $calendar->getId(),
-            $event->getUri()
-        );
+            // A new calendar has been specified, it's a calendar change request
+            // Does the new calendar exist ?
+
+            $newcalendar = $this->calendarRepo->findById($newcalendarid);
+            if(is_null($newcalendar)) {
+                throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'Calendar not found.');
+            }
+
+            // Has the user write access on this calendar
+            if(!$this->securityContext->isGranted('dav.write', $newcalendar)) {
+                throw new HttpException(401, 'Unauthorized access.');
+            }
+
+            // Calendar found, and user has write access
+            $event->setCalendar($newcalendar);
+
+            $this->em->persist($event);
+            $this->em->flush();
+
+            $this->davbackend->declareDeleteChange(
+                $calendar->getId(),
+                $event->getUri()
+            );
+
+            $this->davbackend->declareAddChange(
+                $newcalendar->getId(),
+                $event->getUri()
+            );
+
+        } else {
+            $this->em->persist($event);
+            $this->em->flush();
+
+            $this->davbackend->declareModifyChange(
+                $calendar->getId(),
+                $event->getUri()
+            );
+        }
 
         return Response::create()->setStatusCode(Response::HTTP_ACCEPTED);
     }
