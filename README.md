@@ -24,7 +24,11 @@ If you want to help, and you have a strong experience in Symfony, ReactJS, Ember
 
 ![](http://baikal-server.com/res/img/github/02-users.png)
 
-**Calendar web client (read-only for now)**
+**Calendar web client, week view (full-featured)**
+
+![](http://baikal-server.com/res/img/github/05-calview-week.png)
+
+**Calendar web client, month view (read-only for now)**
 
 ![](http://baikal-server.com/res/img/github/03-calview.png)
 
