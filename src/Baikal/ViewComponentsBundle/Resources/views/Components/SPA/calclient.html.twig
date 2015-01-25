@@ -1,3 +1,38 @@
+<style type="text/css">
+    .cal-week-navigation {
+        margin-right: 25px;
+        transform: translateY(3px);
+        -moz-transform: translateY(3px);
+        -webkit-transform: translateY(3px);
+        -o-transform: translateY(3px);
+        -ms-transform: translateY(3px);
+    }
+
+    #minimenu {
+        right: initial;
+        left: 15px;
+        top: 15px;
+    }
+
+    html.cal-week-edit-view #minimenu {
+        display: none;
+    }
+
+    .cal-week-sidebar {
+        margin-top: 62px;
+    }
+
+    #nprogress .spinner {
+        top: 12px;
+        right: 12px;
+    }
+
+    @media (max-width: 767px) {
+        .cal-week-navigation {
+            margin-right: inherit;
+        }
+    }
+</style>
 <div id="app-calclient"></div>
 
 {{
@@ -12,9 +47,9 @@
             businessstarttime: 7,
             businessendtime: 20,
             hourbarwidth: 30,
-            hourheight: 30,
+            hourheight: 90,
             allowMovingToAdjacentWeeks: true,
-            windowed: false,
+            windowed: true,
             cosmetic: {
                 gutterwidth: 16,
                 event: {
@@ -24,36 +59,9 @@
                 },
                 popup: {
                     width: 300,
-                    height: 170
+                    height: 200
                 }
             }
         }
     })
 }}
-
-{% if fullscreen %}
-<style type="text/css">
-    #calendar-bottombar {
-        position: absolute;
-        bottom: 1px;    /* compensate for the border */
-        z-index: 999999;
-        width: 100%;
-        height: 32px;
-        line-height: 32px;
-        background-color: white;
-        border-top: 1px solid silver;
-        color: black;
-    }
-
-    #calendar-bottombar .calendartitle {
-        line-height: 1.4em;
-        font-size: 1.4em;
-    }
-
-</style>
-<div id="calendar-bottombar">
-    <div class="text-center">
-        <span class="calendartitle">{{ calendar.getDisplayname() }}</span>
-    </div>
-</div>
-{% endif %}
