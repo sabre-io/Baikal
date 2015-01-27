@@ -152,7 +152,8 @@ netgusto_dev_server:
     tasks:
         - { command: php app/console server:run 0.0.0.0:8000 }
         - { command: php app/console assetic:dump --watch }
-        - { command: ember serve --port 4200, path: web/apps/calclient }
+        #- { command: ember serve --port 4200, path: web/apps/calclient }
+        - { command: grunt serve, path: web/apps/calclient }
         - { command: grunt serve, path: web/apps/cardclient }
 
 netgusto_portal:
