@@ -4,7 +4,7 @@
 
 This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
-Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://appsdeck.eu/, etc.).
+Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://scalingo.com/, etc.).
 
 ## Contribute !
 
@@ -38,21 +38,20 @@ If you want to help, and you have a strong experience in Symfony, ReactJS, Ember
 
 ## Installation: PAAS
 
-### Appsdeck
+### Scalingo (ex Appsdeck)
 
-Appsdeck is the trendy European PAAS provider. See their offer here <http://appsdeck.eu>
+Scalingo is the trendy European PAAS provider. See their offer here <https://scalingo.com>
 
 1. `git clone -b branch-2 https://github.com/netgusto/Baikal.git`
-2. Create your Appsdeck container (let's say we call it **my-baikal**)
+2. Create your Scalingo application (let's say we call it **my-baikal**)
 3. Add the **MySQL** addon to your container
-4. In the **Environment** tab, add the environment variable `DATABASE_URL` with the value `$APPSDECK_MYSQL_URL`
-4. `cd Baikal.git`
-5. `git remote add appsdeck git@appsdeck.eu:my-baikal.git`
-6. `git push appsdeck branch-2:master`
-7. Once the app has booted, open <http://my-baikal.appsdeck.eu> in your web browser.
-8. Log in using the default account created during initialization (username: **admin**, password: **password**).
-9. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
-10. Et voilà !
+3. `cd Baikal.git`
+4. `git remote add scalingo git@scalingo.com:my-baikal.git`
+5. `git push scalingo branch-2:master`
+6. Once the app has booted, open <https://my-baikal.scalingo.io> in your web browser.
+7. Log in using the default account created during initialization (username: **admin**, password: **password**).
+8. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
+9. Et voilà !
 
 ### Heroku
 
