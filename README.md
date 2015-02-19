@@ -45,7 +45,7 @@ Scalingo is the trendy European PAAS provider. See their offer here <https://sca
 1. `git clone -b branch-2 https://github.com/netgusto/Baikal.git`
 2. Create your Scalingo application (let's say we call it **my-baikal**)
 3. Add the **MySQL** addon to your container
-3. `cd Baikal.git`
+3. `cd Baikal`
 4. `git remote add scalingo git@scalingo.com:my-baikal.git`
 5. `git push scalingo branch-2:master`
 6. Once the app has booted, open <https://my-baikal.scalingo.io> in your web browser.
@@ -59,7 +59,7 @@ Heroku is the leading American PAAS provider. See their offer here <http://herok
 
 1. `git clone -b branch-2 https://github.com/netgusto/Baikal.git`
 2. Create your Heroku app (let's say we call it **my-baikal**)
-3. `cd Baikal.git`
+3. `cd Baikal`
 4. Bind your app to Heroku: `heroku git:remote -a my-baikal`
 5. Add the **PostgreSQL** addon to your app: `heroku addons:add heroku-postgresql` and note the name of your database (something like `HEROKU_POSTGRESQL_AMBER_URL`)
 6. Promote the database: `heroku pg:promote HEROKU_POSTGRESQL_AMBER_URL` (replace `HEROKU_POSTGRESQL_AMBER_URL` with the name Heroku just gave you on the previous line)
