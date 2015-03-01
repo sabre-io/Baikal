@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     expand: function(ev, datefrom, dateto) {
 

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     ActionTypes: {
         FETCH_CALENDARS: 'FETCH_CALENDARS',

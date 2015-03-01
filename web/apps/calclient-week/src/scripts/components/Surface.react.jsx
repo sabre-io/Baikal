@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 'use strict';
 
 var React = require('react/addons'),
@@ -94,7 +92,7 @@ var Surface = React.createClass({
         }
 
         return (
-            <div>
+            <div className="clearfix">
                 <table style={{width: '100%'}}>
                     <LayerColumnheaders
                         hourbarwidth={this.props.hourbarwidth}

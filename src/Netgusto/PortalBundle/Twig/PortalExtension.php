@@ -85,7 +85,8 @@ class PortalExtension extends \Twig_Extension {
             return $config;
         });
 
-        return $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
+        $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
+        return new PortalApplicationResponse($parts['assets'], $parts['html']);
     }
 
     protected function yoreactwebpack($app, $options = array()) {
@@ -100,7 +101,10 @@ class PortalExtension extends \Twig_Extension {
             $content = file_get_contents($url);
             $assetprefix = $url;
         } else {
-            $content = file_get_contents($apppath . '/dist/index.html');
+            $index = $apppath . '/dist/index.html';
+            if(!file_exists($index)) throw new \RuntimeException('Portal: index.html not found for ' . $app['name']);
+
+            $content = file_get_contents($index);
             $relapppath = preg_replace('%^' . preg_quote($webdir) . '%', '', $apppath);
             $assetprefix = $relapppath . '/dist';
         }
@@ -111,12 +115,13 @@ class PortalExtension extends \Twig_Extension {
         $kept[] = $this->produceConfigurationMeta($content, $options);
 
         # On récupère les balises script et link, et on les réécrit
-        return $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
+        $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
+        return new PortalApplicationResponse($parts['assets'], $parts['html']);
     }
 
     private function produceConfigurationMeta($content, $options, $cbk = null) {
         
-        if(!$cbk) { $cbk = function($config) { return $config;}; }
+        if(!$cbk) { $cbk = function($config) { return $config; }; }
 
         $matches = array();
         if(
@@ -165,12 +170,38 @@ class PortalExtension extends \Twig_Extension {
         }, $parts['head']);
         */
 
-        $content = implode("\n", $kept) . "\n" . $parts['body'];
-        $content = preg_replace_callback('%(?P<attr>(src|href))\s*?=\s*?(?P<quote>\'|")(?P<value>.*?)\3%smix', function($match) use ($assetprefix) {
-            if(preg_match('%^(//|https?://)%', $match['value'])) { return $match[0]; }
-            return $match['attr'] . "=" . $match['quote'] . $assetprefix . ltrim($match['value'], '/') . $match['quote'];
-        }, $content);
+        $parts['body'] = preg_replace_callback('%<script\s+.*?>%smix', function($match) use (&$kept) {
+            $kept[] = $match[0]  . '</script>';
+        }, $parts['body']);
 
-        return $content;
+        $processUrls = function($content, $assetprefix) {
+            return preg_replace_callback('%(?P<attr>(src|href))\s*?=\s*?(?P<quote>\'|")(?P<value>.*?)\3%smix', function($match) use ($assetprefix) {
+                if(preg_match('%^(//|https?://)%', $match['value'])) { return $match[0]; }
+                return $match['attr'] . "=" . $match['quote'] . $assetprefix . ltrim($match['value'], '/') . $match['quote'];
+            }, $content);
+        };
+
+        return array(
+            'html' => $processUrls($parts['body'], $assetprefix),
+            'assets' => $processUrls(implode("\n", $kept), $assetprefix)
+        );
+    }
+}
+
+class PortalApplicationResponse {
+
+    protected $assets;
+    protected $html;
+
+    public function __construct($assets, $html) {
+        $this->assets = $assets;
+        $this->html = $html;
+    }
+
+    public function getHtml() { return $this->html; }
+    public function getAssets() { return $this->assets; }
+
+    public function __toString() {
+        return $this->getAssets() . $this->getHtml();
     }
 }

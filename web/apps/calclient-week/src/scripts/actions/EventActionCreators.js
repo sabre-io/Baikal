@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatcher/AppDispatcher'),
     EventConstants = require('../constants/EventConstants'),
     ActionTypes = EventConstants.ActionTypes;

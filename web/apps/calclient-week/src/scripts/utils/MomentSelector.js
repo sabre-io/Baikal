@@ -1,3 +1,5 @@
+'use strict';
+
 var timeAlignment = 0.5;    // half an hour
 
 var determineTimeByY = function(y, hourheight, unaligned) {

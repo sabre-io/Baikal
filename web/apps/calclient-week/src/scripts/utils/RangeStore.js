@@ -1,3 +1,5 @@
+'use strict';
+
 var RangeStore = function() {
     this.fetchedRanges = [];
 };
@@ -47,7 +49,7 @@ RangeStore.prototype.aggregateRange = function(rangeB) {
     // 2: A--B----B----A
     // 3: A----B--A----B
 
-    for(index in this.fetchedRanges) {
+    for(var index in this.fetchedRanges) {
         var rangeA = this.fetchedRanges[index];
 
         // console.log('B.start:' + rangeB.start.toISOString() + '; B.end:' + rangeB.end.toISOString() + '; A.start:' + rangeA.start.toISOString() + '; A.end: ' + rangeA.end.toISOString())

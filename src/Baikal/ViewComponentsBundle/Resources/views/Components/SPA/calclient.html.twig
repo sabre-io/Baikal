@@ -1,67 +1,32 @@
-<style type="text/css">
-    .cal-week-navigation {
-        margin-right: 25px;
-        transform: translateY(3px);
-        -moz-transform: translateY(3px);
-        -webkit-transform: translateY(3px);
-        -o-transform: translateY(3px);
-        -ms-transform: translateY(3px);
-    }
-
-    #minimenu {
-        right: initial;
-        left: 15px;
-        top: 15px;
-    }
-
-    html.cal-week-edit-view #minimenu {
-        display: none;
-    }
-
-    .cal-week-sidebar {
-        margin-top: 62px;
-    }
-
-    #nprogress .spinner {
-        top: 12px;
-        right: 12px;
-    }
-
-    @media (max-width: 767px) {
-        .cal-week-navigation {
-            margin-right: inherit;
-        }
-    }
-</style>
 <div id="app-calclient"></div>
 
-{{
-    application('calclient', {
-        rootElement: '#app-calclient',
-        parameters: {
-            apiendpoint: '/webapi/v1',
-            calendarsEnabledAtStart: [calendar.getId()],
-            calendarFocusedAtStart: calendar.getId(),
-            starttime: 0,
-            endtime: 23,
-            businessstarttime: 7,
-            businessendtime: 20,
-            hourbarwidth: 30,
-            hourheight: 90,
-            allowMovingToAdjacentWeeks: true,
-            windowed: true,
-            cosmetic: {
-                gutterwidth: 16,
-                event: {
-                    marginLeft: 2,
-                    marginTop: 2,
-                    marginBottom: 3
-                },
-                popup: {
-                    width: 300,
-                    height: 200
-                }
+{% set calview = application('calclient', {
+    rootElement: '#app-calclient',
+    parameters: {
+        apiendpoint: '/webapi/v1',
+        calendarsEnabledAtStart: [calendar.getId()],
+        calendarFocusedAtStart: calendar    .getId(),
+        starttime: 0,
+        endtime: 23,
+        businessstarttime: 7,
+        businessendtime: 20,
+        hourbarwidth: 30,
+        hourheight: 90,
+        allowMovingToAdjacentWeeks: true,
+        windowed: true,
+        cosmetic: {
+            gutterwidth: 16,
+            event: {
+                marginLeft: 2,
+                marginTop: 2,
+                marginBottom: 3
+            },
+            popup: {
+                width: 300,
+                height: 200
             }
         }
-    })
-}}
+    }
+}) %}
+
+{{ calview }}

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     ActionTypes: {
         RECEIVE_CALENDAR_EVENTS: 'RECEIVE_CALENDAR_EVENTS',

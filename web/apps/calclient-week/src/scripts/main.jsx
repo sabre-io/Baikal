@@ -1,4 +1,4 @@
-/** @jsx React.DOM */
+'use strict';
 
 try {
     var config = JSON.parse(unescape(document.getElementsByName('config/environment')[0]['content']));

@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 'use strict';
 
 var React = require('react/addons'),
@@ -220,7 +218,7 @@ var DaySelector = React.createClass({
         return (
             <div className={cx(classNames)}>
 
-                <div className="control-bar">
+                <div className="control-bar clearfix">
                     <div style={{width: '60%', 'float': 'left', textAlign: 'left'}} className="monthname">{this.state.firstDayOfMonth.format('MMM YYYY')}</div>
                     <div style={{width: '40%', 'float': 'left', textAlign: 'right'}}>
                         <div className="btn-group">

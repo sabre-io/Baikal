@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatcher/AppDispatcher'),
     AppStateConstants = require('../constants/AppStateConstants'),
     CalendarActionCreators = require('../actions/CalendarActionCreators');

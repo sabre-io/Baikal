@@ -2,13 +2,43 @@
 
 {% set pagetitle = "Calendar " ~ calendar.getDisplayname() %}
 
+{% block bodyclass %}calendar-fullscreen{% endblock %}
+
+{% set calview = application('calclient', {
+    rootElement: '#app-calclient',
+    parameters: {
+        apiendpoint: '/webapi/v1',
+        calendarsEnabledAtStart: [calendar.getId()],
+        calendarFocusedAtStart: calendar.getId(),
+        starttime: 0,
+        endtime: 23,
+        businessstarttime: 7,
+        businessendtime: 20,
+        hourbarwidth: 30,
+        hourheight: 60,
+        allowMovingToAdjacentWeeks: true,
+        windowed: true,
+        cosmetic: {
+            gutterwidth: 16,
+            event: {
+                marginLeft: 2,
+                marginTop: 2,
+                marginBottom: 3
+            },
+            popup: {
+                width: 300,
+                height: 200
+            }
+        }
+    }
+}) %}
+
 {% block content %}
 
-{% embed "BaikalViewComponentsBundle:Components:SPA/calclient.html.twig" with {
-    user: user,
-    calendar: calendar
-} %}{% endembed %}
-
+<div id="app-calclient"></div>
+{{ calview.html|raw }}
 {% endblock %}
 
-{% block jslibsjquery %}{% endblock %}
+{% block scripts %}
+{{ calview.assets|raw }}
+{% endblock %}

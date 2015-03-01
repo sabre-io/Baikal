@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatcher/AppDispatcher'),
     CalendarActionTypes = require('../constants/CalendarConstants').ActionTypes,
     CalendarRestAPI = require('../utils/CalendarRestAPI'),

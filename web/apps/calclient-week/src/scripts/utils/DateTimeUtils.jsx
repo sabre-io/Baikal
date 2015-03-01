@@ -1,3 +1,5 @@
+'use strict';
+
 var isAllDay = function(startmoment, endmoment) {
     if(
         startmoment.clone().startOf('day').isSame(startmoment) &&

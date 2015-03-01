@@ -1,3 +1,5 @@
+'use strict';
+
 var axios = require('axios'),
     Promise = require('es6-promise').Promise,
     NProgress = require('nprogress');

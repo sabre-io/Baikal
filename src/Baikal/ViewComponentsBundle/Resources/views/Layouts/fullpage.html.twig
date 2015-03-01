@@ -22,14 +22,9 @@
 
         <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('vendor/webasset/font-awesome/css/font-awesome.min.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/frontendbundle.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/adminbundle.css') }}" />
-
-        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bundled.min.css') }}" />
     </head>
-    <body>
+    <body class="layout-fullscreen {% block bodyclass "" %}">
         {% block body %}
         
         {% endblock %}
@@ -38,11 +33,7 @@
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
 
-        {% block jslibsjquery %}
-        <script src="{{ asset('vendor/webasset/jquery/jquery-2.1.0.min.js') }}"></script>
-        {% endblock jslibsjquery %}
-        
-        <script src="{{ asset('js/bootstrap.js') }}"></script>
+        <script src="{{ asset('assets/js/bundled.min.js') }}"></script>
         {% block scripts %}{% endblock %}
         <script type="text/javascript">
         {% block js %}{% endblock %}

@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 'use strict';
 
 var React = require('react/addons'),
@@ -376,7 +374,8 @@ var LayerEvents = React.createClass({
             preciseboundarymoment = this.preciseMomentFromDateAndTime(boundarydate, boundarytime);
 
         var difference = boundarymoment.diff(this.state.creatingpivot),
-            precisedifference = preciseboundarymoment.diff(this.state.creatingpivotprecise);
+            precisedifference = preciseboundarymoment.diff(this.state.creatingpivotprecise),
+            direction;
 
         if(difference < 0) {
             direction = -1;
@@ -384,8 +383,8 @@ var LayerEvents = React.createClass({
             direction = 1;
         }
 
-        duration = direction * (difference / 3600 / 1000);
-        preciseduration = direction * (precisedifference / 3600 / 1000);
+        var duration = direction * (difference / 3600 / 1000);
+        var preciseduration = direction * (precisedifference / 3600 / 1000);
 
         if(preciseduration < 0.05) {
             // 0.05h (3mn, corresponding to 3px when hourheight=60px) movement: threshold for creation detection

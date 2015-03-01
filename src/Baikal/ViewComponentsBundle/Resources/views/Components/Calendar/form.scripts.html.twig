@@ -1,0 +1,10 @@
+<script type="text/javascript">
+
+    $('.colorpicker').each(function(i, e) {
+
+        // removing last 2 hexa chars (opacity)
+        var val = $(e).val();
+        val.match(/^\#[a-fA-F0-9]{8}$/) ? $(e).val(val.substr(0, 7)):null;
+        $(e).minicolors();
+    });
+</script>
