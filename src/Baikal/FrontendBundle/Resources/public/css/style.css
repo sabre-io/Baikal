@@ -1,0 +1,215 @@
+.bk-stripedlist .row {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.bk-stripedlist .row:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+.bk-stripedlist .row:nth-child(even) {
+    background-color: #FEFEFE;
+}
+
+.bk-stripedlist .btn-group {
+    margin-top: 0.3em;
+}
+
+
+.visible-xxs, .visible-xxs.inline-block,
+.visible-xxs-portrait, .visible-xxs-portrait.inline-block,
+.visible-xxs-landscape, .visible-xxs-landscape.inline-block {
+    display: none !important;
+}
+
+.hidden-xxs,
+.hidden-xxs-portrait,
+.hidden-xxs-landscape {
+    display: block !important;
+}
+
+.hidden-xxs.inline-block,
+.hidden-xxs-portrait.inline-block,
+.hidden-xxs-landscape.inline-block {
+    display: inline-block !important;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-width : 480px) {
+
+    .visible-xxs,
+    .visible-xxs-portrait,
+    .visible-xxs-landscape {
+        display: block !important;
+    }
+
+    .visible-xxs.inline-block,
+    .visible-xxs-portrait.inline-block,
+    .visible-xxs-landscape.inline-block {
+        display: inline-block !important;
+    }
+
+    .hidden-xxs, .hidden-xxs.inline-block,
+    .hidden-xxs-portrait, .hidden-xxs-portrait.inline-block,
+    .hidden-xxs-landscape, .hidden-xxs-landscape.inline-block {
+        display: none !important;
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+    .visible-xxs,
+    .visible-xxs-landscape {
+        display: block !important;
+    }
+
+    .visible-xxs.inline-block,
+    .visible-xxs-landscape.inline-block {
+        display: inline-block !important;
+    }
+
+    .hidden-xxs, .hidden-xxs.inline-block
+    .hidden-xxs-landscape, .hidden-xxs-landscape.inline-block{
+        display: none !important;
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (min-width : 321px) and (max-width : 480px) {
+    .visible-xxs,
+    .visible-xxs-portrait {
+        display: block !important;
+    }
+
+    .visible-xxs.inline-block,
+    .visible-xxs-portrait.inline-block {
+        display: inline-block !important;
+    }
+
+    .hidden-xxs,.hidden-xxs.inline-block,
+    .hidden-xxs-portrait,.hidden-xxs-portrait.inline-block {
+        display: none !important;
+    }
+}
+
+/*****************************************************************************/
+
+
+.dropdown-menu li i {
+    display: inline-block;
+    width: 1.4em;
+}
+
+#baikallogo {
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+}
+
+.navbar-brand {
+    color: #555555;
+    font-size: 2em;
+    max-width: 400px;   /* Instead of 200px by default in bootstrap 3 */
+
+    font-family: 'Ubuntu', inherit;
+}
+
+.navbar-brand span.colored {
+    color: #F24535;
+}
+
+@media (max-width: 767px) {
+    #baikallogo {
+        margin-left: 5px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2em;
+        padding-left: 5px;
+    }
+}
+
+.page-header {
+    margin: 0 0 12px 0;
+    padding: 12px 0;
+    font-size: 30px;
+    font-weight: 200;
+}
+
+@media (max-width: 767px) {
+    .page-header {
+        font-size: 25px;
+        line-height: 30px;
+    }
+
+    .page-header i.fa {
+        display: none;
+    }
+
+    .page-header i.fa.fa-angle-right {
+        display: inline-block;
+    }
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    margin-top: 0;
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.top-buffer {
+    margin-top:20px;
+}
+
+.list-itemtitle {
+    font-size: 2em;
+    font-weight: 200;
+}
+
+.addbutton {
+    margin-bottom: 12px;
+}
+
+/* Baïkal Layout adaptations for fullscreen calendar week view */
+
+body.calendar-fullscreen .cal-week-navigation {
+    margin-right: 25px;
+    transform: translateY(3px);
+    -moz-transform: translateY(3px);
+    -webkit-transform: translateY(3px);
+    -o-transform: translateY(3px);
+    -ms-transform: translateY(3px);
+}
+
+body.calendar-fullscreen #minimenu {
+    right: initial;
+    left: 15px;
+    top: 15px;
+}
+
+html.cal-week-edit-view body.calendar-fullscreen #minimenu {
+    display: none;
+}
+
+body.calendar-fullscreen .cal-week-sidebar {
+    margin-top: 62px;
+}
+
+body.calendar-fullscreen #nprogress .spinner {
+    top: 12px;
+    right: 12px;
+}
+
+@media (max-width: 767px) {
+    body.calendar-fullscreen .cal-week-navigation {
+        margin-right: inherit;
+    }
+}

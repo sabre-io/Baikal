@@ -1,0 +1,9 @@
+{
+    "name": "netgusto-baikal",
+    "dependencies": {
+        "jquery": "1.11.*",
+        "bootstrap": "3.3.*",
+        "font-awesome": "4.3.*",
+        "jquery-minicolors": "2.1.*"
+    }
+}

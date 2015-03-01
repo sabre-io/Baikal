@@ -108,7 +108,7 @@ First thing to do then is to change your password (Upper right corner of the scr
 
 ### Development setup
 
-**Note:** for now, composer is required for the installation.
+**Note:** `composer`, `npm`, `bower` and `grunt` are required for development.
 
 ```sh
 # 1. Install composer if not already installed: <https://getcomposer.org/download/>
@@ -134,14 +134,13 @@ $ cp app/config/defaults/data.environment.dist.yml data/environment.yml
 $ composer install
 
 # 8. Install required node packages in the global scope:
-$ sudo npm install -g bower ember-cli coffee-script sass
+$ sudo npm install -g bower grunt-cli
 
-# 9. Install development dependencies for each frontend-app
-$ cd web/apps/calclient; npm install; bower install; cd ../../..
-$ cd web/apps/cardclient; npm install; bower install; cd ../../..
+# 9. Unpack subprojects
+$ npm run unpack
 
 # 10. Boot the development server
-$ php app/console server:dev
+$ npm run dev
 
 ```
 
@@ -156,11 +155,7 @@ First thing to do then is to change your password (Upper right corner of the scr
 If you modified the frontend apps (located in `web/apps/`), make sure to build them before release:
 
 ```sh
-# Build the calendar client (emberjs with embercli)
-$ cd web/apps/calclient && ember build --environment=production
-
-# Build the addressbook client (react with webpack)
-$ cd web/apps/cardclient && grunt build
+$ npm run build
 ```
 
 ## Roadmap

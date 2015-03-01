@@ -45,17 +45,6 @@ twig:
         dav_caldav_enabled: %baikal.dav_caldav_enabled%
         dav_carddav_enabled: %baikal.dav_carddav_enabled%
 
-# Assetic Configuration
-assetic:
-    debug:          "%kernel.debug%"
-    use_controller: false
-    bundles:        [ ]
-    #java: /usr/bin/java
-    filters:
-        cssrewrite: ~
-        lessphp: ~
-        coffee: ~
-
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -152,10 +141,12 @@ netgusto_dev_server:
     tasks:
         - { command: php app/console server:run 0.0.0.0:8000 }
         - { command: php app/console assetic:dump --watch }
-        - { command: ember serve --port 4200, path: web/apps/calclient }
+        #- { command: ember serve --port 4200, path: web/apps/calclient }
+        - { command: grunt serve, path: web/apps/calclient-week }
         - { command: grunt serve, path: web/apps/cardclient }
 
 netgusto_portal:
     applications:
-        - { name: calclient, path: web/apps/calclient, type: ember-cli, port: 4200 }
+        #- { name: calclient, path: web/apps/calclient, type: ember-cli, port: 4200 }
+        - { name: calclient, path: web/apps/calclient-week, type: yo-react-webpack, port: 8002 }
         - { name: cardclient, path: web/apps/cardclient, type: yo-react-webpack, port: 8003 }

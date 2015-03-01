@@ -19,6 +19,7 @@ use Sabre\VObject,
     Sabre\CalDAV\Backend\BackendInterface as CalDAVBackendInterface;
 
 use Baikal\ModelBundle\Entity\Repository\EventRepository,
+    Baikal\ModelBundle\Entity\Repository\CalendarRepository,
     Baikal\ModelBundle\Entity\Calendar,
     Baikal\ModelBundle\Entity\Event,
     Baikal\ModelBundle\Form\Type\Calendar\EventType,
@@ -33,6 +34,7 @@ class EventController extends AbstractEventController {
     protected $formFactory;
     protected $viewhandler;
     protected $securityContext;
+    protected $calendarRepo;
     protected $eventRepo;
     protected $mainconfig;
     protected $timezonehelper;
@@ -43,6 +45,7 @@ class EventController extends AbstractEventController {
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewhandler,
         SecurityContextInterface $securityContext,
+        CalendarRepository $calendarRepo,
         EventRepository $eventRepo,
         MainConfigService $mainconfig,
         DavTimeZoneHelper $timezonehelper,
@@ -53,6 +56,7 @@ class EventController extends AbstractEventController {
         $this->formFactory = $formFactory;
         $this->viewhandler = $viewhandler;
         $this->securityContext = $securityContext;
+        $this->calendarRepo = $calendarRepo;
         $this->eventRepo = $eventRepo;
         $this->mainconfig = $mainconfig;
         $this->timezonehelper = $timezonehelper;
@@ -103,7 +107,7 @@ class EventController extends AbstractEventController {
 
     public function postEventAction(Request $request, Calendar $calendar) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
         
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -123,25 +127,21 @@ class EventController extends AbstractEventController {
         $this->em->flush();
 
         # Updating the sync-state for the calendar
-        $this->davbackend->publicAddChange(
+        $this->davbackend->declareAddChange(
             $calendar->getId(),
-            $event->getUri(),
-            1   # 1: Creation
+            $event->getUri()
         );
-
-        return new RedirectResponse(
-            # TODO: distinguish between webapi and restapi
-            $this->router->generate('webapi_get_calendar_event', array(
-                'calendar' => $calendar->getId(),
-                'event' => $event->getId(),
-            )),
-            Response::HTTP_CREATED
+        
+        return $this->viewhandler->handle(
+            View::create([
+                'event' => $event,
+            ], Response::HTTP_CREATED)
         );
     }
 
     public function putEventAction(Request $request, Calendar $calendar, Event $event) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
 
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -152,7 +152,7 @@ class EventController extends AbstractEventController {
 
     public function patchEventAction(Request $request, Calendar $calendar, Event $event) {
 
-        throw new HttpException(501, 'Not implemented.');
+        //throw new HttpException(501, 'Not implemented.');
         
         if(!$this->securityContext->isGranted('dav.write', $calendar)) {
             throw new HttpException(401, 'Unauthorized access.');
@@ -161,14 +161,69 @@ class EventController extends AbstractEventController {
         $data = json_decode($request->getContent(), TRUE);
         $this->updateEventFromEventDTO($event, $data);
 
-        $this->em->persist($event);
-        $this->em->flush();
+        if(
+            array_key_exists('calendar', $data) &&
+            ($newcalendarid = intval($data['calendar'])) &&
+            $calendar->getId() !== $newcalendarid
+        ) {
 
-        $this->davbackend->publicAddChange(
+            // A new calendar has been specified, it's a calendar change request
+            // Does the new calendar exist ?
+
+            $newcalendar = $this->calendarRepo->findById($newcalendarid);
+            if(is_null($newcalendar)) {
+                throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'Calendar not found.');
+            }
+
+            // Has the user write access on this calendar
+            if(!$this->securityContext->isGranted('dav.write', $newcalendar)) {
+                throw new HttpException(401, 'Unauthorized access.');
+            }
+
+            // Calendar found, and user has write access
+            $event->setCalendar($newcalendar);
+
+            $this->em->persist($event);
+            $this->em->flush();
+
+            $this->davbackend->declareDeleteChange(
+                $calendar->getId(),
+                $event->getUri()
+            );
+
+            $this->davbackend->declareAddChange(
+                $newcalendar->getId(),
+                $event->getUri()
+            );
+
+        } else {
+            $this->em->persist($event);
+            $this->em->flush();
+
+            $this->davbackend->declareModifyChange(
+                $calendar->getId(),
+                $event->getUri()
+            );
+        }
+
+        return Response::create()->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function deleteEventAction(Request $request, Calendar $calendar, Event $event) {
+
+        //throw new HttpException(501, 'Not implemented.');
+        
+        if(!$this->securityContext->isGranted('dav.write', $calendar)) {
+            throw new HttpException(401, 'Unauthorized access.');
+        }
+
+        $this->davbackend->declareDeleteChange(
             $calendar->getId(),
-            $event->getUri(),
-            2   # 2: Update
+            $event->getUri()
         );
+
+        $this->em->remove($event);
+        $this->em->flush();
 
         return Response::create()->setStatusCode(Response::HTTP_ACCEPTED);
     }
@@ -192,8 +247,13 @@ class EventController extends AbstractEventController {
         if(isset($data['start'])) {
             $start = new \Datetime($data['start']);
             $start->setTimezone($calendartimezone);
+            $vevent->remove('DTSTART');
+            $elem = $vobject->createProperty('DTSTART');
+            $elem['VALUE'] = 'DATETIME';
+            $elem->setDateTime($start);
+            $vevent->add($elem);
 
-            if($start->format('H:i:s') === '00:00:00') {
+            /*if($start->format('H:i:s') === '00:00:00') {
                 $vevent->remove('DTSTART');
 
                 $elem = $vobject->createProperty('DTSTART');
@@ -203,14 +263,19 @@ class EventController extends AbstractEventController {
                 $vevent->add($elem);
             } else {
                 $vevent->DTSTART->setDatetime($start);
-            }
+            }*/
         }
 
         if(isset($data['end'])) {
             $end = new \Datetime($data['end']);
             $end->setTimezone($calendartimezone);
+            $vevent->remove('DTEND');
+            $elem = $vobject->createProperty('DTEND');
+            $elem['VALUE'] = 'DATETIME';
+            $elem->setDateTime($end);
+            $vevent->add($elem);
 
-            if($end->format('H:i:s') === '00:00:00') {
+            /*if($end->format('H:i:s') === '00:00:00') {
                 $vevent->remove('DTEND');
                 
                 $elem = $vobject->createProperty('DTEND');
@@ -220,7 +285,7 @@ class EventController extends AbstractEventController {
                 $vevent->add($elem);
             } else {
                 $vevent->DTEND->setDatetime($end);
-            }
+            }*/
         }
 
         $rrule = $this->getRRULEFromEventDTO($data);

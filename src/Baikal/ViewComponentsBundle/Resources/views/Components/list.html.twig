@@ -22,16 +22,3 @@
 </div>
 
 {{ block('deletemodal') }}
-
-<script type="text/javascript">
-    $("a.delete").click(function(e) {
-
-        e.preventDefault();
-        var oButton = $(e.delegateTarget);
-        console.log(oButton);
-
-        $('#modal-danger span.itemname').html(oButton.attr('data-itemname'));
-        $('#modal-danger .btn-execute').attr('href', oButton.attr('href'));
-        $('#modal-danger').modal();
-    });
-</script>

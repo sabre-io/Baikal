@@ -26,3 +26,7 @@
 /web/apps/*/npm-debug.log
 /web/apps/*/testem.log
 /web/apps/*-old
+
+/node_modules
+/bower_components
+/npm-debug.log

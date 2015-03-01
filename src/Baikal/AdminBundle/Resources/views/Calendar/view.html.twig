@@ -1,35 +1,43 @@
-{% extends "BaikalAdminBundle:Layouts:standard.html.twig" %}
+{% extends "BaikalAdminBundle:Layouts:fullscreen.html.twig" %}
 
 {% set pagetitle = "Calendar " ~ calendar.getDisplayname() ~ " of " ~ user.uiLabel() %}
 
+{% block bodyclass %}calendar-fullscreen{% endblock %}
+
+{% set calview = application('calclient', {
+    rootElement: '#app-calclient',
+    parameters: {
+        apiendpoint: '/webapi/v1',
+        calendarsEnabledAtStart: [calendar.getId()],
+        calendarFocusedAtStart: calendar.getId(),
+        starttime: 0,
+        endtime: 23,
+        businessstarttime: 7,
+        businessendtime: 20,
+        hourbarwidth: 30,
+        hourheight: 60,
+        allowMovingToAdjacentWeeks: true,
+        windowed: true,
+        cosmetic: {
+            gutterwidth: 16,
+            event: {
+                marginLeft: 2,
+                marginTop: 2,
+                marginBottom: 3
+            },
+            popup: {
+                width: 300,
+                height: 200
+            }
+        }
+    }
+}) %}
+
 {% block content %}
-
-    {% embed "BaikalViewComponentsBundle:Components:pageheader.html.twig" %}
-        {% set icon = "group" %}
-        {% block header %}
-            <a href="{{ path('baikal_admin_user_list') }}">Users</a>
-            
-            <i class="fa fa-angle-right"></i>
-
-            <span class="hidden-xs">{% include "BaikalViewComponentsBundle:Components:avatar.textsize.html.twig" with { email: user.email } %}</span> {{ user.uiLabel() }}
-
-            <i class="fa fa-angle-right"></i>
-
-            <i class="fa fa-calendar"></i> <a href="{{ path('baikal_admin_user_calendar_list', { id: user.id }) }}">Calendars</a>
-
-            <i class="fa fa-angle-right"></i>
-
-            {% include "BaikalViewComponentsBundle:Components:calendarpill.html.twig" with { calendar: calendar } %} {{ calendar.getDisplayname() }}
-        {% endblock %}
-    {% endembed %}
-
-    {% embed "BaikalViewComponentsBundle:Components:SPA/calclient.html.twig" with {
-        user: user,
-        calendar: calendar,
-        fullscreen: false,
-        alternativeurl: path('baikal_admin_calendar_view_fullscreen', { user: user.id, calendar: calendar.id })
-    } %}{% endembed %}
-
+    <div id="app-calclient"></div>
+    {{ calview.html|raw }}
 {% endblock %}
 
-{% block jslibsjquery %}{% endblock %}
+{% block scripts %}
+    {{ calview.assets|raw }}
+{% endblock %}
