@@ -155,6 +155,7 @@ class PortalExtension extends \Twig_Extension {
         $parts = array();
         preg_match('%<head>(?P<head>.*?)</head>.*?<body>(?P<body>.*?)</body>%smixu', $content, $parts);
 
+        /*
         preg_replace_callback('%<link\s+.*?>%smix', function($match) use (&$kept) {
             $kept[] = $match[0] . '</link>';
         }, $parts['head']);
@@ -162,6 +163,7 @@ class PortalExtension extends \Twig_Extension {
         preg_replace_callback('%<script\s+.*?>%smix', function($match) use (&$kept) {
             $kept[] = $match[0]  . '</script>';
         }, $parts['head']);
+        */
 
         $content = implode("\n", $kept) . "\n" . $parts['body'];
         $content = preg_replace_callback('%(?P<attr>(src|href))\s*?=\s*?(?P<quote>\'|")(?P<value>.*?)\3%smix', function($match) use ($assetprefix) {
