@@ -34,11 +34,10 @@
 }) %}
 
 {% block content %}
-
-<div id="app-calclient"></div>
-{{ calview.html|raw }}
+    <div id="app-calclient"></div>
+    {{ calview.html|raw }}
 {% endblock %}
 
 {% block scripts %}
-{{ calview.assets|raw }}
+    {{ calview.assets|raw }}
 {% endblock %}
