@@ -12,7 +12,7 @@ Fellow backend and frontend developers, we need your help !
 
 The roadmap to version 2.0 is here: https://github.com/netgusto/Baikal/milestones/Ba%C3%AFkal%202.0.0
 
-If you want to help, and you have a strong experience in Symfony, ReactJS, EmberJS, or HTML/CSS, please contact us at contact@netgusto.com or on Twitter http://twitter.com/BaikalServer
+If you want to help, and you have a strong experience in Symfony, ReactJS, HTML/CSS, or anything else you think could be useful, please contact us at contact@netgusto.com or on Twitter http://twitter.com/BaikalServer
 
 ## Screenshots
 
