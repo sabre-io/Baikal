@@ -1736,12 +1736,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "caa3145a141ba3294ffdd2f6906805f301c04cf1"
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/caa3145a141ba3294ffdd2f6906805f301c04cf1",
-                "reference": "caa3145a141ba3294ffdd2f6906805f301c04cf1",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
                 "shasum": ""
             },
             "require": {
@@ -1801,7 +1801,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-03-05 01:23:59"
+            "time": "2015-03-09 09:58:04"
         },
         {
             "name": "nelmio/cors-bundle",
