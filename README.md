@@ -60,15 +60,16 @@ Heroku is the leading American PAAS provider. See their offer here <http://herok
 
 1. `git clone -b branch-2 https://github.com/netgusto/Baikal.git`
 2. Create your Heroku app (let's say we call it **my-baikal**)
-3. `cd Baikal.git`
+3. `cd Baikal`
 4. Bind your app to Heroku: `heroku git:remote -a my-baikal`
 5. Add the **PostgreSQL** addon to your app: `heroku addons:add heroku-postgresql` and note the name of your database (something like `HEROKU_POSTGRESQL_AMBER_URL`)
 6. Promote the database: `heroku pg:promote HEROKU_POSTGRESQL_AMBER_URL` (replace `HEROKU_POSTGRESQL_AMBER_URL` with the name Heroku just gave you on the previous line)
-7. Deploy: `git push heroku branch-2:master`
-8. Once the app has booted, open <http://my-baikal.herokuapp.com> in your web browser.
-9. Log in using the default account created during initialization (username: **admin**, password: **password**).
-10. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
-11. Et voilà !
+7. Declare the PHP buildpack: `heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-php`
+8. Deploy: `git push heroku branch-2:master`
+9. Once the app has booted, open <http://my-baikal.herokuapp.com> in your web browser.
+10. Log in using the default account created during initialization (username: **admin**, password: **password**).
+11. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
+12. Et voilà !
 
 ## Installation: Classic platform (not PAAS)
 
