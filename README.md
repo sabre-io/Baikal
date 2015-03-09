@@ -168,7 +168,7 @@ $ npm run build
 * Add Import
 * Add export
 * Add calendar sharing
-* Review B1 github feature requests, and implement the most demanded ones.
+* Review Baïkal 1 github feature requests, and implement the most demanded ones.
 
 If you are willing to participate, and know your way in whatever domain you want to help, please feel free to mail me at contact@netgusto.com (I have little time so please do not lose your patience if I don't answer :p)
 
