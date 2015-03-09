@@ -1,20 +1,3 @@
-baikal_frontend_davrerouting_home:
-    pattern: /
-    defaults: { _controller: BaikalFrontendBundle:DavRerouting:propfind }
-    methods: ['PROPFIND', 'OPTIONS', 'REPORT']
-
-baikal_frontend_davrerouting_login:
-    pattern: /login{trailingSlash}
-    defaults: { _controller: BaikalFrontendBundle:DavRerouting:propfind }
-    methods: ['PROPFIND', 'OPTIONS', 'REPORT']
-    requirements: { trailingSlash : "[/]{0,1}" }
-
-baikal_frontend_davrerouting_principals:
-    pattern: /principals{trailingSlash}
-    defaults: { _controller: BaikalFrontendBundle:DavRerouting:propfind }
-    methods: ['PROPFIND', 'OPTIONS', 'REPORT']
-    requirements: { trailingSlash : "[/]{0,1}" }
-
 baikal_frontend_homepage:
     pattern:  /
     defaults: { _controller: BaikalFrontendBundle:Dashboard:index }
@@ -47,7 +30,6 @@ baikal_frontend_calendar_view_fullscreen:
     pattern:  /calendars/{calendar}/view/fullscreen
     defaults: { _controller: BaikalFrontendBundle:Calendar/View:fullscreen }
 
-
 baikal_frontend_addressbook_list:
     pattern:  /addressbooks
     defaults: { _controller: BaikalFrontendBundle:Addressbook/List:index }
@@ -71,12 +53,6 @@ baikal_frontend_addressbook_form_edit:
 baikal_frontend_profile:
     pattern:  /profile
     defaults: { _controller: BaikalFrontendBundle:Profile:index }
-
-baikal_frontend_wellknown:
-    pattern:  /.well-known/{service}
-    defaults: { _controller: BaikalFrontendBundle:WellKnown:index }
-
-
 
 baikal_frontend_login:
     pattern: /login

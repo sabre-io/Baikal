@@ -7,17 +7,18 @@
     "autoload": {
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
         "ext-mbstring": "*",
-        "symfony/symfony": "~2.5.5",
-        "doctrine/orm": "~2.4.6",
+        "symfony/symfony": "2.5.7",
+        "doctrine/orm": "2.4.6",
         "doctrine/doctrine-bundle": "v1.3.0-beta2",
-        "twig/extensions": "~1.1.0",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "symfony/monolog-bundle": "~2.6.1",
-        "sensio/distribution-bundle": "~3.0",
-        "sensio/framework-extra-bundle": "~3.0",
+        "twig/extensions": "1.1.0",
+        "symfony/swiftmailer-bundle": "2.3.7",
+        "symfony/monolog-bundle": "2.6.1",
+        "sensio/distribution-bundle": "3.0.10",
+        "sensio/framework-extra-bundle": "3.0.3",
 
         "symfony/bootcamp-bundle": "1.0.1",
         "brianium/habitat": "v1.0.0",
@@ -26,40 +27,19 @@
 
         "netgusto/autoroute-bundle": "1.0.1",
         "netgusto/devserver-bundle": "1.2.0",
-        "netgusto/deviation-bundle": "1.0.0",
         "netgusto/parametertouch-bundle": "1.0.1",
 
-        "leafo/lessphp": "~0.4.0",
-        "twbs/bootstrap": "v3.2.0",
-
         "knplabs/knp-menu-bundle": "dev-master",
-        "sabre/dav": "2.0.5",
-        "webasset/jquery-minicolors": "2.1.6",
-
-        "nelmio/cors-bundle": "~1.3.2",
-        "friendsofsymfony/rest-bundle": "~1.4.2",
-        "jms/serializer-bundle": "~0.13.0",
-
         "friendsofsymfony/oauth-server-bundle": "dev-master",
 
-        "icanboogie/inflector": "~1.3.2"
+        "icanboogie/inflector": "1.3.2",
+
+        "baikal/core": "dev-master"
     },
     "require-dev": {
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "2.4.0"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "webasset/jquery-minicolors",
-                "version": "2.1.6",
-                "dist": {
-                    "url": "https://github.com/claviska/jquery-minicolors/archive/2.1.6.zip",
-                    "type": "zip"
-                }
-            }
-        }
-    ],
+    "repositories": [],
     "scripts": {
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
@@ -71,7 +51,6 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Netgusto\\DeviationBundle\\Composer\\ScriptHandler::forwardAssetsToWebDir",
             "Symfony\\BootCampBundle\\Composer\\ScriptHandler::install"
         ],
         "post-update-cmd": [
@@ -80,8 +59,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Netgusto\\DeviationBundle\\Composer\\ScriptHandler::forwardAssetsToWebDir"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
         ]
     },
     "config": {
@@ -102,11 +80,6 @@
                 "src": "app/config/defaults/data.environment.dist.yml",
                 "dest": "data/environment.yml"
             }
-        ],
-        "assetsforwarding": {
-            "packages": [
-                "webasset/jquery-minicolors"
-            ]
-        }
+        ]
     }
 }

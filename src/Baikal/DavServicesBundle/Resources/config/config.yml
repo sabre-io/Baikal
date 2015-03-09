@@ -1,3 +1,0 @@
-doctrine:
-    orm:
-        entity_listener_resolver: baikal.doctrine.entity_listener_resolver

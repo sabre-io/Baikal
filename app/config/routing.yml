@@ -20,6 +20,10 @@ baikal_frontend:
     resource: "@BaikalFrontendBundle/Resources/config/routing.yml"
     prefix: /
 
+#baikal_wellknown:
+#    resource: "@BaikalWellknown/Resources/config/routing.yml"
+#    prefix: /
+
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
 

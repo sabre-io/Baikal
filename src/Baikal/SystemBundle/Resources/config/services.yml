@@ -1,0 +1,14 @@
+services:
+    
+    config.loader.dbbacked:
+        class: Baikal\SystemBundle\Services\ConfigLoader\DbBackedConfigLoaderService
+        arguments:
+            - @doctrine.orm.entity_manager
+            - "Baikal\ModelBundle\Entity\ConfigContainer"
+
+    config.main:
+        class: Baikal\SystemBundle\Services\MainConfigService
+        arguments:
+            - @doctrine.orm.entity_manager
+        calls:
+            - [ "initialize", [ "@=service('config.loader.dbbacked').load('main')" ] ]

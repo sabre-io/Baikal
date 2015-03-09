@@ -7,7 +7,7 @@ imports:
     # /BootCamp
 
     - { resource: security.yml }
-    - { resource: @BaikalCoreBundle/Resources/config/config.yml }
+    - { resource: @BaikalSystemBundle/Resources/config/config.yml }
     - { resource: @BaikalDavServicesBundle/Resources/config/config.yml }
     - { resource: @BaikalAdminBundle/Resources/config/config.yml }
     - { resource: @BaikalFrontendBundle/Resources/config/config.yml }

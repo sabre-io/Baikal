@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel,
+    Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
@@ -15,7 +15,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            
+
+            new Symfony\BootCampBundle\SymfonyBootCampBundle(),
             new Netgusto\ParameterTouchBundle\NetgustoParameterTouchBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -26,30 +27,27 @@ class AppKernel extends Kernel
 
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
 
+            new Baikal\SystemBundle\BaikalSystemBundle(),
             new Baikal\ModelBundle\BaikalModelBundle(),
-            new Baikal\CoreBundle\BaikalCoreBundle(),
             new Baikal\DavServicesBundle\BaikalDavServicesBundle(),
             new Baikal\RestBundle\BaikalRestBundle(),
+            new Baikal\WellknownBundle\BaikalWellknownBundle(),
+
             new Baikal\FrontendBundle\BaikalFrontendBundle(),
             new Baikal\AdminBundle\BaikalAdminBundle(),
-
+            new Baikal\ViewComponentsBundle\BaikalViewComponentsBundle(),
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
             new Netgusto\DevServerBundle\NetgustoDevServerBundle(),
             new Netgusto\AutorouteBundle\NetgustoAutorouteBundle(),
-
-            new Symfony\BootCampBundle\SymfonyBootCampBundle(),
-            new Baikal\ViewComponentsBundle\BaikalViewComponentsBundle(),
             new Netgusto\PortalBundle\NetgustoPortalBundle(),
         );
-
-        #new Netgusto\BootCampBundle\NetgustoBootCampBundle($bundles);
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            #$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
