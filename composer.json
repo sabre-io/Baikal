@@ -1,6 +1,6 @@
 {
     "name": "netgusto/baikal",
-    "version": "2.0.0-alpha1",
+    "version": "2.0.0-alpha2",
     "license": "MIT",
     "type": "project",
     "description": "Baïkal Server 2",
@@ -12,18 +12,18 @@
     "require": {
         "php": ">=5.3.3",
         "ext-mbstring": "*",
-        "symfony/symfony": "2.6.*",
+        "symfony/symfony": "~2.6",
         "doctrine/orm": "~2.2,>=2.2.3,<2.5",
-        "doctrine/dbal": "<2.5",
-        "doctrine/doctrine-bundle": "v1.3.0-beta2",
-        "twig/extensions": "1.1.0",
+        "doctrine/dbal": "~2.5",
+        "doctrine/doctrine-bundle": "~1.4",
+        "twig/extensions": "~1.2",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.6",
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
 
         "symfony/bootcamp-bundle": "~1.0",
-        "brianium/habitat": "v1.0.0",
+        "brianium/habitat": ">=1.0.0",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
 
