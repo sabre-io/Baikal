@@ -96,7 +96,7 @@ $ cp app/config/defaults/data.environment.dist.yml data/environment.yml
 
 # 7. Install Baïkal PHP dependencies, and initialize Baïkal
 # // at the root of the project
-$ composer install
+$ composer install --optimize-autoloader
 
 # 10. Boot the PHP built-in server (just to test the app; in production, use an HTTP server like Apache or nginx)
 $ php app/console server:run --env=prod
@@ -133,7 +133,7 @@ $ cp app/config/defaults/data.environment.dist.yml data/environment.yml
 
 # 7. Install Baïkal PHP dependencies, and initialize Baïkal
 # // at the root of the project
-$ composer install
+$ composer install --optimize-autoloader
 
 # 8. Install required node packages in the global scope:
 $ sudo npm install -g bower grunt-cli
