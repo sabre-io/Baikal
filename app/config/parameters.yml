@@ -26,5 +26,7 @@ parameters:
     baikal.dav_caldav_enabled: true
     baikal.dav_carddav_enabled: true
     baikal.dav_realm: Baikal
+    baikal.api.enabled: true
+    baikal.servertimezone: Europe/Paris
     # /Baïkal
     ###########################################################################

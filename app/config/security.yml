@@ -81,25 +81,25 @@ security:
             security: false
 
         # OAuth2: authorize application
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
-            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
-            provider: sabredav_user_db
-
-            #
-            # TODO: http://stackoverflow.com/questions/10089816/symfony2-how-to-check-if-an-action-is-secured
-            #
-            entry_point: baikal_frontend.oauth_preloginredirect_formauthenticationentrypoint
-
-            form_login:
-                use_forward: false
-                login_path: /oauth/v2/auth/login
-                check_path: /oauth/v2/auth/login_check
-
-        # OAuth2: request token
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
+#        oauth_authorize:
+#            pattern:    ^/oauth/v2/auth
+#            context: baikalsecuritycontext   # specified so that admin and frontend firewalls share the same auth context
+#            provider: sabredav_user_db
+#
+#            #
+#            # TODO: http://stackoverflow.com/questions/10089816/symfony2-how-to-check-if-an-action-is-secured
+#            #
+#            entry_point: baikal_frontend.oauth_preloginredirect_formauthenticationentrypoint
+#
+#            form_login:
+#                use_forward: false
+#                login_path: /oauth/v2/auth/login
+#                check_path: /oauth/v2/auth/login_check
+#
+#        # OAuth2: request token
+#        oauth_token:
+#            pattern:    ^/oauth/v2/token
+#            security:   false
 
         api:
             pattern:    ^/api

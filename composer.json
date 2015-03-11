@@ -8,36 +8,38 @@
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
     "minimum-stability": "dev",
+    "prefer-stable" : true,
     "require": {
         "php": ">=5.3.3",
         "ext-mbstring": "*",
-        "symfony/symfony": "2.5.7",
-        "doctrine/orm": "2.4.6",
+        "symfony/symfony": "2.6.*",
+        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
+        "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "v1.3.0-beta2",
         "twig/extensions": "1.1.0",
-        "symfony/swiftmailer-bundle": "2.3.7",
-        "symfony/monolog-bundle": "2.6.1",
-        "sensio/distribution-bundle": "3.0.10",
-        "sensio/framework-extra-bundle": "3.0.3",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.6",
+        "sensio/distribution-bundle": "~3.0,>=3.0.12",
+        "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
 
-        "symfony/bootcamp-bundle": "1.0.1",
+        "symfony/bootcamp-bundle": "~1.0",
         "brianium/habitat": "v1.0.0",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
 
-        "netgusto/autoroute-bundle": "1.0.1",
-        "netgusto/devserver-bundle": "1.2.0",
-        "netgusto/parametertouch-bundle": "1.0.1",
+        "netgusto/autoroute-bundle": "~1.0",
+        "netgusto/devserver-bundle": "~1.2",
+        "netgusto/parametertouch-bundle": "~1.0",
 
         "knplabs/knp-menu-bundle": "dev-master",
         "friendsofsymfony/oauth-server-bundle": "dev-master",
 
         "icanboogie/inflector": "1.3.2",
 
-        "baikal/core": "dev-master"
+        "baikal/core": "dev-master as 2.0.0-alpha1"
     },
     "require-dev": {
-        "sensio/generator-bundle": "2.4.0"
+        "sensio/generator-bundle": "~2.5"
     },
     "repositories": [],
     "scripts": {
@@ -68,9 +70,6 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "branch-alias": {
-            "dev-master": "2.5-dev"
-        },
         "touch-parameters": [
             {
                 "src": "app/config/defaults/data.parameters.dist.yml",
