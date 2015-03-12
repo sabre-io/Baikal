@@ -4,6 +4,7 @@
         "jquery": "1.11.*",
         "bootstrap": "3.3.*",
         "font-awesome": "4.3.*",
-        "jquery-minicolors": "2.1.*"
+        "jquery-minicolors": "2.1.*",
+        "pulpy": "0.0.3-dev"
     }
 }

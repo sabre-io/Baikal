@@ -14,18 +14,8 @@
 /bin/
 /composer.phar
 
-/web/apps/*/node_modules
-/web/apps/*/temp
-/web/apps/*/.sass-cache
-/web/apps/*/.tmp
-/web/apps/*/tmp
-/web/apps/*/bower_components
-/web/apps/*/connect.lock
-/web/apps/*/coverage/*
-/web/apps/*/libpeerconnection.log
-/web/apps/*/npm-debug.log
-/web/apps/*/testem.log
-/web/apps/*-old
+/web/apps/*
+!/web/apps/cardclient
 
 /node_modules
 /bower_components

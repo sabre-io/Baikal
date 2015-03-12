@@ -43,12 +43,12 @@ class PortalExtension extends \Twig_Extension {
         }
 
         switch($app['type']) {
-            case 'ember-cli': {
-                $content = $this->embercli($app, $options);
-                break;
-            }
-            case 'yo-react-webpack': {
-                $content = $this->yoreactwebpack($app, $options);
+            #case 'ember-cli': {
+            #    $content = $this->embercli($app, $options);
+            #    break;
+            #}
+            case 'react-webpack': {
+                $content = $this->reactwebpack($app, $options);
                 break;
             }
             default: {
@@ -59,6 +59,7 @@ class PortalExtension extends \Twig_Extension {
         return $content;
     }
 
+    /*
     protected function embercli($app, $options = array()) {
 
         $sfdir = realpath($this->container->getParameter('kernel.root_dir') . '/../');
@@ -88,71 +89,50 @@ class PortalExtension extends \Twig_Extension {
         $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
         return new PortalApplicationResponse($parts['assets'], $parts['html']);
     }
+    */
 
-    protected function yoreactwebpack($app, $options = array()) {
+    protected function reactwebpack($app, $options = array()) {
 
-        $sfdir = realpath($this->container->getParameter('kernel.root_dir') . '/../');
-        $apppath = realpath($sfdir . '/' . $app['path']);
-        $webdir = realpath($sfdir . '/web');
         $debug = $this->container->getParameter('kernel.debug');
 
         if($debug) {
-            $url = 'http://0.0.0.0:' . (array_key_exists('port', $app) ? $app['port'] : '4200');
+            $url = 'http://0.0.0.0:' . intval($app['port']);
             $content = file_get_contents($url);
             $assetprefix = $url;
+
+            $assetprefix = rtrim($assetprefix, '/') . '/';
+
+            $kept = array();
+            $kept[] = $this->produceConfigurationMeta($options);
+
+            # On récupère les balises script et link, et on les réécrit
+            $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
+
+            $resAssets = $parts['assets'];
+            $resHtml = $parts['html'];
         } else {
-            $index = $apppath . '/dist/index.html';
+            /*$index = $apppath . '/dist/index.html';
             if(!file_exists($index)) throw new \RuntimeException('Portal: index.html not found for ' . $app['name']);
 
             $content = file_get_contents($index);
             $relapppath = preg_replace('%^' . preg_quote($webdir) . '%', '', $apppath);
-            $assetprefix = $relapppath . '/dist';
+            $assetprefix = $relapppath . '/dist';*/
+
+            $resAssets = '<script type="text/javascript" src="/' . htmlspecialchars($app['dist']) . '"></script>';
+            $resHtml = $this->produceConfigurationMeta($options);
         }
 
-        $assetprefix = rtrim($assetprefix, '/') . '/';
-
-        $kept = array();
-        $kept[] = $this->produceConfigurationMeta($content, $options);
-
-        # On récupère les balises script et link, et on les réécrit
-        $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
-        return new PortalApplicationResponse($parts['assets'], $parts['html']);
+        return new PortalApplicationResponse($resAssets, $resHtml);
     }
 
-    private function produceConfigurationMeta($content, $options, $cbk = null) {
+    private function produceConfigurationMeta($options, $cbk = null) {
+        
+        $config = array();
         
         if(!$cbk) { $cbk = function($config) { return $config; }; }
-
-        $matches = array();
-        if(
-            preg_match('%
-            <meta\s+
-                name\s*=\s*
-                ([\'|"])
-                    (?P<name>
-                        (?:(?!\1).)*?
-                        config/environment
-                    )
-                \1
-                \s+
-                content\s*=\s*
-                ([\'|"])
-                    (?P<value>(?:(?!\2).)*?)
-                \3
-                [^>]*?
-            >
-            %smixu', $content, $matches)
-        ) {
-            $name = $matches['name'];
-            $config = json_decode(urldecode($matches['value']), TRUE);
-        } else {
-            $name = 'config/environment';
-            $config = array();
-        }
-
         $config = $cbk(array_merge_recursive($config, $options));
 
-        return '<meta name="' . $name . '" content="' . urlencode(json_encode($config)) . '" />';
+        return '<meta name="config/environment" content="' . urlencode(json_encode($config)) . '" />';
     }
 
     private function extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept=array()) {

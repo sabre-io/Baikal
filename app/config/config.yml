@@ -148,5 +148,5 @@ netgusto_dev_server:
 netgusto_portal:
     applications:
         #- { name: calclient, path: web/apps/calclient, type: ember-cli, port: 4200 }
-        - { name: calclient, path: web/apps/calclient-week, type: yo-react-webpack, port: 8002 }
-        - { name: cardclient, path: web/apps/cardclient, type: yo-react-webpack, port: 8003 }
+        - { name: pulpy, dist: assets/dist/pulpy.min.js, type: react-webpack, port: 8002 }
+        #- { name: cardclient, path: web/apps/cardclient, type: react-webpack, port: 8003 }

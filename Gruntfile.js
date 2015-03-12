@@ -3,26 +3,30 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         bowercopy: {
             options: {
-                srcPrefix: 'bower_components',
-                destPrefix: 'web/assets'
+                srcPrefix: 'bower_components'
             },
             scripts: {
                 files: {
-                    'js/jquery.js': 'jquery/dist/jquery.js',
-                    'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js',
-                    'js/jquery.minicolors.min.js': 'jquery-minicolors/jquery.minicolors.min.js'
+                    'web/assets/js/jquery.js': 'jquery/dist/jquery.js',
+                    'web/assets/js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js',
+                    'web/assets/js/jquery.minicolors.min.js': 'jquery-minicolors/jquery.minicolors.min.js'
                 }
             },
             stylesheets: {
                 files: {
-                    'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
-                    'css/font-awesome.css': 'font-awesome/css/font-awesome.css',
-                    'css/jquery.minicolors.css': 'jquery-minicolors/jquery.minicolors.css',
+                    'web/assets/css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
+                    'web/assets/css/font-awesome.css': 'font-awesome/css/font-awesome.css',
+                    'web/assets/css/jquery.minicolors.css': 'jquery-minicolors/jquery.minicolors.css',
                 }
             },
             fonts: {
                 files: {
-                    'fonts': 'font-awesome/fonts'
+                    'web/assets/fonts': 'font-awesome/fonts'
+                }
+            },
+            pulpy: {
+                files: {
+                    'web/apps/pulpy': 'pulpy'
                 }
             }
         },
@@ -40,32 +44,60 @@ module.exports = function (grunt) {
             },
             css: {
                 src: [
-                    'web/assets/css/*.css',
+                    'web/assets/css/bootstrap.css',
+                    'web/assets/css/font-awesome.css',
                     'src/Baikal/FrontendBundle/Resources/public/css/*.css'
                 ],
-                dest: 'web/assets/css/bundled.css'
+                dest: 'web/assets/dist/bundled.css'
             },
             js : {
                 src : [
                     'web/assets/js/jquery.js',
                     'web/assets/js/jquery.minicolors.min.js',
-                    'web/assets/js/bootstrap.js'/*,
-                    'src/KP/LearningBundle/Resources/public/js/*.js'*/
+                    'web/assets/js/bootstrap.js'
                 ],
-                dest: 'web/assets/js/bundled.js'
+                dest: 'web/assets/dist/bundled.js'
             }
         },
         cssmin : {
             bundled:{
-                src: 'web/assets/css/bundled.css',
-                dest: 'web/assets/css/bundled.min.css'
+                src: 'web/assets/dist/bundled.css',
+                dest: 'web/assets/dist/bundled.min.css'
             }
         },
         uglify : {
             js: {
                 files: {
-                    'web/assets/js/bundled.min.js': ['web/assets/js/bundled.js']
+                    'web/assets/dist/bundled.min.js': ['web/assets/dist/bundled.js'],
+                    'web/assets/dist/pulpy.min.js': ['web/apps/pulpy/dist/assets/main.js']
                 }
+            }
+        },
+        // gzip assets 1-to-1 for production
+        compress: {
+            js: {
+                options: { mode: 'gzip' },
+                expand: true,
+                cwd: 'web/assets/dist/',
+                src: ['bundled.min.js'],
+                dest: 'web/assets/dist/',
+                ext: '.min.js.gz'
+            },
+            pulpy: {
+                options: { mode: 'gzip' },
+                expand: true,
+                cwd: 'web/assets/dist/',
+                src: ['pulpy.min.js'],
+                dest: 'web/assets/dist/',
+                ext: '.min.js.gz'
+            },
+            css: {
+                options: { mode: 'gzip' },
+                expand: true,
+                cwd: 'web/assets/dist/',
+                src: ['bundled.min.css'],
+                dest: 'web/assets/dist/',
+                ext: '.min.css.gz'
             }
         }
     });
@@ -75,6 +107,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
-    grunt.registerTask('default', ['bowercopy', 'copy', 'concat', 'cssmin', 'uglify']);
+    grunt.registerTask('default', ['bowercopy', 'copy', 'concat', 'cssmin', 'uglify', 'compress']);
 };

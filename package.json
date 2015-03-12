@@ -4,9 +4,9 @@
   "description": "CalDAV + CardDAV server and web client",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "unpack": "bower install && npm install && grunt && cd web/apps/calclient-week && npm install && cd ../cardclient && npm install",
-    "dev": "php app/console server:run 0.0.0.0:8000 --verbose --env=dev & cd web/apps/calclient-week && grunt serve & cd web/apps/cardclient && grunt serve & wait",
-    "build": "php app/console cache:clear --env=prod && cd web/apps/calclient-week && grunt build && cd ../cardclient && grunt build",
+    "unpack": "bower install && npm install && grunt && cd web/apps/pulpy && npm install && cd ../cardclient && npm install",
+    "dev": "php app/console server:run 0.0.0.0:8000 --verbose --env=dev & cd web/apps/pulpy && grunt serve & cd web/apps/cardclient && grunt serve & wait",
+    "build": "php app/console cache:clear --env=prod && cd web/apps/pulpy && grunt build && cd ../cardclient && grunt build && cd ../../.. && grunt",
     "prod": "npm start",
     "start": "php app/console server:run 0.0.0.0:8000 --verbose --env=prod"
   },
@@ -24,6 +24,7 @@
     "grunt": "^0.4.5",
     "grunt-bowercopy": "^1.2.0",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-cssmin": "^0.12.2",
