@@ -8,13 +8,16 @@ WORKDIR /var/www
 RUN git clone -b branch-2 https://github.com/netgusto/Baikal.git baikal
 RUN chown -R www-data:www-data baikal
 RUN chmod -R 775 baikal
+
 WORKDIR /var/www/baikal
 RUN cp app/config/defaults/data.parameters.dist.yml data/parameters.yml
 RUN cp app/config/defaults/data.environment.dist.yml data/environment.yml
 RUN curl -sS https://getcomposer.org/installer | php
-RUN php composer.phar install
+RUN php composer.phar install --optimize-autoloader
+
 WORKDIR /var/www/baikal/app/cache
 RUN mkdir prod
+
 WORKDIR /var/www
 RUN chown -R www-data:www-data baikal
 RUN chmod -R 775 baikal
@@ -26,5 +29,4 @@ RUN ln -s /etc/apache2/sites-available/baikal.conf /etc/apache2/sites-enabled/ba
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 EXPOSE 8000
-CMD ["service", "apache2", "start"]
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
