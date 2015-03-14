@@ -6,6 +6,10 @@ This is a **development version** of Baïkal 2 - **NOT FOR PRODUCTION USE**.
 
 Baïkal 2 is based on SabreDAV and Symfony2. Baïkal 2 is designed to be usable on PAAS hosting out-of-the-box (https://www.heroku.com/, https://scalingo.com/, etc.).
 
+## Demo
+
+Have a look at the running demo here : http://baikal2.scalingo.io (Hosting graciously provided by [Scalingo](https://scalingo.com)).
+
 ## Contribute !
 
 Fellow backend and frontend developers, we need your help !
