@@ -7,8 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\BootCampBundle\InitHandler\UserInitHandlerInterface;
 
 use Baikal\ModelBundle\Entity\User,
-    Baikal\ModelBundle\Entity\UserPrincipal,
-    Baikal\ModelBundle\Entity\UserMetadata;
+    Baikal\ModelBundle\Entity\UserPrincipal;
 
 class UserInitHandler implements UserInitHandlerInterface {
 
@@ -43,17 +42,10 @@ class UserInitHandler implements UserInitHandlerInterface {
             )
         );
 
+        $user->addRole('ROLE_ADMIN');
+        $user->addRole('ROLE_FRONTEND_USER');
+
         $this->entityManager->persist($user);
-
-        # Persisting user metadata
-        $metadata = new UserMetadata();
-        $metadata->setUser($user);
-        
-        $metadata->addRole('ROLE_ADMIN');
-        $metadata->addRole('ROLE_FRONTEND_USER');
-
-        $this->entityManager->persist($metadata);
-
         $this->entityManager->flush();
 
         return $user;

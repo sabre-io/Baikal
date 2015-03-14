@@ -1,0 +1,11 @@
+Baikal\SystemBundle\Entity\User:
+    type: entity
+    table: users
+    extends: Baikal\ModelBundle\Entity\AbstractUser
+    repositoryClass: Baikal\ModelBundle\Entity\Repository\UserRepository
+
+    #fields:
+    #    roles:
+    #        type: json_array
+
+    lifecycleCallbacks: {  }

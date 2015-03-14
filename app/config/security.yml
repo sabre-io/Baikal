@@ -1,7 +1,7 @@
 security:
     encoders:
 
-        Baikal\ModelBundle\Entity\User:
+        Baikal\SystemBundle\Entity\User:
             id: baikal.model.sabredav_password_encoder
 
     role_hierarchy:
@@ -13,7 +13,7 @@ security:
     providers:
 
         sabredav_user_db:
-            entity: { class: Baikal\ModelBundle\Entity\User, property: username }
+            entity: { class: Baikal\SystemBundle\Entity\User, property: username }
 
     access_control:
         - { path: ^/admin/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
