@@ -3,8 +3,9 @@
 namespace Baikal\AdminBundle\Controller\Calendar;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Baikal\ModelBundle\Entity\User;
-use Baikal\ModelBundle\Entity\Calendar;
+
+use Baikal\SystemBundle\Entity\User,
+    Baikal\ModelBundle\Entity\Calendar;
 
 class ListController extends Controller {
 

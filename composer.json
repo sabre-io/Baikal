@@ -28,7 +28,6 @@
         "doctrine/doctrine-migrations-bundle": "dev-master",
 
         "netgusto/autoroute-bundle": "~1.0",
-        "netgusto/devserver-bundle": "~1.2",
         "netgusto/parametertouch-bundle": "~1.0",
 
         "knplabs/knp-menu-bundle": "dev-master",

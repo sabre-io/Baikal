@@ -2,8 +2,11 @@
     <div id="app-cardclient"></div>
 </div>
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+
 {{
-    application('cardclient', {
+    application('buddies', {
         rootElement: '#app-cardclient',
         addressbookid: addressbook.id,
         urlapi: (app.request.getSchemeAndHttpHost() ~ path('baikal.webapi.root'))|trim('/')

@@ -137,16 +137,8 @@ fos_oauth_server:
     service:
         user_provider: sabredav_user_db
 
-netgusto_dev_server:
-    tasks:
-        - { command: php app/console server:run 0.0.0.0:8000 }
-        - { command: php app/console assetic:dump --watch }
-        #- { command: ember serve --port 4200, path: web/apps/calclient }
-        - { command: grunt serve, path: web/apps/calclient-week }
-        - { command: grunt serve, path: web/apps/cardclient }
-
 netgusto_portal:
     applications:
         #- { name: calclient, path: web/apps/calclient, type: ember-cli, port: 4200 }
         - { name: pulpy, dist: assets/dist/pulpy.min.js, type: react-webpack, port: 8002 }
-        #- { name: cardclient, path: web/apps/cardclient, type: react-webpack, port: 8003 }
+        - { name: buddies, dist: assets/dist/buddies.min.js, type: react-webpack, port: 8003 }

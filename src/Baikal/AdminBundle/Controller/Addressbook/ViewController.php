@@ -5,7 +5,7 @@ namespace Baikal\AdminBundle\Controller\Addressbook;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request;
 
-use Baikal\ModelBundle\Entity\User,
+use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\Addressbook;
 
 class ViewController extends Controller {

@@ -182,6 +182,6 @@ class PortalApplicationResponse {
     public function getAssets() { return $this->assets; }
 
     public function __toString() {
-        return $this->getAssets() . $this->getHtml();
+        return $this->getHtml() . $this->getAssets();
     }
 }

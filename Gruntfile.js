@@ -24,9 +24,10 @@ module.exports = function (grunt) {
                     'web/assets/fonts': 'font-awesome/fonts'
                 }
             },
-            pulpy: {
+            apps: {
                 files: {
-                    'web/apps/pulpy': 'pulpy'
+                    'web/apps/pulpy': 'pulpy',
+                    'web/apps/buddies': 'buddies',
                 }
             }
         },
@@ -69,7 +70,8 @@ module.exports = function (grunt) {
             js: {
                 files: {
                     'web/assets/dist/bundled.min.js': ['web/assets/dist/bundled.js'],
-                    'web/assets/dist/pulpy.min.js': ['web/apps/pulpy/dist/assets/main.js']
+                    'web/assets/dist/pulpy.min.js': ['web/apps/pulpy/dist/assets/main.js'],
+                    'web/assets/dist/buddies.min.js': ['web/apps/buddies/dist/assets/main.js']
                 }
             }
         },
@@ -88,6 +90,14 @@ module.exports = function (grunt) {
                 expand: true,
                 cwd: 'web/assets/dist/',
                 src: ['pulpy.min.js'],
+                dest: 'web/assets/dist/',
+                ext: '.min.js.gz'
+            },
+            buddies: {
+                options: { mode: 'gzip' },
+                expand: true,
+                cwd: 'web/assets/dist/',
+                src: ['buddies.min.js'],
                 dest: 'web/assets/dist/',
                 ext: '.min.js.gz'
             },

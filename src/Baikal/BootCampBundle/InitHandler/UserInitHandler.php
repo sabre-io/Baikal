@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 use Symfony\BootCampBundle\InitHandler\UserInitHandlerInterface;
 
-use Baikal\ModelBundle\Entity\User,
+use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\UserPrincipal;
 
 class UserInitHandler implements UserInitHandlerInterface {

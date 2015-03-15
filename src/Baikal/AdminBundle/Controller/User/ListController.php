@@ -3,13 +3,14 @@
 namespace Baikal\AdminBundle\Controller\User;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Baikal\ModelBundle\Entity\User;
+
+use Baikal\SystemBundle\Entity\User;
 
 class ListController extends Controller
 {
     public function indexAction()
     {
-        $users = $this->getDoctrine()->getManager()->getRepository('\Baikal\ModelBundle\Entity\User')->findAll();
+        $users = $this->getDoctrine()->getManager()->getRepository('\Baikal\SystemBundle\Entity\User')->findAll();
         
         return $this->render('BaikalAdminBundle:User:list.html.twig', array(
             'users' => $users,

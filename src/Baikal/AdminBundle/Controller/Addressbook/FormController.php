@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpKernel\Exception\HttpException;
 
-use Baikal\ModelBundle\Entity\User,
+use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\Addressbook;
 
 class FormController extends Controller {

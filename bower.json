@@ -5,6 +5,7 @@
         "bootstrap": "3.3.*",
         "font-awesome": "4.3.*",
         "jquery-minicolors": "2.1.*",
-        "pulpy": "0.0.3-dev"
+        "pulpy": "0.0.3-dev",
+        "buddies": "0.0.2-dev"
     }
 }

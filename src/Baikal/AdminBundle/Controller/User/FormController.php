@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response;
 
-use Baikal\ModelBundle\Entity\User,
+use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\UserPrincipal,
     Baikal\ModelBundle\Form\Type as FormType;
 

@@ -8,7 +8,7 @@ class DashboardController extends Controller
 {
     public function indexAction()
     {
-        $nbusers = $this->getDoctrine()->getManager()->getRepository('\Baikal\ModelBundle\Entity\User')->countAll();
+        $nbusers = $this->getDoctrine()->getManager()->getRepository('\Baikal\SystemBundle\Entity\User')->countAll();
 
         $nbcalendars = $this->get('baikal.repository.calendar')->countAll();
         $nbevents = $this->get('baikal.repository.event')->countAll();

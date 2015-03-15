@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Sabre\DAV\UUIDUtil;
 
-use Baikal\ModelBundle\Entity\User,
+use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\Addressbook,
     Baikal\ModelBundle\Form\Type\Addressbook\AddressbookType;
 

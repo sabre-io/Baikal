@@ -3,7 +3,7 @@
 namespace Baikal\FrontendBundle\Controller\Calendar;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Baikal\ModelBundle\Entity\User;
+use Baikal\SystemBundle\Entity\User;
 use Baikal\ModelBundle\Entity\Calendar;
 
 class ListController extends Controller {
