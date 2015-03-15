@@ -15,7 +15,6 @@
 /composer.phar
 
 /web/apps/*
-!/web/apps/cardclient
 
 /node_modules
 /bower_components
