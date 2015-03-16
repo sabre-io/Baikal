@@ -3,11 +3,13 @@
 namespace Baikal\AdminBundle\Controller\Addressbook;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Baikal\ModelBundle\Entity;
+
+use Baikal\ModelBundle\Entity\Addressbook,
+    Baikal\SystemBundle\Entity\User;
 
 class ListController extends Controller {
 
-    public function indexAction(Entity\User $user) {
+    public function indexAction(User $user) {
         
         $addressbooks = $this->get('baikal.repository.addressbook')->findByUser($user);
 
@@ -30,7 +32,7 @@ class ListController extends Controller {
         ));
     }
 
-    public function deleteAction(Entity\User $user, Entity\Addressbook $addressbook) {
+    public function deleteAction(User $user, Addressbook $addressbook) {
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($addressbook);
