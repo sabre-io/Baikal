@@ -57,7 +57,7 @@ class BaikalExtension extends \Twig_Extension {
     }
 
     public function gravatarurl($email, $width=200) {
-        return 'http://www.gravatar.com/avatar/' . md5($email) . '?s=' . intval($width);
+        return '//www.gravatar.com/avatar/' . md5($email) . '?s=' . intval($width);
     }
 
     public function eventcountforcalendar(Calendar $calendar) {

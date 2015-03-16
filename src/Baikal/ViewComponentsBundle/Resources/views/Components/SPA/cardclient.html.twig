@@ -10,6 +10,6 @@
     application('buddies', {
         rootElement: '#app-cardclient',
         addressbookid: addressbook.id,
-        urlapi: (app.request.getSchemeAndHttpHost() ~ path('baikal.webapi.root'))|trim('/')
+        urlapi: '//' ~ (app.request.getHttpHost() ~ path('baikal.webapi.root'))|trim('/')
     })
 }}

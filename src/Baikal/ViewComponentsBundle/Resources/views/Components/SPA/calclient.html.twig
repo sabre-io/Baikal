@@ -3,7 +3,7 @@
 {% set calview = application('pulpy', {
     rootElement: '#app-calclient',
     parameters: {
-        apiendpoint: '/webapi/v1',
+        apiendpoint: '//' ~ (app.request.getHttpHost() ~ path('baikal.webapi.root'))|trim('/'),
         calendarsEnabledAtStart: [calendar.getId()],
         calendarFocusedAtStart: calendar    .getId(),
         starttime: 0,

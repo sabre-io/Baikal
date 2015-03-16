@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "57eddee1a58328b862b4f35e795dd592",
+    "hash": "71029344c08456fba3135195c717351e",
     "packages": [
         {
             "name": "baikal/core",

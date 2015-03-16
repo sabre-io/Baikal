@@ -96,7 +96,7 @@ class PortalExtension extends \Twig_Extension {
         $debug = $this->container->getParameter('kernel.debug');
 
         if($debug) {
-            $resAssets = '<script type="text/javascript" src="http://0.0.0.0:' . intval($app['port']) . '/assets/main.js"></script>';
+            $resAssets = '<script type="text/javascript" src="//0.0.0.0:' . intval($app['port']) . '/assets/main.js"></script>';
         } else {
             $resAssets = '<script type="text/javascript" src="/' . htmlspecialchars($app['dist']) . '"></script>';
         }
