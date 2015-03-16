@@ -1,6 +1,6 @@
 {
   "name": "Baikal",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0-alpha3",
   "description": "CalDAV + CardDAV server and web client",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

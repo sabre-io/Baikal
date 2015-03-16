@@ -96,31 +96,12 @@ class PortalExtension extends \Twig_Extension {
         $debug = $this->container->getParameter('kernel.debug');
 
         if($debug) {
-            $url = 'http://0.0.0.0:' . intval($app['port']);
-            $content = file_get_contents($url);
-            $assetprefix = $url;
-
-            $assetprefix = rtrim($assetprefix, '/') . '/';
-
-            $kept = array();
-            $kept[] = $this->produceConfigurationMeta($options);
-
-            # On récupère les balises script et link, et on les réécrit
-            $parts = $this->extractAppAndRewriteAssetsUrl($content, $assetprefix, $kept);
-
-            $resAssets = $parts['assets'];
-            $resHtml = $parts['html'];
+            $resAssets = '<script type="text/javascript" src="http://0.0.0.0:' . intval($app['port']) . '/assets/main.js"></script>';
         } else {
-            /*$index = $apppath . '/dist/index.html';
-            if(!file_exists($index)) throw new \RuntimeException('Portal: index.html not found for ' . $app['name']);
-
-            $content = file_get_contents($index);
-            $relapppath = preg_replace('%^' . preg_quote($webdir) . '%', '', $apppath);
-            $assetprefix = $relapppath . '/dist';*/
-
             $resAssets = '<script type="text/javascript" src="/' . htmlspecialchars($app['dist']) . '"></script>';
-            $resHtml = $this->produceConfigurationMeta($options);
         }
+
+        $resHtml = $this->produceConfigurationMeta($options);
 
         return new PortalApplicationResponse($resAssets, $resHtml);
     }

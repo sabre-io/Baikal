@@ -11,7 +11,7 @@ parameters:
         - DATABASE_URL
 
     bootcamp.appname: "Baïkal"
-    bootcamp.appversion: "2.0.0-alpha2"
+    bootcamp.appversion: "2.0.0-alpha3"
 
     bootcamp.init.config.handler: baikal.bootcamp.configinithandler
     bootcamp.init.user.handler: baikal.bootcamp.userinithandler
