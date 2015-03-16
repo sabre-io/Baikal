@@ -39,7 +39,6 @@ class AppKernel extends Kernel
 
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
 
-            new Netgusto\DevServerBundle\NetgustoDevServerBundle(),
             new Netgusto\AutorouteBundle\NetgustoAutorouteBundle(),
             new Netgusto\PortalBundle\NetgustoPortalBundle(),
         );

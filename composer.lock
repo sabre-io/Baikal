@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2e3aa09973dc200d7f0ce380a494a773",
+    "hash": "67ea8bdd0089acc42b6900929ea185f2",
     "packages": [
         {
             "name": "baikal/core",
@@ -1908,52 +1908,6 @@
                 "symfony"
             ],
             "time": "2014-07-22 12:24:44"
-        },
-        {
-            "name": "netgusto/devserver-bundle",
-            "version": "1.2.0",
-            "target-dir": "Netgusto/DevServerBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgusto/Symfony-DevServerBundle.git",
-                "reference": "fa344b5aca457d84a175a31f2d8612cddd80479d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgusto/Symfony-DevServerBundle/zipball/fa344b5aca457d84a175a31f2d8612cddd80479d",
-                "reference": "fa344b5aca457d84a175a31f2d8612cddd80479d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": "~2.4"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Netgusto\\DevServerBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Net Gusto",
-                    "email": "contact@netgusto.com"
-                }
-            ],
-            "description": "Development server console command with subdomain support, and automatic assets compilation.",
-            "homepage": "https://github.com/netgusto/Symfony-DevServerBundle",
-            "keywords": [
-                "assets",
-                "development",
-                "server",
-                "subdomain",
-                "symfony"
-            ],
-            "time": "2014-10-17 15:52:49"
         },
         {
             "name": "netgusto/parametertouch-bundle",
