@@ -49,14 +49,13 @@ Scalingo is the trendy European PAAS provider. See their offer here <https://sca
 1. `git clone -b branch-2 https://github.com/netgusto/Baikal.git`
 2. Create your Scalingo application (let's say we call it **my-baikal**)
 3. Add the **MySQL** addon to your container
-4. Define the Scalingo environment variable using the Application Admin panel in Scalingo: `BUILDPACK_NAME=php`
-5. `cd Baikal`
-6. `git remote add scalingo git@scalingo.com:my-baikal.git`
-7. `git push scalingo branch-2:master`
-8. Once the app has booted, open <http://my-baikal.scalingo.io> in your web browser.
-9. Log in using the default account created during initialization (username: **admin**, password: **password**).
-10. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
-11. Et voilà !
+4. `cd Baikal`
+5. `git remote add scalingo git@scalingo.com:my-baikal.git`
+6. `git push scalingo branch-2:master`
+7. Once the app has booted, open <http://my-baikal.scalingo.io> in your web browser.
+8. Log in using the default account created during initialization (username: **admin**, password: **password**).
+9. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
+10. Et voilà !
 
 ### Heroku
 
