@@ -168,7 +168,9 @@ $ root:/etc/nginx/sites-available> ln -s /var/www/dav.mydomain.com/Specific/virt
 # d. Customize the virtualhost config file
 $ root:/etc/nginx/sites-available> nano baikal.nginx
 	
-# e. In baikal.nginx, replace references to dav.mydomain.com with your own domain name
+# e. In baikal.nginx, replace references to dav.mydomain.com with your own domain name.
+#    It may be possible that you have to modify the value of the fastcgi_pass directive too.
+#    Please consult your server's documentation if you receive a 404 error.
 	
 # f. Activate the new virtualhost
 $ root:/etc/nginx/sites-available> cd ../sites-enabled
@@ -179,6 +181,13 @@ $ root:/etc/nginx/sites-enabled> /etc/init.d/nginx restart
 ```
 
 #### 3.2.1.3 - Setting up Baïkal
+
+To enable the installation tool you have to create a temporary file.
+
+```sh
+# Replace with your actual document root
+$ root: cd /var/www/dav.mydomain.com touch Specific/ENABLE_INSTALL
+```
 
 In a web browser, navigate to http://dav.mydomain.com and follow the instructions of the initialization web tool
 
