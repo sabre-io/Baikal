@@ -10,7 +10,6 @@ class BootCampKernel extends BaseBootCampKernel {
         $bundles[] = new Baikal\BootCampBundle\BaikalBootCampBundle();
         $bundles[] = new Baikal\SystemBundle\BaikalSystemBundle();
         $bundles[] = new Baikal\ModelBundle\BaikalModelBundle();
-        $bundles[] = new Baikal\SystemBundle\BaikalSystemBundle();
 
         return $bundles;
     }
