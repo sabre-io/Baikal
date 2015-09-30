@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\BootCampBundle\Kernel\BootCampKernel as BaseBootCampKernel;
+use Netgusto\BootCampBundle\Kernel\BootCampKernel as BaseBootCampKernel;
 
 class BootCampKernel extends BaseBootCampKernel {
     
@@ -8,6 +8,7 @@ class BootCampKernel extends BaseBootCampKernel {
 
         $bundles = parent::registerBundles();
         $bundles[] = new Baikal\BootCampBundle\BaikalBootCampBundle();
+        $bundles[] = new Baikal\SystemBundle\BaikalSystemBundle();
         $bundles[] = new Baikal\ModelBundle\BaikalModelBundle();
 
         return $bundles;

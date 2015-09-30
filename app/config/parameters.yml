@@ -28,5 +28,18 @@ parameters:
     baikal.dav_realm: Baikal
     baikal.api.enabled: true
     baikal.servertimezone: Europe/Paris
+
+    bootcamp.environment.databaseurl_variablename: DATABASE_URL
+    bootcamp.environment.authorizedkeys:
+        - DATABASE_URL
+
+    bootcamp.appname: "Baïkal"
+    bootcamp.appversion: "2.0.0-alpha3"
+
+    bootcamp.init.config.handler: baikal.bootcamp.configinithandler
+    bootcamp.init.user.handler: baikal.bootcamp.userinithandler
+
+    bootcamp.init.user.username: admin
+    bootcamp.init.user.password: password
     # /Baïkal
     ###########################################################################

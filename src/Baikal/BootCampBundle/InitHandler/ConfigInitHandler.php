@@ -4,7 +4,7 @@ namespace Baikal\BootCampBundle\InitHandler;
 
 use Doctrine\ORM\EntityManager;
 
-use Symfony\BootCampBundle\InitHandler\ConfigInitHandlerInterface;
+use Netgusto\BootCampBundle\InitHandler\ConfigInitHandlerInterface;
 
 use Baikal\ModelBundle\Entity\ConfigContainer;
 
@@ -18,7 +18,7 @@ class ConfigInitHandler implements ConfigInitHandlerInterface {
     }
 
     public function createAndPersistConfig() {
-        
+
         $siteconfig = new ConfigContainer();
         $siteconfig->setName('main');
         $siteconfig->setConfig(array(

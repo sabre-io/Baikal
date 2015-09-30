@@ -2,8 +2,8 @@ imports:
 
     # BootCamp
     - { resource: config_bootcamp.yml }
-    - { resource: @SymfonyBootCampBundle/ParameterProcessor/Environment.php }
-    - { resource: @SymfonyBootCampBundle/ParameterProcessor/Database.php }
+    - { resource: @NetgustoBootCampBundle/ParameterProcessor/Environment.php }
+    - { resource: @NetgustoBootCampBundle/ParameterProcessor/Database.php }
     # /BootCamp
 
     - { resource: security.yml }

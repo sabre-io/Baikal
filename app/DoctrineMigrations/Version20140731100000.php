@@ -10,7 +10,7 @@ class Version20140731100000 extends AbstractMigration {
     public function up(Schema $schema) {
 
         #######################################################################
-        # Symfony\BootCampBundle\Entity\BootCampStatus
+        # Netgusto\BootCampBundle\Entity\BootCampStatus
         #######################################################################
 
         $bootcampstatus = $schema->createTable('BootCampStatus');

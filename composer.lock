@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "71029344c08456fba3135195c717351e",
+    "hash": "eff19ce0a8c1fe2ed80fa17a51c97e62",
+    "content-hash": "ac99901fbf7318ad4684e67bb30695ba",
     "packages": [
         {
             "name": "baikal/core",
@@ -125,7 +126,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netgusto/BaikalModelBundle/zipball/fa4183cd577c31afaf6286082cc96c23e37b6fc6",
+                "url": "https://api.github.com/repos/netgusto/BaikalModelBundle/zipball/0d8d94881108a8a8dd5a526bd0e76fd71ca134dd",
                 "reference": "fa4183cd577c31afaf6286082cc96c23e37b6fc6",
                 "shasum": ""
             },
@@ -790,7 +791,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/6a1bd731dbdd4ad952a3b246a8f38c9c12f52e62",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/93ec729e3f2f1bb882904cce9d2c1dde6f139ec8",
                 "reference": "6a1bd731dbdd4ad952a3b246a8f38c9c12f52e62",
                 "shasum": ""
             },
@@ -969,7 +970,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/b8ed2683bf48cf13c92f80d99cb723ae28efb227",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/d196ddc229f50c66c5a015c158adb78a2dfb4351",
                 "reference": "b8ed2683bf48cf13c92f80d99cb723ae28efb227",
                 "shasum": ""
             },
@@ -1101,7 +1102,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/bbce53348576e8d6038902e7471a5c258a1bd19e",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/0c72d8baf707dce59c59a4daa1549c06e510bbed",
                 "reference": "bbce53348576e8d6038902e7471a5c258a1bd19e",
                 "shasum": ""
             },
@@ -1666,7 +1667,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -1692,7 +1693,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/f9b9fe1995d2aecaaab408420664d4b9235deaeb",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/2246a70109bdd313a105d2a7ef464a763aacf0cd",
                 "reference": "f9b9fe1995d2aecaaab408420664d4b9235deaeb",
                 "shasum": ""
             },
@@ -1908,6 +1909,55 @@
                 "symfony"
             ],
             "time": "2014-07-22 12:24:44"
+        },
+        {
+            "name": "netgusto/bootcamp-bundle",
+            "version": "dev-master",
+            "target-dir": "Netgusto/BootCampBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netgusto/Symfony-BootcampBundle.git",
+                "reference": "3d02aa6202e487e99c618997807ec6fb3c63c825"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netgusto/Symfony-BootcampBundle/zipball/3d02aa6202e487e99c618997807ec6fb3c63c825",
+                "reference": "3d02aa6202e487e99c618997807ec6fb3c63c825",
+                "shasum": ""
+            },
+            "require": {
+                "brianium/habitat": ">=1.0.0",
+                "doctrine/doctrine-migrations-bundle": "dev-master",
+                "doctrine/migrations": "dev-master",
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": ">=2.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Netgusto\\BootCampBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Net Gusto",
+                    "email": "contact@netgusto.com"
+                }
+            ],
+            "description": "Symfony2 BootCamp Bundle",
+            "homepage": "https://github.com/netgusto/Symfony-BootCampBundle",
+            "keywords": [
+                "bootcamp",
+                "heroku",
+                "paas",
+                "scalingo",
+                "symfony"
+            ],
+            "time": "2015-09-29 20:47:41"
         },
         {
             "name": "netgusto/parametertouch-bundle",
@@ -2539,65 +2589,16 @@
             "time": "2015-03-14 06:06:39"
         },
         {
-            "name": "symfony/bootcamp-bundle",
-            "version": "1.0.9",
-            "target-dir": "Symfony/BootCampBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgusto/Symfony-BootcampBundle.git",
-                "reference": "cb1892f692bb7b63f91de1fe92d41f81bb7b1562"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgusto/Symfony-BootcampBundle/zipball/cb1892f692bb7b63f91de1fe92d41f81bb7b1562",
-                "reference": "cb1892f692bb7b63f91de1fe92d41f81bb7b1562",
-                "shasum": ""
-            },
-            "require": {
-                "brianium/habitat": ">=1.0.0",
-                "doctrine/doctrine-migrations-bundle": "dev-master",
-                "doctrine/migrations": "dev-master",
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": ">=2.4"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\BootCampBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Net Gusto",
-                    "email": "contact@netgusto.com"
-                }
-            ],
-            "description": "Symfony2 BootCamp Bundle",
-            "homepage": "https://github.com/netgusto/Symfony-BootCampBundle",
-            "keywords": [
-                "bootcamp",
-                "heroku",
-                "paas",
-                "scalingo",
-                "symfony"
-            ],
-            "time": "2015-03-11 10:08:15"
-        },
-        {
             "name": "symfony/monolog-bundle",
             "version": "v2.7.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/MonologBundle.git",
+                "url": "https://github.com/symfony/monolog-bundle.git",
                 "reference": "9320b6863404c70ebe111e9040dab96f251de7ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/9320b6863404c70ebe111e9040dab96f251de7ac",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/9320b6863404c70ebe111e9040dab96f251de7ac",
                 "reference": "9320b6863404c70ebe111e9040dab96f251de7ac",
                 "shasum": ""
             },
@@ -2651,12 +2652,12 @@
             "version": "v2.3.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/SwiftmailerBundle.git",
+                "url": "https://github.com/symfony/swiftmailer-bundle.git",
                 "reference": "970b13d01871207e81d17b17ddda025e7e21e797"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/970b13d01871207e81d17b17ddda025e7e21e797",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/970b13d01871207e81d17b17ddda025e7e21e797",
                 "reference": "970b13d01871207e81d17b17ddda025e7e21e797",
                 "shasum": ""
             },
@@ -3078,6 +3079,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "netgusto/bootcamp-bundle": 20,
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "knplabs/knp-menu-bundle": 20,

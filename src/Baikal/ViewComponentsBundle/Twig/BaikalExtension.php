@@ -52,7 +52,7 @@ class BaikalExtension extends \Twig_Extension {
     public function systemstatus() {
 
         $em = $this->container->get('doctrine.orm.entity_manager');
-        $version = $em->getRepository('SymfonyBootCampBundle:BootCampStatus')->findAll();
+        $version = $em->getRepository('NetgustoBootCampBundle:BootCampStatus')->findAll();
         return $version[0];
     }
 

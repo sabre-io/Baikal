@@ -16,11 +16,11 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
-            new Symfony\BootCampBundle\SymfonyBootCampBundle(),
+            new Netgusto\BootCampBundle\NetgustoBootCampBundle(),
             new Netgusto\ParameterTouchBundle\NetgustoParameterTouchBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            
+
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),

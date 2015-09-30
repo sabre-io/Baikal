@@ -4,7 +4,7 @@ namespace Baikal\BootCampBundle\InitHandler;
 
 use Doctrine\ORM\EntityManager;
 
-use Symfony\BootCampBundle\InitHandler\UserInitHandlerInterface;
+use Netgusto\BootCampBundle\InitHandler\UserInitHandlerInterface;
 
 use Baikal\SystemBundle\Entity\User,
     Baikal\ModelBundle\Entity\UserPrincipal;
@@ -23,7 +23,7 @@ class UserInitHandler implements UserInitHandlerInterface {
     }
 
     public function createAndPersistUser($username, $password) {
-        
+
         # Persisting identity principal
         $principalidentity = new UserPrincipal();
         $principalidentity->setDisplayname(ucwords($username));

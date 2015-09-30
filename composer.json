@@ -22,7 +22,7 @@
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
 
-        "symfony/bootcamp-bundle": "~1.0",
+        "netgusto/bootcamp-bundle": "dev-master",
         "brianium/habitat": ">=1.0.0",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
@@ -52,7 +52,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Symfony\\BootCampBundle\\Composer\\ScriptHandler::install"
+            "Netgusto\\BootCampBundle\\Composer\\ScriptHandler::install"
         ],
         "post-update-cmd": [
             "Netgusto\\ParameterTouchBundle\\Composer\\ScriptHandler::touch",
