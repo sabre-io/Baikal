@@ -20,7 +20,7 @@ class FormController extends Controller {
             throw new HttpException(401, 'Unauthorized access.');
         }
 
-        return $this->action($request, $addressbook, $user);
+        return $this->action($request, $user, $addressbook);
     }
 
     protected function action(Request $request, User $user, Addressbook $addressbook = null) {
