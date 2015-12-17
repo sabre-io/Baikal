@@ -57,6 +57,12 @@ Scalingo is the trendy European PAAS provider. See their offer here <https://sca
 9. First thing to do then is to change your password (Upper right corner of the screen: **My profile**).
 10. Et voilà !
 
+#### One Click Deploy
+
+Or you can even deploy Baikal without any configuration:
+
+[![Deploy on Scalingo](https://cdn.scalingo.com/deploy/button.svg)](https://my.scalingo.com/deploy?source=https://github.com/netgusto/Baikal#branch-2)
+
 ### Heroku
 
 Heroku is the leading American PAAS provider. See their offer here <http://heroku.com>

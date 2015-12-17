@@ -1,0 +1,7 @@
+{
+  "name": "Baikal",
+  "repository": "https://github.com/netgusto/Baikal",
+  "description": "Baïkal 2 is a Calendar+Contacts server + web client",
+  "logo": "https://cdn.rawgit.com/netgusto/Baikal/branch-2/web/assets/images/baikal-logo.svg",
+  "addons": ["scalingo-mysql"]
+}
