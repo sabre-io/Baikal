@@ -88,13 +88,6 @@ sensio_framework_extra:
     #cache:    { annotations: true }
     security: { annotations: true }
 
-# jms_serializer:
-#     metadata:
-#         auto_detection: false
-#         directories:
-#             BaikalModel:
-#                 path: "@BaikalModelBundle/Resources/config/serializer"
-
 nelmio_cors:
     paths:
         '^/api/':
@@ -127,6 +120,8 @@ jms_serializer:
         directories:
             Baikal:
                 path: "@BaikalRestBundle/Resources/config/serializer"
+#           BaikalModel:
+#               path: "@BaikalModelBundle/Resources/config/serializer"
 
 fos_oauth_server:
     db_driver: orm       # Driver availables: orm, mongodb, or propel
