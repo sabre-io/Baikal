@@ -68,6 +68,7 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
         background: radial-gradient(center, ellipse cover, #338ACC 0%, #003863 100%);					/* CSS3 */
         display: block;
         padding: 50px 0 100%;
+        overflow: hidden;
         position: relative;
         width: 724px;
         margin-right: auto;
