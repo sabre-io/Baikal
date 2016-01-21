@@ -186,9 +186,6 @@ class Framework extends \Flake\Core\Framework {
 
 		#################################################################################################
 		
-		require_once(FLAKE_PATH_ROOT . 'Util/Twig/lib/Twig/Autoloader.php');
-		\Twig_Autoloader::register();
-
 		# Include Flake Framework config
 		require_once(FLAKE_PATH_ROOT . "config.php");
 

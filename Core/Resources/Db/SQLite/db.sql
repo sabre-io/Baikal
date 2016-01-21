@@ -1,16 +1,10 @@
---
--- This is the empty database schema for Baïkal
--- Corresponds to the MySQL Schema definition of project SabreDAV 1.8.6
--- http://code.google.com/p/sabredav/
---
-
 CREATE TABLE addressbooks (
     id integer primary key asc,
     principaluri text,
     displayname text,
     uri text,
     description text,
-    ctag integer
+    synctoken integer
 );
 
 CREATE TABLE cards (
@@ -18,9 +12,20 @@ CREATE TABLE cards (
     addressbookid integer,
     carddata blob,
     uri text,
-    lastmodified integer
+    lastmodified integer,
+    etag text,
+    size integer
 );
 
+CREATE TABLE addressbookchanges (
+    id integer primary key asc,
+    uri text,
+    synctoken integer,
+    addressbookid integer,
+    operation integer
+);
+
+CREATE INDEX addressbookid_synctoken ON addressbookchanges (addressbookid, synctoken);
 CREATE TABLE calendarobjects (
     id integer primary key asc,
     calendardata blob,
@@ -31,7 +36,8 @@ CREATE TABLE calendarobjects (
     size integer,
     componenttype text,
     firstoccurence integer,
-    lastoccurence integer
+    lastoccurence integer,
+    uid text
 );
 
 CREATE TABLE calendars (
@@ -39,7 +45,7 @@ CREATE TABLE calendars (
     principaluri text,
     displayname text,
     uri text,
-    ctag integer,
+    synctoken integer,
     description text,
     calendarorder integer,
     calendarcolor text,
@@ -48,23 +54,59 @@ CREATE TABLE calendars (
     transparent bool
 );
 
-CREATE TABLE locks (
+CREATE TABLE calendarchanges (
     id integer primary key asc,
-    owner text,
-    timeout integer,
-    created integer,
-    token text,
-    scope integer,
-    depth integer,
-    uri text
+    uri text,
+    synctoken integer,
+    calendarid integer,
+    operation integer
 );
 
+CREATE INDEX calendarid_synctoken ON calendarchanges (calendarid, synctoken);
+
+CREATE TABLE calendarsubscriptions (
+    id integer primary key asc,
+    uri text,
+    principaluri text,
+    source text,
+    displayname text,
+    refreshrate text,
+    calendarorder integer,
+    calendarcolor text,
+    striptodos bool,
+    stripalarms bool,
+    stripattachments bool,
+    lastmodified int
+);
+
+CREATE TABLE schedulingobjects (
+    id integer primary key asc,
+    principaluri text,
+    calendardata blob,
+    uri text,
+    lastmodified integer,
+    etag text,
+    size integer
+);
+
+CREATE INDEX principaluri_uri ON calendarsubscriptions (principaluri, uri);
+BEGIN TRANSACTION;
+CREATE TABLE locks (
+	id integer primary key asc,
+	owner text,
+	timeout integer,
+	created integer,
+	token text,
+	scope integer,
+	depth integer,
+	uri text
+);
+COMMIT;
 CREATE TABLE principals (
     id INTEGER PRIMARY KEY ASC,
     uri TEXT,
     email TEXT,
     displayname TEXT,
-    vcardurl TEXT,
     UNIQUE(uri)
 );
 
@@ -75,9 +117,27 @@ CREATE TABLE groupmembers (
     UNIQUE(principal_id, member_id)
 );
 
-CREATE TABLE users (
+
+INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin', 'admin@example.org','Administrator');
+INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin/calendar-proxy-read', null, null);
+INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin/calendar-proxy-write', null, null);
+
+CREATE TABLE propertystorage (
     id integer primary key asc,
-    username TEXT,
-    digesta1 TEXT,
-    UNIQUE(username)
+    path text,
+    name text,
+    valuetype integer,
+    value string
 );
+
+
+CREATE UNIQUE INDEX path_property ON propertystorage (path, name);
+CREATE TABLE users (
+	id integer primary key asc,
+	username TEXT,
+	digesta1 TEXT,
+	UNIQUE(username)
+);
+
+INSERT INTO users (username,digesta1) VALUES
+('admin',  '87fd274b7b6c01e48d7c2f965da8ddf7');
