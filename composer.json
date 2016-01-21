@@ -1,8 +1,8 @@
 {
-    "name": "jeromeschneider/baikal",
+    "name": "fruux/baikal",
     "description": "Baïkal is a lightweight CalDAV + CardDAV server based on PHP, SQLite and SabreDAV",
     "keywords": ["Framework", "WebDAV", "CalDAV", "CardDAV", "iCalendar"],
-    "homepage": "http://code.google.com/p/sabredav/",
+    "homepage": "http://sabre.io/baikal/",
     "license" : "GPL-3.0",
     "authors": [
         {
@@ -13,8 +13,11 @@
         }
     ],
     "require": {
-        "php"           : ">=5.3.1",
-        "sabre/dav"     : "1.8.*"
+        "php"           : ">=5.5",
+        "sabre/dav"     : "^3.1"
+    },
+    "replace" : {
+        "jeromeschneider/baikal" : "self.version"
     },
     "autoload": {
         "psr-0" : {
@@ -24,6 +27,6 @@
         }
     },
     "support" : {
-        "source" : "https://github.com/jeromeschneider/Baikal"
+        "source" : "https://github.com/fruux/Baikal"
     }
 }
