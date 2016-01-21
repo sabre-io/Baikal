@@ -74,7 +74,7 @@ $calendarBackend = new \Sabre\CalDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
 # Directory structure
 $nodes = array(
     new \Sabre\CalDAV\Principal\Collection($principalBackend),
-    new \Sabre\CalDAV\CalendarRootNode($principalBackend, $calendarBackend),
+    new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend),
 );
 
 # Initializing server
