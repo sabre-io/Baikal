@@ -158,9 +158,11 @@ class Server {
 
         if ($this->enableCalDAV) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
+            $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
         }
         if ($this->enableCardDAV) {
             $this->server->addPlugin(new \Sabre\CardDAV\Plugin());
+            $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
         }
 
     }
