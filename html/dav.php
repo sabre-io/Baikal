@@ -24,7 +24,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-define("BAIKAL_CONTEXT", TRUE);
+ini_set("session.cookie_httponly", 1);
+ini_set("display_errors", 1);
+ini_set("log_errors", 1);
+
+define("BAIKAL_CONTEXT", true);
 define("PROJECT_CONTEXT_BASEURI", "/");
 
 if(file_exists(getcwd() . "/Core")) {
@@ -38,7 +42,6 @@ if(file_exists(getcwd() . "/Core")) {
 if(!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
 	die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
-
 require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 
 # Bootstraping Flake
@@ -47,41 +50,12 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 # Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
 
-if(!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== TRUE) {
-	throw new ErrorException("Baikal CardDAV is disabled.", 0, 255, __FILE__, __LINE__);
-}
-
-# Backends
-if(
-	BAIKAL_DAV_AUTH_TYPE == "Basic" || (
-		array_key_exists('HTTP_USER_AGENT', $_SERVER) && (
-			preg_match('/Windows-Phone-WebDAV-Client/i', $_SERVER['HTTP_USER_AGENT']) ||
-			preg_match('/MSFT-WP\/8.10.*/i', $_SERVER['HTTP_USER_AGENT'])
-		)
-	)
-) {
-	$authBackend = new \Baikal\Core\PDOBasicAuth($GLOBALS["DB"]->getPDO(), BAIKAL_AUTH_REALM);
-} else {
-	$authBackend = new \Sabre\DAV\Auth\Backend\PDO($GLOBALS["DB"]->getPDO());
-}
-
-$principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($GLOBALS["DB"]->getPDO());
-$carddavBackend = new \Sabre\CardDAV\Backend\PDO($GLOBALS["DB"]->getPDO()); 
-
-# Setting up the directory tree
-$nodes = array(
-    new \Sabre\DAVACL\PrincipalCollection($principalBackend),
-    new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend),
+$server = new \Baikal\Core\Server(
+    BAIKAL_CAL_ENABLED,
+    BAIKAL_CARD_ENABLED,
+    BAIKAL_DAV_AUTH_TYPE,
+    BAIKAL_AUTH_REALM,
+    $GLOBALS['DB']->getPDO(),
+    BAIKAL_DAV_BASEURI
 );
-
-# The object tree needs in turn to be passed to the server class
-$server = new \Sabre\DAV\Server($nodes);
-$server->setBaseUri(BAIKAL_CARD_BASEURI);
-
-# Plugins 
-$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, BAIKAL_AUTH_REALM));
-$server->addPlugin(new \Sabre\CardDAV\Plugin());
-$server->addPlugin(new \Sabre\DAVACL\Plugin());
-
-# And off we go!
-$server->exec();
+$server->start();

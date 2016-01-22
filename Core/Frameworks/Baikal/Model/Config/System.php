@@ -45,6 +45,10 @@ class System extends \Baikal\Model\Config {
 			"type" => "litteral",
 			"comment" => 'Should begin and end with a "/"',
 		),
+		"BAIKAL_DAV_BASEURI" => array(
+			"type" => "litteral",
+			"comment" => 'Should begin and end with a "/"',
+		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",
 			"comment" => "Define path to Baïkal Database SQLite file",
@@ -85,6 +89,7 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_AUTH_REALM" => "BaikalDAV",
 		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
 		"BAIKAL_CAL_BASEURI" => 'PROJECT_BASEURI . "cal.php/"',
+		"BAIKAL_DAV_BASEURI" => 'PROJECT_BASEURI . "dav.php/"',
 		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
 		"PROJECT_DB_MYSQL" => FALSE,
 		"PROJECT_DB_MYSQL_HOST" => "",
@@ -116,6 +121,16 @@ class System extends \Baikal\Model\Config {
 			"help" => "The absolute web path to card.php",
 			"popover" => array(
 				"title" => "CardDAV base URI",
+				"content" => "If Baïkal is hosted in a subfolder, this path should reflect it.<br /><strong>Whatever happens, it should begin and end with a slash.</strong>"
+			)
+		)));
+		$oMorpho->add(new \Formal\Element\Text(array(
+			"prop" => "BAIKAL_DAV_BASEURI",
+			"label" => "CalDAV/CardDAV base URI",
+			"validation" => "required",
+			"help" => "The absolute web path to dav.php",
+			"popover" => array(
+				"title" => "DAV base URI",
 				"content" => "If Baïkal is hosted in a subfolder, this path should reflect it.<br /><strong>Whatever happens, it should begin and end with a slash.</strong>"
 			)
 		)));
@@ -212,6 +227,9 @@ define("BAIKAL_CARD_BASEURI", PROJECT_BASEURI . "card.php/");
 
 # Should begin and end with a "/"
 define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
+
+# Should begin and end with a "/"
+define("BAIKAL_DAV_BASEURI", PROJECT_BASEURI . "dav.php/");
 
 # Define path to Baïkal Database SQLite file
 define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");
