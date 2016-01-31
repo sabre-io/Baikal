@@ -10,3 +10,9 @@ Specific/virtualhosts/baikal.apache2
 # Composer stuff
 composer.lock
 vendor
+
+# Build
+/build
+
+# Vim
+.*.swp
