@@ -244,18 +244,8 @@ class Framework extends \Flake\Core\Framework {
 			return FALSE;
 		}
 		
-		# Asserting DB file exists
-		if(!file_exists(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file does not exist. To create it, please copy '<span style='font-family: monospace; background: yellow;'>Core/Resources/Db/SQLite/db.sqlite</span>' to '<span style='font-family: monospace;background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
-		}
-		
-		# Asserting DB file is readable
-		if(!is_readable(PROJECT_SQLITE_FILE)) {
-			die("<h3>DB file is not readable. Please give read permissions on file '<span style='font-family: monospace; background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
-		}
-		
 		# Asserting DB file is writable
-		if(!is_writable(PROJECT_SQLITE_FILE)) {
+		if(file_exists(PROJECT_SQLITE_FILE) && !is_writable(PROJECT_SQLITE_FILE)) {
 			die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
 		}
 		
@@ -290,19 +280,15 @@ class Framework extends \Flake\Core\Framework {
 			die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
 		}
 		
-		try {
-			$GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
-				PROJECT_DB_MYSQL_HOST,
-				PROJECT_DB_MYSQL_DBNAME,
-				PROJECT_DB_MYSQL_USERNAME,
-				PROJECT_DB_MYSQL_PASSWORD
-			);
+        $GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
+            PROJECT_DB_MYSQL_HOST,
+            PROJECT_DB_MYSQL_DBNAME,
+            PROJECT_DB_MYSQL_USERNAME,
+            PROJECT_DB_MYSQL_PASSWORD
+        );
 
-			# We now setup the connexion to use UTF8
-			$GLOBALS["DB"]->query("SET NAMES UTF8");
-		} catch(\Exception $e) {
-			#die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in Specific/config.system.php).</h3>");
-		}
+        # We now setup the connection to use UTF8
+        $GLOBALS["DB"]->query("SET NAMES UTF8");
 		
 		return TRUE;
 	}
