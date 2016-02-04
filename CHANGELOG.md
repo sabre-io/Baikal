@@ -1,6 +1,25 @@
 ChangeLog
 =========
 
+0.3.0 (????-??-??)
+------------------
+
+* Now requires PHP 5.5.
+* Upgraded to sabre/dav 3.1
+  * Support for WebDAV-Sync.
+  * Support for Calendar subscriptions.
+  * Support for iCalender and vCard export plugins.
+* Created a central `dav.php` that does both carddav and caldav. `cal.php`
+  and `card.php` are still there, but will be removed in a future version.
+* Added ability for users to change the calendar color.
+* Moved server logic to a new class: `Baikal\Core\Server`.
+* List of timezones is not generated from `DateTimeZone` class.
+* Simplified packaging scripts into a Makefile.
+* Fixed: bug when using a MySQL schema name that contains a whitespace.
+* Twig is now a composer dependency.
+* Moved documentation to sabre.io.
+
+
 0.2.7 (2014-02-02)
 ------------------
 
