@@ -117,11 +117,6 @@ CREATE TABLE groupmembers (
     UNIQUE(principal_id, member_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO principals (uri,email,displayname) VALUES
-('principals/admin', 'admin@example.org','Administrator'),
-('principals/admin/calendar-proxy-read', null, null),
-('principals/admin/calendar-proxy-write', null, null);
-
 CREATE TABLE propertystorage (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     path VARBINARY(1024) NOT NULL,
@@ -137,6 +132,3 @@ CREATE TABLE users (
     digesta1 VARBINARY(32),
     UNIQUE(username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO users (username,digesta1) VALUES
-('admin',  '87fd274b7b6c01e48d7c2f965da8ddf7');

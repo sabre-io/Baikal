@@ -31,7 +31,7 @@ use PDO;
 /**
  * The Baikal Server
  *
- * This class sets up the underlying Sabre\DAV\Server object. 
+ * This class sets up the underlying Sabre\DAV\Server object.
  *
  * @copyright Copyright (C) Jérôme Schneider <mail@jeromeschneider.fr>
  * @author Evert Pot (http://evertpot.com/)
@@ -41,63 +41,63 @@ class Server {
 
     /**
      * Is CalDAV enabled?
-     * 
+     *
      * @var bool
      */
     protected $enableCalDAV;
 
     /**
      * is CardDAV enabled?
-     * 
-     * @var bool 
+     *
+     * @var bool
      */
     protected $enableCardDAV;
 
     /**
-     * "Basic" or "Digest" 
-     * 
-     * @var string 
+     * "Basic" or "Digest"
+     *
+     * @var string
      */
     protected $authType;
 
     /**
-     * HTTP authentication realm 
-     * 
-     * @var string 
+     * HTTP authentication realm
+     *
+     * @var string
      */
     protected $authRealm;
 
     /**
-     * Reference to Database object 
-     * 
-     * @var PDO 
+     * Reference to Database object
+     *
+     * @var PDO
      */
     protected $pdo;
 
     /**
-     * baseUri for the sabre/dav server 
-     * 
+     * baseUri for the sabre/dav server
+     *
      * @var string
      */
     protected $baseUri;
 
     /**
-     * The sabre/dav Server object 
-     * 
-     * @var \Sabre\DAV\Server 
+     * The sabre/dav Server object
+     *
+     * @var \Sabre\DAV\Server
      */
     protected $server;
 
 
     /**
-     * Creates the server object. 
-     * 
-     * @param bool $enableCalDAV 
-     * @param bool $enableCardDAV 
-     * @param string $authType 
-     * @param string $authRealm 
-     * @param PDO $pdo 
-     * @param string $baseUri 
+     * Creates the server object.
+     *
+     * @param bool $enableCalDAV
+     * @param bool $enableCardDAV
+     * @param string $authType
+     * @param string $authRealm
+     * @param PDO $pdo
+     * @param string $baseUri
      */
     function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
 
@@ -114,7 +114,7 @@ class Server {
 
     /**
      * Starts processing
-     * 
+     *
      * @return void
      */
     function start() {
@@ -145,7 +145,7 @@ class Server {
             $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
         }
         if ($this->enableCardDAV) {
-            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($GLOBALS["DB"]->getPDO()); 
+            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
 

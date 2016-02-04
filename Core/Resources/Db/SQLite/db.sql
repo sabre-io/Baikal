@@ -118,10 +118,6 @@ CREATE TABLE groupmembers (
 );
 
 
-INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin', 'admin@example.org','Administrator');
-INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin/calendar-proxy-read', null, null);
-INSERT INTO principals (uri,email,displayname) VALUES ('principals/admin/calendar-proxy-write', null, null);
-
 CREATE TABLE propertystorage (
     id integer primary key asc,
     path text,
@@ -139,5 +135,3 @@ CREATE TABLE users (
 	UNIQUE(username)
 );
 
-INSERT INTO users (username,digesta1) VALUES
-('admin',  '87fd274b7b6c01e48d7c2f965da8ddf7');
