@@ -18,6 +18,8 @@ ChangeLog
 * Fixed: bug when using a MySQL schema name that contains a whitespace.
 * Twig is now a composer dependency.
 * Moved documentation to sabre.io.
+* #381: SQLite database woes. The database is now created from scratch when
+  installing.
 
 
 0.2.7 (2014-02-02)
