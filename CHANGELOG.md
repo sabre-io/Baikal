@@ -18,6 +18,7 @@ ChangeLog
 * Fixed: bug when using a MySQL schema name that contains a whitespace.
 * Twig is now a composer dependency.
 * Moved documentation to sabre.io.
+* #320: Allow underscores in calendar/addressbook uris.
 
 
 0.2.7 (2014-02-02)
