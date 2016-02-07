@@ -309,7 +309,7 @@ class Form {
 	
 	public function validateTokenid($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
 		if(!preg_match("/^[a-z0-9\-_]+$/", $sValue)) {
-			return "<strong>" . $oElement->option("label") . "</strong> is not valid. Allowed characters are digits, lowercase letters and the dash symbol '-'.";
+			return "<strong>" . $oElement->option("label") . "</strong> is not valid. Allowed characters are digits, lowercase letters, the dash and underscore symbol.";
 		}
 		
 		return TRUE;
