@@ -20,6 +20,7 @@ ChangeLog
 * Moved documentation to sabre.io.
 * #381: SQLite database woes. The database is now created from scratch when
   installing.
+* #320: Allow underscores in calendar/addressbook uris.
 
 
 0.2.7 (2014-02-02)
