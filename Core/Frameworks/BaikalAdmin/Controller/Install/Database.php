@@ -37,7 +37,7 @@ class Database extends \Flake\Core\Controller {
 		
 		$this->oForm = $this->oModel->formForThisModelInstance(array(
 			"close" => FALSE,
-			"hook.validation" => array($this, "validateMySQLConnection"),
+			"hook.validation" => array($this, "validateConnection"),
 			"hook.morphology" => array($this, "hideMySQLFieldWhenNeeded"),
 		));
 		
@@ -77,7 +77,7 @@ class Database extends \Flake\Core\Controller {
 		return $oView->render();
 	}
 
-	public function validateMySQLConnection($oForm, $oMorpho) {
+	public function validateConnection($oForm, $oMorpho) {
 
 		$bMySQLEnabled = $oMorpho->element("PROJECT_DB_MYSQL")->value();
 
@@ -141,7 +141,57 @@ class Database extends \Flake\Core\Controller {
 					$oMorpho->element("PROJECT_DB_MYSQL_PASSWORD")
 				);
 			}
-		}
+        } else {
+			
+			$sFile = $oMorpho->element("PROJECT_SQLITE_FILE")->value();
+
+            try {
+
+                // not sure yet how to better address this
+                // yup! this is mental, but even if we don't use eval, effectively these
+                // config settings are eval'ed because they are written as raw php files.
+                // We'll have to clean this up later.
+                $sFile = eval('return ' . $sFile . ';');
+
+
+				$oDb = new \Flake\Core\Database\Sqlite(
+					$sFile
+				);
+
+				if(($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== TRUE) {
+
+					# Checking if all tables are missing
+					$aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
+					if(count($aRequiredTables) !== count($aMissingTables)) {
+						$sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+						$sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+						$sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/SQLite/db.sql</strong></p>";
+						$sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+
+						$oForm->declareError(
+							$oMorpho->element("PROJECT_SQLITE_FILE"),
+							$sMessage
+						);
+					} else {
+						# All tables are missing
+						# We add these tables ourselves to the database, to initialize Baïkal
+                        $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/SQLite/db.sql");
+                        foreach(explode(';', $sSqlDefinition) as $query) {
+                            if (!trim($query)) continue;
+                            $oDb->query($query);
+                        }
+					}
+				}
+
+				return TRUE;
+			} catch(\Exception $e) {
+				$oForm->declareError(
+					$oMorpho->element("PROJECT_SQLITE_FILE"),
+					"Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string)$e
+				);
+			}
+            // SQLite
+        }
 	}
 
 	public function hideMySQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {

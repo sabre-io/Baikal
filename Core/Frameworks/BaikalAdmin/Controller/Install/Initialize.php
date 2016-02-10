@@ -67,13 +67,6 @@ class Initialize extends \Flake\Core\Controller {
 
 				$oSystemConfig->persist();
 
-				# Using default PROJECT_SQLITE_FILE
-				$PROJECT_SQLITE_FILE = PROJECT_PATH_SPECIFIC . "db/db.sqlite";
-
-				if(!file_exists($PROJECT_SQLITE_FILE)) {
-					# Installing default sqlite database
-					@copy(PROJECT_PATH_CORERESOURCES . "Db/SQLite/db.sqlite", $PROJECT_SQLITE_FILE);
-				}
 			}
 		}
 	}
