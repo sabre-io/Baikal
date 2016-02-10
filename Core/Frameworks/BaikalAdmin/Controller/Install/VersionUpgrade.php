@@ -163,7 +163,7 @@ HTML;
 
                     $tableName = $dataType . 's';
                     $pdo->exec("ALTER TABLE $tableName ADD synctoken INT(11) UNSIGNED NOT NULL DEFAULT '1'");
-                    $this->aSuccess[] = 'synctoken as added to ' . $tableName;
+                    $this->aSuccess[] = 'synctoken was added to ' . $tableName;
 
                     $pdo->exec("ALTER TABLE $tableName DROP ctag");
                     $this->aSuccess[] = 'ctag was removed from ' . $tableName;
@@ -254,7 +254,7 @@ HTML;
                     // Note: we can't remove the ctag field in sqlite :(;
                     $pdo->exec("ALTER TABLE $tableName ADD synctoken integer");
                     $pdo->exec("UPDATE $tableName SET synctoken = '1'");
-                    $this->aSuccess[] = 'synctoken as added to ' . $tableName;
+                    $this->aSuccess[] = 'synctoken was added to ' . $tableName;
 
                     $changesTable = $dataType . 'changes';
                     $pdo->exec("
