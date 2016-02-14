@@ -146,7 +146,7 @@ class Calendars extends \Flake\Core\Controller {
 		);
 		
 		$this->oModel->set(
-			"ctag",
+			"synctoken",
 			"1"
 		);
 		
