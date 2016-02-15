@@ -368,7 +368,7 @@ HTML;
                 $stmt1->execute([
                     'addressbooks/' . basename($row['uri']),
                     '{http://calendarserver.org/ns/}me-card',
-                    serialize(new Sabre\DAV\Xml\Property\Href($row['vcardurl']))
+                    serialize(new \Sabre\DAV\Xml\Property\Href($row['vcardurl']))
                 ]);
 
             }
