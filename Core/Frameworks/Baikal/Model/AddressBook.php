@@ -36,7 +36,6 @@ class AddressBook extends \Flake\Core\Model\Db {
 		"displayname" => "",
 		"uri" => "",
 		"description" => "",
-		"synctoken" => 1,
 	);
 	
 	public static function humanName() {

@@ -35,7 +35,6 @@ class Calendar extends \Flake\Core\Model\Db {
 		"principaluri" => "",
 		"displayname" => "",
 		"uri" => "",
-		"synctoken" => 0,
 		"description" => "",
 		"calendarorder" => 0,
 		"calendarcolor" => "",

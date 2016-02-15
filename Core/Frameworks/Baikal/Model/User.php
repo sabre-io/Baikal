@@ -149,9 +149,6 @@ class User extends \Flake\Core\Model\Db {
 				"uri",
 				"default"
 			)->set(
-				"ctag",
-				1
-			)->set(
 				"description",
 				"Default calendar"
 			)->set(

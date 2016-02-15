@@ -144,12 +144,7 @@ class Calendars extends \Flake\Core\Controller {
 			"components",
 			"VEVENT"
 		);
-		
-		$this->oModel->set(
-			"ctag",
-			"1"
-		);
-		
+
 		# Initialize corresponding form
 		$this->initForm();
 		

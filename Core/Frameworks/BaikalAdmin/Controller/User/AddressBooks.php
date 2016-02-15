@@ -145,11 +145,6 @@ class AddressBooks extends \Flake\Core\Controller {
 			$this->oUser->get("uri")
 		);
 		
-		$this->oModel->set(
-			"ctag",
-			"1"
-		);
-		
 		$this->initForm();
 		
 		if($this->oForm->submitted()) {
