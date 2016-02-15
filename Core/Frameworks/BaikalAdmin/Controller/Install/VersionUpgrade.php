@@ -344,6 +344,7 @@ HTML;
                 try {
                     $vobj = \Sabre\VObject\Reader::read($row['calendardata']);
                 } catch (\Exception $e) {
+                    $this->aSuccess[] = 'warning: skipped record ' . $row['id'] . '. Error: ' . $e->getMessage();
                     continue;
                 }
                 $uid = null;
