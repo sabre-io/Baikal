@@ -34,7 +34,6 @@ class Dashboard extends \Flake\Core\Controller {
 	public function render() {
 		$oView = new \BaikalAdmin\View\Dashboard();
 		$oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
-		$oView->setData("PROJECT_PACKAGE", PROJECT_PACKAGE);
 		
 		# Services status
 		$oView->setData("BAIKAL_CAL_ENABLED", BAIKAL_CAL_ENABLED);

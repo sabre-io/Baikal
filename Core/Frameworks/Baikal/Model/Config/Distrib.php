@@ -37,17 +37,12 @@ class Distrib extends \Baikal\Model\Config {
 			"type" => "string",
 			"comment" => "The URL to the project homepage",
 		),
-		"PROJECT_PACKAGE" => array(
-			"type" => "string",
-			"comment" => "The type of the current package (one of 'flat', 'regular')"
-		),
 	);
 	
 	# Default values
 	protected $aData = array(
 		"BAIKAL_VERSION" => "",
 		"BAIKAL_HOMEPAGE" => "",
-		"PROJECT_PACKAGE" => "",
 	);
 	
 	public function formMorphologyForThisModelInstance() {

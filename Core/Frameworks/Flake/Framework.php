@@ -154,13 +154,7 @@ class Framework extends \Flake\Core\Framework {
 
 		require_once(PROJECT_PATH_CORE . "Distrib.php");
 
-		if(PROJECT_PACKAGE === "regular") {
-			define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
-		} elseif(PROJECT_PACKAGE === "flat") {
-			define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT);
-		} else {
-			throw new \Exception("Unrecognized PROJECT_PACKAGE value.");
- 		}
+        define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 
 		# Determine PROJECT_BASEURI
 		$sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
