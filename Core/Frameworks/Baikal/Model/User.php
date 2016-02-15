@@ -149,7 +149,7 @@ class User extends \Flake\Core\Model\Db {
 				"uri",
 				"default"
 			)->set(
-				"ctag",
+				"synctoken",
 				1
 			)->set(
 				"description",
