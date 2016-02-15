@@ -48,7 +48,7 @@ class Mysql extends \Flake\Core\Database {
 			$this->sUsername,
 			$this->sPassword
         );
-        $this->oDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
 	
 	public function tables() {
