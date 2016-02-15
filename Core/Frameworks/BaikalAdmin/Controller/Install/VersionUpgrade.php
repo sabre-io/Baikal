@@ -59,7 +59,7 @@ HTML;
         try {
             $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
         } catch (\Exception $e) {
-            $Success = false;
+            $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
         }
 		
