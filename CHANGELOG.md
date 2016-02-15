@@ -1,10 +1,18 @@
 ChangeLog
 =========
 
+0.3.2 (2016-??-??)
+------------------
+
+* #453: Fixed a bug during a 0.2.7 to 0.3.1 upgrade if a users' me-card was
+  set. (@untitaker).
+
+
 0.3.1 (2016-02-15)
 ------------------
 
-* #451: Fixed a fatal crasher.
+* #451: Fixed a fatal crasher. (@paolomainardi)
+* Ships with sabre/dav 3.1.1
 
 
 0.3.0 (2016-02-14)
@@ -27,6 +35,7 @@ ChangeLog
 * #381: SQLite database woes. The database is now created from scratch when
   installing.
 * #320: Allow underscores in calendar/addressbook uris.
+* Ships with sabre/dav 3.1.1
 
 
 0.2.7 (2014-02-02)
