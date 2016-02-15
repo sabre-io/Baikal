@@ -37,6 +37,7 @@ class Sqlite extends \Flake\Core\Database {
 	public function __construct($sDbPath) {
 		$this->sDbPath = $sDbPath;
 		$this->oDb = new \PDO('sqlite:' . $this->sDbPath);
+        $this->oDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	# Taken from http://dev.kohanaframework.org/issues/2985

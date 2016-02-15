@@ -47,7 +47,8 @@ class Mysql extends \Flake\Core\Database {
 			'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
 			$this->sUsername,
 			$this->sPassword
-		);
+        );
+        $this->oDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	public function tables() {
