@@ -8,7 +8,7 @@ VERSION=$(shell php -r "include 'Core/Distrib.php'; echo BAIKAL_VERSION;")
 
 dist: vendor/autoload.php
 	# Building Baikal $(VERSION)
-	rm -r $(BUILD_DIR)
+	rm -r $(BUILD_DIR); true
 	mkdir -p $(BUILD_DIR)
 	cp -R $(BUILD_FILES) $(BUILD_DIR)
 	touch $(BUILD_DIR)/Specific/ENABLE_INSTALL
