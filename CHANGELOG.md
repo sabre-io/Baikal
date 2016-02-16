@@ -1,11 +1,12 @@
 ChangeLog
 =========
 
-0.3.2 (2016-??-??)
+0.3.2 (2016-02-16)
 ------------------
 
 * #453: Fixed a bug during a 0.2.7 to 0.3.1 upgrade if a users' me-card was
   set. (@untitaker).
+* Ships with sabre/dav 3.1.1
 
 
 0.3.1 (2016-02-15)
