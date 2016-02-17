@@ -120,7 +120,7 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
         <p style="line-height: 0; margin-bottom: 0;">&nbsp;</p>
         <h3>Baïkal</h3>
         <p>Lightweight CalDAV+CardDAV server</p>
-        <h1>Baïkal is running allright.</h1>
+        <h1>Baïkal is running alright.</h1>
         <button style="color:#005799;" onclick="location.href='http://baikal-server.com/'" >Get your own!</button>&nbsp; &nbsp;<button style="color:#d9150b;" onclick="location.href='admin/'" >Admin page</button>
       </div>
     </div>
