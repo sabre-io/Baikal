@@ -350,11 +350,13 @@ HTML;
                 $uid = null;
                 $item = $vobj->getBaseComponent();
                 if (!isset($item->UID)) {
+                    $vobj->destroy();
                     continue;
                 }
                 $uid = (string)$item->UID;
                 $stmt->execute([$uid, $row['id']]);
                 $counter++;
+                $vobj->destroy();
 
             }
             $this->aSuccess[] = 'uid was recalculated for calendarobjects';
