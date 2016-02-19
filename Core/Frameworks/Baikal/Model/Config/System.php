@@ -29,10 +29,6 @@ namespace Baikal\Model\Config;
 class System extends \Baikal\Model\Config {
 	
 	protected $aConstants = array(
-		"BAIKAL_PATH_SABREDAV" => array(
-			"type" => "litteral",
-			"comment" => "PATH to SabreDAV",
-		),
 		"BAIKAL_AUTH_REALM" => array(
 			"type" => "string",
 			"comment" => "If you change this value, you'll have to re-generate passwords for all your users",
@@ -85,7 +81,6 @@ class System extends \Baikal\Model\Config {
 	
 	# Default values
 	protected $aData = array(
-		"BAIKAL_PATH_SABREDAV" => 'PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/"',
 		"BAIKAL_AUTH_REALM" => "BaikalDAV",
 		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
 		"BAIKAL_CAL_BASEURI" => 'PROJECT_BASEURI . "cal.php/"',
@@ -147,19 +142,6 @@ class System extends \Baikal\Model\Config {
 		)));
 		
 		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "BAIKAL_PATH_SABREDAV",
-			"label" => "Path to SabreDAV",
-			"validation" => "required",
-			"inputclass" => "input-xxlarge",
-			"help" => "The absolute server path to SabreDAV API",
-			"popover" => array(
-				"title" => "Path to SabreDAV",
-				"content" => "If Baïkal is hosted in a subfolder, this path should reflect it.<br /><strong>Whatever happens, it should begin and end with a slash.</strong>",
-				"position" => "top"
-			)
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
 			"prop" => "PROJECT_SQLITE_FILE",
 			"label" => "SQLite file path",
 			"validation" => "required",
@@ -215,9 +197,6 @@ class System extends \Baikal\Model\Config {
 #	0. All folder pathes *must* be suffixed by "/"
 #	1. All URIs *must* be suffixed by "/" if pointing to a folder
 #
-
-# PATH to SabreDAV
-define("BAIKAL_PATH_SABREDAV", PROJECT_PATH_FRAMEWORKS . "SabreDAV/lib/Sabre/");
 
 # If you change this value, you'll have to re-generate passwords for all your users
 define("BAIKAL_AUTH_REALM", "BaikalDAV");
