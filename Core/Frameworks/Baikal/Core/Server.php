@@ -146,7 +146,7 @@ class Server {
             $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
         }
         if ($this->enableCardDAV) {
-            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($GLOBALS["DB"]->getPDO());
+            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
 
