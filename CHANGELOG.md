@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+0.3.3 (2016-02-18)
+-----------------
+
+* #457: The realm was not correctly set from configuration for Digest auth.
+
+
 0.3.2 (2016-02-16)
 ------------------
 
