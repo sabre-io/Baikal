@@ -5,6 +5,8 @@ ChangeLog
 -----------------
 
 * #457: The realm was not correctly set from configuration for Digest auth.
+* Reduced memory usage in upgrade script. Should help with upgrading large
+  databases.
 
 
 0.3.2 (2016-02-16)
