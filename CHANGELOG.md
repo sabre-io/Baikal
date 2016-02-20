@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.3.4 (2016-02-20)
+------------------
+
+* Last build was broken, contained data in the `Specific/` directory. This
+  affected new installs but not upgrades.
+
+
 0.3.3 (2016-02-18)
 -----------------
 

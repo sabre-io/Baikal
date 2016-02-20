@@ -2,14 +2,14 @@
 
 BUILD_DIR="build/baikal"
 
-BUILD_FILES=Core html Specific CHANGELOG.md LICENSE README.md composer.json
+BUILD_FILES=Core html CHANGELOG.md LICENSE README.md composer.json
 
 VERSION=$(shell php -r "include 'Core/Distrib.php'; echo BAIKAL_VERSION;")
 
 dist: vendor/autoload.php
 	# Building Baikal $(VERSION)
 	rm -r $(BUILD_DIR); true
-	mkdir -p $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR) $(BUILD_DIR)/Specific $(BUILD_DIR)/Specific/db
 	cp -R $(BUILD_FILES) $(BUILD_DIR)
 	touch $(BUILD_DIR)/Specific/ENABLE_INSTALL
 	composer install -d $(BUILD_DIR)
