@@ -60,8 +60,6 @@ class Database extends \Flake\Core\Controller {
 		
 		if($this->oForm->persisted()) {
 			
-			\BaikalAdmin\Core\Auth::lockInstall();
-
 			$sMessage = "<p>Baïkal is now installed, and it's database properly configured. <strong>For security reasons, this installation wizard is now disabled.</strong></p>";
 			$sMessage . "<p>&nbsp;</p>";
 			$sMessage .= "<p><a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Start using Baïkal</a></p>";

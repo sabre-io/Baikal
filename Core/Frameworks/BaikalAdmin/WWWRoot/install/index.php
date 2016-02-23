@@ -52,9 +52,6 @@ require PROJECT_PATH_ROOT . "vendor/autoload.php";
 # Bootstrap BaikalAdmin
 \BaikalAdmin\Framework::bootstrap();
 
-# Evaluate assertions
-\BaikalAdmin\Core\Auth::assertUnlocked();
-
 # Create and setup a page object
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();

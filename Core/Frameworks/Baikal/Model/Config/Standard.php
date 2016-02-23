@@ -45,14 +45,6 @@ class Standard extends \Baikal\Model\Config {
 			"type" => "string",
 			"comment" => "HTTP authentication type for WebDAV; default Digest"
 		),
-		"BAIKAL_ADMIN_ENABLED" => array(
-			"type" => "boolean",
-			"comment" => "Baïkal Web Admin ON/OFF switch; default TRUE",
-		),
-		"BAIKAL_ADMIN_AUTOLOCKENABLED" => array(
-			"type" => "boolean",
-			"comment" => "Baïkal Web Admin autolock ON/OFF switch; default FALSE",
-		),
 		"BAIKAL_ADMIN_PASSWORDHASH" => array(
 			"type" => "string",
 			"comment" => "Baïkal Web admin password hash; Set via Baïkal Web Admin",
@@ -65,8 +57,6 @@ class Standard extends \Baikal\Model\Config {
 		"BAIKAL_CARD_ENABLED" => TRUE,
 		"BAIKAL_CAL_ENABLED" => TRUE,
 		"BAIKAL_DAV_AUTH_TYPE" => "Digest",
-		"BAIKAL_ADMIN_ENABLED" => TRUE,
-		"BAIKAL_ADMIN_AUTOLOCKENABLED" => FALSE,
 		"BAIKAL_ADMIN_PASSWORDHASH" => ""
 	);
 	
@@ -117,24 +107,6 @@ class Standard extends \Baikal\Model\Config {
 			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("placeholder", $sNotice);
 			$oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH_CONFIRM")->setOption("placeholder", $sNotice);
 		}
-
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_ENABLED",
-			"label" => "Enable Web interface (recommended)",
-			"popover" => array(
-				"title" => "Warning !",
-				"content" => "If disabled, you'll lose access to this very admin interface !",
-			),
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "BAIKAL_ADMIN_AUTOLOCKENABLED",
-			"label" => "Web interface autolock",
-			"popover" => array(
-				"title" => "Web admin autolock",
-				"content" => "If enabled, you'll have to create a file named <strong>ENABLE_ADMIN</strong> in the folder <strong>Specific/</strong> prior to every admin use.<br /><br />This enforces security, but might be uncomfortable if you use the admin frequently."
-			)
-		)));
 		
 		return $oMorpho;
 	}
@@ -206,12 +178,6 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 
 # WebDAV authentication type; default Digest
 define("BAIKAL_DAV_AUTH_TYPE", "Digest");
-
-# Baïkal Web Admin ON/OFF switch; default TRUE
-define("BAIKAL_ADMIN_ENABLED", TRUE);
-
-# Baïkal Web Admin autolock ON/OFF switch; default FALSE
-define("BAIKAL_ADMIN_AUTOLOCKENABLED", FALSE);
 
 # Baïkal Web admin password hash; Set via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");
