@@ -10,6 +10,7 @@ dist: vendor/autoload.php
 	# Building Baikal $(VERSION)
 	rm -r $(BUILD_DIR); true
 	mkdir -p $(BUILD_DIR) $(BUILD_DIR)/Specific $(BUILD_DIR)/Specific/db
+	touch $(BUILD_DIR)/Specific/db/.empty
 	cp -R $(BUILD_FILES) $(BUILD_DIR)
 	touch $(BUILD_DIR)/Specific/ENABLE_INSTALL
 	composer install -d $(BUILD_DIR)
