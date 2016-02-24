@@ -6,6 +6,7 @@ ChangeLog
 
 * #466: Fixed a small issue that can effect new installions. Existing working
   installations do not need to upgrade.
+* Ships with sabre/dav 3.1.1
 
 
 0.3.4 (2016-02-20)
@@ -13,6 +14,7 @@ ChangeLog
 
 * Last build was broken, contained data in the `Specific/` directory. This
   affected new installs but not upgrades.
+* Ships with sabre/dav 3.1.1
 
 
 0.3.3 (2016-02-18)
@@ -22,6 +24,7 @@ ChangeLog
 * Reduced memory usage in upgrade script. Should help with upgrading large
   databases.
 * Removed `BAIKAL_PATH_SABREDAV` setting. It was no longer used.
+* Ships with sabre/dav 3.1.1
 
 
 0.3.2 (2016-02-16)
