@@ -1,6 +1,14 @@
 ChangeLog
 =========
 
+0.3.5 (2016-02-24)
+------------------
+
+* #466: Fixed a small issue that can effect new installions. Existing working
+  installations do not need to upgrade.
+* Ships with sabre/dav 3.1.1
+
+
 0.3.4 (2016-02-20)
 ------------------
 
