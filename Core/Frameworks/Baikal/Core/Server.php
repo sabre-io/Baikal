@@ -156,6 +156,7 @@ class Server {
         $this->server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, $this->authRealm));
         $this->server->addPlugin(new \Sabre\DAVACL\Plugin());
         $this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+        $this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
         if ($this->enableCalDAV) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
