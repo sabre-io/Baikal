@@ -80,6 +80,9 @@ class System extends \Flake\Core\Controller {
 	}
 	
 	public function validationHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+		if($oForm->refreshed()){
+			return TRUE;
+		}
 		if(intval($oForm->modelInstance()->get("PROJECT_DB_MYSQL")) === 1) {
 				
 			# We have to check the MySQL connection

@@ -78,7 +78,9 @@ class Database extends \Flake\Core\Controller {
 	}
 
 	public function validateConnection($oForm, $oMorpho) {
-
+		if($oForm->refreshed()){
+			return TRUE;
+		}
 		$bMySQLEnabled = $oMorpho->element("PROJECT_DB_MYSQL")->value();
 
 		if($bMySQLEnabled) {
