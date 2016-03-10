@@ -257,6 +257,9 @@ class Framework extends \Flake\Core\Framework {
 	}
 	
 	protected static function initDbMysql() {
+		if(defined("BAIKAL_CONTEXT_INSTALL")){
+			return TRUE;
+		}
 		
 		if(!defined("PROJECT_DB_MYSQL_HOST")) {
 			die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in Specific/config.system.php</h3>");
