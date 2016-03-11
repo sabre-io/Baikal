@@ -225,10 +225,12 @@ class Framework extends \Flake\Core\Framework {
 	
 	protected static function initDb() {
 
-		if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
-			self::initDbMysql();
-		} else {
-			self::initDbSqlite();
+		if(defined("PROJECT_DB_CONFIGURED") && PROJECT_DB_CONFIGURED === TRUE) {
+			if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
+				self::initDbMysql();
+			} else {
+				self::initDbSqlite();
+			}
 		}
 	}
 	

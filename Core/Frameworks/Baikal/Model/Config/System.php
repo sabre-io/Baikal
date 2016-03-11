@@ -45,6 +45,10 @@ class System extends \Baikal\Model\Config {
 			"type" => "litteral",
 			"comment" => 'Should begin and end with a "/"',
 		),
+		"PROJECT_DB_CONFIGURED" => array(
+			"type" => "boolean",
+			"comment" => "Indicates whether a valid datavase configuration is given and a connection attempt should be made"
+		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",
 			"comment" => "Define path to Baïkal Database SQLite file",
@@ -85,6 +89,7 @@ class System extends \Baikal\Model\Config {
 		"BAIKAL_CARD_BASEURI" => 'PROJECT_BASEURI . "card.php/"',
 		"BAIKAL_CAL_BASEURI" => 'PROJECT_BASEURI . "cal.php/"',
 		"BAIKAL_DAV_BASEURI" => 'PROJECT_BASEURI . "dav.php/"',
+		"PROJECT_DB_CONFIGURED" => FALSE,
 		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
 		"PROJECT_DB_MYSQL" => FALSE,
 		"PROJECT_DB_MYSQL_HOST" => "",
@@ -209,6 +214,9 @@ define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 
 # Should begin and end with a "/"
 define("BAIKAL_DAV_BASEURI", PROJECT_BASEURI . "dav.php/");
+
+# Indicates whether a valid datavase configuration is given and a connection attempt should be made
+define("PROJECT_DB_CONFIGURED", FALSE);
 
 # Define path to Baïkal Database SQLite file
 define("PROJECT_SQLITE_FILE", PROJECT_PATH_SPECIFIC . "db/db.sqlite");

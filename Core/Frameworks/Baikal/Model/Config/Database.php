@@ -29,6 +29,10 @@ namespace Baikal\Model\Config;
 class Database extends \Baikal\Model\Config {
 	
 	protected $aConstants = array(
+		"PROJECT_DB_CONFIGURED" => array(
+			"type" => "boolean",
+			"comment" => "Indicates whether a valid datavase configuration is given and a connection attempt should be made"
+		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",
 			"comment" => "Define path to Baïkal Database SQLite file",
@@ -57,6 +61,7 @@ class Database extends \Baikal\Model\Config {
 	
 	# Default values
 	protected $aData = array(
+		"PROJECT_DB_CONFIGURED" => FALSE,
 		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
 		"PROJECT_DB_MYSQL" => FALSE,
 		"PROJECT_DB_MYSQL_HOST" => "",
