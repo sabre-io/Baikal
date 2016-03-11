@@ -31,7 +31,7 @@ class Database extends \Baikal\Model\Config {
 	protected $aConstants = array(
 		"PROJECT_DB_CONFIGURED" => array(
 			"type" => "boolean",
-			"comment" => "Indicates whether a valid datavase configuration is given and a connection attempt should be made"
+			"comment" => "Indicates whether a valid database configuration is given and a connection attempt should be made"
 		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",

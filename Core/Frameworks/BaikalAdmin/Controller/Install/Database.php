@@ -45,8 +45,6 @@ class Database extends \Flake\Core\Controller {
 			$this->oForm->execute();
 			
 			if($this->oForm->persisted()) {
-
-				# nothing here
 				$this->oModel->set("PROJECT_DB_CONFIGURED", TRUE);
 				$this->oModel->persist();
 			}

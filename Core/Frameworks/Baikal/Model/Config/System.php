@@ -47,7 +47,7 @@ class System extends \Baikal\Model\Config {
 		),
 		"PROJECT_DB_CONFIGURED" => array(
 			"type" => "boolean",
-			"comment" => "Indicates whether a valid datavase configuration is given and a connection attempt should be made"
+			"comment" => "Indicates whether a valid database configuration is given and a connection attempt should be made"
 		),
 		"PROJECT_SQLITE_FILE" => array(
 			"type" => "litteral",
@@ -215,7 +215,7 @@ define("BAIKAL_CAL_BASEURI", PROJECT_BASEURI . "cal.php/");
 # Should begin and end with a "/"
 define("BAIKAL_DAV_BASEURI", PROJECT_BASEURI . "dav.php/");
 
-# Indicates whether a valid datavase configuration is given and a connection attempt should be made
+# Indicates whether a valid database configuration is given and a connection attempt should be made
 define("PROJECT_DB_CONFIGURED", FALSE);
 
 # Define path to Baïkal Database SQLite file
