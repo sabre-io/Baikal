@@ -22,10 +22,10 @@ cache: vendor
 
 before_script:
   # - mysql -e 'create database sabredav'
+  - phpenv config-rm xdebug.ini
   # - composer self-update
   - composer update --prefer-source $LOWEST_DEPS
 
 script:
     - find Core -name "*.php" | xargs -n1 php -l 
     # - ./bin/sabre-cs-fixer fix lib/ --dry-run --diff
-
