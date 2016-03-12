@@ -151,9 +151,10 @@ HTML;
 			}
 		}
 
+        $pdo = $GLOBALS['DB']->getPDO();
         if(version_compare($sVersionFrom, '0.3.0', '<')) {
             // Upgrading from sabre/dav 1.8 schema to 3.1 schema.
-            $pdo = $GLOBALS['DB']->getPDO();
+
             if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
 
                 // MySQL upgrade
