@@ -377,6 +377,54 @@ HTML;
             $this->aSuccess[] = 'vcardurl was migrated to the propertystorage system';
 
 		}
+        if(version_compare($sVersionFrom, '0.4.0', '<')) {
+
+            // The sqlite schema had issues with both the calendar and
+            // addressbooks tables. The tables didn't have a DEFAULT '1' for
+            // the synctoken column. So we're adding it now.
+            if(!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === FALSE) {
+
+                $pdo->exec('UPDATE calendars SET synctoken = 1 WHERE synctoken IS NULL');
+                $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
+
+                $tmpTable = '_' . time();
+                $pdo->exec('ALTER TABLE calendars RENAME TO calendars' . $tmpTable);
+                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks' . $tmpTable);
+
+                $pdo->exec('
+CREATE TABLE addressbooks (
+    id integer primary key asc NOT NULL,
+    principaluri text NOT NULL,
+    displayname text,
+    uri text NOT NULL,
+    description text,
+    synctoken integer DEFAULT 1 NOT NULL
+);
+                ');
+
+                $pdo->exec('
+CREATE TABLE calendars (
+    id integer primary key asc NOT NULL,
+    principaluri text NOT NULL,
+    displayname text,
+    uri text NOT NULL,
+    synctoken integer DEFAULT 1 NOT NULL,
+    description text,
+    calendarorder integer,
+    calendarcolor text,
+    timezone text,
+    components text NOT NULL,
+    transparent bool
+);');
+
+                $pdo->exec('INSERT INTO calendars SELECT * FROM calendars' . $tmpTable);
+                $pdo->exec('INSERT INTO addressbooks SELECT * FROM addressbooks' . $tmpTable);
+
+                $this->aSuccess[] = 'Updated calendars and addressbooks tables';
+
+            }
+
+        }
 
 		$this->updateConfiguredVersion($sVersionTo);
 		return TRUE;
