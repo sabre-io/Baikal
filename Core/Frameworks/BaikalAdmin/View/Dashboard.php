@@ -24,8 +24,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\View;
 
 class Dashboard extends \BaikalAdmin\Core\View {
-	
+
 }

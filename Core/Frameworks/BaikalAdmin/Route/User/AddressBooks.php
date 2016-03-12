@@ -24,33 +24,34 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Route\User;
 
 class AddressBooks extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\AddressBooks(
-			self::getParams()
-		));
-	}
-	
-	public static function parametersMap() {
-		return array(
-			"user" => array(
-				"required" => TRUE,
-			),
-			"new" => array(
-				"required" => FALSE,
-			),
-			"edit" => array(
-				"required" => FALSE,
-			),
-			"delete" => array(
-				"required" => FALSE,
-			),
-			"confirm" => array(
-				"required" => FALSE,
-			),
-		);
-	}
+
+    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+        $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\AddressBooks(
+            self::getParams()
+        ));
+    }
+
+    static function parametersMap() {
+        return [
+            "user" => [
+                "required" => true,
+            ],
+            "new" => [
+                "required" => false,
+            ],
+            "edit" => [
+                "required" => false,
+            ],
+            "delete" => [
+                "required" => false,
+            ],
+            "confirm" => [
+                "required" => false,
+            ],
+        ];
+    }
 }

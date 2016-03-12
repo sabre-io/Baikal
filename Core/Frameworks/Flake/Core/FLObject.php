@@ -24,19 +24,20 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 class FLObject {
-	public function __toString() {
-		ob_start();
-		var_dump($this);
-		$sDump = ob_get_contents();
-		ob_end_clean();
-		
-		return "<pre>" . htmlspecialchars($sDump) . "</pre>";
-	}
-	
-	public function isA($sClassOrProtocolName) {
-		return \Flake\Util\Tools::is_a($this, $sClassOrProtocolName);
-	}
+    function __toString() {
+        ob_start();
+        var_dump($this);
+        $sDump = ob_get_contents();
+        ob_end_clean();
+
+        return "<pre>" . htmlspecialchars($sDump) . "</pre>";
+    }
+
+    function isA($sClassOrProtocolName) {
+        return \Flake\Util\Tools::is_a($this, $sClassOrProtocolName);
+    }
 }

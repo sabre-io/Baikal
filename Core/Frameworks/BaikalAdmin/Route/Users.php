@@ -24,29 +24,30 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Route;
 
 class Users extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$aParams = self::getParams();
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Users($aParams));
-	}
-	
-	public static function parametersMap() {
-		return array(
-			"new" => array(
-				"required" => FALSE,
-			),
-			"edit" => array(
-				"required" => FALSE,
-			),
-			"delete" => array(
-				"required" => FALSE,
-			),
-			"confirm" => array(
-				"required" => FALSE,
-			),
-		);
-	}
+
+    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+        $aParams = self::getParams();
+        $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Users($aParams));
+    }
+
+    static function parametersMap() {
+        return [
+            "new" => [
+                "required" => false,
+            ],
+            "edit" => [
+                "required" => false,
+            ],
+            "delete" => [
+                "required" => false,
+            ],
+            "confirm" => [
+                "required" => false,
+            ],
+        ];
+    }
 }

@@ -24,17 +24,18 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Baikal\Model\Calendar;
 
 class Event extends \Flake\Core\Model\Db {
-	const DATATABLE = "calendarobjects";
-	const PRIMARYKEY = "id";
-	const LABELFIELD = "uri";
-	
-	protected $aData = array(
-		"calendardata" => "",
-		"uri" => "",
-		"calendarid" => "",
-		"lastmodified" => "",
-	);
+    const DATATABLE = "calendarobjects";
+    const PRIMARYKEY = "id";
+    const LABELFIELD = "uri";
+
+    protected $aData = [
+        "calendardata" => "",
+        "uri"          => "",
+        "calendarid"   => "",
+        "lastmodified" => "",
+    ];
 }

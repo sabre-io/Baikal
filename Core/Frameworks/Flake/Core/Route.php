@@ -24,40 +24,41 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class Route extends \Flake\Core\FLObject {
-	
-	# should be abstract, but is not, due to PHP strict standard
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		
-	}
-	public static function parametersMap() {
-		return array();
-	}
-	
-	# converts raw url params "a/b/c/d"=[a, b, c, d] in route params [a=>b, c=>d]
-	
-	public static function getParams() {
-		$aRouteParams = array();
-		
-		$aParametersMap = static::parametersMap();	# static to use method as defined in derived class
-		$aURLParams = $GLOBALS["ROUTER"]::getURLParams();
-		
-		reset($aParametersMap);
-		foreach($aParametersMap as $sParam => $aMap) {
-			$sURLToken = $sParam;
-			
-			if(array_key_exists("urltoken", $aMap)) {
-				$sURLToken = $aMap["urltoken"];
-			}
-			
-			if(($iPos = array_search($sURLToken, $aURLParams)) !== FALSE) {
-				$aRouteParams[$sParam] = $aURLParams[($iPos + 1)];	# the value corresponding to this param is the next one in the URL
-			}
-		}
-		
-		reset($aRouteParams);
-		return $aRouteParams;
-	}
+
+    # should be abstract, but is not, due to PHP strict standard
+    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+
+    }
+    static function parametersMap() {
+        return [];
+    }
+
+    # converts raw url params "a/b/c/d"=[a, b, c, d] in route params [a=>b, c=>d]
+
+    static function getParams() {
+        $aRouteParams = [];
+
+        $aParametersMap = static::parametersMap();    # static to use method as defined in derived class
+        $aURLParams = $GLOBALS["ROUTER"]::getURLParams();
+
+        reset($aParametersMap);
+        foreach ($aParametersMap as $sParam => $aMap) {
+            $sURLToken = $sParam;
+
+            if (array_key_exists("urltoken", $aMap)) {
+                $sURLToken = $aMap["urltoken"];
+            }
+
+            if (($iPos = array_search($sURLToken, $aURLParams)) !== false) {
+                $aRouteParams[$sParam] = $aURLParams[($iPos + 1)];    # the value corresponding to this param is the next one in the URL
+            }
+        }
+
+        reset($aRouteParams);
+        return $aRouteParams;
+    }
 }

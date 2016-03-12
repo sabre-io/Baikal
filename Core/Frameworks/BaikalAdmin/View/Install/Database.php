@@ -24,6 +24,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\View\Install;
 
 class Database extends \BaikalAdmin\Core\View {

@@ -24,18 +24,19 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core\Render;
 
 class Zone extends \Flake\Core\FLObject {
-	function __construct(&$oZonableObject, $sZone) {
-		$this->oZonableObject =& $oZonableObject;
-		$this->sZone = $sZone;
-	}
-	
-	function addBlock(&$oBlock) {
-		$this->oZonableObject->addBlock(
-			$oBlock,
-			$this->sZone
-		);
-	}
+    function __construct(&$oZonableObject, $sZone) {
+        $this->oZonableObject = & $oZonableObject;
+        $this->sZone = $sZone;
+    }
+
+    function addBlock(&$oBlock) {
+        $this->oZonableObject->addBlock(
+            $oBlock,
+            $this->sZone
+        );
+    }
 }

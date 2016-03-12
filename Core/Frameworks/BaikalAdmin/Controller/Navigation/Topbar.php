@@ -24,56 +24,57 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller\Navigation;
 
 class Topbar extends \Flake\Core\Controller {
 
-	public function execute() {
-	}
+    function execute() {
+    }
 
-	public function render() {
-		
-		$oView = new \BaikalAdmin\View\Navigation\Topbar();
-		
-		$sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
-		$sActiveHome = $sActiveUsers = $sActiveSettingsStandard = $sActiveSettingsSystem = "";
-		
-		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
-		$sHomeLink = $sControllerForDefaultRoute::link();
-		$sUsersLink = \BaikalAdmin\Controller\Users::link();
-		$sSettingsStandardLink = \BaikalAdmin\Controller\Settings\Standard::link();
-		$sSettingsSystemLink = \BaikalAdmin\Controller\Settings\System::link();
-		$sLogoutLink = \BaikalAdmin\Controller\Logout::link();
-		
-		if($sCurrentRoute === "default") {
-			$sActiveHome = "active";
-		}
-		if(
-			$sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Users") ||
-			$sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\Calendars") ||
-			$sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\AddressBooks")
-		) {
-			$sActiveUsers = "active";
-		}
-		
-		if($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\Standard")) {
-			$sActiveSettingsStandard = "active";
-		}
-		
-		if($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\System")) {
-			$sActiveSettingsSystem = "active";
-		}
-		
-		$oView->setData("activehome", $sActiveHome);
-		$oView->setData("activeusers", $sActiveUsers);
-		$oView->setData("activesettingsstandard", $sActiveSettingsStandard);
-		$oView->setData("activesettingssystem", $sActiveSettingsSystem);
-		$oView->setData("homelink", $sHomeLink);
-		$oView->setData("userslink", $sUsersLink);
-		$oView->setData("settingsstandardlink", $sSettingsStandardLink);
-		$oView->setData("settingssystemlink", $sSettingsSystemLink);
-		$oView->setData("logoutlink", $sLogoutLink);
-		
-		return $oView->render();
-	}
+    function render() {
+
+        $oView = new \BaikalAdmin\View\Navigation\Topbar();
+
+        $sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
+        $sActiveHome = $sActiveUsers = $sActiveSettingsStandard = $sActiveSettingsSystem = "";
+
+        $sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
+        $sHomeLink = $sControllerForDefaultRoute::link();
+        $sUsersLink = \BaikalAdmin\Controller\Users::link();
+        $sSettingsStandardLink = \BaikalAdmin\Controller\Settings\Standard::link();
+        $sSettingsSystemLink = \BaikalAdmin\Controller\Settings\System::link();
+        $sLogoutLink = \BaikalAdmin\Controller\Logout::link();
+
+        if ($sCurrentRoute === "default") {
+            $sActiveHome = "active";
+        }
+        if (
+            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Users") ||
+            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\Calendars") ||
+            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\AddressBooks")
+        ) {
+            $sActiveUsers = "active";
+        }
+
+        if ($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\Standard")) {
+            $sActiveSettingsStandard = "active";
+        }
+
+        if ($sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Settings\System")) {
+            $sActiveSettingsSystem = "active";
+        }
+
+        $oView->setData("activehome", $sActiveHome);
+        $oView->setData("activeusers", $sActiveUsers);
+        $oView->setData("activesettingsstandard", $sActiveSettingsStandard);
+        $oView->setData("activesettingssystem", $sActiveSettingsSystem);
+        $oView->setData("homelink", $sHomeLink);
+        $oView->setData("userslink", $sUsersLink);
+        $oView->setData("settingsstandardlink", $sSettingsStandardLink);
+        $oView->setData("settingssystemlink", $sSettingsSystemLink);
+        $oView->setData("logoutlink", $sLogoutLink);
+
+        return $oView->render();
+    }
 }

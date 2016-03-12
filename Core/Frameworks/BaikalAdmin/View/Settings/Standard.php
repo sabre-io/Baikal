@@ -24,8 +24,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\View\Settings;
 
 class Standard extends \BaikalAdmin\Core\View {
-	
+
 }

@@ -11,9 +11,11 @@ dist: vendor/autoload.php
 	rm -r $(BUILD_DIR); true
 	mkdir -p $(BUILD_DIR) $(BUILD_DIR)/Specific $(BUILD_DIR)/Specific/db
 	touch $(BUILD_DIR)/Specific/db/.empty
-	cp -R $(BUILD_FILES) $(BUILD_DIR)
-	touch $(BUILD_DIR)/Specific/ENABLE_INSTALL
-	composer install -d $(BUILD_DIR)
+	rsync -av \
+		$(BUILD_FILES) \
+		--exclude="*.swp" \
+		$(BUILD_DIR)
+	composer install --no-dev -d $(BUILD_DIR)
 	rm $(BUILD_DIR)/composer.*
 	cd build; zip -r baikal-$(VERSION).zip baikal/
 
@@ -26,3 +28,7 @@ vendor/autoload.php: composer.lock
 
 composer.lock: composer.json
 	composer update
+
+clean:
+	# Wipe out all local data, and go back to a clean install
+	rm Specific/config.php Specific/config.system.php Specific/db/db.sqlite; true
