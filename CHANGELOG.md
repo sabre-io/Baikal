@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.4.0 (????-??-??)
+------------------
+
+* #472: If you were using Sqlite, Cal- CardDAV clients might have missed
+  updates from the server.
+
+
 0.3.5 (2016-02-24)
 ------------------
 
