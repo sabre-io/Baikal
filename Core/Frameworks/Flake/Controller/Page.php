@@ -24,103 +24,104 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Controller;
 
 class Page extends \Flake\Core\Render\Container {
-	
-	protected $sTitle = "";
-	protected $sMetaKeywords = "";
-	protected $sMetaDescription = "";
-	protected $sTemplatePath = "";
-	
-	public function __construct($sTemplatePath) {
-		$this->sTemplatePath = $sTemplatePath;
-	}
-	
-	public function setTitle($sTitle) {
-		$this->sTitle = $sTitle;
-	}
-	
-	public function setMetaKeywords($sKeywords) {
-		$this->sMetaKeywords = $sKeywords;
-	}
-	
-	public function setMetaDescription($sDescription) {
-		$this->sMetaDescription = $sDescription;
-	}
-	
-	public function getTitle() {
-		return $this->sTitle;
-	}
-	
-	public function getMetaKeywords() {
-		$sString = str_replace(array("le", "la", "les", "de", "des", "un", "une"), " ", $this->sMetaKeywords);
-		$sString = \Flake\Util\Tools::stringToUrlToken($sString);
-		return implode(", ", explode("-", $sString));
-	}
-	
-	public function getMetaDescription() {
-		return $this->sMetaDescription;
-	}
-	
-	public function setBaseUrl($sBaseUrl) {
-		$this->sBaseUrl = $sBaseUrl;
-	}
-	
-	public function getBaseUrl() {
-		return $this->sBaseUrl;
-	}
-	
-	public function injectHTTPHeaders() {
-		header("Content-Type: text/html; charset=UTF-8");
 
-		header("X-Frame-Options: DENY");	# Prevent Clickjacking attacks
-		header("X-Content-Type-Options: nosniff");	# Prevent code injection via mime type sniffing
-	}
-	
-	public function render() {
-		$this->execute();
-		
-		$aRenderedBlocks = $this->renderBlocks();
-		$aRenderedBlocks["pagetitle"] = $this->getTitle();
-		$aRenderedBlocks["pagemetakeywords"] = $this->getMetaKeywords();
-		$aRenderedBlocks["pagemetadescription"] = $this->getMetaDescription();
-		$aRenderedBlocks["baseurl"] = $this->getBaseUrl();
-		
-		$oTemplate = new \Flake\Core\Template($this->sTemplatePath);
-		$sHtml = $oTemplate->parse(
-			$aRenderedBlocks
-		);
+    protected $sTitle = "";
+    protected $sMetaKeywords = "";
+    protected $sMetaDescription = "";
+    protected $sTemplatePath = "";
 
-		return $sHtml;
-	}
-	
-	public function addCss($sCssAbsPath) {
-		
-		if(\Flake\Util\Frameworks::enabled("LessPHP")) {
-			$sCompiledPath = PATH_buildcss;
-			$sFileName = basename($sCssAbsPath);
+    function __construct($sTemplatePath) {
+        $this->sTemplatePath = $sTemplatePath;
+    }
 
-			$sCompiledFilePath = $sCompiledPath . \Flake\Util\Tools::shortMD5($sFileName) . "_" . $sFileName;
+    function setTitle($sTitle) {
+        $this->sTitle = $sTitle;
+    }
 
-			if(substr(strtolower($sCompiledFilePath), -4) !== ".css") {
-				$sCompiledFilePath .= ".css";
-			}
+    function setMetaKeywords($sKeywords) {
+        $this->sMetaKeywords = $sKeywords;
+    }
 
-			if(!file_exists($sCompiledPath)) {
-				@mkdir($sCompiledPath);
-				if(!file_exists($sCompiledPath)) {
-					die("Page: Cannot create " . $sCompiledPath);
-				}
-			}
+    function setMetaDescription($sDescription) {
+        $this->sMetaDescription = $sDescription;
+    }
 
-			\Frameworks\LessPHP\Delegate::compileCss($sCssAbsPath, $sCompiledFilePath);
-			$sCssUrl = \Flake\Util\Tools::serverToRelativeWebPath($sCompiledFilePath);
-		} else {
-			$sCssUrl = \Flake\Util\Tools::serverToRelativeWebPath($sCssAbsPath);
-		}
-		
-		$sHtml = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $sCssUrl . "\" media=\"all\"/>";
-		$this->zone("head")->addBlock(new \Flake\Controller\HtmlBlock($sHtml));
-	}
+    function getTitle() {
+        return $this->sTitle;
+    }
+
+    function getMetaKeywords() {
+        $sString = str_replace(["le", "la", "les", "de", "des", "un", "une"], " ", $this->sMetaKeywords);
+        $sString = \Flake\Util\Tools::stringToUrlToken($sString);
+        return implode(", ", explode("-", $sString));
+    }
+
+    function getMetaDescription() {
+        return $this->sMetaDescription;
+    }
+
+    function setBaseUrl($sBaseUrl) {
+        $this->sBaseUrl = $sBaseUrl;
+    }
+
+    function getBaseUrl() {
+        return $this->sBaseUrl;
+    }
+
+    function injectHTTPHeaders() {
+        header("Content-Type: text/html; charset=UTF-8");
+
+        header("X-Frame-Options: DENY");    # Prevent Clickjacking attacks
+        header("X-Content-Type-Options: nosniff");    # Prevent code injection via mime type sniffing
+    }
+
+    function render() {
+        $this->execute();
+
+        $aRenderedBlocks = $this->renderBlocks();
+        $aRenderedBlocks["pagetitle"] = $this->getTitle();
+        $aRenderedBlocks["pagemetakeywords"] = $this->getMetaKeywords();
+        $aRenderedBlocks["pagemetadescription"] = $this->getMetaDescription();
+        $aRenderedBlocks["baseurl"] = $this->getBaseUrl();
+
+        $oTemplate = new \Flake\Core\Template($this->sTemplatePath);
+        $sHtml = $oTemplate->parse(
+            $aRenderedBlocks
+        );
+
+        return $sHtml;
+    }
+
+    function addCss($sCssAbsPath) {
+
+        if (\Flake\Util\Frameworks::enabled("LessPHP")) {
+            $sCompiledPath = PATH_buildcss;
+            $sFileName = basename($sCssAbsPath);
+
+            $sCompiledFilePath = $sCompiledPath . \Flake\Util\Tools::shortMD5($sFileName) . "_" . $sFileName;
+
+            if (substr(strtolower($sCompiledFilePath), -4) !== ".css") {
+                $sCompiledFilePath .= ".css";
+            }
+
+            if (!file_exists($sCompiledPath)) {
+                @mkdir($sCompiledPath);
+                if (!file_exists($sCompiledPath)) {
+                    die("Page: Cannot create " . $sCompiledPath);
+                }
+            }
+
+            \Frameworks\LessPHP\Delegate::compileCss($sCssAbsPath, $sCompiledFilePath);
+            $sCssUrl = \Flake\Util\Tools::serverToRelativeWebPath($sCompiledFilePath);
+        } else {
+            $sCssUrl = \Flake\Util\Tools::serverToRelativeWebPath($sCssAbsPath);
+        }
+
+        $sHtml = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $sCssUrl . "\" media=\"all\"/>";
+        $this->zone("head")->addBlock(new \Flake\Controller\HtmlBlock($sHtml));
+    }
 }

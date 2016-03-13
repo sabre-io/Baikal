@@ -24,23 +24,24 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Model\User;
 
 class Admin extends \Flake\Core\Model\NoDb {
-	
-	public function isAdmin() {
-		return TRUE;
-	}
-	
-	public function getDisplayName() {
-		return "Admin";
-	}
-	
-	public function persist() {
-		
-	}
-	
-	public function destroy() {
-		
-	}
+
+    function isAdmin() {
+        return true;
+    }
+
+    function getDisplayName() {
+        return "Admin";
+    }
+
+    function persist() {
+
+    }
+
+    function destroy() {
+
+    }
 }

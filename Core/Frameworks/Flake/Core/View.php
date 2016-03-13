@@ -24,36 +24,37 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class View extends \Flake\Core\FLObject {
-	protected $aData;
-	
-	public function __construct() {
-		$this->aData = array();
-	}
-	
-	public function setData($sName, $mData) {
-		$this->aData[$sName] = $mData;
-	}
-	
-	public function getData() {
-		return $this->aData;
-	}
-	
-	public function get($sWhat) {
-		if(array_key_exists($sWhat, $this->aData)) {
-			return $this->aData[$sWhat];
-		}
-		
-		return FALSE;
-	}
-	
-	public function render() {
-		$sTemplatePath = $this->templatesPath();
-		$oTemplate = new \Flake\Core\Template($this->templatesPath());
-		return $oTemplate->parse($this->getData());
-	}
-	
-	public abstract function templatesPath();
+    protected $aData;
+
+    function __construct() {
+        $this->aData = [];
+    }
+
+    function setData($sName, $mData) {
+        $this->aData[$sName] = $mData;
+    }
+
+    function getData() {
+        return $this->aData;
+    }
+
+    function get($sWhat) {
+        if (array_key_exists($sWhat, $this->aData)) {
+            return $this->aData[$sWhat];
+        }
+
+        return false;
+    }
+
+    function render() {
+        $sTemplatePath = $this->templatesPath();
+        $oTemplate = new \Flake\Core\Template($this->templatesPath());
+        return $oTemplate->parse($this->getData());
+    }
+
+    abstract function templatesPath();
 }

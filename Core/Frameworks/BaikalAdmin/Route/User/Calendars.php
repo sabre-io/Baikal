@@ -24,32 +24,33 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Route\User;
 
 class Calendars extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$aParams = self::getParams();
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\Calendars($aParams));
-	}
-	
-	public static function parametersMap() {
-		return array(
-			"user" => array(
-				"required" => TRUE,
-			),
-			"new" => array(
-				"required" => FALSE,
-			),
-			"edit" => array(
-				"required" => FALSE,
-			),
-			"delete" => array(
-				"required" => FALSE,
-			),
-			"confirm" => array(
-				"required" => FALSE,
-			),
-		);
-	}
+
+    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+        $aParams = self::getParams();
+        $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\Calendars($aParams));
+    }
+
+    static function parametersMap() {
+        return [
+            "user" => [
+                "required" => true,
+            ],
+            "new" => [
+                "required" => false,
+            ],
+            "edit" => [
+                "required" => false,
+            ],
+            "delete" => [
+                "required" => false,
+            ],
+            "confirm" => [
+                "required" => false,
+            ],
+        ];
+    }
 }

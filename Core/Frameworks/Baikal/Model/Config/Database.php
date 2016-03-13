@@ -24,94 +24,95 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Baikal\Model\Config;
 
 class Database extends \Baikal\Model\Config {
-	
-	protected $aConstants = array(
-		"PROJECT_SQLITE_FILE" => array(
-			"type" => "litteral",
-			"comment" => "Define path to Baïkal Database SQLite file",
-		),
-		"PROJECT_DB_MYSQL" => array(
-			"type" => "boolean",
-			"comment" => "MySQL > Use MySQL instead of SQLite ?",
-		),
-		"PROJECT_DB_MYSQL_HOST" => array(
-			"type" => "string",
-			"comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)",
-		),
-		"PROJECT_DB_MYSQL_DBNAME" => array(
-			"type" => "string",
-			"comment" => "MySQL > Database name",
-		),
-		"PROJECT_DB_MYSQL_USERNAME" => array(
-			"type" => "string",
-			"comment" => "MySQL > Username",
-		),
-		"PROJECT_DB_MYSQL_PASSWORD" => array(
-			"type" => "string",
-			"comment" => "MySQL > Password",
-		),
-	);
-	
-	# Default values
-	protected $aData = array(
-		"PROJECT_SQLITE_FILE" => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
-		"PROJECT_DB_MYSQL" => FALSE,
-		"PROJECT_DB_MYSQL_HOST" => "",
-		"PROJECT_DB_MYSQL_DBNAME" => "",
-		"PROJECT_DB_MYSQL_USERNAME" => "",
-		"PROJECT_DB_MYSQL_PASSWORD" => "",
-	);
-	
-	public function formMorphologyForThisModelInstance() {
-		$oMorpho = new \Formal\Form\Morphology();
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "PROJECT_SQLITE_FILE",
-			"label" => "SQLite file path",
-			"validation" => "required",
-			"inputclass" => "input-xxlarge",
-			"help" => "The absolute server path to the SQLite file",
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Checkbox(array(
-			"prop" => "PROJECT_DB_MYSQL",
-			"label" => "Use MySQL",
-			"help" => "If checked, Baïkal will use MySQL instead of SQLite.",
-			"refreshonchange" => TRUE,
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "PROJECT_DB_MYSQL_HOST",
-			"label" => "MySQL host",
-			"help" => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (3306)"
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "PROJECT_DB_MYSQL_DBNAME",
-			"label" => "MySQL database name",
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Text(array(
-			"prop" => "PROJECT_DB_MYSQL_USERNAME",
-			"label" => "MySQL username",
-		)));
-		
-		$oMorpho->add(new \Formal\Element\Password(array(
-			"prop" => "PROJECT_DB_MYSQL_PASSWORD",
-			"label" => "MySQL password",
-		)));
 
-		return $oMorpho;
-	}
-		
-	public function label() {
-		return "Baïkal Database Settings";
-	}
+    protected $aConstants = [
+        "PROJECT_SQLITE_FILE" => [
+            "type"    => "litteral",
+            "comment" => "Define path to Baïkal Database SQLite file",
+        ],
+        "PROJECT_DB_MYSQL" => [
+            "type"    => "boolean",
+            "comment" => "MySQL > Use MySQL instead of SQLite ?",
+        ],
+        "PROJECT_DB_MYSQL_HOST" => [
+            "type"    => "string",
+            "comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)",
+        ],
+        "PROJECT_DB_MYSQL_DBNAME" => [
+            "type"    => "string",
+            "comment" => "MySQL > Database name",
+        ],
+        "PROJECT_DB_MYSQL_USERNAME" => [
+            "type"    => "string",
+            "comment" => "MySQL > Username",
+        ],
+        "PROJECT_DB_MYSQL_PASSWORD" => [
+            "type"    => "string",
+            "comment" => "MySQL > Password",
+        ],
+    ];
 
-	protected static function getDefaultConfig() {
-		throw new \Exception("Should never reach getDefaultConfig() on \Baikal\Model\Config\Database");
-	}
+    # Default values
+    protected $aData = [
+        "PROJECT_SQLITE_FILE"       => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
+        "PROJECT_DB_MYSQL"          => false,
+        "PROJECT_DB_MYSQL_HOST"     => "",
+        "PROJECT_DB_MYSQL_DBNAME"   => "",
+        "PROJECT_DB_MYSQL_USERNAME" => "",
+        "PROJECT_DB_MYSQL_PASSWORD" => "",
+    ];
+
+    function formMorphologyForThisModelInstance() {
+        $oMorpho = new \Formal\Form\Morphology();
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"       => "PROJECT_SQLITE_FILE",
+            "label"      => "SQLite file path",
+            "validation" => "required",
+            "inputclass" => "input-xxlarge",
+            "help"       => "The absolute server path to the SQLite file",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"            => "PROJECT_DB_MYSQL",
+            "label"           => "Use MySQL",
+            "help"            => "If checked, Baïkal will use MySQL instead of SQLite.",
+            "refreshonchange" => true,
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "PROJECT_DB_MYSQL_HOST",
+            "label" => "MySQL host",
+            "help"  => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (3306)"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "PROJECT_DB_MYSQL_DBNAME",
+            "label" => "MySQL database name",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "PROJECT_DB_MYSQL_USERNAME",
+            "label" => "MySQL username",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop"  => "PROJECT_DB_MYSQL_PASSWORD",
+            "label" => "MySQL password",
+        ]));
+
+        return $oMorpho;
+    }
+
+    function label() {
+        return "Baïkal Database Settings";
+    }
+
+    protected static function getDefaultConfig() {
+        throw new \Exception("Should never reach getDefaultConfig() on \Baikal\Model\Config\Database");
+    }
 }

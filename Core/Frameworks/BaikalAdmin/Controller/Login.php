@@ -24,54 +24,55 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller;
 
 class Login extends \Flake\Core\Controller {
-	
-	public function execute() {
-	}
-	
-	public function render() {
-		$sActionUrl = \Flake\Util\Tools::getCurrentUrl();
-		$sSubmittedFlagName = "auth";
-		$sMessage = "";
-		
-		if(self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
-			$sMessage = \Formal\Core\Message::error(
-				"The login/password you provided is invalid. Please retry.",
-				"Authentication error"
-			);
-		} elseif(self::justLoggedOut()) {
-			$sMessage = \Formal\Core\Message::notice(
-				"You have been disconnected from your session.",
-				"Session ended",
-				FALSE
-			);
-		}
-		
-		$sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
-		$sPassword = htmlspecialchars(\Flake\Util\Tools::POST("password"));
-		
-		if(trim($sLogin) === "") {
-			$sLogin = "admin";
-		}
-		
-		$oView = new \BaikalAdmin\View\Login();
-		$oView->setData("message", $sMessage);
-		$oView->setData("actionurl", $sActionUrl);
-		$oView->setData("submittedflagname", $sSubmittedFlagName);
-		$oView->setData("login", $sLogin);
-		$oView->setData("password", $sPassword);
-		
-		return $oView->render();
-	}
-	
-	protected static function isSubmitted() {
-		return (intval(\Flake\Util\Tools::POST("auth")) === 1);
-	}
-	
-	protected static function justLoggedOut() {
-		$aParams = $GLOBALS["ROUTER"]::getURLParams();
-		return (!empty($aParams) && $aParams[0] === "loggedout");
-	}
+
+    function execute() {
+    }
+
+    function render() {
+        $sActionUrl = \Flake\Util\Tools::getCurrentUrl();
+        $sSubmittedFlagName = "auth";
+        $sMessage = "";
+
+        if (self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
+            $sMessage = \Formal\Core\Message::error(
+                "The login/password you provided is invalid. Please retry.",
+                "Authentication error"
+            );
+        } elseif (self::justLoggedOut()) {
+            $sMessage = \Formal\Core\Message::notice(
+                "You have been disconnected from your session.",
+                "Session ended",
+                false
+            );
+        }
+
+        $sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
+        $sPassword = htmlspecialchars(\Flake\Util\Tools::POST("password"));
+
+        if (trim($sLogin) === "") {
+            $sLogin = "admin";
+        }
+
+        $oView = new \BaikalAdmin\View\Login();
+        $oView->setData("message", $sMessage);
+        $oView->setData("actionurl", $sActionUrl);
+        $oView->setData("submittedflagname", $sSubmittedFlagName);
+        $oView->setData("login", $sLogin);
+        $oView->setData("password", $sPassword);
+
+        return $oView->render();
+    }
+
+    protected static function isSubmitted() {
+        return (intval(\Flake\Util\Tools::POST("auth")) === 1);
+    }
+
+    protected static function justLoggedOut() {
+        $aParams = $GLOBALS["ROUTER"]::getURLParams();
+        return (!empty($aParams) && $aParams[0] === "loggedout");
+    }
 }

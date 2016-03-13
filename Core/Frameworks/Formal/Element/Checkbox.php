@@ -24,53 +24,54 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Formal\Element;
 
 class Checkbox extends \Formal\Element {
-	
-	public function setValue($sValue) {
-		# Boolean
-		$this->sValue = ((intval($sValue) === 1));
-	}
-	
-	public function render() {
-		$disabled = "";
-		$inputclass = "";
-		$groupclass = "";
-		$onchange = "";
-		$helpblock = "";
-		$popover = "";
-		
-		$value = $this->value();
-		
-		$checked = ($value === TRUE ? " checked=\"checked\" " : "");
-		$label = $this->option("label");
-		$prop = $this->option("prop");
 
-		if($this->option("readonly") === TRUE) {
-			$inputclass .= " disabled";
-			$disabled = " disabled";
-		}
+    function setValue($sValue) {
+        # Boolean
+        $this->sValue = ((intval($sValue) === 1));
+    }
 
-		if($this->option("error") === TRUE) {
-			$groupclass .= " error";
-		}
-		
-		if(($sHelp = trim($this->option("help"))) !== "") {
-			$helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
-		}
-		
-		if(($aPopover = $this->option("popover")) !== "") {
-			$inputclass .= " popover-hover ";
-			$popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-			$popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
-		}
-		
-		if($this->option("refreshonchange") === TRUE) {
-			$onchange = " onchange=\"document.getElementsByTagName('form')[0].elements['refreshed'].value=1;document.getElementsByTagName('form')[0].submit();\" ";
-		}
-		
-		$sHtml =<<<HTML
+    function render() {
+        $disabled = "";
+        $inputclass = "";
+        $groupclass = "";
+        $onchange = "";
+        $helpblock = "";
+        $popover = "";
+
+        $value = $this->value();
+
+        $checked = ($value === true ? " checked=\"checked\" " : "");
+        $label = $this->option("label");
+        $prop = $this->option("prop");
+
+        if ($this->option("readonly") === true) {
+            $inputclass .= " disabled";
+            $disabled = " disabled";
+        }
+
+        if ($this->option("error") === true) {
+            $groupclass .= " error";
+        }
+
+        if (($sHelp = trim($this->option("help"))) !== "") {
+            $helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+        }
+
+        if (($aPopover = $this->option("popover")) !== "") {
+            $inputclass .= " popover-hover ";
+            $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
+            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+        }
+
+        if ($this->option("refreshonchange") === true) {
+            $onchange = " onchange=\"document.getElementsByTagName('form')[0].elements['refreshed'].value=1;document.getElementsByTagName('form')[0].submit();\" ";
+        }
+
+        $sHtml = <<<HTML
 <div class="control-group{$groupclass}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
@@ -79,6 +80,6 @@ class Checkbox extends \Formal\Element {
 	</div>
 </div>
 HTML;
-		return $sHtml . $this->renderWitness();
-	}
+        return $sHtml . $this->renderWitness();
+    }
 }

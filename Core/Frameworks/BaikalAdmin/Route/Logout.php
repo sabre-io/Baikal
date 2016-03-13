@@ -24,11 +24,12 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Route;
 
 class Logout extends \Flake\Core\Route {
-	
-	public static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-		$oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Logout());
-	}
+
+    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
+        $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Logout());
+    }
 }

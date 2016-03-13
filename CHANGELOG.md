@@ -1,6 +1,16 @@
 ChangeLog
 =========
 
+0.4.0 (????-??-??)
+------------------
+
+* #472: If you were using Sqlite, Cal- CardDAV clients might have missed
+  updates from the server.
+* #482 / #490: Fix installation issue if Sqlite is not enabled. (@fabianwolf)
+* #491: Added CalDAV Scheduling plugin.
+* Added Property Storage plugin.
+
+
 0.3.5 (2016-02-24)
 ------------------
 

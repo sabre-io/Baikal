@@ -24,32 +24,33 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller\Settings;
 
 class Standard extends \Flake\Core\Controller {
-		
-	public function execute() {
-		$this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
-		
-		# Assert that config file is writable
-		if(!$this->oModel->writable()) {
-			throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
-		}
-		
-		$this->oForm = $this->oModel->formForThisModelInstance(array(
-			"close" => FALSE
-		));
-		
-		if($this->oForm->submitted()) {
-			$this->oForm->execute();
-		}
-	}
 
-	public function render() {
-		
-		$oView = new \BaikalAdmin\View\Settings\Standard();
-		$oView->setData("form", $this->oForm->render());
-		
-		return $oView->render();
-	}
+    function execute() {
+        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+
+        # Assert that config file is writable
+        if (!$this->oModel->writable()) {
+            throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
+        }
+
+        $this->oForm = $this->oModel->formForThisModelInstance([
+            "close" => false
+        ]);
+
+        if ($this->oForm->submitted()) {
+            $this->oForm->execute();
+        }
+    }
+
+    function render() {
+
+        $oView = new \BaikalAdmin\View\Settings\Standard();
+        $oView->setData("form", $this->oForm->render());
+
+        return $oView->render();
+    }
 }

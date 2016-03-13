@@ -24,17 +24,18 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Baikal\Model\AddressBook;
 
 class Contact extends \Flake\Core\Model\Db {
-	const DATATABLE = "cards";
-	const PRIMARYKEY = "id";
-	const LABELFIELD = "uri";
-	
-	protected $aData = array(
-		"carddata" => "",
-		"uri" => "",
-		"addressbookid" => "",
-		"lastmodified" => "",
-	);
+    const DATATABLE = "cards";
+    const PRIMARYKEY = "id";
+    const LABELFIELD = "uri";
+
+    protected $aData = [
+        "carddata"      => "",
+        "uri"           => "",
+        "addressbookid" => "",
+        "lastmodified"  => "",
+    ];
 }

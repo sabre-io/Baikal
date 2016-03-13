@@ -28,20 +28,20 @@ ini_set("session.cookie_httponly", 1);
 ini_set("log_errors", 1);
 error_reporting(E_ALL);
 
-define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_INSTALL", TRUE);
+define("BAIKAL_CONTEXT", true);
+define("BAIKAL_CONTEXT_INSTALL", true);
 define("PROJECT_CONTEXT_BASEURI", "/admin/install/");
 
-if(file_exists(dirname(dirname(getcwd())) . "/Core")) {
-	# Flat FTP mode
-	define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");	#../../
+if (file_exists(dirname(dirname(getcwd())) . "/Core")) {
+    # Flat FTP mode
+    define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");    #../../
 } else {
-	# Dedicated server mode
-	define("PROJECT_PATH_ROOT", dirname(dirname(dirname(getcwd()))) . "/");	# ../../../
+    # Dedicated server mode
+    define("PROJECT_PATH_ROOT", dirname(dirname(dirname(getcwd()))) . "/");    # ../../../
 }
 
-if(!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
-	die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
+if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
 
 require PROJECT_PATH_ROOT . "vendor/autoload.php";
@@ -52,9 +52,6 @@ require PROJECT_PATH_ROOT . "vendor/autoload.php";
 # Bootstrap BaikalAdmin
 \BaikalAdmin\Framework::bootstrap();
 
-# Evaluate assertions
-\BaikalAdmin\Core\Auth::assertUnlocked();
-
 # Create and setup a page object
 $oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
 $oPage->injectHTTPHeaders();
@@ -63,20 +60,20 @@ $oPage->setBaseUrl(PROJECT_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
-if(!defined("BAIKAL_CONFIGURED_VERSION")) {
-	# we have to upgrade Baïkal (existing installation)
-	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
-	
-} elseif(!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
-	# we have to set an admin password
-	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
+if (!defined("BAIKAL_CONFIGURED_VERSION")) {
+    # we have to upgrade Baïkal (existing installation)
+    $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
+
+} elseif (!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
+    # we have to set an admin password
+    $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
-	if(BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
-		# we have to upgrade Baïkal
-		$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
-	} else {
-		$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
-	}
+    if (BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
+        # we have to upgrade Baïkal
+        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+    } else {
+        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
+    }
 }
 
 # Render the page

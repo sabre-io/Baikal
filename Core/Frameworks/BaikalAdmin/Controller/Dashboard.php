@@ -24,39 +24,40 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller;
 
 class Dashboard extends \Flake\Core\Controller {
-	
-	public function execute() {
-	}
-	
-	public function render() {
-		$oView = new \BaikalAdmin\View\Dashboard();
-		$oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
-		
-		# Services status
-		$oView->setData("BAIKAL_CAL_ENABLED", BAIKAL_CAL_ENABLED);
-		$oView->setData("BAIKAL_CARD_ENABLED", BAIKAL_CARD_ENABLED);
-		
-		# Statistics: Users
-		$iNbUsers = \Baikal\Model\User::getBaseRequester()->count();
-		$oView->setData("nbusers", $iNbUsers);
-		
-		# Statistics: CalDAV
-		$iNbCalendars = \Baikal\Model\Calendar::getBaseRequester()->count();
-		$oView->setData("nbcalendars", $iNbCalendars);
-		
-		$iNbEvents = \Baikal\Model\Calendar\Event::getBaseRequester()->count();
-		$oView->setData("nbevents", $iNbEvents);
-		
-		# Statistics: CardDAV
-		$iNbBooks = \Baikal\Model\AddressBook::getBaseRequester()->count();
-		$oView->setData("nbbooks", $iNbBooks);
-		
-		$iNbContacts = \Baikal\Model\AddressBook\Contact::getBaseRequester()->count();
-		$oView->setData("nbcontacts", $iNbContacts);
-		
-		return $oView->render();
-	}
+
+    function execute() {
+    }
+
+    function render() {
+        $oView = new \BaikalAdmin\View\Dashboard();
+        $oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
+
+        # Services status
+        $oView->setData("BAIKAL_CAL_ENABLED", BAIKAL_CAL_ENABLED);
+        $oView->setData("BAIKAL_CARD_ENABLED", BAIKAL_CARD_ENABLED);
+
+        # Statistics: Users
+        $iNbUsers = \Baikal\Model\User::getBaseRequester()->count();
+        $oView->setData("nbusers", $iNbUsers);
+
+        # Statistics: CalDAV
+        $iNbCalendars = \Baikal\Model\Calendar::getBaseRequester()->count();
+        $oView->setData("nbcalendars", $iNbCalendars);
+
+        $iNbEvents = \Baikal\Model\Calendar\Event::getBaseRequester()->count();
+        $oView->setData("nbevents", $iNbEvents);
+
+        # Statistics: CardDAV
+        $iNbBooks = \Baikal\Model\AddressBook::getBaseRequester()->count();
+        $oView->setData("nbbooks", $iNbBooks);
+
+        $iNbContacts = \Baikal\Model\AddressBook\Contact::getBaseRequester()->count();
+        $oView->setData("nbcontacts", $iNbContacts);
+
+        return $oView->render();
+    }
 }

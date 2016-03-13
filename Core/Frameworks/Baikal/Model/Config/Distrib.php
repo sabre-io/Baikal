@@ -24,33 +24,34 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Baikal\Model\Config;
 
 class Distrib extends \Baikal\Model\Config {
-	
-	protected $aConstants = array(
-		"BAIKAL_VERSION" => array(
-			"type" => "string",
-			"comment" => "The version of the packaged system"
-		),
-		"BAIKAL_HOMEPAGE" => array(
-			"type" => "string",
-			"comment" => "The URL to the project homepage",
-		),
-	);
-	
-	# Default values
-	protected $aData = array(
-		"BAIKAL_VERSION" => "",
-		"BAIKAL_HOMEPAGE" => "",
-	);
-	
-	public function formMorphologyForThisModelInstance() {
-		$oMorpho = new \Formal\Form\Morphology();
-		return $oMorpho;
-	}
-		
-	public function label() {
-		return "Baïkal distribution info";
-	}
+
+    protected $aConstants = [
+        "BAIKAL_VERSION" => [
+            "type"    => "string",
+            "comment" => "The version of the packaged system"
+        ],
+        "BAIKAL_HOMEPAGE" => [
+            "type"    => "string",
+            "comment" => "The URL to the project homepage",
+        ],
+    ];
+
+    # Default values
+    protected $aData = [
+        "BAIKAL_VERSION"  => "",
+        "BAIKAL_HOMEPAGE" => "",
+    ];
+
+    function formMorphologyForThisModelInstance() {
+        $oMorpho = new \Formal\Form\Morphology();
+        return $oMorpho;
+    }
+
+    function label() {
+        return "Baïkal distribution info";
+    }
 }
