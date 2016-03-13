@@ -25,7 +25,6 @@
 ***************************************************************/
 
 ini_set("session.cookie_httponly", 1);
-ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 error_reporting(E_ALL);
 
@@ -60,14 +59,28 @@ $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal " . BAIKAL_VERSION . " Web Admin");
 $oPage->setBaseUrl(PROJECT_URI);
 
-# Authentication
-if (
-    \BaikalAdmin\Core\Auth::isAuthenticated() === false &&
-    \BaikalAdmin\Core\Auth::authenticate() === false
-) {
-    $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
-    $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
+if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
+    if (\BaikalAdmin\Core\Auth::authenticate()) {
+        // Redirect to itself
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+
+    } else {
+        // Draw login page
+        $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
+        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
+    }
 } else {
+
+    // CSRF token check
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!isset($_POST['CSRF_TOKEN'])) {
+            throw new \Exception('CSRF token was not submitted. Try removing your cookies and log in again');
+        }
+        if ($_POST['CSRF_TOKEN'] !== $_SESSION['CSRF_TOKEN']) {
+            throw new \Exception('CSRF token did not match the session CSRF token. Please try to do this action again.');
+        }
+    }
+
     $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
 
     # Route the request

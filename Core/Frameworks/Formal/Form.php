@@ -394,21 +394,27 @@ class Form {
             $sCloseButton = "";
         }
 
+        if (!isset($_SESSION['CSRF_TOKEN'])) {
+            throw new \LogicException('A CSRF token must be set in the session. Try clearing your cookies and logging in again');
+        }
+        $csrfToken = htmlspecialchars($_SESSION['CSRF_TOKEN']);
+
         $sActionUrl = $this->option("action");
 
         $sHtml = <<<HTML
 <form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
-	<input type="hidden" name="{$sSubmittedFlagName}" value="1" />
-	<input type="hidden" name="refreshed" value="0" />
-	<fieldset>
-		<legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
-		{$this->sDisplayMessage}
-		{$elements}
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">Save changes</button>
-			{$sCloseButton}
-		</div>
-	</fieldset>
+    <input type="hidden" name="{$sSubmittedFlagName}" value="1" />
+    <input type="hidden" name="refreshed" value="0" />
+    <input type="hidden" name="CSRF_TOKEN" value="{$csrfToken}" />
+    <fieldset>
+        <legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
+        {$this->sDisplayMessage}
+        {$elements}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            {$sCloseButton}
+        </div>
+    </fieldset>
 </form>
 HTML;
 
