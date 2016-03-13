@@ -24,9 +24,10 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Model;
 
 interface IUser {
-	public function isAdmin();
-	public function getDisplayName();
+    function isAdmin();
+    function getDisplayName();
 }

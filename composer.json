@@ -17,6 +17,9 @@
         "sabre/dav"     : "3.1.x@dev",
         "twig/twig"     : "~1.8.0"
     },
+    "require-dev" : {
+        "sabre/cs"      : "~0.0.6"
+    },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"
     },

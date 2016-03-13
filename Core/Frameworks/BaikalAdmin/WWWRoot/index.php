@@ -29,20 +29,20 @@ ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 error_reporting(E_ALL);
 
-define("BAIKAL_CONTEXT", TRUE);
-define("BAIKAL_CONTEXT_ADMIN", TRUE);
+define("BAIKAL_CONTEXT", true);
+define("BAIKAL_CONTEXT_ADMIN", true);
 define("PROJECT_CONTEXT_BASEURI", "/admin/");
 
-if(file_exists(dirname(getcwd()). "/Core")) {
-	# Flat FTP mode
-	define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");	#../
+if (file_exists(dirname(getcwd()) . "/Core")) {
+    # Flat FTP mode
+    define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");    #../
 } else {
-	# Dedicated server mode
-	define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");	#../../
+    # Dedicated server mode
+    define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");    #../../
 }
 
-if(!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
-	die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
+if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
 
 require PROJECT_PATH_ROOT . 'vendor/autoload.php';
@@ -61,17 +61,17 @@ $oPage->setTitle("Baïkal " . BAIKAL_VERSION . " Web Admin");
 $oPage->setBaseUrl(PROJECT_URI);
 
 # Authentication
-if(
-	\BaikalAdmin\Core\Auth::isAuthenticated() === FALSE &&
-	\BaikalAdmin\Core\Auth::authenticate() === FALSE
+if (
+    \BaikalAdmin\Core\Auth::isAuthenticated() === false &&
+    \BaikalAdmin\Core\Auth::authenticate() === false
 ) {
-	$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
-	$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
+    $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
+    $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
 } else {
-	$oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
+    $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
 
-	# Route the request
-	$GLOBALS["ROUTER"]::route($oPage);
+    # Route the request
+    $GLOBALS["ROUTER"]::route($oPage);
 }
 
 # Render the page

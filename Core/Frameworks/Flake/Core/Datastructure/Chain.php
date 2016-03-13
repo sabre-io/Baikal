@@ -24,39 +24,40 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core\Datastructure;
 
 class Chain extends \SplDoublyLinkedList {
-	
-	public function push(\Flake\Core\Datastructure\Chainable $value) {
-		$value->chain($this, $this->count());
-		parent::push($value);
-	}
-	
-	public function offsetUnset($offset) {
-		throw new \Exception("Cannot delete Chainable in Chain");
-	}
-	
-	public function &first() {
-		$oRes = $this->bottom();
-		return $oRes;
-	}
-	
-	public function &last() {
-		$oRes = $this->top();
-		return $oRes;
-	}
-	
-	public function reset() {
-		reset($this);
-	}
-	
-	public function __toString() {
-		ob_start();
-		var_dump($this);
-		$sDump = ob_get_contents();
-		ob_end_clean();
-		
-		return "<pre>" . htmlspecialchars($sDump) . "</pre>";
-	}
+
+    function push(\Flake\Core\Datastructure\Chainable $value) {
+        $value->chain($this, $this->count());
+        parent::push($value);
+    }
+
+    function offsetUnset($offset) {
+        throw new \Exception("Cannot delete Chainable in Chain");
+    }
+
+    function &first() {
+        $oRes = $this->bottom();
+        return $oRes;
+    }
+
+    function &last() {
+        $oRes = $this->top();
+        return $oRes;
+    }
+
+    function reset() {
+        reset($this);
+    }
+
+    function __toString() {
+        ob_start();
+        var_dump($this);
+        $sDump = ob_get_contents();
+        ob_end_clean();
+
+        return "<pre>" . htmlspecialchars($sDump) . "</pre>";
+    }
 }

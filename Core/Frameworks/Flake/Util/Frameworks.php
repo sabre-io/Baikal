@@ -24,32 +24,33 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Util;
 
 class Frameworks extends \Flake\Core\FLObject {
-	private function __construct() {	# private constructor to force static class
-	}
-	
-	public function isAFramework($sName) {
-		$sName = trim(\Flake\Util\Tools::trimSlashes($sName));
-		if($sName === "" || $sName === "." || $sName === "..") {
-			return FALSE;
-		}
-		
-		$sFrameworkPath = PROJECT_PATH_FRAMEWORKS . $sName;
-		return file_exists($sFrameworkPath) && is_dir($sFrameworkPath);
-	}
-	
-	public static function enabled($sFramework) {
-		return FALSE;
-	}
-	
-	# TODO: Create a 'Framework' Model	
-	public function getPath($sName) {
-		if(self::isAFramework($sName)) {
-			throw new \Flake\Core\Exception(htmlspecialchars($$sName) . " is not a framework.", $sName);
-		}
-		
-		return \Flake\Util\Tools::appendSlash(PROJECT_PATH_FRAMEWORKS . $sName);
-	}
+    private function __construct() {    # private constructor to force static class
+    }
+
+    function isAFramework($sName) {
+        $sName = trim(\Flake\Util\Tools::trimSlashes($sName));
+        if ($sName === "" || $sName === "." || $sName === "..") {
+            return false;
+        }
+
+        $sFrameworkPath = PROJECT_PATH_FRAMEWORKS . $sName;
+        return file_exists($sFrameworkPath) && is_dir($sFrameworkPath);
+    }
+
+    static function enabled($sFramework) {
+        return false;
+    }
+
+    # TODO: Create a 'Framework' Model
+    function getPath($sName) {
+        if (self::isAFramework($sName)) {
+            throw new \Flake\Core\Exception(htmlspecialchars($$sName) . " is not a framework.", $sName);
+        }
+
+        return \Flake\Util\Tools::appendSlash(PROJECT_PATH_FRAMEWORKS . $sName);
+    }
 }

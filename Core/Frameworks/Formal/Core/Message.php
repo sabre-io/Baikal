@@ -24,49 +24,50 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Formal\Core;
 
 class Message {
-	private function __construct() {
-	}
-	
-	public static function error($sMessage, $sTitle = "") {
-		if($sTitle !== "") {
-			$sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
-		}
-		
-		$sHtml =<<<HTML
+    private function __construct() {
+    }
+
+    static function error($sMessage, $sTitle = "") {
+        if ($sTitle !== "") {
+            $sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
+        }
+
+        $sHtml = <<<HTML
 <div id="message" class="alert alert-block alert-error">
 	{$sTitle}
 	{$sMessage}
 </div>
 HTML;
-		return $sHtml;
-	}
-	
-	public static function notice($sMessage, $sTitle = "", $bClose = TRUE) {
-		$sClose = "";
-		
-		if($sTitle !== "") {
-			$sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
-		}
-		
-		if($bClose === TRUE) {
-			$sClose = '<a class="close" data-dismiss="alert" href="#">&times;</a>';
-		}
-		
-		$sHtml =<<<HTML
+        return $sHtml;
+    }
+
+    static function notice($sMessage, $sTitle = "", $bClose = true) {
+        $sClose = "";
+
+        if ($sTitle !== "") {
+            $sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
+        }
+
+        if ($bClose === true) {
+            $sClose = '<a class="close" data-dismiss="alert" href="#">&times;</a>';
+        }
+
+        $sHtml = <<<HTML
 <div id="message" class="alert alert-info">
 	{$sClose}
 	{$sTitle}
 	{$sMessage}
 </div>
 HTML;
-		return $sHtml;
-	}
-	
-	public static function warningConfirmMessage($sHeader, $sDescription, $sActionUrl, $sActionLabel, $sCancelUrl, $sCancelLabel="Cancel") {
-		$sHtml =<<<HTML
+        return $sHtml;
+    }
+
+    static function warningConfirmMessage($sHeader, $sDescription, $sActionUrl, $sActionLabel, $sCancelUrl, $sCancelLabel = "Cancel") {
+        $sHtml = <<<HTML
 <div id="message" class="alert alert-block alert-error">
 	<!--a class="close" data-dismiss="alert" href="#">&times;</a-->
 	<h3 class="alert-heading">{$sHeader}</h3>
@@ -76,6 +77,6 @@ HTML;
 	</p>
 </div>
 HTML;
-		return $sHtml;
-	}
+        return $sHtml;
+    }
 }

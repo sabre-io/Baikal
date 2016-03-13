@@ -24,87 +24,88 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core\Datastructure;
 
 abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
-	protected $__container = null;
-	protected $__key = null;
-	
-	public function chain(Chain $container, $key) {
-		$this->__container = $container;
-		$this->__key = $key;
-	}
-	
-	public function offsetSet($offset,$value) {
-		if(is_null($this->__container)) {
-			return;
-		}
-		
-		$this->__container->offsetSet($offset, $value);
-	}
+    protected $__container = null;
+    protected $__key = null;
 
-	public function offsetExists($offset) {
-		if(is_null($this->__container)) {
-			return FALSE;
-		}
-		
-		return $this->__container->offsetExists($offset);
-	}
+    function chain(Chain $container, $key) {
+        $this->__container = $container;
+        $this->__key = $key;
+    }
 
-	public function offsetUnset($offset) {
-		if(is_null($this->__container)) {
-			return;
-		}
-		
-		$this->__container->offsetUnset($offset);
-	}
+    function offsetSet($offset, $value) {
+        if (is_null($this->__container)) {
+            return;
+        }
 
-	public function &offsetGet($offset) {
-		if(is_null($this->__container)) {
-			return null;
-		}
-		
-		$oRes = $this->__container->offsetGet($offset);
-		return $oRes;
-	}
+        $this->__container->offsetSet($offset, $value);
+    }
 
-	public function rewind() {
-		$this->__container->rewind();
-	}
+    function offsetExists($offset) {
+        if (is_null($this->__container)) {
+            return false;
+        }
 
-	public function current() {
-		return $this->__container->current();
-	}
+        return $this->__container->offsetExists($offset);
+    }
 
-	public function key() {
-		return $this->__container->key();
-	}
+    function offsetUnset($offset) {
+        if (is_null($this->__container)) {
+            return;
+        }
 
-	public function &next() {
-		$oRes = $this->__container->next();
-		return $oRes;
-	}
-	
-	public function &prev() {
-		$oPrev = $this->__container->prev();
-		return $oPrev;
-	}
+        $this->__container->offsetUnset($offset);
+    }
 
-	public function valid() {
-		return $this->__container->valid();
-	}    
+    function &offsetGet($offset) {
+        if (is_null($this->__container)) {
+            return null;
+        }
 
-	public function count() {
-		return $this->__container->count();
-	}
-	
-	public function &first() {
-		$oRes = $this->__container->first();
-		return $oRes;
-	}
-	
-	public function &last() {
-		$oRes = $this->__container->last();
-		return $oRes;
-	}
+        $oRes = $this->__container->offsetGet($offset);
+        return $oRes;
+    }
+
+    function rewind() {
+        $this->__container->rewind();
+    }
+
+    function current() {
+        return $this->__container->current();
+    }
+
+    function key() {
+        return $this->__container->key();
+    }
+
+    function &next() {
+        $oRes = $this->__container->next();
+        return $oRes;
+    }
+
+    function &prev() {
+        $oPrev = $this->__container->prev();
+        return $oPrev;
+    }
+
+    function valid() {
+        return $this->__container->valid();
+    }
+
+    function count() {
+        return $this->__container->count();
+    }
+
+    function &first() {
+        $oRes = $this->__container->first();
+        return $oRes;
+    }
+
+    function &last() {
+        $oRes = $this->__container->last();
+        return $oRes;
+    }
 }

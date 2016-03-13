@@ -24,18 +24,19 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller;
 
 class Logout extends \Flake\Core\Controller {
-	
-	public function execute() {
-		\BaikalAdmin\Core\Auth::unAuthenticate();
-		
-		$sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
-		$sLink = $GLOBALS["ROUTER"]::buildRouteForController($sControllerForDefaultRoute, "loggedout");
-		\Flake\Util\Tools::redirect($sLink);
-	}
-	
-	public function render() {
-	}
+
+    function execute() {
+        \BaikalAdmin\Core\Auth::unAuthenticate();
+
+        $sControllerForDefaultRoute = $GLOBALS["ROUTER"]::getControllerForRoute("default");
+        $sLink = $GLOBALS["ROUTER"]::buildRouteForController($sControllerForDefaultRoute, "loggedout");
+        \Flake\Util\Tools::redirect($sLink);
+    }
+
+    function render() {
+    }
 }

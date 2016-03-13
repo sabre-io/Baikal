@@ -24,28 +24,29 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 class CollectionTyped extends \Flake\Core\Collection {
 
-	protected $sTypeClassOrProtocol;
+    protected $sTypeClassOrProtocol;
 
-	public function __construct($sTypeClassOrProtocol) {
-		$this->sTypeClassOrProtocol = $sTypeClassOrProtocol;
-		$this->setMetaType($this->sTypeClassOrProtocol);
-	}
+    function __construct($sTypeClassOrProtocol) {
+        $this->sTypeClassOrProtocol = $sTypeClassOrProtocol;
+        $this->setMetaType($this->sTypeClassOrProtocol);
+    }
 
-	public function push(&$mMixed) {
-		if(!\Flake\Util\Tools::is_a($mMixed, $this->sTypeClassOrProtocol)) {
-			throw new \Exception("\Flake\Core\CollectionTyped<" . $this->sTypeClassOrProtocol . ">: Given object is not correctly typed.");
-		}
+    function push(&$mMixed) {
+        if (!\Flake\Util\Tools::is_a($mMixed, $this->sTypeClassOrProtocol)) {
+            throw new \Exception("\Flake\Core\CollectionTyped<" . $this->sTypeClassOrProtocol . ">: Given object is not correctly typed.");
+        }
 
-		parent::push($mMixed);
-	}
-	
-	# Create a new collection like this one
-	public function newCollectionLikeThisOne() {
-		$oCollection = new \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
-		return $oCollection;
-	}
+        parent::push($mMixed);
+    }
+
+    # Create a new collection like this one
+    function newCollectionLikeThisOne() {
+        $oCollection = new \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
+        return $oCollection;
+    }
 }

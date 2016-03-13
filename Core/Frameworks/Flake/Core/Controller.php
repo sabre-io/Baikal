@@ -24,33 +24,34 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class Controller extends \Flake\Core\FLObject {
-	
-	protected $aParams = array();
-	
-	public function __construct($aParams = array()) {
-		$this->aParams = $aParams;
-	}
-	
-	public function getParams() {
-		return $this->aParams;
-	}
-	
-	public static function link(/*[$sParam, $sParam2, ...]*/) {
-		return static::buildRoute();
-	}
-	
-	public static function buildRoute($aParams = array()) {
-		# TODO: il faut remplacer le mécanisme basé sur un nombre variable de paramètres en un mécanisme basé sur un seul paramètre "tableau"
-		#$aParams = func_get_args();
-		$sController = "\\" . get_called_class();
-		#array_unshift($aParams, $sController);		# Injecting current controller as first param
-		#return call_user_func_array($GLOBALS["ROUTER"] . "::buildRouteForController", $aParams);
-		return $GLOBALS["ROUTER"]::buildRouteForController($sController, $aParams);
-	}
-	
-	public abstract function execute();
-	public abstract function render();
+
+    protected $aParams = [];
+
+    function __construct($aParams = []) {
+        $this->aParams = $aParams;
+    }
+
+    function getParams() {
+        return $this->aParams;
+    }
+
+    static function link(/*[$sParam, $sParam2, ...]*/) {
+        return static::buildRoute();
+    }
+
+    static function buildRoute($aParams = []) {
+        # TODO: il faut remplacer le mécanisme basé sur un nombre variable de paramètres en un mécanisme basé sur un seul paramètre "tableau"
+        #$aParams = func_get_args();
+        $sController = "\\" . get_called_class();
+        #array_unshift($aParams, $sController);		# Injecting current controller as first param
+        #return call_user_func_array($GLOBALS["ROUTER"] . "::buildRouteForController", $aParams);
+        return $GLOBALS["ROUTER"]::buildRouteForController($sController, $aParams);
+    }
+
+    abstract function execute();
+    abstract function render();
 }

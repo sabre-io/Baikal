@@ -24,42 +24,43 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class Requester extends \Flake\Core\FLObject {
-	public function __construct($sModelClass) {
-		$this->sModelClass = $sModelClass;
-	}
+    function __construct($sModelClass) {
+        $this->sModelClass = $sModelClass;
+    }
 
-	protected function addClause($sField, $sValue) {
-		$this->addClauseEquals($sField, $sValue);
-		return $this;
-	}
-	
-	public function limit($iStart, $iNumber = FALSE) {
-		if($iNumber !== FALSE) {
-			return $this->setLimitStart($iStart)->setLimitNumber($iLimitNumber);
-		}
-		
-		return $this->setLimitStart($iStart);
-	}
-	
-	public function orderBy($sOrderField, $sOrderDirection = "ASC") {
-		$this->sOrderField = $sOrderField;
-		$this->sOrderDirection = $sOrderDirection;
-		return $this;
-	}
+    protected function addClause($sField, $sValue) {
+        $this->addClauseEquals($sField, $sValue);
+        return $this;
+    }
 
-	public function setLimitStart($iLimitStart) {
-		$this->iLimitStart = $iLimitStart;
-		return $this;
-	}
+    function limit($iStart, $iNumber = false) {
+        if ($iNumber !== false) {
+            return $this->setLimitStart($iStart)->setLimitNumber($iLimitNumber);
+        }
 
-	public function setLimitNumber($iLimitNumber) {
-		$this->iLimitNumber = $iLimitNumber;
-		return $this;
-	}
-	
-	public abstract function execute();
-	public abstract function count();
+        return $this->setLimitStart($iStart);
+    }
+
+    function orderBy($sOrderField, $sOrderDirection = "ASC") {
+        $this->sOrderField = $sOrderField;
+        $this->sOrderDirection = $sOrderDirection;
+        return $this;
+    }
+
+    function setLimitStart($iLimitStart) {
+        $this->iLimitStart = $iLimitStart;
+        return $this;
+    }
+
+    function setLimitNumber($iLimitNumber) {
+        $this->iLimitNumber = $iLimitNumber;
+        return $this;
+    }
+
+    abstract function execute();
+    abstract function count();
 }

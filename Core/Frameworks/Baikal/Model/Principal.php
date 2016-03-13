@@ -24,14 +24,15 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Baikal\Model;
 
 class Principal extends \Flake\Core\Model\Db {
-	const DATATABLE = "principals";
-	const PRIMARYKEY = "id";
-	protected $aData = array(
-		"uri" => "",
-		"displayname" => "",
-		"email" => "",
-	);
+    const DATATABLE = "principals";
+    const PRIMARYKEY = "id";
+    protected $aData = [
+        "uri"         => "",
+        "displayname" => "",
+        "email"       => "",
+    ];
 }

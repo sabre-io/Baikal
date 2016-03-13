@@ -24,6 +24,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\View\Install;
 
 class Initialize extends \BaikalAdmin\Core\View {

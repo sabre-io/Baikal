@@ -24,15 +24,16 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Controller\Navigation\Topbar;
 
 class Anonymous extends \Flake\Core\Controller {
 
-	public function execute() {
-	}
+    function execute() {
+    }
 
-	public function render() {
-		$oView = new \BaikalAdmin\View\Navigation\Topbar\Anonymous();
-		return $oView->render();
-	}
+    function render() {
+        $oView = new \BaikalAdmin\View\Navigation\Topbar\Anonymous();
+        return $oView->render();
+    }
 }

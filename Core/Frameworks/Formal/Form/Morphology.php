@@ -24,52 +24,53 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Formal\Form;
 
 class Morphology {
-	
-	protected $oElements = null;
-	
-	public function __construct() {
-		$this->oElements = new \Flake\Core\CollectionTyped("\Formal\Element");
-	}
-	
-	public function add(\Formal\Element $oElement) {
-		$this->oElements->push($oElement);
-	}
-	
-	protected function keyForPropName($sPropName) {
-		$aKeys = $this->oElements->keys();
-		reset($aKeys);
-		foreach($aKeys as $sKey) {
-			$oElement = $this->oElements->getForKey($sKey);
-			
-			if($oElement->option("prop") === $sPropName) {
-				return $sKey;
-			}
-		}
-		
-		return FALSE;
-	}
-	
-	public function &element($sPropName) {
-		if(($sKey = $this->keyForPropName($sPropName)) === FALSE) {
-			throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
-		}
-		
-		$oElement = $this->oElements->getForKey($sKey);
-		return $oElement;
-	}
-	
-	public function remove($sPropName) {
-		if(($sKey = $this->keyForPropName($sPropName)) === FALSE) {
-			throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
-		}
-		
-		$this->oElements->remove($sKey);
-	}
-	
-	public function elements() {
-		return $this->oElements;
-	}
+
+    protected $oElements = null;
+
+    function __construct() {
+        $this->oElements = new \Flake\Core\CollectionTyped("\Formal\Element");
+    }
+
+    function add(\Formal\Element $oElement) {
+        $this->oElements->push($oElement);
+    }
+
+    protected function keyForPropName($sPropName) {
+        $aKeys = $this->oElements->keys();
+        reset($aKeys);
+        foreach ($aKeys as $sKey) {
+            $oElement = $this->oElements->getForKey($sKey);
+
+            if ($oElement->option("prop") === $sPropName) {
+                return $sKey;
+            }
+        }
+
+        return false;
+    }
+
+    function &element($sPropName) {
+        if (($sKey = $this->keyForPropName($sPropName)) === false) {
+            throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
+        }
+
+        $oElement = $this->oElements->getForKey($sKey);
+        return $oElement;
+    }
+
+    function remove($sPropName) {
+        if (($sKey = $this->keyForPropName($sPropName)) === false) {
+            throw new \Exception("\Formal\Form\Morphology->element(): Element prop='" . $sPropName . "' not found");
+        }
+
+        $this->oElements->remove($sKey);
+    }
+
+    function elements() {
+        return $this->oElements;
+    }
 }

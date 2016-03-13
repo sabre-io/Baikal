@@ -24,19 +24,20 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Controller;
 
 class HtmlBlock extends \Flake\Core\Controller {
-	
-	function __construct($sHtml) {
-		$this->sHtml = $sHtml;
-	}
-	
-	function execute() {
-		
-	}
-	
-	function render() {
-		return $this->sHtml;
-	}
+
+    function __construct($sHtml) {
+        $this->sHtml = $sHtml;
+    }
+
+    function execute() {
+
+    }
+
+    function render() {
+        return $this->sHtml;
+    }
 }

@@ -24,45 +24,46 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Controller;
 
 class Rpc extends \Flake\Core\Render\Container {
-	
-	public function initializeContext() {
-		$this->injectHTTPHeaders();
-		$GLOBALS["POSTCONNECTIONSERVICES"] = array();
-	}
-	
-	public function injectHTTPHeaders() {
-		ob_start();
 
-		header("Access-Control-Allow-Origin: *");	# To allow cross domain AJAX response
-		header("Access-Control-Allow-Credentials: true");	# To allow cross domain cookies
-		header("Content-Type: application/json; charset=UTF-8");
+    function initializeContext() {
+        $this->injectHTTPHeaders();
+        $GLOBALS["POSTCONNECTIONSERVICES"] = [];
+    }
 
-		# Needed to cut client off when needed
-		header("Connection: close\r\n");
-		ignore_user_abort(TRUE);
+    function injectHTTPHeaders() {
+        ob_start();
 
-	}
-	
-	public function P3PAllowCrossDomainCookies() {
-		# This tells IE6+ to accept passing cookies allong when establishing a XHR connection to read.codr.fr
-		header('P3P: CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
-	}
-	
-	public function sendResponseCutClientAndRunPostConnectionTasks() {
-		header("Content-Length: " . ob_get_length());
-		ob_end_flush();
-		flush();
-		
-		reset($GLOBALS["POSTCONNECTIONSERVICES"]);
-		
-		# If post-connection services are registered, process
-		foreach($GLOBALS["POSTCONNECTIONSERVICES"] as $service) {
-			$service->execute();
-		}
+        header("Access-Control-Allow-Origin: *");    # To allow cross domain AJAX response
+        header("Access-Control-Allow-Credentials: true");    # To allow cross domain cookies
+        header("Content-Type: application/json; charset=UTF-8");
 
-		session_write_close();
-	}
+        # Needed to cut client off when needed
+        header("Connection: close\r\n");
+        ignore_user_abort(true);
+
+    }
+
+    function P3PAllowCrossDomainCookies() {
+        # This tells IE6+ to accept passing cookies allong when establishing a XHR connection to read.codr.fr
+        header('P3P: CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+    }
+
+    function sendResponseCutClientAndRunPostConnectionTasks() {
+        header("Content-Length: " . ob_get_length());
+        ob_end_flush();
+        flush();
+
+        reset($GLOBALS["POSTCONNECTIONSERVICES"]);
+
+        # If post-connection services are registered, process
+        foreach ($GLOBALS["POSTCONNECTIONSERVICES"] as $service) {
+            $service->execute();
+        }
+
+        session_write_close();
+    }
 }

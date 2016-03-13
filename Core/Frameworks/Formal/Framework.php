@@ -24,12 +24,13 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Formal;
 
 class Framework extends \Flake\Core\Framework {
-	
-	public static function bootstrap() {
-		define("FORMAL_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/Formal/");
 
-	}
+    static function bootstrap() {
+        define("FORMAL_PATH_ROOT", PROJECT_PATH_ROOT . "Core/Frameworks/Formal/");
+
+    }
 }

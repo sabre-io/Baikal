@@ -24,185 +24,186 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core\Requester;
 
 class Sql extends \Flake\Core\Requester {
 
-	protected $sDataTable = "";
-	protected $aClauses = array();
-	protected $sModelClass = "";
-	protected $sOrderField = "";
-	protected $sOrderDirection = "ASC";
-	protected $iLimitStart = FALSE;
-	protected $iLimitNumber = FALSE;
-	protected $bHasBeenExecuted = FALSE;
+    protected $sDataTable = "";
+    protected $aClauses = [];
+    protected $sModelClass = "";
+    protected $sOrderField = "";
+    protected $sOrderDirection = "ASC";
+    protected $iLimitStart = false;
+    protected $iLimitNumber = false;
+    protected $bHasBeenExecuted = false;
 
-	public function setDataTable($sDataTable) {
-		$this->sDataTable = $sDataTable;
-		return $this;
-	}
+    function setDataTable($sDataTable) {
+        $this->sDataTable = $sDataTable;
+        return $this;
+    }
 
-	public function addClauseEquals($sField, $sValue) {
-		$sWrap = "{field}='{value}'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseEquals($sField, $sValue) {
+        $sWrap = "{field}='{value}'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseNotEquals($sField, $sValue) {
-		$sWrap = "{field}!='{value}'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseNotEquals($sField, $sValue) {
+        $sWrap = "{field}!='{value}'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseLike($sField, $sValue) {
-		$sWrap = "{field} LIKE '%{value}%'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseLike($sField, $sValue) {
+        $sWrap = "{field} LIKE '%{value}%'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseLikeBeginning($sField, $sValue) {
-		$sWrap = "{field} LIKE '{value}%'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseLikeBeginning($sField, $sValue) {
+        $sWrap = "{field} LIKE '{value}%'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseLikeEnd($sField, $sValue) {
-		$sWrap = "{field} LIKE '%{value}'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseLikeEnd($sField, $sValue) {
+        $sWrap = "{field} LIKE '%{value}'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseNotLike($sField, $sValue) {
-		$sWrap = "{field} NOT LIKE '%{value}%'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseNotLike($sField, $sValue) {
+        $sWrap = "{field} NOT LIKE '%{value}%'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseNotLikeBeginning($sField, $sValue) {
-		$sWrap = "{field} NOT LIKE '{value}%'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseNotLikeBeginning($sField, $sValue) {
+        $sWrap = "{field} NOT LIKE '{value}%'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseNotLikeEnd($sField, $sValue) {
-		$sWrap = "{field} NOT LIKE '%{value}'";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseNotLikeEnd($sField, $sValue) {
+        $sWrap = "{field} NOT LIKE '%{value}'";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseIn($sField, $sValue) {
-		$sWrap = "{field} IN ({value})";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseIn($sField, $sValue) {
+        $sWrap = "{field} IN ({value})";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	public function addClauseNotIn($sField, $sValue) {
-		$sWrap = "{field} NOT IN ({value})";
-		$this->addClauseWrapped($sField, $sValue, $sWrap);
-		return $this;
-	}
+    function addClauseNotIn($sField, $sValue) {
+        $sWrap = "{field} NOT IN ({value})";
+        $this->addClauseWrapped($sField, $sValue, $sWrap);
+        return $this;
+    }
 
-	protected function addClauseWrapped($sField, $sValue, $sWrap) {
-		$sValue = $this->escapeSqlValue($sValue);
-		$sClause = str_replace(
-			array(
-				"{field}",
-				"{value}",
-			),
-			array(
-				$sField,
-				$sValue
-			),
-			$sWrap
-		);
+    protected function addClauseWrapped($sField, $sValue, $sWrap) {
+        $sValue = $this->escapeSqlValue($sValue);
+        $sClause = str_replace(
+            [
+                "{field}",
+                "{value}",
+            ],
+            [
+                $sField,
+                $sValue
+            ],
+            $sWrap
+        );
 
-		$this->addClauseLiteral($sClause);
-		return $this;
-	}
+        $this->addClauseLiteral($sClause);
+        return $this;
+    }
 
-	public function addClauseLiteral($sClause) {
-		$this->aClauses[] = $sClause;
-		return $this;
-	}
+    function addClauseLiteral($sClause) {
+        $this->aClauses[] = $sClause;
+        return $this;
+    }
 
-	protected function escapeSqlValue($sValue) {
-		return $GLOBALS["DB"]->quote(
-			$sValue,
-			$this->sDataTable
-		);
-	}
+    protected function escapeSqlValue($sValue) {
+        return $GLOBALS["DB"]->quote(
+            $sValue,
+            $this->sDataTable
+        );
+    }
 
-	protected function &reify($aData) {
-		$sTemp = $this->sModelClass;
-		$res = new $sTemp($aData[$sTemp::getPrimaryKey()]);
-		return $res;	# To address 'Notice: Only variable references should be returned by reference'
-	}
+    protected function &reify($aData) {
+        $sTemp = $this->sModelClass;
+        $res = new $sTemp($aData[$sTemp::getPrimaryKey()]);
+        return $res;    # To address 'Notice: Only variable references should be returned by reference'
+    }
 
-	public function hasBeenExecuted() {
-		return $this->bHasBeenExecuted;
-	}
+    function hasBeenExecuted() {
+        return $this->bHasBeenExecuted;
+    }
 
-	public function getQuery($sFields = "*") {
-		$sWhere = "1=1";
-		$sOrderBy = "";
-		$sLimit = "";
+    function getQuery($sFields = "*") {
+        $sWhere = "1=1";
+        $sOrderBy = "";
+        $sLimit = "";
 
-		if(!empty($this->aClauses)) {
-			$sWhere = implode(" AND ", $this->aClauses);
-		}
+        if (!empty($this->aClauses)) {
+            $sWhere = implode(" AND ", $this->aClauses);
+        }
 
-		if(trim($this->sOrderField) !== "") {
-			$sOrderBy = $this->sOrderField . " " . $this->sOrderDirection;
-		}
+        if (trim($this->sOrderField) !== "") {
+            $sOrderBy = $this->sOrderField . " " . $this->sOrderDirection;
+        }
 
-		if($this->iLimitStart !== FALSE) {
-			if($this->iLimitNumber !== FALSE) {
-				$sLimit = $this->iLimitStart . ", " . $this->iLimitNumber;
-			} else {
-				$sLimit = $this->iLimitStart;
-			}
-		} elseif($this->iLimitNumber !== FALSE) {
-			$sLimit = "0, " . $this->iLimitNumber;
-		}
+        if ($this->iLimitStart !== false) {
+            if ($this->iLimitNumber !== false) {
+                $sLimit = $this->iLimitStart . ", " . $this->iLimitNumber;
+            } else {
+                $sLimit = $this->iLimitStart;
+            }
+        } elseif ($this->iLimitNumber !== false) {
+            $sLimit = "0, " . $this->iLimitNumber;
+        }
 
-		return $GLOBALS["DB"]->SELECTquery(
-			$sFields,
-			$this->sDataTable,
-			$sWhere,
-			"",
-			$sOrderBy,
-			$sLimit
-		);
-	}
-	
-	public function getCountQuery() {
-		return $this->getQuery("count(*) as nbitems");
-	}
+        return $GLOBALS["DB"]->SELECTquery(
+            $sFields,
+            $this->sDataTable,
+            $sWhere,
+            "",
+            $sOrderBy,
+            $sLimit
+        );
+    }
 
-	public function execute() {
-		$oCollection = new \Flake\Core\CollectionTyped($this->sModelClass);
-		$sSql = $this->getQuery();
+    function getCountQuery() {
+        return $this->getQuery("count(*) as nbitems");
+    }
 
-		$rSql = $GLOBALS["DB"]->query($sSql);
-		while(($aRs = $rSql->fetch()) !== FALSE) {
-			$oCollection->push(
-				$this->reify($aRs)
-			);
-		}
+    function execute() {
+        $oCollection = new \Flake\Core\CollectionTyped($this->sModelClass);
+        $sSql = $this->getQuery();
 
-		$this->bHasBeenExecuted = TRUE;
+        $rSql = $GLOBALS["DB"]->query($sSql);
+        while (($aRs = $rSql->fetch()) !== false) {
+            $oCollection->push(
+                $this->reify($aRs)
+            );
+        }
 
-		return $oCollection;
-	}
-	
-	public function count() {
-		$sSql = $this->getCountQuery();
-		
-		$rSql = $GLOBALS["DB"]->query($sSql);
-		if(($aRs = $rSql->fetch()) !== FALSE) {
-			return intval($aRs["nbitems"]);
-		}
-		
-		return 0;
-	}
+        $this->bHasBeenExecuted = true;
+
+        return $oCollection;
+    }
+
+    function count() {
+        $sSql = $this->getCountQuery();
+
+        $rSql = $GLOBALS["DB"]->query($sSql);
+        if (($aRs = $rSql->fetch()) !== false) {
+            return intval($aRs["nbitems"]);
+        }
+
+        return 0;
+    }
 }
