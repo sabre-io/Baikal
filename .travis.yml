@@ -27,5 +27,5 @@ before_script:
 
 script:
     - find Core -name "*.php" | xargs -n1 php -l 
-    # - ./bin/sabre-cs-fixer fix lib/ --dry-run --diff
+    - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
 
