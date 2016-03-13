@@ -86,8 +86,8 @@ class Framework extends \Flake\Core\Framework {
 
 	public static function bootstrap() {
 		
-		# Asserting PHP 5.3.0+
-		if(version_compare(PHP_VERSION, '5.3.0', '<')) {
+		# Asserting PHP 5.5.0+
+		if(version_compare(PHP_VERSION, '5.5.0', '<')) {
 			die('Flake Fatal Error: Flake requires PHP 5.3.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
 		}
 		
