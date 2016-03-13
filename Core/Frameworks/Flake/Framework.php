@@ -193,6 +193,7 @@ class Framework extends \Flake\Core\Framework {
             if (!isset($_SESSION['CSRF_TOKEN'])) {
                 $_SESSION['CSRF_TOKEN'] = bin2hex(openssl_random_pseudo_bytes(20));
             }
+
         }
 
         setlocale(LC_ALL, FLAKE_LOCALE);

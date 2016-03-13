@@ -405,7 +405,7 @@ class Form {
 <form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
     <input type="hidden" name="{$sSubmittedFlagName}" value="1" />
     <input type="hidden" name="refreshed" value="0" />
-    <input type="hidden" name="csrf-token" value="{$csrfToken}" />
+    <input type="hidden" name="CSRF_TOKEN" value="{$csrfToken}" />
     <fieldset>
         <legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
         {$this->sDisplayMessage}
