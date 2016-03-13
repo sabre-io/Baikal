@@ -157,9 +157,14 @@ class Server {
         $this->server->addPlugin(new \Sabre\DAVACL\Plugin());
         $this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
 
+        $this->server->addPlugin(new \Sabre\DAV\PropertyStorage\Plugin(
+            new \Sabre\DAV\PropertyStorage\Backend\PDO($this->pdo)
+        ));
+
         if ($this->enableCalDAV) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
+            $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
         }
         if ($this->enableCardDAV) {
             $this->server->addPlugin(new \Sabre\CardDAV\Plugin());
