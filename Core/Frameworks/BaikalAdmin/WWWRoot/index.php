@@ -72,7 +72,7 @@ if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
 } else {
 
     // CSRF token check
-    if ($_SERVER['REQUEST_METHOD']==='POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($_POST['CSRF_TOKEN'])) {
             throw new \Exception('CSRF token was not submitted. Try removing your cookies and log in again');
         }
