@@ -24,16 +24,17 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class PostConnectionService extends \Flake\Core\FLObject {
-	
-	public function __construct($aParams = array()) {
-		$this->aParams = $aParams;
-	}
-	
-	public function execute() {
-		sleep(10);
-		mail("mail@jeromeschneider.fr", "Hello", "je suis la");
-	}
+
+    function __construct($aParams = []) {
+        $this->aParams = $aParams;
+    }
+
+    function execute() {
+        sleep(10);
+        mail("mail@jeromeschneider.fr", "Hello", "je suis la");
+    }
 }

@@ -24,185 +24,186 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 abstract class Database extends \Flake\Core\FLObject {
 
-	/* common stuff */
+    /* common stuff */
 
-	protected function messageAndDie($sMessage) {
-		$sError = "<h2>" . get_class($this) . ": " . $sMessage . "</h2>";
-		die($sError);
-	}
+    protected function messageAndDie($sMessage) {
+        $sError = "<h2>" . get_class($this) . ": " . $sMessage . "</h2>";
+        die($sError);
+    }
 
-	public function exec_INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
-		return $this->query($this->INSERTquery($table,$fields_values,$no_quote_fields));
-	}
+    function exec_INSERTquery($table, $fields_values, $no_quote_fields = false) {
+        return $this->query($this->INSERTquery($table, $fields_values, $no_quote_fields));
+    }
 
-	public function INSERTquery($table,$fields_values,$no_quote_fields=FALSE)	{
+    function INSERTquery($table, $fields_values, $no_quote_fields = false) {
 
-			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
-		if (is_array($fields_values) && count($fields_values))	{
+            // Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
+        if (is_array($fields_values) && count($fields_values))    {
 
-				// quote and escape values
-			$fields_values = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
+                // quote and escape values
+            $fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
-				// Build query:
-			$query = 'INSERT INTO '.$table.'
+                // Build query:
+            $query = 'INSERT INTO ' . $table . '
 				(
-					'.implode(',
-					',array_keys($fields_values)).'
+					' . implode(',
+					', array_keys($fields_values)) . '
 				) VALUES (
-					'.implode(',
-					',$fields_values).'
+					' . implode(',
+					', $fields_values) . '
 				)';
 
-				// Return query:
-			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
-			return $query;
-		}
-	}
+                // Return query:
+            if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+            return $query;
+        }
+    }
 
-	public function exec_UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
-		return $this->query($this->UPDATEquery($table,$where,$fields_values,$no_quote_fields));
-	}
+    function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = false) {
+        return $this->query($this->UPDATEquery($table, $where, $fields_values, $no_quote_fields));
+    }
 
-	public function UPDATEquery($table,$where,$fields_values,$no_quote_fields=FALSE)	{
+    function UPDATEquery($table, $where, $fields_values, $no_quote_fields = false) {
 
-			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
-		if (is_string($where))	{
-			if (is_array($fields_values) && count($fields_values))	{
+            // Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
+        if (is_string($where))    {
+            if (is_array($fields_values) && count($fields_values))    {
 
-					// quote and escape values
-				$nArr = $this->fullQuoteArray($fields_values,$table,$no_quote_fields);
+                    // quote and escape values
+                $nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
-				$fields = array();
-				foreach ($nArr as $k => $v) {
-					$fields[] = $k.'='.$v;
-				}
+                $fields = [];
+                foreach ($nArr as $k => $v) {
+                    $fields[] = $k . '=' . $v;
+                }
 
-					// Build query:
-				$query = 'UPDATE '.$table.'
+                    // Build query:
+                $query = 'UPDATE ' . $table . '
 					SET
-						'.implode(',
-						',$fields).
-					(strlen($where)>0 ? '
+						' . implode(',
+						', $fields) .
+                    (strlen($where) > 0 ? '
 					WHERE
-						'.$where : '');
+						' . $where : '');
 
-					// Return query:
-				if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
-				return $query;
-			}
-		} else {
-			die('<strong>Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
-		}
-	}
+                    // Return query:
+                if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+                return $query;
+            }
+        } else {
+            die('<strong>Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
+        }
+    }
 
-	public function exec_DELETEquery($table,$where)	{
-		return $this->query($this->DELETEquery($table,$where));
-	}
+    function exec_DELETEquery($table, $where) {
+        return $this->query($this->DELETEquery($table, $where));
+    }
 
-	public function DELETEquery($table,$where)	{
-		if (is_string($where))	{
+    function DELETEquery($table, $where) {
+        if (is_string($where))    {
 
-				// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-			$query = 'DELETE FROM '.$table.
-				(strlen($where)>0 ? '
+                // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
+            $query = 'DELETE FROM ' . $table .
+                (strlen($where) > 0 ? '
 				WHERE
-					'.$where : '');
+					' . $where : '');
 
-			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
-			return $query;
-		} else {
-			die('<strong>Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
-		}
-	}
+            if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+            return $query;
+        } else {
+            die('<strong>Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
+        }
+    }
 
-	public function exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
-		return $this->query($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit));
-	}
+    function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+        return $this->query($this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit));
+    }
 
-	public function SELECTquery($select_fields,$from_table,$where_clause,$groupBy='',$orderBy='',$limit='')	{
+    function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 
-			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-			// Build basic query:
-		$query = 'SELECT '.$select_fields.'
-			FROM '.$from_table.
-			(strlen($where_clause)>0 ? '
+            // Table and fieldnames should be "SQL-injection-safe" when supplied to this function
+            // Build basic query:
+        $query = 'SELECT ' . $select_fields . '
+			FROM ' . $from_table .
+            (strlen($where_clause) > 0 ? '
 			WHERE
-				'.$where_clause : '');
+				' . $where_clause : '');
 
-			// Group by:
-		if (strlen($groupBy)>0)	{
-			$query.= '
-			GROUP BY '.$groupBy;
-		}
-			// Order by:
-		if (strlen($orderBy)>0)	{
-			$query.= '
-			ORDER BY '.$orderBy;
-		}
-			// Group by:
-		if (strlen($limit)>0)	{
-			$query.= '
-			LIMIT '.$limit;
-		}
+            // Group by:
+        if (strlen($groupBy) > 0)    {
+            $query .= '
+			GROUP BY ' . $groupBy;
+        }
+            // Order by:
+        if (strlen($orderBy) > 0)    {
+            $query .= '
+			ORDER BY ' . $orderBy;
+        }
+            // Group by:
+        if (strlen($limit) > 0)    {
+            $query .= '
+			LIMIT ' . $limit;
+        }
 
-			// Return query:
-		if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
-		return $query;
-	}
-	
-	public function fullQuote($str, $table)	{
-		return '\''.$this->quote($str, $table).'\'';
-	}
+            // Return query:
+        if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+        return $query;
+    }
 
-	public function fullQuoteArray($arr, $table, $noQuote=FALSE)	{
-		if (is_string($noQuote))	{
-			$noQuote = explode(',',$noQuote);
-		} elseif (!is_array($noQuote))	{	// sanity check
-			$noQuote = FALSE;
-		}
+    function fullQuote($str, $table) {
+        return '\'' . $this->quote($str, $table) . '\'';
+    }
 
-		foreach($arr as $k => $v)	{
-			if ($noQuote===FALSE || !in_array($k,$noQuote))     {
-				$arr[$k] = $this->fullQuote($v, $table);
-			}
-		}
-		return $arr;
-	}
-	
-	/* Should be abstract, but we provide a body anyway as PDO abstracts these methods for us */
-	
-	public function query($sSql) {
-		if(($stmt = $this->oDb->query($sSql)) === FALSE) {
-			$sMessage = print_r($this->oDb->errorInfo(), TRUE);
-			throw new \Exception("SQL ERROR in: '" . $sSql . "'; Message: " . $sMessage);
-		}
-		
-		return new \Flake\Core\Database\Statement($stmt);
-	}
-	
-	public function lastInsertId() {
-		return $this->oDb->lastInsertId();
-	}
+    function fullQuoteArray($arr, $table, $noQuote = false) {
+        if (is_string($noQuote))    {
+            $noQuote = explode(',', $noQuote);
+        } elseif (!is_array($noQuote))    {    // sanity check
+            $noQuote = false;
+        }
 
-	public function quote($str) {
-		return substr($this->oDb->quote($str), 1, -1);	# stripping first and last quote
-	}
-	
-	public function getPDO() {
-		return $this->oDb;
-	}
-	
-	public function close() {
-		$this->oDb = null;
-	}
-	
-	public function __destruct() {
-		$this->close();
-	}
-	
-	public abstract function tables();
+        foreach ($arr as $k => $v)    {
+            if ($noQuote === false || !in_array($k, $noQuote))     {
+                $arr[$k] = $this->fullQuote($v, $table);
+            }
+        }
+        return $arr;
+    }
+
+    /* Should be abstract, but we provide a body anyway as PDO abstracts these methods for us */
+
+    function query($sSql) {
+        if (($stmt = $this->oDb->query($sSql)) === false) {
+            $sMessage = print_r($this->oDb->errorInfo(), true);
+            throw new \Exception("SQL ERROR in: '" . $sSql . "'; Message: " . $sMessage);
+        }
+
+        return new \Flake\Core\Database\Statement($stmt);
+    }
+
+    function lastInsertId() {
+        return $this->oDb->lastInsertId();
+    }
+
+    function quote($str) {
+        return substr($this->oDb->quote($str), 1, -1);    # stripping first and last quote
+    }
+
+    function getPDO() {
+        return $this->oDb;
+    }
+
+    function close() {
+        $this->oDb = null;
+    }
+
+    function __destruct() {
+        $this->close();
+    }
+
+    abstract function tables();
 }

@@ -26,12 +26,12 @@
 
 define("BAIKALADMIN_PATH_TEMPLATES", BAIKALADMIN_PATH_ROOT . "Resources/Templates/");
 
-$GLOBALS["ROUTES"] = array(
-	"default" => "\BaikalAdmin\Route\Dashboard",
-	"users" => "\BaikalAdmin\Route\Users",
-	"users/calendars" => "\BaikalAdmin\Route\User\Calendars",
-	"users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
-	"settings/standard" => "\BaikalAdmin\Route\Settings\Standard",
-	"settings/system" => "\BaikalAdmin\Route\Settings\System",
-	"logout" => "\BaikalAdmin\Route\Logout"
-);
+$GLOBALS["ROUTES"] = [
+    "default"            => "\BaikalAdmin\Route\Dashboard",
+    "users"              => "\BaikalAdmin\Route\Users",
+    "users/calendars"    => "\BaikalAdmin\Route\User\Calendars",
+    "users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
+    "settings/standard"  => "\BaikalAdmin\Route\Settings\Standard",
+    "settings/system"    => "\BaikalAdmin\Route\Settings\System",
+    "logout"             => "\BaikalAdmin\Route\Logout"
+];

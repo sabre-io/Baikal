@@ -24,59 +24,60 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core\Render;
 
 abstract class Container extends \Flake\Core\Controller {
-	
-	var $aSequence = array();
-	var $aBlocks = array();
-	var $aRendu = array();
-	var $aZones = array();
 
-	function addBlock(&$oBlock, $sZone = "_DEFAULT_") {
-		$aTemp = array(
-			"block" => &$oBlock,
-			"rendu" => "",
-		);
-		$this->aSequence[] =& $aTemp;
-		$this->aBlocks[$sZone][] =& $aTemp["rendu"];
-	}
-	
-	function &zone($sZone) {
-		if(!array_key_exists($sZone, $this->aZones)) {
-			$this->aZones[$sZone] = new \Flake\Core\Render\Zone($this, $sZone);
-		}
-		
-		return $this->aZones[$sZone];
-	}
-	
-	public function render() {
-		$this->execute();
-		$aRenderedBlocks = $this->renderBlocks();
-		return implode("", $aRenderedBlocks);
-	}
-	
-	public function execute() {
-		reset($this->aSequence);
-		while(list($sKey,) = each($this->aSequence)) {
-			$this->aSequence[$sKey]["block"]->execute();
-		}
-	}
-	
-	protected function renderBlocks() {
-		$aHtml = array();
-		reset($this->aSequence);
-		while(list($sKey,) = each($this->aSequence)) {
-			$this->aSequence[$sKey]["rendu"] = $this->aSequence[$sKey]["block"]->render();
-		}
-		
-		$aHtml = array();
-		reset($this->aBlocks);
-		while(list($sZone,) = each($this->aBlocks)) {
-			$aHtml[$sZone] = implode("", $this->aBlocks[$sZone]);
-		}
-		
-		reset($aHtml);
-		return $aHtml;
-	}
+    public $aSequence = [];
+    public $aBlocks = [];
+    public $aRendu = [];
+    public $aZones = [];
+
+    function addBlock(&$oBlock, $sZone = "_DEFAULT_") {
+        $aTemp = [
+            "block" => &$oBlock,
+            "rendu" => "",
+        ];
+        $this->aSequence[] = & $aTemp;
+        $this->aBlocks[$sZone][] = & $aTemp["rendu"];
+    }
+
+    function &zone($sZone) {
+        if (!array_key_exists($sZone, $this->aZones)) {
+            $this->aZones[$sZone] = new \Flake\Core\Render\Zone($this, $sZone);
+        }
+
+        return $this->aZones[$sZone];
+    }
+
+    function render() {
+        $this->execute();
+        $aRenderedBlocks = $this->renderBlocks();
+        return implode("", $aRenderedBlocks);
+    }
+
+    function execute() {
+        reset($this->aSequence);
+        while (list($sKey, ) = each($this->aSequence)) {
+            $this->aSequence[$sKey]["block"]->execute();
+        }
+    }
+
+    protected function renderBlocks() {
+        $aHtml = [];
+        reset($this->aSequence);
+        while (list($sKey, ) = each($this->aSequence)) {
+            $this->aSequence[$sKey]["rendu"] = $this->aSequence[$sKey]["block"]->render();
+        }
+
+        $aHtml = [];
+        reset($this->aBlocks);
+        while (list($sZone, ) = each($this->aBlocks)) {
+            $aHtml[$sZone] = implode("", $this->aBlocks[$sZone]);
+        }
+
+        reset($aHtml);
+        return $aHtml;
+    }
 }

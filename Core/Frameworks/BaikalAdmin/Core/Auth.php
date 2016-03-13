@@ -24,49 +24,50 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace BaikalAdmin\Core;
 
 class Auth {
-	public static function isAuthenticated() {
-		if(isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
-			return TRUE;
-		}
-		
-		return FALSE;		
-	}
-	
-	public static function authenticate() {
-		
-		if(intval(\Flake\Util\Tools::POST("auth")) !== 1) {
-			return FALSE;
-		}
-		
-		$sUser = \Flake\Util\Tools::POST("login");
-		$sPass = \Flake\Util\Tools::POST("password");
-		
-		$sPassHash = self::hashAdminPassword($sPass);
-		
-		if($sUser === "admin" && $sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
-			$_SESSION["baikaladminauth"] = md5(BAIKAL_ADMIN_PASSWORDHASH);
-			return TRUE;
-		}
+    static function isAuthenticated() {
+        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
+            return true;
+        }
 
-		return FALSE;
-		
-	}
-	
-	public static function unAuthenticate() {
-		unset($_SESSION["baikaladminauth"]);
-	}
+        return false;
+    }
 
-	public static function hashAdminPassword($sPassword) {
-		if(defined("BAIKAL_AUTH_REALM")) {
-			$sAuthRealm = BAIKAL_AUTH_REALM;
-		} else {
-			$sAuthRealm = "BaikalDAV";	# Fallback to default value; useful when initializing App, as all constants are not set yet
-		}
+    static function authenticate() {
 
-		return md5('admin:' . $sAuthRealm . ':' . $sPassword);
-	}
+        if (intval(\Flake\Util\Tools::POST("auth")) !== 1) {
+            return false;
+        }
+
+        $sUser = \Flake\Util\Tools::POST("login");
+        $sPass = \Flake\Util\Tools::POST("password");
+
+        $sPassHash = self::hashAdminPassword($sPass);
+
+        if ($sUser === "admin" && $sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
+            $_SESSION["baikaladminauth"] = md5(BAIKAL_ADMIN_PASSWORDHASH);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    static function unAuthenticate() {
+        unset($_SESSION["baikaladminauth"]);
+    }
+
+    static function hashAdminPassword($sPassword) {
+        if (defined("BAIKAL_AUTH_REALM")) {
+            $sAuthRealm = BAIKAL_AUTH_REALM;
+        } else {
+            $sAuthRealm = "BaikalDAV";    # Fallback to default value; useful when initializing App, as all constants are not set yet
+        }
+
+        return md5('admin:' . $sAuthRealm . ':' . $sPassword);
+    }
 
 }

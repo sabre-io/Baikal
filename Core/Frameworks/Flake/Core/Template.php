@@ -24,28 +24,29 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
+
 namespace Flake\Core;
 
 class Template extends \Flake\Core\FLObject {
-	
-	private $sAbsPath = "";
-	private $sHtml = "";
-	
-	public function __construct($sAbsPath) {
-		$this->sAbsPath = $sAbsPath;
-		$this->sHtml = $this->getTemplateFile(
-			$this->sAbsPath
-		);
-	}
-	
-	private function getTemplateFile($sAbsPath) {
-		return file_get_contents($sAbsPath);
-	}
 
-	function parse($aMarkers = array()) {
-		return \Flake\Util\Tools::parseTemplateCode(
-			$this->sHtml,
-			$aMarkers
-		);
-	}
+    private $sAbsPath = "";
+    private $sHtml = "";
+
+    function __construct($sAbsPath) {
+        $this->sAbsPath = $sAbsPath;
+        $this->sHtml = $this->getTemplateFile(
+            $this->sAbsPath
+        );
+    }
+
+    private function getTemplateFile($sAbsPath) {
+        return file_get_contents($sAbsPath);
+    }
+
+    function parse($aMarkers = []) {
+        return \Flake\Util\Tools::parseTemplateCode(
+            $this->sHtml,
+            $aMarkers
+        );
+    }
 }
