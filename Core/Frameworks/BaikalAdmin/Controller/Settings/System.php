@@ -129,11 +129,11 @@ class System extends \Flake\Core\Controller {
                 // We'll have to clean this up later.
                 $sFile = eval('return ' . $sFile . ';');
 
-                if(!file_exists($sFile)) {
+                if (!file_exists($sFile)) {
                     $sMessage = "DB file does not exist.";
                     $sMessage .= "</br>You can copy a sqlite Database file from there: <strong>Core/Resources/Db/SQLite/db.sqlite</strong>";
                     $oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"),$sMessage);
-					return FALSE;
+                    return;
                 }
 
                 # Asserting DB file is writable
