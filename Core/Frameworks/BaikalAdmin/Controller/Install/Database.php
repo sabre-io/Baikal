@@ -78,7 +78,9 @@ class Database extends \Flake\Core\Controller {
 	}
 
 	public function validateConnection($oForm, $oMorpho) {
-
+		if($oForm->refreshed()){
+			return TRUE;
+		}
 		$bMySQLEnabled = $oMorpho->element("PROJECT_DB_MYSQL")->value();
 
 		if($bMySQLEnabled) {
@@ -120,26 +122,12 @@ class Database extends \Flake\Core\Controller {
 
 				return TRUE;
 			} catch(\Exception $e) {
-				$oForm->declareError(
-					$oMorpho->element("PROJECT_DB_MYSQL"),
-					"Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage()
-				);
-
-				$oForm->declareError(
-					$oMorpho->element("PROJECT_DB_MYSQL_HOST")
-				);
-
-				$oForm->declareError(
-					$oMorpho->element("PROJECT_DB_MYSQL_DBNAME")
-				);
-
-				$oForm->declareError(
-					$oMorpho->element("PROJECT_DB_MYSQL_USERNAME")
-				);
-
-				$oForm->declareError(
-					$oMorpho->element("PROJECT_DB_MYSQL_PASSWORD")
-				);
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL"),
+					"Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_HOST"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
+				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
 			}
         } else {
 			
@@ -152,6 +140,19 @@ class Database extends \Flake\Core\Controller {
                 // config settings are eval'ed because they are written as raw php files.
                 // We'll have to clean this up later.
                 $sFile = eval('return ' . $sFile . ';');
+
+                # Asserting DB file is writable
+				if(file_exists($sFile) && !is_writable($sFile)) {
+					$sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
+					$oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"),$sMessage);
+					return FALSE;
+				}
+				# Asserting DB directory is writable
+				if(!is_writable(dirname($sFile))) {
+					$sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
+					$oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"),$sMessage);
+					return FALSE;
+				}
 
 
 				$oDb = new \Flake\Core\Database\Sqlite(

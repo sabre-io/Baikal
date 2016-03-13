@@ -224,7 +224,10 @@ class Framework extends \Flake\Core\Framework {
 	}
 	
 	protected static function initDb() {
-
+		# Dont init db on install, but in normal mode and when upgrading
+		if(defined("BAIKAL_CONTEXT_INSTALL") && (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION)) {
+			return true;
+		}
 		if(defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === TRUE) {
 			self::initDbMysql();
 		} else {
@@ -274,15 +277,19 @@ class Framework extends \Flake\Core\Framework {
 			die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
 		}
 		
-        $GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
-            PROJECT_DB_MYSQL_HOST,
-            PROJECT_DB_MYSQL_DBNAME,
-            PROJECT_DB_MYSQL_USERNAME,
-            PROJECT_DB_MYSQL_PASSWORD
-        );
+        try {
+			$GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
+				PROJECT_DB_MYSQL_HOST,
+				PROJECT_DB_MYSQL_DBNAME,
+				PROJECT_DB_MYSQL_USERNAME,
+				PROJECT_DB_MYSQL_PASSWORD
+			);
 
-        # We now setup the connection to use UTF8
-        $GLOBALS["DB"]->query("SET NAMES UTF8");
+			# We now setup t6he connexion to use UTF8
+			$GLOBALS["DB"]->query("SET NAMES UTF8");
+		} catch(\Exception $e) {
+			die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in Specific/config.system.php).</h3>");
+		}
 		
 		return TRUE;
 	}

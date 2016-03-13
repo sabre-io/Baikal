@@ -80,6 +80,9 @@ class System extends \Flake\Core\Controller {
 	}
 	
 	public function validationHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+		if($oForm->refreshed()){
+			return TRUE;
+		}
 		if(intval($oForm->modelInstance()->get("PROJECT_DB_MYSQL")) === 1) {
 				
 			# We have to check the MySQL connection
@@ -113,6 +116,54 @@ class System extends \Flake\Core\Controller {
 				$oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL"), $sMessage);
 				return;
 			}
-		}
+		} else {
+			
+			$sFile = $oMorpho->element("PROJECT_SQLITE_FILE")->value();
+
+            try {
+
+                // not sure yet how to better address this
+                // yup! this is mental, but even if we don't use eval, effectively these
+                // config settings are eval'ed because they are written as raw php files.
+                // We'll have to clean this up later.
+                $sFile = eval('return ' . $sFile . ';');
+
+                # Asserting DB file is writable
+				if(file_exists($sFile) && !is_writable($sFile)) {
+					$sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
+					$oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"),$sMessage);
+					return;
+				}
+				# Asserting DB directory is writable
+				if(!is_writable(dirname($sFile))) {
+					$sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
+					$oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"),$sMessage);
+					return;
+				}
+
+
+				$oDb = new \Flake\Core\Database\Sqlite(
+					$sFile
+				);
+
+				if(($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== TRUE) {
+					$sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+					$sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+					$sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/SQLite/db.sql</strong></p>";
+					$sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+
+					$oForm->declareError(
+						$oMorpho->element("PROJECT_SQLITE_FILE"),
+						$sMessage
+					);
+				}
+				return ;
+			} catch(\Exception $e) {
+				$oForm->declareError(
+					$oMorpho->element("PROJECT_SQLITE_FILE"),
+						"Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string)$e
+						);
+			}
+        }
 	}
 }
