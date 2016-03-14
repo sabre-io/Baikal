@@ -63,6 +63,7 @@ if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
     if (\BaikalAdmin\Core\Auth::authenticate()) {
         // Redirect to itself
         header('Location: ' . $_SERVER['REQUEST_URI']);
+        exit();
 
     } else {
         // Draw login page
