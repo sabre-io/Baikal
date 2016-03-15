@@ -24,10 +24,10 @@
         "jeromeschneider/baikal" : "self.version"
     },
     "autoload": {
-        "psr-0" : {
-            "Baikal"         : "Core/Frameworks/",
-            "Flake"          : "Core/Frameworks/",
-            "Formal"         : "Core/Frameworks/"
+        "psr-4" : {
+            "Baikal\\" : "lib/Baikal",
+            "Flake\\"  : "lib/Flake",
+            "Formal\\" : "lib/Formal"
         }
     },
     "support" : {

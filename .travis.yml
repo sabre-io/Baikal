@@ -26,6 +26,6 @@ before_script:
   - composer update --prefer-source $LOWEST_DEPS
 
 script:
-    - find Core -name "*.php" | xargs -n1 php -l 
+    - find lib/ -name "*.php" | xargs -n1 php -l
     - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
 
