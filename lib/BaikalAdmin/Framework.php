@@ -38,6 +38,6 @@ class Framework extends \Flake\Core\Framework {
         $GLOBALS["ROUTER"]::setURIPath("admin/");
 
         # Include BaikalAdmin Framework config
-        require_once(BAIKALADMIN_PATH_ROOT . "config.php");
+        require_once __DIR__ . "/config.php";
     }
 }

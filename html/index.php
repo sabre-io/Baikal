@@ -1,1 +1,1 @@
-../Core/Frameworks/Baikal/WWWRoot/index.php
+../lib/Baikal/WWWRoot/index.php

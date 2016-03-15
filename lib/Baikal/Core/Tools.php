@@ -74,32 +74,32 @@ class Tools {
 
         # Asserting config file exists
         if (!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php does not exist. Please use the Install tool to create it.");
+            throw new \Exception("data/config.php does not exist. Please use the Install tool to create it.");
         }
 
         # Asserting config file is readable
         if (!is_readable(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php is not readable. Please give read permissions to httpd user on file 'Specific/config.php'.");
+            throw new \Exception("data/config.php is not readable. Please give read permissions to httpd user on file 'data/config.php'.");
         }
 
         # Asserting config file is writable
         if (!is_writable(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php is not writable. Please give write permissions to httpd user on file 'Specific/config.php'.");
+            throw new \Exception("data/config.php is not writable. Please give write permissions to httpd user on file 'data/config.php'.");
         }
 
         # Asserting system config file exists
         if (!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php does not exist. Please use the Install tool to create it.");
+            throw new \Exception("data/config.system.php does not exist. Please use the Install tool to create it.");
         }
 
         # Asserting system config file is readable
         if (!is_readable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php is not readable. Please give read permissions to httpd user on file 'Specific/config.system.php'.");
+            throw new \Exception("data/config.system.php is not readable. Please give read permissions to httpd user on file 'data/config.system.php'.");
         }
 
         # Asserting system config file is writable
         if (!is_writable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
+            throw new \Exception("data/config.system.php is not writable. Please give write permissions to httpd user on file 'data/config.system.php'.");
         }
     }
 

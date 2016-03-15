@@ -68,7 +68,7 @@ class Tools extends \Flake\Core\FLObject {
     }
 
     static function serverToRelativeWebPath($sAbsPath) {
-        return "/" . str_replace(PROJECT_PATH_WWWROOT, "", $sAbsPath);
+        return "/" . str_replace(PROJECT_PATH_ROOT, "", $sAbsPath);
     }
 
     static function view_array($array_in) {

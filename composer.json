@@ -25,9 +25,10 @@
     },
     "autoload": {
         "psr-4" : {
-            "Baikal\\" : "lib/Baikal",
-            "Flake\\"  : "lib/Flake",
-            "Formal\\" : "lib/Formal"
+            "Baikal\\"      : "lib/Baikal",
+            "BaikalAdmin\\" : "lib/BaikalAdmin",
+            "Flake\\"       : "lib/Flake",
+            "Formal\\"      : "lib/Formal"
         }
     },
     "support" : {

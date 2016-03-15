@@ -147,13 +147,9 @@ class Framework extends \Flake\Core\Framework {
         # determine Flake install root path
         # not using realpath here to avoid symlinks resolution
 
-        define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
-        define("PROJECT_PATH_CORERESOURCES", PROJECT_PATH_CORE . "Resources/");
-        define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
-        define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
-        define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
-
-        require_once(PROJECT_PATH_CORE . "Distrib.php");
+        define("PROJECT_PATH_CORERESOURCES", PROJECT_PATH_ROOT . "resources/");
+        define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "data/");
+        define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_ROOT . "lib/");
 
         define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 
@@ -182,7 +178,7 @@ class Framework extends \Flake\Core\Framework {
         #################################################################################################
 
         # Include Flake Framework config
-        require_once(FLAKE_PATH_ROOT . "config.php");
+        require __DIR__ . "/config.php";
 
         # Determine Router class
         $GLOBALS["ROUTER"] = \Flake\Util\Tools::router();
@@ -230,7 +226,7 @@ class Framework extends \Flake\Core\Framework {
 
     protected static function initDb() {
         # Dont init db on install, but in normal mode and when upgrading
-        if (defined("BAIKAL_CONTEXT_INSTALL") && (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION)) {
+        if (defined("BAIKAL_CONTEXT_INSTALL") && (BAIKAL_CONFIGURED_VERSION === \Baikal\Version::VERSION)) {
             return true;
         }
         if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
@@ -267,19 +263,19 @@ class Framework extends \Flake\Core\Framework {
     protected static function initDbMysql() {
 
         if (!defined("PROJECT_DB_MYSQL_HOST")) {
-            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in data/config.system.php</h3>");
         }
 
         if (!defined("PROJECT_DB_MYSQL_DBNAME")) {
-            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in data/config.system.php</h3>");
         }
 
         if (!defined("PROJECT_DB_MYSQL_USERNAME")) {
-            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in data/config.system.php</h3>");
         }
 
         if (!defined("PROJECT_DB_MYSQL_PASSWORD")) {
-            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in data/config.system.php</h3>");
         }
 
         try {
@@ -293,7 +289,7 @@ class Framework extends \Flake\Core\Framework {
             # We now setup t6he connexion to use UTF8
             $GLOBALS["DB"]->query("SET NAMES UTF8");
         } catch (\Exception $e) {
-            die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in Specific/config.system.php).</h3>");
+            die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in data/config.system.php).</h3>");
         }
 
         return true;

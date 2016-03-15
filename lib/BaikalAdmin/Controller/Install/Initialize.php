@@ -34,11 +34,11 @@ class Initialize extends \Flake\Core\Controller {
     protected $oForm;    # \Formal\Form
 
     function execute() {
-        # Assert that /Specific is writable
+        # Assert that /data is writable
 
         if (!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
-            $message = "<h1>Error - Insufficient  permissions on the <span style='background-color: yellow;'>Specific/</span> folder</h1><p>";
-            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> folder.</p>";
+            $message = "<h1>Error - Insufficient  permissions on the <span style='background-color: yellow;'>data/</span> folder</h1><p>";
+            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>data/</strong> folder.</p>";
 
             die($message);
         }

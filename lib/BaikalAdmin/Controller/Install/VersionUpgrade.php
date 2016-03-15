@@ -90,7 +90,7 @@ HTML;
             if (PROJECT_SQLITE_FILE === $sOldDbFilePath) {
                 $sNewDbFilePath = PROJECT_PATH_SPECIFIC . "Db/db.sqlite";
 
-                # Move old db from Specific/Db/.ht.db.sqlite to Specific/Db/db.sqlite
+                # Move old db from data/Db/.ht.db.sqlite to data/Db/db.sqlite
                 if (!file_exists($sNewDbFilePath)) {
                     if (!is_writable(dirname($sNewDbFilePath))) {
                         $this->aErrors[] = "DB file path '" . dirname($sNewDbFilePath) . "' is not writable";
