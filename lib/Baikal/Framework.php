@@ -46,6 +46,8 @@ class Framework extends \Flake\Core\Framework {
         # Registering Baikal classloader
         define("BAIKAL_PATH_FRAMEWORKROOT", dirname(__FILE__) . "/");
 
+        define('BAIKAL_VERSION', \Baikal\Version::VERSION);
+
         \Baikal\Core\Tools::assertEnvironmentIsOk();
         \Baikal\Core\Tools::configureEnvironment();
 
@@ -67,7 +69,7 @@ class Framework extends \Flake\Core\Framework {
             } else {
 
                 # Check that running version matches configured version
-                if (version_compare(BAIKAL_VERSION, BAIKAL_CONFIGURED_VERSION) > 0) {
+                if (version_compare(\Baikal\Version::VERSION, BAIKAL_CONFIGURED_VERSION) > 0) {
                     self::installTool();
 
                 } else {

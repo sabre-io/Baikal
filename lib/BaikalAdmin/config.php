@@ -24,7 +24,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKALADMIN_PATH_TEMPLATES", BAIKALADMIN_PATH_ROOT . "Resources/Templates/");
+define("BAIKALADMIN_PATH_TEMPLATES", PROJECT_PATH_ROOT . "html/res/core/BaikalAdmin/Templates/");
 
 $GLOBALS["ROUTES"] = [
     "default"            => "\BaikalAdmin\Route\Dashboard",

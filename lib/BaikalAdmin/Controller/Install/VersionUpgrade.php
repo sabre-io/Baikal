@@ -41,10 +41,10 @@ class VersionUpgrade extends \Flake\Core\Controller {
 
     function render() {
         $sBigIcon = "glyph2x-magic";
-        $sBaikalVersion = BAIKAL_VERSION;
+        $sBaikalVersion = \Baikal\Version::VERSION;
         $sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
 
-        if (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
+        if (BAIKAL_CONFIGURED_VERSION === \Baikal\Version::VERSION) {
             $sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
@@ -58,7 +58,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 HTML;
 
         try {
-            $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
+            $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, \Baikal\Version::VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
