@@ -1,9 +1,9 @@
 # logs
 logs
 
-# Specific
-Specific/config.php
-Specific/config.system.php
+# data
+data/config.php
+data/config.system.php
 
 # Composer stuff
 composer.lock
