@@ -1,7 +1,10 @@
 ChangeLog
 =========
 
-0.4.0 (????-??-??)
+0.5.0 (????-??-??)
+------------------
+
+0.4.0 (2016-03-15)
 ------------------
 
 * #472: If you were using Sqlite, Cal- CardDAV clients might have missed
@@ -9,6 +12,9 @@ ChangeLog
 * #482 / #490: Fix installation issue if Sqlite is not enabled. (@fabianwolf)
 * #491: Added CalDAV Scheduling plugin.
 * Added Property Storage plugin.
+* Removed features related to locking the admin interface. This means that you
+  no longer have to create the `ENABLE_ADMIN` / `ENABLE_INSTALL` files.
+* Ships with sabre/dav 3.1.2
 
 
 0.3.5 (2016-02-24)
