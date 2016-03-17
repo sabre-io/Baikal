@@ -419,8 +419,8 @@ CREATE TABLE calendars (
     transparent bool
 );');
 
-                $pdo->exec('INSERT INTO calendars SELECT * FROM calendars' . $tmpTable);
-                $pdo->exec('INSERT INTO addressbooks SELECT * FROM addressbooks' . $tmpTable);
+                $pdo->exec('INSERT INTO calendars SELECT id, principaluri, displayname, uri, synctoken, description, calendarorder, calendarcolor, timezone, components, transparent FROM calendars' . $tmpTable);
+                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks' . $tmpTable);
 
                 $this->aSuccess[] = 'Updated calendars and addressbooks tables';
 

@@ -4,6 +4,8 @@ ChangeLog
 0.4.1 (2016-??-??)
 ------------------
 
+* #506: Fix Sqlite upgrades from people that are upgrading from 0.2.7 or
+  earlier.
 
 
 0.4.0 (2016-03-15)
