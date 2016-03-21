@@ -72,7 +72,8 @@ if (!defined("BAIKAL_CONFIGURED_VERSION")) {
         # we have to upgrade Baïkal
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
     } else {
-        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
+        die('Baïkal is already installed. Please log in to the admin interface');
+        //$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
     }
 }
 
