@@ -230,7 +230,7 @@ class Framework extends \Flake\Core\Framework {
 
     protected static function initDb() {
         # Dont init db on install, but in normal mode and when upgrading
-        if (defined("BAIKAL_CONTEXT_INSTALL") && (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION)) {
+        if (defined("BAIKAL_CONTEXT_INSTALL") && (!defined('BAIKAL_CONFIGURED_VERSION') || BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION)) {
             return true;
         }
         if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
