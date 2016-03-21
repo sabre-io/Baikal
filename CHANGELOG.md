@@ -4,6 +4,15 @@ ChangeLog
 0.5.0 (????-??-??)
 ------------------
 
+
+0.4.1 (2016-03-17)
+------------------
+
+* #506: Fix Sqlite upgrades from people that are upgrading from 0.2.7 or
+  earlier.
+* Ships with sabre/dav 3.1.2
+
+
 0.4.0 (2016-03-15)
 ------------------
 
