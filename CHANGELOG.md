@@ -5,6 +5,7 @@ ChangeLog
 ------------------
 
 * #510: Fix PHP warning on fresh install.
+* #507: Disable installer if Baikal was already configured.
 
 
 0.4.1 (2016-03-17)
