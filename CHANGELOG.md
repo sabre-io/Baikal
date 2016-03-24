@@ -4,11 +4,20 @@ ChangeLog
 0.5.0 (????-??-??)
 ------------------
 
-0.4.2 (2016-??-??)
+
+0.4.3 (2016-03-23)
+------------------
+
+* #513: Fixed error during installation, introduced with 0.4.2.
+* Ships with sabre/dav 3.1.2
+
+
+0.4.2 (2016-03-21)
 ------------------
 
 * #510: Fix PHP warning on fresh install.
 * #507: Disable installer if Baikal was already configured.
+* Ships with sabre/dav 3.1.2
 
 
 0.4.1 (2016-03-17)

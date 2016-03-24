@@ -71,9 +71,11 @@ if (!defined("BAIKAL_CONFIGURED_VERSION")) {
     if (BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+    } elseif (!file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
     } else {
-        die('Baïkal is already installed. Please log in to the admin interface');
-        //$oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
+        echo "Installation was already completed. Please head to the admin interface to modify any settings.\n";
+        die();
     }
 }
 

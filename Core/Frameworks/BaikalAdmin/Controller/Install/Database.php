@@ -46,8 +46,7 @@ class Database extends \Flake\Core\Controller {
             $this->oForm->execute();
 
             if ($this->oForm->persisted()) {
-
-                # nothing here
+                touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
             }
         }
     }
