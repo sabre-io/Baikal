@@ -162,6 +162,9 @@ class Server {
             new \Sabre\DAV\PropertyStorage\Backend\PDO($this->pdo)
         ));
 
+        // WebDAV-Sync!
+        $this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
+
         if ($this->enableCalDAV) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
