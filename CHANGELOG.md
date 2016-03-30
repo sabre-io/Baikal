@@ -4,6 +4,13 @@ ChangeLog
 0.5.0 (????-??-??)
 ------------------
 
+0.4.4 (2016-03-30)
+------------------
+
+* #517: Added the Sync plugin. Should speed things up and fix syncing bugs
+  with Em Client.
+* Ships with sabre/dav 3.1.2
+
 
 0.4.3 (2016-03-23)
 ------------------
