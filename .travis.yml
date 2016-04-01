@@ -18,8 +18,6 @@ services:
 
 sudo: false
 
-cache: vendor
-
 before_script:
   # - mysql -e 'create database sabredav'
   # - composer self-update
@@ -29,3 +27,6 @@ script:
     - find Core -name "*.php" | xargs -n1 php -l 
     - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
 
+cache:
+  directories:
+    - $HOME/.composer/cache
