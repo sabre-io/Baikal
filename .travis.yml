@@ -20,6 +20,7 @@ sudo: false
 
 before_script:
   # - mysql -e 'create database sabredav'
+  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
   # - composer self-update
   - composer update --prefer-source $LOWEST_DEPS
 
