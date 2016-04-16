@@ -118,7 +118,7 @@ class AddressBooks extends \Flake\Core\Controller {
 
         return $iUser;
     }
-	
+
     # Action new
 
     function linkNew() {
