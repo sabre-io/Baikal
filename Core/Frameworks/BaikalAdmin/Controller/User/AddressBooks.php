@@ -72,7 +72,7 @@ class AddressBooks extends \Flake\Core\Controller {
                 "linkedit"    => $this->linkEdit($addressbook),
                 "linkdelete"  => $this->linkDelete($addressbook),
                 "icon"        => $addressbook->icon(),
-                "label"       => $addressbook->label(),
+                "label"       => $addressbook->label() . ' (' . $addressbook->getContactsBaseRequester()->count() . ' contacts)',
                 "description" => $addressbook->get("description"),
             ];
         }
@@ -118,7 +118,7 @@ class AddressBooks extends \Flake\Core\Controller {
 
         return $iUser;
     }
-
+	
     # Action new
 
     function linkNew() {
