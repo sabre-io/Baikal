@@ -1,6 +1,11 @@
 ChangeLog
 =========
 
+0.4.5 (????-??-??)
+------------------
+
+* #552: PHP 7.0.7 introduced a sublte BC break that caused Baikal to error.
+
 0.4.4 (2016-03-30)
 ------------------
 
