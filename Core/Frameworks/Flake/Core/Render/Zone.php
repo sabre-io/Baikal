@@ -33,7 +33,7 @@ class Zone extends \Flake\Core\FLObject {
         $this->sZone = $sZone;
     }
 
-    function addBlock(&$oBlock) {
+    function addBlock($oBlock) {
         $this->oZonableObject->addBlock(
             $oBlock,
             $this->sZone
