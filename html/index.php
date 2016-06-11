@@ -14,6 +14,7 @@ require_once $baseDir . 'vendor/autoload.php';
 $app = new Silex\Application();
 $app['debug'] = true;
 
+require_once($baseDir . '/config/config.php');
 require_once($baseDir . '/config/services.php');
 require_once($baseDir . '/config/controllers.php');
 require_once($baseDir . '/config/routes.php');
