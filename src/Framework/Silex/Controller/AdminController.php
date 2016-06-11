@@ -8,7 +8,7 @@ class AdminController
 {
     use TwigTemplate;
 
-    public function logoutAction()
+    function logoutAction()
     {
         $this->redirect('admin');
     }

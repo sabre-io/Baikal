@@ -12,7 +12,7 @@ trait TwigTemplate
     /**
      * @param Twig_Environment $template
      */
-    public function setTemplate(Twig_Environment $template)
+    function setTemplate(Twig_Environment $template)
     {
         $this->template = $template;
     }
@@ -20,7 +20,7 @@ trait TwigTemplate
     /**
      * @return Twig_Environment
      */
-    public function getTemplate()
+    function getTemplate()
     {
         return $this->template;
     }

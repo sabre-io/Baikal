@@ -22,6 +22,6 @@ final class ControllerResolver extends BaseControllerResolver
             throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $controller));
         }
 
-        return array($this->app[$service], $method);
+        return [$this->app[$service], $method];
     }
 }

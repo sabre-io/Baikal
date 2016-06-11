@@ -8,7 +8,7 @@ class IndexController
 {
     use TwigTemplate;
 
-    public function indexAction()
+    function indexAction()
     {
         return 'Hello world!';
     }

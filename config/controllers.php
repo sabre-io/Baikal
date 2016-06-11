@@ -1,7 +1,6 @@
 <?php
 
 /** @var Silex\Application $app */
-
 use Baikal\Framework\Silex\Controller\AdminController;
 use Baikal\Framework\Silex\Controller\DashboardController;
 use Baikal\Framework\Silex\Controller\IndexController;
