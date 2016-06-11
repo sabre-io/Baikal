@@ -2,14 +2,12 @@
 
 namespace Baikal\Framework\Silex\Controller;
 
-use Baikal\Framework\Silex\TwigTemplate;
+use Baikal\Framework\Silex\Controller;
 
-class AdminController
+final class AdminController extends Controller
 {
-    use TwigTemplate;
-
     function logoutAction()
     {
-        $this->redirect('admin');
+        return $this->redirect('dashboard');
     }
 }

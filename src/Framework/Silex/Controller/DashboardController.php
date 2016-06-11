@@ -2,15 +2,13 @@
 
 namespace Baikal\Framework\Silex\Controller;
 
-use Baikal\Framework\Silex\TwigTemplate;
+use Baikal\Framework\Silex\Controller;
 
-class DashboardController
+final class DashboardController extends Controller
 {
-    use TwigTemplate;
-
     function indexAction()
     {
-        return $this->getTemplate()->render('Admin/dashboard.html.twig', [
+        return $this->render('Admin/dashboard.html.twig', [
             // Navbar
             'homelink'               => '/admin',
             'activehome'             => true,

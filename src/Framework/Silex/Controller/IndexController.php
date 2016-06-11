@@ -2,14 +2,17 @@
 
 namespace Baikal\Framework\Silex\Controller;
 
-use Baikal\Framework\Silex\TwigTemplate;
+use Baikal\Framework\Silex\Controller;
+use Psr\Http\Message\RequestInterface;
 
-class IndexController
+final class IndexController extends Controller
 {
-    use TwigTemplate;
-
-    function indexAction()
+    /**
+     * @param RequestInterface $request
+     * @return string
+     */
+    function indexAction(RequestInterface $request)
     {
-        return 'Hello world!';
+        return 'Hello world! <pre>' . var_export($request, true) . '</pre>';
     }
 }

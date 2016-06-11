@@ -5,20 +5,12 @@ use Baikal\Framework\Silex\Controller\AdminController;
 use Baikal\Framework\Silex\Controller\DashboardController;
 use Baikal\Framework\Silex\Controller\IndexController;
 
-$app['index.controller'] = function($app) {
-    $indexController = new IndexController();
-    $indexController->setTemplate($app['twig']);
-    return $indexController;
-};
+$controllerServices = [
+    'index.controller' => IndexController::class,
+    'admin.controller' => AdminController::class,
+    'dashboard.controller' => DashboardController::class,
+];
 
-$app['admin.controller'] = function($app) {
-    $adminController = new AdminController();
-    $adminController->setTemplate($app['twig']);
-    return $adminController;
-};
-
-$app['dashboard.controller'] = function($app) {
-    $dashboardController = new DashboardController();
-    $dashboardController->setTemplate($app['twig']);
-    return $dashboardController;
-};
+foreach ($controllerServices as $serviceName => $controllerClass) {
+    $app[$serviceName] = $controllerClass;
+}
