@@ -42,6 +42,7 @@ abstract class Controller
      */
     function render($name, $context = [])
     {
+        $name .= '.html.twig';
         return new Response($this->twig->render($name, $context));
     }
 
