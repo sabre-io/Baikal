@@ -6,9 +6,9 @@ use Baikal\Framework\Silex\Controller\DashboardController;
 use Baikal\Framework\Silex\Controller\IndexController;
 
 $app['index.controller'] = function($app) {
-    $timelineController = new IndexController();
-    $timelineController->setTemplate($app['twig']);
-    return $timelineController;
+    $indexController = new IndexController();
+    $indexController->setTemplate($app['twig']);
+    return $indexController;
 };
 
 $app['admin.controller'] = function($app) {
