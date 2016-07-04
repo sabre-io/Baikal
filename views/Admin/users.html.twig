@@ -11,7 +11,7 @@
             <tr>
                 <td class="col-username">
                     <i class="icon-user"></i> <strong>{{ user.username|escape }}</strong><br />
-                    {{ user.displayName|escape }} <a href="{{ user.mailtoUri|escape }}">&lt;{{ user.email|escape }}&gt;</a>
+                    {{ user.displayName|escape }} <a href="mailto:{{ user.mailtoUri|escape }}">&lt;{{ user.email|escape }}&gt;</a>
                 </td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
