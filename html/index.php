@@ -21,7 +21,7 @@ require_once($baseDir . '/config/routes.php');
 
 try {
     $app->run();
-} catch(\Throwable $e) {
+} catch (\Throwable $e) {
     if ($app['debug']) {
         echo '<pre>'; print_r($e);
     }
