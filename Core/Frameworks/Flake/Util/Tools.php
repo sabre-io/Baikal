@@ -357,8 +357,8 @@ TEST;
     }
 
     static function parseTemplateCode($sCode, $aMarkers) {
-        $tplName = uniqid( 'string_template_', true);
-        $loader = new \Twig_Loader_Array( array($tplName => $sCode) );
+        $tplName = uniqid('string_template_', true);
+        $loader = new \Twig_Loader_Array([$tplName => $sCode]);
         $env = new \Twig_Environment($loader);
         $env->setCache(false);
         return $env->render($tplName, $aMarkers);
