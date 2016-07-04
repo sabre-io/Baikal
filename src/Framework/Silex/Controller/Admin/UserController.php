@@ -117,4 +117,12 @@ final class UserController extends Controller
             'calendars' => [],
         ]);
     }
+
+    function addressbookAction($username)
+    {
+        return $this->render('Admin/user/addressbooks', [
+            'username' => $username,
+            'addressbooks' => [],
+        ]);
+    }
 }
