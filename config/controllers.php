@@ -6,13 +6,18 @@ use Baikal\Framework\Silex\Controller\AdminController;
 use Baikal\Framework\Silex\Controller\Admin\DashboardController;
 use Baikal\Framework\Silex\Controller\IndexController;
 
-$controllerServices = [
-    'index.controller' => IndexController::class,
-    'admin.controller' => AdminController::class,
-    'admin.dashboard.controller' => DashboardController::class,
-    'admin.user.controller' => UserController::class,
-];
+$app['index.controller'] = function($app) {
+    return new IndexController($app['twig'], $app['url_generator']);
+};
 
-foreach ($controllerServices as $serviceName => $controllerClass) {
-    $app[$serviceName] = $controllerClass;
-}
+$app['admin.controller'] = function($app) {
+    return new AdminController($app['twig'], $app['url_generator']);
+};
+
+$app['admin.dashboard.controller'] = function($app) {
+    return new DashboardController($app['twig'], $app['url_generator'], $app['admin.user.repository']);
+};
+
+$app['admin.user.controller'] = function($app) {
+    return new UserController($app['twig'], $app['url_generator'], $app['admin.user.repository']);
+};

@@ -19,4 +19,10 @@ require_once($baseDir . '/config/services.php');
 require_once($baseDir . '/config/controllers.php');
 require_once($baseDir . '/config/routes.php');
 
-$app->run();
+try {
+    $app->run();
+} catch(\Throwable $e) {
+    if ($app['debug']) {
+        echo '<pre>'; print_r($e);
+    }
+}

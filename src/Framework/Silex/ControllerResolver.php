@@ -26,18 +26,6 @@ final class ControllerResolver extends BaseControllerResolver
             throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $controller));
         }
 
-        return array($this->instantiateController($this->app[$service]), $method);
-    }
-
-    /**
-     * Returns an instantiated controller.
-     *
-     * @param string $class A class name
-     *
-     * @return object
-     */
-    protected function instantiateController($class)
-    {
-        return new $class($this->app['twig'], $this->app['url_generator']);
+        return [$this->app[$service], $method];
     }
 }

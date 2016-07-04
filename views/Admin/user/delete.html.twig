@@ -1,0 +1,13 @@
+{% extends 'Admin/layout.html.twig' %}
+{% block content %}
+<header class="jumbotron subhead" id="overview">
+    <h1><i class="glyph2x-group"></i>Delete user</h1>
+</header>
+<form class="form-horizontal" action="{{ path('admin_user_delete_post', {username:username}) }}" method="post" enctype="multipart/formdata">
+    <h3>Are you sure you want to delete User '{{ username }}'?</h3>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Confirm delete</button>
+    </div>
+</form>
+
+{% endblock %}
