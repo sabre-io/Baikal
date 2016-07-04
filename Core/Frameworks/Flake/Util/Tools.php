@@ -357,11 +357,11 @@ TEST;
     }
 
     static function parseTemplateCode($sCode, $aMarkers) {
-
-        $loader = new \Twig_Loader_String();
-        $twig = new \Twig_Environment($loader);
-
-        return $twig->render($sCode, $aMarkers);
+        $tplName = uniqid( 'string_template_', true);
+        $loader = new \Twig_Loader_Array( array($tplName => $sCode) );
+        $env = new \Twig_Environment($loader);
+        $env->setCache(false);
+        return $env->render($tplName, $aMarkers);
     }
 
 
