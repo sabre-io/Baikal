@@ -121,7 +121,7 @@ final class UserController extends Controller
     function addressbookAction($username)
     {
         return $this->render('Admin/user/addressbooks', [
-            'username' => $username,
+            'username'     => $username,
             'addressbooks' => [],
         ]);
     }
