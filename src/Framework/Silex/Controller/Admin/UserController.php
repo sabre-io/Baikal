@@ -18,7 +18,7 @@ final class UserController extends Controller
      */
     private $userRepository;
 
-    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
+    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
         parent::__construct($twig, $urlGenerator);
         $this->userRepository = $userRepository;
@@ -29,9 +29,9 @@ final class UserController extends Controller
         $users = $this->userRepository->all();
 
         return $this->render('Admin/users', [
-            'users' => $users,
+            'users'    => $users,
             'messages' => '',
-            'form' => '',
+            'form'     => '',
         ]);
     }
 
@@ -43,10 +43,10 @@ final class UserController extends Controller
 
         return $this->render('Admin/users_form', [
             'user' => [
-                'username' => '',
+                'username'    => '',
                 'displayName' => '',
-                'email' => '',
-                'password' => '',
+                'email'       => '',
+                'password'    => '',
             ],
         ]);
     }
@@ -70,10 +70,10 @@ final class UserController extends Controller
 
         if ($user === null) {
             $user = [
-                'username' => '',
+                'username'    => '',
                 'displayName' => '',
-                'email' => '',
-                'password' => '',
+                'email'       => '',
+                'password'    => '',
             ];
         }
 
@@ -113,7 +113,7 @@ final class UserController extends Controller
     function calendarAction($username)
     {
         return $this->render('Admin/user/calendars', [
-            'username' => $username,
+            'username'  => $username,
             'calendars' => [],
         ]);
     }

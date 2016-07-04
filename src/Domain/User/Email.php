@@ -26,12 +26,12 @@ final class Email
      * @param string $email
      * @return Email
      */
-    public static function fromString($email)
+    static function fromString($email)
     {
         return new self($email);
     }
 
-    public function __toString()
+    function __toString()
     {
         return $this->email;
     }

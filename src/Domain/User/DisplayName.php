@@ -12,12 +12,12 @@ final class DisplayName
         $this->displayName = $displayName;
     }
 
-    public static function fromString($displayName)
+    static function fromString($displayName)
     {
         return new self($displayName);
     }
 
-    public function __toString()
+    function __toString()
     {
         return $this->displayName;
     }

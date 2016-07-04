@@ -9,8 +9,6 @@ use Baikal\Domain\User\Password;
 
 /**
  * Domain model for User within the Baikal system
- *
- * @package Baikal\Domain
  */
 final class User
 {
@@ -56,7 +54,7 @@ final class User
      * @param array $data
      * @return User
      */
-    public static function fromArray(array $data)
+    static function fromArray(array $data)
     {
         return new self(
             Username::fromString($data['username']),
@@ -69,7 +67,7 @@ final class User
     /**
      * @return Username
      */
-    public function username()
+    function username()
     {
         return $this->username;
     }
@@ -77,7 +75,7 @@ final class User
     /**
      * @return DisplayName
      */
-    public function displayName()
+    function displayName()
     {
         return $this->displayName;
     }
@@ -85,7 +83,7 @@ final class User
     /**
      * @return Email
      */
-    public function email()
+    function email()
     {
         return $this->email;
     }
@@ -93,12 +91,12 @@ final class User
     /**
      * @return Password
      */
-    public function password()
+    function password()
     {
         return $this->password;
     }
 
-    public function mailtoUri()
+    function mailtoUri()
     {
         return sprintf("%s <%s>", $this->displayName(), $this->email());
     }

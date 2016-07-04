@@ -22,7 +22,7 @@ final class Username
      * @param string $username
      * @return Username
      */
-    public static function fromString($username)
+    static function fromString($username)
     {
         return new self($username);
     }
@@ -30,7 +30,7 @@ final class Username
     /**
      * @return string
      */
-    public function __toString()
+    function __toString()
     {
         return $this->username;
     }

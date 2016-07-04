@@ -14,7 +14,7 @@ final class DashboardController extends Controller
      */
     private $userRepository;
 
-    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
+    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
         parent::__construct($twig, $urlGenerator);
         $this->userRepository = $userRepository;
@@ -23,7 +23,7 @@ final class DashboardController extends Controller
     function indexAction()
     {
         return $this->render('Admin/dashboard', [
-            'users'             => $this->userRepository->count(),
+            'users'               => $this->userRepository->count(),
             'nbcalendars'         => 42,
             'nbevents'            => 42,
             'nbbooks'             => 42,

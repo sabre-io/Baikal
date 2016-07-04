@@ -10,8 +10,6 @@ use PDO;
 
 /**
  * UserRepository implementation using PDO
- *
- * @package Baikal\Infrastructure\Repository
  */
 final class PdoUserRepository implements UserRepository
 {
@@ -41,7 +39,7 @@ final class PdoUserRepository implements UserRepository
         }
 
         $users = [];
-        foreach($userQuery->fetchAll() as $userData) {
+        foreach ($userQuery->fetchAll() as $userData) {
             $users[] = User::fromArray($userData);
         }
         return $users;
@@ -53,7 +51,7 @@ final class PdoUserRepository implements UserRepository
     function count()
     {
         $statement = $this->pdo->query("SELECT COUNT(1) FROM `users`");
-        return (int) $statement->fetchColumn();
+        return (int)$statement->fetchColumn();
     }
 
     /**

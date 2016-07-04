@@ -21,7 +21,7 @@ final class Password
      * @param string $password
      * @return Password
      */
-    public static function fromString($password)
+    static function fromString($password)
     {
         return new self($password);
     }
@@ -29,7 +29,7 @@ final class Password
     /**
      * @return string
      */
-    public function __toString()
+    function __toString()
     {
         return $this->password;
     }
@@ -40,7 +40,7 @@ final class Password
      *
      * @return array
      */
-    public function __debugInfo()
+    function __debugInfo()
     {
         return [
             'password' => '*** obfuscated ***',

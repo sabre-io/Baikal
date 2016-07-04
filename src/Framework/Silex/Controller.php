@@ -2,7 +2,6 @@
 
 namespace Baikal\Framework\Silex;
 
-use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -10,13 +9,11 @@ use Twig_Environment;
 
 /**
  * Base class for controllers to provide some often used methods
- *
- * @package Baikal\Framework\Silex
  */
 abstract class Controller
 {
     /**
-     * @var Twig_Environment $twig
+     * @var Twig_Environment
      */
     private $twig;
 
