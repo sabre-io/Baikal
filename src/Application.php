@@ -3,6 +3,7 @@
 namespace Baikal;
 
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Provider\TwigServiceProvider;
 
 class Application extends \Silex\Application {
 
@@ -15,7 +16,9 @@ class Application extends \Silex\Application {
 
         parent::__construct($values);
         $this->initControllers();
+        $this->initServices();
         $this->initMiddleware();
+        $this->initSabreDAV();
 
     }
 
@@ -49,6 +52,50 @@ class Application extends \Silex\Application {
             $this['twig']->addGlobal('assetPath', dirname($request->getBaseUrl()) . '/assets/');
 
         });
+
+    }
+
+    /**
+     * Initializes silex services
+     */
+    protected function initServices() {
+
+        // Twig
+        $this->register(new TwigServiceProvider(), [
+            'twig.path' => __DIR__ . '/../views/',
+        ]);
+
+        $this['resolver'] = function() {
+            return new ControllerResolver($this);
+        };
+
+        $this['pdo'] = function() {
+            return new \PDO($this['config']['pdo']['dsn'], $this['config']['pdo']['username'], $this['config']['pdo']['password']);
+        };
+
+        $this['admin.user.repository'] = function() {
+            return new Infrastructure\Repository\PdoUserRepository($this['pdo']);
+        };
+
+    }
+
+    /**
+     * Initializes all sabre/dav services
+     */
+    protected function initSabreDAV() {
+
+        $this['sabredav'] = function() {
+
+            return new DAV\Server(
+                $this['config']['caldav']['enabled'],
+                $this['config']['carddav']['enabled'],
+                $this['config']['auth']['type'],
+                $this['config']['auth']['realm'],
+                $this['pdo'],
+                null
+            );
+
+        };
 
     }
 

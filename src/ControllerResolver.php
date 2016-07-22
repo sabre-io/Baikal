@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\Framework\Silex;
+namespace Baikal;
 
 use Silex\ControllerResolver as BaseControllerResolver;
 

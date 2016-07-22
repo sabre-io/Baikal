@@ -25,7 +25,7 @@
 #################################################################
 
 
-namespace Baikal\Core;
+namespace Baikal\DAV;
 
 use PDO;
 
