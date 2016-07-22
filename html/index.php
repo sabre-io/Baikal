@@ -9,20 +9,16 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     return false;
 }
 $baseDir = dirname(__FILE__) . '/../';
-require_once $baseDir . 'vendor/autoload.php';
 
-$app = new Silex\Application();
+require $baseDir . 'vendor/autoload.php';
+
+$config = require $baseDir . '/config/config.php';
+
+$app = new Silex\Application($config);
 $app['debug'] = true;
 
-require_once($baseDir . '/config/config.php');
-require_once($baseDir . '/config/services.php');
-require_once($baseDir . '/config/controllers.php');
-require_once($baseDir . '/config/routes.php');
+require $baseDir . '/config/services.php';
+require $baseDir . '/config/controllers.php';
+require $baseDir . '/config/routes.php';
 
-try {
-    $app->run();
-} catch (\Throwable $e) {
-    if ($app['debug']) {
-        echo '<pre>'; print_r($e);
-    }
-}
+$app->run();
