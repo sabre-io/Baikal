@@ -1,14 +1,15 @@
 <?php
 
-$app['baseurl'] = '/';
-$app['version'] = '0.6.0-dev';
-$app['pagetitle'] = 'Baïkal ' . $app['version'] . ' Web Admin';
+return [
+    'baseurl' => '/',
+    'version' => '0.6.0-dev',
 
-$app['caldav_enable'] = true;
-$app['carddav_enable'] = true;
+    'caldav_enable' => true,
+    'carddav_enable' => true,
 
-$app['debug'] = true;
+    'debug' => true,
 
-$app['pdo.dsn'] = 'sqlite:foo.db';
-$app['pdo.username'] = 'baikal';
-$app['pdo.password'] = 'baikal';
+    'pdo.dsn' => 'sqlite:foo.db',
+    'pdo.username' => 'baikal',
+    'pdo.password' => 'baikal',
+];
