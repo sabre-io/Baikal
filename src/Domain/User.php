@@ -10,94 +10,88 @@ use Baikal\Domain\User\Password;
 /**
  * Domain model for User within the Baikal system
  */
-final class User
-{
-    /**
-     * @var Username
-     */
-    private $username;
+final class User extends DomainObject {
 
     /**
-     * @var DisplayName
-     */
-    private $displayName;
-
-    /**
-     * @var Email
-     */
-    private $email;
-
-    /**
-     * @var Password
-     */
-    private $password;
-
-    /**
-     * User constructor.
+     * Unique ID
      *
-     * @param Username $username
-     * @param DisplayName $displayName
-     * @param Email $email
-     * @param Password $password
+     * @var mixed
      */
-    private function __construct(Username $username, DisplayName $displayName, Email $email, Password $password)
-    {
-        $this->username = $username;
-        $this->displayName = $displayName;
-        $this->email = $email;
-        $this->password = $password;
-    }
+    public $id;
 
     /**
-     * Construct User object from array structure
+     * @var string
+     */
+    public $userName;
+
+    /**
+     * @var string
+     */
+    public $displayName;
+
+    /**
+     * @var string
+     */
+    public $email;
+
+    /**
+     * Password. If null, it will not be updated/set
      *
-     * @param array $data
-     * @return User
+     * @var string|null
      */
-    static function fromArray(array $data)
-    {
-        return new self(
-            Username::fromString($data['username']),
-            DisplayName::fromString($data['displayName']),
-            Email::fromString($data['email']),
-            Password::fromString($data['password'])
-        );
+    public $password;
+
+    /**
+     * Returns the principal URI
+     *
+     * @return string
+     */
+    function getPrincipalUri() {
+
+        return 'principals/' . $this->userName;
+
     }
 
     /**
-     * @return Username
+     * Validator
+     *
+     * Called before insert and update operations
+     *
+     * Should throw an \InvalidArgumentException if there's a validation problem.
+     * @return void
      */
-    function username()
-    {
-        return $this->username;
+    function validate() {
+
+        parent::validate();
+        if (!$this->userName) {
+            throw new \InvalidArgumentException('Username MUST be set');
+        }
+        if (!$this->email) {
+            throw new \InvalidArgumentException('Email MUST be set');
+        }
+        if (!$this->displayName) {
+            throw new \InvalidArgumentException('DisplayName MUST be set');
+        }
+        if (strpos($this->email, '@') === false) {
+            throw new \InvalidArgumentException('Email MUST be valid');
+        }
     }
 
     /**
-     * @return DisplayName
+     * Validator function, specific for insert operations
      */
-    function displayName()
-    {
-        return $this->displayName;
-    }
+    function validateForCreate() {
 
-    /**
-     * @return Email
-     */
-    function email()
-    {
-        return $this->email;
-    }
+        parent::validateForCreate();
+        if (!$this->password) {
+            throw new \InvalidArgumentException('Password MUST be set');
+        }
+        if (strlen($this->userName) > 20) {
+            throw new \InvalidArgumentException('Username should be no longer than 20 characters');
+        }
+        if (!preg_match('|^[A-Za-z0-9]+$|', $this->userName)) {
+            throw new \InvalidArgumentException('Username may only contain A-Z, a-z and 0-9');
+        }
 
-    /**
-     * @return Password
-     */
-    function password()
-    {
-        return $this->password;
-    }
-
-    function mailtoUri()
-    {
-        return sprintf("%s <%s>", $this->displayName(), $this->email());
     }
 }

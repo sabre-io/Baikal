@@ -1,4 +1,4 @@
-{% extends 'Admin/layout.html.twig' %}
+{% extends 'admin/layout.html.twig' %}
 {% block content %}
     <header class="jumbotron subhead" id="overview">
         <h1><i class="glyph2x-group"></i>Users</h1>
@@ -9,16 +9,16 @@
     <table class="table table-bordered table-striped users">
         {% for user in users %}
             <tr>
-                <td class="col-username">
-                    <i class="icon-user"></i> <strong>{{ user.username|escape }}</strong><br />
-                    {{ user.displayName|escape }} <a href="mailto:{{ user.mailtoUri|escape }}">&lt;{{ user.email|escape }}&gt;</a>
+                <td class="col-userName">
+                    <i class="icon-user"></i> <strong>{{ user.userName }}</strong><br />
+                    {{ user.displayName }} <a href="mailto:{{ user.email }}">&lt;{{ user.email }}&gt;</a>
                 </td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
-                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {username: user.username}) }}"><i class="icon-calendar"></i> Calendars</a></nobr>
-                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {username: user.username}) }}"><i class="icon-book"></i> Address Books</a></nobr>
-                        <nobr><a class="btn btn-primary" href="{{ path('admin_user_edit', {username: user.username}) }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
-                        <nobr><a class="btn btn-danger" href="{{ path('admin_user_delete', {username: user.username}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {userName: user.userName}) }}"><i class="icon-calendar"></i> Calendars</a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {userName: user.userName}) }}"><i class="icon-book"></i> Address Books</a></nobr>
+                        <nobr><a class="btn btn-primary" href="{{ path('admin_user_edit', {userName: user.userName}) }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
+                        <nobr><a class="btn btn-danger" href="{{ path('admin_user_delete', {userName: user.userName}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>
                 </td>
             </tr>

@@ -4,8 +4,8 @@ namespace Baikal\Controller\Admin;
 
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
-use Baikal\Framework\Silex\Controller;
-use Baikal\Domain\UserRepository;
+use Baikal\Controller\Controller;
+use Baikal\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -57,8 +57,13 @@ final class UserController extends Controller
             throw new MethodNotAllowedException([Request::METHOD_POST]);
         }
 
-        $user = User::fromArray($request->get('data'));
-        $this->userRepository->persist($user);
+        $userData = $request->get('data');
+        if ($userData['password'] != $userData['passwordconfirm']) {
+            throw new \InvalidArgumentException('Passwords did not match');
+        }
+
+        $user = User::fromPostForm($userData);
+        $this->userRepository->create($user);
 
         return $this->redirect('admin_users');
     }

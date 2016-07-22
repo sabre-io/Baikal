@@ -4,6 +4,7 @@ namespace Baikal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\TwigServiceProvider;
+use PDO;
 
 class Application extends \Silex\Application {
 
@@ -40,11 +41,11 @@ class Application extends \Silex\Application {
         };
 
         $this['admin.dashboard.controller'] = function() {
-            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['admin.user.repository']);
+            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user']);
         };
 
         $this['admin.user.controller'] = function() {
-            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['admin.user.repository']);
+            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user']);
         };
 
     }
@@ -74,11 +75,20 @@ class Application extends \Silex\Application {
         };
 
         $this['pdo'] = function() {
-            return new \PDO($this['config']['pdo']['dsn'], $this['config']['pdo']['username'], $this['config']['pdo']['password']);
+            $pdo = new PDO(
+                $this['config']['pdo']['dsn'],
+                $this['config']['pdo']['username'],
+                $this['config']['pdo']['password']
+            );
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $pdo;
         };
 
-        $this['admin.user.repository'] = function() {
-            return new Infrastructure\Repository\PdoUserRepository($this['pdo']);
+        $this['repository.user'] = function() {
+            return new Repository\UserRepository(
+                $this['pdo'],
+                $this['config']['auth']['realm']
+            );
         };
 
     }

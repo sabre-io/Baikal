@@ -14,6 +14,18 @@ if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
 
 require __DIR__ . '/../vendor/autoload.php';
 
+/**
+ * Mapping PHP errors to exceptions.
+ *
+ * While this is not strictly needed, it makes a lot of sense to do so. If an
+ * E_NOTICE or anything appears in your code, this allows SabreDAV to intercept
+ * the issue and send a proper response back to the client (HTTP/1.1 500).
+ */
+function exception_error_handler($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+}
+set_error_handler("exception_error_handler");
+
 $config = require __DIR__ . '/../config/config.php';
 
 $app = new Baikal\Application(['config' => $config]);
