@@ -3,7 +3,7 @@
 namespace Baikal\Controller\Admin;
 
 use Baikal\Domain\UserRepository;
-use Baikal\Framework\Silex\Controller;
+use Baikal\Controller\Controller;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 

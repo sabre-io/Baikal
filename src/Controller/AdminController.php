@@ -2,8 +2,6 @@
 
 namespace Baikal\Controller;
 
-use Baikal\Controller;
-
 final class AdminController extends Controller
 {
     function logoutAction()

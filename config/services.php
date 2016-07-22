@@ -5,7 +5,7 @@ use Baikal\Framework\Silex\ControllerResolver;
 use Baikal\Infrastructure\Repository\PdoUserRepository;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), [
-    'twig.path' => $baseDir . '/views/',
+    'twig.path' => __DIR__ . '/../views/',
 ]);
 
 $app['resolver'] = function($app) {
