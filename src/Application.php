@@ -11,10 +11,14 @@ class Application extends \Silex\Application {
      * Creates the Application instance.
      *
      * @param array $values
-     */ 
+     */
     function __construct(array $values = []) {
 
         parent::__construct($values);
+
+        // Putting Silex in debug mode, if this was specified in the config.
+        $this['debug'] = $this['config']['debug'];
+
         $this->initControllers();
         $this->initServices();
         $this->initMiddleware();

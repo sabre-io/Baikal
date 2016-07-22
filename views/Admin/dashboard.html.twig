@@ -16,13 +16,13 @@
             <div class="span3">
                 <h2>Version</h2>
                 <p>This systems runs<br />
-                    Baïkal <span class="label label-info label-intext">{{ app.version }}</span>
+                    Baïkal <span class="label label-info label-intext">{{ app.config.version }}</span>
                     <small><a href="{{ url }}">{{ url }}</a></small>
                 </p>
             </div>
             <div class="span3">
                 <h2>Services</h2>
-                {% if app.caldav_enable %}
+                {% if app.config.caldav.enabled %}
                     {% set caldavclass = 'label-success' %}
                     {% set caldavtext = 'On' %}
                 {% else %}
@@ -30,7 +30,7 @@
                     {% set caldavtext = 'Off' %}
                 {% endif %}
 
-                {% if app.carddav_enable %}
+                {% if app.config.carddav.enabled %}
                     {% set carddavclass = 'label-success' %}
                     {% set carddavtext = 'On' %}
                 {% else %}
