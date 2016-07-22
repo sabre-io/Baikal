@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\Framework\Silex\Controller\Admin;
+namespace Baikal\Controller\Admin;
 
 use Baikal\Domain\UserRepository;
 use Baikal\Framework\Silex\Controller;

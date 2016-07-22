@@ -1,8 +1,8 @@
 <?php
 
-namespace Baikal\Framework\Silex\Controller;
+namespace Baikal\Controller;
 
-use Baikal\Framework\Silex\Controller;
+use Baikal\Controller;
 
 final class AdminController extends Controller
 {

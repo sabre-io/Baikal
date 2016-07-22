@@ -5,15 +5,15 @@
     <title>Baikal {{ app.version }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="{{ app.assetPath }}core/TwitterBootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="{{ app.assetPath }}core/BaikalAdmin/GlyphiconsPro/glyphpro.css" rel="stylesheet" />
-    <link href="{{ app.assetPath }}core/BaikalAdmin/GlyphiconsPro/glyphpro-2x.css" rel="stylesheet" />
-    <link href="{{ app.assetPath }}core/BaikalAdmin/Templates/Page/style.css" rel="stylesheet" />
-    <link href="{{ app.assetPath }}core/TwitterBootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="{{ assetPath }}core/TwitterBootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="{{ assetPath }}core/BaikalAdmin/GlyphiconsPro/glyphpro.css" rel="stylesheet" />
+    <link href="{{ assetPath }}core/BaikalAdmin/GlyphiconsPro/glyphpro-2x.css" rel="stylesheet" />
+    <link href="{{ assetPath }}core/BaikalAdmin/Templates/Page/style.css" rel="stylesheet" />
+    <link href="{{ assetPath }}core/TwitterBootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="{{ app.assetPath }}core/BaikalAdmin/html5.js"></script>
+    <script src="{{ assetPath }}core/BaikalAdmin/html5.js"></script>
     <![endif]-->
     {% block head %}
     {% endblock %}
@@ -29,10 +29,10 @@
     {% endblock %}
 </div>
 
-<script src="{app.assetPath}}core/TwitterBootstrap/js/jquery-1.7.1.min.js"></script>
-<script src="{app.assetPath}}core/TwitterBootstrap/js/bootstrap.min.js"></script>
-<script src="{app.assetPath}}core/TwitterBootstrap/js/bootstrap-tooltip.js"></script>
-<script src="{app.assetPath}}core/TwitterBootstrap/js/bootstrap-popover.js"></script>
+<script src="{{assetPath}}core/TwitterBootstrap/js/jquery-1.7.1.min.js"></script>
+<script src="{{assetPath}}core/TwitterBootstrap/js/bootstrap.min.js"></script>
+<script src="{{assetPath}}core/TwitterBootstrap/js/bootstrap-tooltip.js"></script>
+<script src="{{assetPath}}core/TwitterBootstrap/js/bootstrap-popover.js"></script>
 <script type="text/javascript">
     $("[rel=tooltip]").tooltip();
     $(".popover-hover").popover();

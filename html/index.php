@@ -14,12 +14,11 @@ require $baseDir . 'vendor/autoload.php';
 
 $config = require $baseDir . '/config/config.php';
 
-$app = new Silex\Application($config);
+$app = new Baikal\Application($config);
 $app['debug'] = true;
 
 
 require $baseDir . '/config/services.php';
-require $baseDir . '/config/controllers.php';
 require $baseDir . '/config/routes.php';
 
 $app->run();
