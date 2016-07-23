@@ -60,21 +60,24 @@ final class UserRepository
     }
 
     /**
-     * @param Username $username
-     * @return User|null
+     * @param string $userName
+     * @throw \InvalidArgumentException
+     * @return User
      */
-    function getByUsername(Username $username)
-    {
-        $userQuery = $this->pdo->query("SELECT * FROM users WHERE username = :username");
-        $userQuery->bindParam('username', $username, PDO::PARAM_STR);
-        $userQuery->execute();
+    function getByUserName($userName) {
 
-        $userObject = $userQuery->fetchObject();
-        if ($userObject === false) {
-            return null;
+        $userQuery = $this->pdo->query("SELECT email, displayname as displayName, ? as userName FROM principals WHERE uri = ?");
+        $userQuery->execute([
+            $userName,
+            'principals/' . $userName
+        ]);
+
+        $userData = $userQuery->fetch(PDO::FETCH_ASSOC);
+        if ($userData === false) {
+            throw new \InvalidArgumentException('User with name: ' . $userName . ' not found');
         }
 
-        return User::fromArray((array)$userObject);
+        return User::fromArray($userData);
     }
 
     /**
@@ -121,7 +124,7 @@ final class UserRepository
 
         $this->pdo->beginTransaction();
 
-        $update = "UPDATE principals SET email = ?, dislpayname = ? WHERE uri = ?";
+        $update = "UPDATE principals SET email = ?, displayname = ? WHERE uri = ?";
         $stmt = $this->pdo->prepare($update);
         $stmt->execute([
             $user->email,

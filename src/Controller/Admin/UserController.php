@@ -28,7 +28,7 @@ final class UserController extends Controller
     {
         $users = $this->userRepository->all();
 
-        return $this->render('Admin/users', [
+        return $this->render('admin/user/index', [
             'users'    => $users,
             'messages' => '',
             'form'     => '',
@@ -41,7 +41,7 @@ final class UserController extends Controller
             throw new MethodNotAllowedException([Request::METHOD_GET]);
         }
 
-        return $this->render('Admin/users_form', [
+        return $this->render('admin/user/create', [
             'user' => [
                 'username'    => '',
                 'displayName' => '',
@@ -65,13 +65,12 @@ final class UserController extends Controller
         $user = User::fromPostForm($userData);
         $this->userRepository->create($user);
 
-        return $this->redirect('admin_users');
+        return $this->redirect('admin_user_index');
     }
 
-    function editAction($username)
+    function editAction($userName)
     {
-        $username = Username::fromString($username);
-        $user = $this->userRepository->getByUsername($username);
+        $user = $this->userRepository->getByUsername($userName);
 
         if ($user === null) {
             $user = [
@@ -82,9 +81,27 @@ final class UserController extends Controller
             ];
         }
 
-        return $this->render('Admin/users_form', [
+        return $this->render('admin/user/edit', [
             'user' => $user,
         ]);
+    }
+
+    function postEditAction($userName, Request $request)
+    {
+        if ($request->getMethod() !== Request::METHOD_POST) {
+            throw new MethodNotAllowedException([Request::METHOD_POST]);
+        }
+
+        $userData = $request->get('data');
+        $userData['userName'] = $userName;
+        if ($userData['password'] != $userData['passwordconfirm']) {
+            throw new \InvalidArgumentException('Passwords did not match');
+        }
+
+        $user = User::fromPostForm($userData);
+        $this->userRepository->update($user);
+
+        return $this->redirect('admin_user_index');
     }
 
     function deleteAction($username)
@@ -93,10 +110,10 @@ final class UserController extends Controller
         $user = $this->userRepository->getByUsername($username);
 
         if ($user === null) {
-            return $this->redirect('admin_users');
+            return $this->redirect('admin_user_index');
         }
 
-        return $this->render('Admin/user/delete', [
+        return $this->render('admin/user/delete', [
             'username' => $username,
         ]);
     }
@@ -107,26 +124,26 @@ final class UserController extends Controller
         $user = $this->userRepository->getByUsername($username);
 
         if ($user === null) {
-            return $this->redirect('admin_users');
+            return $this->redirect('admin_user_index');
         }
 
         $this->userRepository->remove($user);
 
-        return $this->redirect('admin_users');
+        return $this->redirect('admin_user_index');
     }
 
-    function calendarAction($username)
+    function calendarAction($userName)
     {
-        return $this->render('Admin/user/calendars', [
-            'username'  => $username,
+        return $this->render('admin/user/calendars', [
+            'username'  => $userName,
             'calendars' => [],
         ]);
     }
 
-    function addressbookAction($username)
+    function addressbookAction($userName)
     {
-        return $this->render('Admin/user/addressbooks', [
-            'username'     => $username,
+        return $this->render('admin/user/addressbooks', [
+            'username'     => $userName,
             'addressbooks' => [],
         ]);
     }

@@ -30,6 +30,4 @@ $config = require __DIR__ . '/../config/config.php';
 
 $app = new Baikal\Application(['config' => $config]);
 
-require __DIR__ . '/../config/routes.php';
-
 return $app;

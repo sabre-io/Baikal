@@ -23,6 +23,7 @@ class Application extends \Silex\Application {
         $this->initControllers();
         $this->initServices();
         $this->initMiddleware();
+        $this->initRoutes();
         $this->initSabreDAV();
 
     }
@@ -90,6 +91,29 @@ class Application extends \Silex\Application {
                 $this['config']['auth']['realm']
             );
         };
+
+    }
+
+    /**
+     * Initializes routes
+     */
+    protected function initRoutes() {
+
+        $this->get('/', 'index.controller:indexAction')->bind('home');
+        $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');
+
+        $this->get('/admin/users', 'admin.user.controller:indexAction')->bind('admin_user_index');
+        $this->get('/admin/users/new', 'admin.user.controller:createAction')->bind('admin_user_create');
+        $this->post('/admin/users/new', 'admin.user.controller:postCreateAction')->bind('admin_user_create_post');
+        $this->get('/admin/users/{userName}', 'admin.user.controller:editAction')->bind('admin_user_edit');
+        $this->post('/admin/users/{userName}', 'admin.user.controller:postEditAction')->bind('admin_user_edit_post');
+
+        $this->get('/admin/user/{userName}/addressbooks', 'admin.user.controller:addressbookAction')->bind('admin_user_addressbooks');
+        $this->get('/admin/user/{userName}/calendars', 'admin.user.controller:calendarAction')->bind('admin_user_calendars');
+        $this->get('/admin/user/{userName}/delete', 'admin.user.controller:deleteAction')->bind('admin_user_delete');
+        $this->post('/admin/user/{userName}/delete', 'admin.user.controller:postDeleteAction')->bind('admin_user_delete_post');
+
+        $this->get('/admin/logout', 'admin.controller:logoutAction')->bind('admin_logout');
 
     }
 

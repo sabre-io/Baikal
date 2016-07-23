@@ -1,16 +1,15 @@
 {% extends 'Admin/layout.html.twig' %}
 {% block content %}
 
-    <form class="form-horizontal" action="{{ path('admin_users_create_post') }}" method="post" enctype="multipart/formdata">
+    <form class="form-horizontal" action="?" method="post">
         <input type="hidden" name="refreshed" value="0" />
         <fieldset>
-            <legend style="line-height: 40px;">Creating new<i class=glyph-user></i><strong>User</strong></legend>
+            <legend style="line-height: 40px;">Edit <i class=glyph-user></i><strong>User</strong></legend>
 
             <div class="control-group">
                 <label class="control-label" for="userName">Username</label>
                 <div class="controls">
-                    <input type="text" class="input-xlarge popover-focus " id="userName" name="data[userName]" value="{{ user.username }}" title="Username"  data-content="The login for this user account.&lt;br /&gt;It has to be unique." />
-                    <p class="help-block">May be an email, but not forcibly.</p>
+                    <input type="text" class="input-xlarge popover-focus" id="userName" name="data[userName]" value="{{ user.userName }}" title="Username" disabled="disabled" />
                 </div>
             </div>
 
