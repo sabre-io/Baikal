@@ -9,6 +9,6 @@ final class IndexController extends Controller
      */
     function indexAction()
     {
-        return $this->render('index', []);
+        return $this->render('index');
     }
 }
