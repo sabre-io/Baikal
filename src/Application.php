@@ -49,6 +49,13 @@ class Application extends \Silex\Application {
             return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user']);
         };
 
+        $this['admin.settings.standard.controller'] = function() {
+            return new Controller\Admin\StandardSettingsController($this['twig'], $this['url_generator']);
+        };
+
+        $this['admin.settings.system.controller'] = function() {
+            return new Controller\Admin\SystemSettingsController($this['twig'], $this['url_generator']);
+        };
     }
 
     protected function initMiddleware() {
@@ -112,6 +119,10 @@ class Application extends \Silex\Application {
         $this->get('/admin/user/{userName}/calendars', 'admin.user.controller:calendarAction')->bind('admin_user_calendars');
         $this->get('/admin/user/{userName}/delete', 'admin.user.controller:deleteAction')->bind('admin_user_delete');
         $this->post('/admin/user/{userName}/delete', 'admin.user.controller:postDeleteAction')->bind('admin_user_delete_post');
+
+        $this->get('/admin/settings/standard', 'admin.settings.standard.controller:indexAction')->bind('admin_settings_standard_index');
+
+        $this->get('/admin/settings/system', 'admin.settings.system.controller:indexAction')->bind('admin_settings_system_index');
 
         $this->get('/admin/logout', 'admin.controller:logoutAction')->bind('admin_logout');
 
