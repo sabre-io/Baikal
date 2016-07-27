@@ -6,6 +6,6 @@ final class AdminController extends Controller
 {
     function logoutAction()
     {
-        return $this->redirect('dashboard');
+        return $this->redirect('admin_dashboard');
     }
 }

@@ -104,24 +104,22 @@ final class UserController extends Controller
         return $this->redirect('admin_user_index');
     }
 
-    function deleteAction($username)
+    function deleteAction($userName)
     {
-        $username = Username::fromString($username);
-        $user = $this->userRepository->getByUsername($username);
+        $user = $this->userRepository->getByUsername($userName);
 
         if ($user === null) {
             return $this->redirect('admin_user_index');
         }
 
         return $this->render('admin/user/delete', [
-            'username' => $username,
+            'user' => $user,
         ]);
     }
 
-    function postDeleteAction($username)
+    function postDeleteAction($userName)
     {
-        $username = Username::fromString($username);
-        $user = $this->userRepository->getByUsername($username);
+        $user = $this->userRepository->getByUsername($userName);
 
         if ($user === null) {
             return $this->redirect('admin_user_index');
