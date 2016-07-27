@@ -2,9 +2,9 @@
 
 namespace Baikal;
 
-use Symfony\Component\HttpFoundation\Request;
-use Silex\Provider\TwigServiceProvider;
 use PDO;
+use Silex\Provider\TwigServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application extends \Silex\Application {
 

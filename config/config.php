@@ -11,14 +11,14 @@ return [
     ],
 
     'auth' => [
-        'type' => 'Digest',
+        'type'  => 'Digest',
         'realm' => 'BaikalDAV',
     ],
 
     'debug' => true,
 
     'pdo' => [
-        'dsn' => 'sqlite:../Specific/db/db.sqlite',
+        'dsn'      => 'sqlite:../Specific/db/db.sqlite',
         'username' => null,
         'password' => null,
     ]

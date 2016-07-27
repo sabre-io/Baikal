@@ -2,9 +2,9 @@
 
 namespace Baikal\Controller\Admin;
 
+use Baikal\Controller\Controller;
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
-use Baikal\Controller\Controller;
 use Baikal\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;

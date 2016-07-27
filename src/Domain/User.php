@@ -2,10 +2,10 @@
 
 namespace Baikal\Domain;
 
-use Baikal\Domain\User\Username;
 use Baikal\Domain\User\DisplayName;
 use Baikal\Domain\User\Email;
 use Baikal\Domain\User\Password;
+use Baikal\Domain\User\Username;
 
 /**
  * Domain model for User within the Baikal system
