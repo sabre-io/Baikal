@@ -30,7 +30,7 @@ final class CalendarRepository
     function allCalendarsByUserName($userName)
     {
         $calendarQuery = $this->pdo->query("SELECT id, uri, calendarcolor as calendarColor, displayname as displayName, description FROM calendars WHERE principaluri = ?");
-        
+
         $calendarQuery->execute([
             'principals/' . $userName
         ]);
