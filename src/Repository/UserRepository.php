@@ -137,7 +137,7 @@ final class UserRepository
             $stmt3 = $this->pdo->prepare($update3);
             $stmt3->execute([
                 md5($user->userName . ':' . $this->authRealm . ':' . $user->password),
-                $user->username,
+                $user->userName,
             ]);
         }
 
