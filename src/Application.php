@@ -42,11 +42,11 @@ class Application extends \Silex\Application {
         };
 
         $this['admin.dashboard.controller'] = function() {
-            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user']);
+            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user'], $this['repository.calendar']);
         };
 
         $this['admin.user.controller'] = function() {
-            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user']);
+            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user'], $this['repository.calendar']);
         };
 
         $this['admin.settings.standard.controller'] = function() {
@@ -99,6 +99,11 @@ class Application extends \Silex\Application {
             );
         };
 
+        $this['repository.calendar'] = function() {
+            return new Repository\CalendarRepository(
+                $this['pdo']
+            );
+        };
     }
 
     /**
@@ -141,7 +146,7 @@ class Application extends \Silex\Application {
                 $this['config']['auth']['type'],
                 $this['config']['auth']['realm'],
                 $this['pdo'],
-                null
+                '/dav.php'
             );
 
         };

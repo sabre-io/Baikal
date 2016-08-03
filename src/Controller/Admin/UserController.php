@@ -6,6 +6,7 @@ use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
 use Baikal\Controller\Controller;
 use Baikal\Repository\UserRepository;
+use Baikal\Repository\CalendarRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,10 +19,16 @@ final class UserController extends Controller
      */
     private $userRepository;
 
-    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
+    /**
+     * @var CalendarRepository
+     */
+    private $calendarRepository;
+
+    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository, CalendarRepository $calendarRepository)
     {
         parent::__construct($twig, $urlGenerator);
         $this->userRepository = $userRepository;
+        $this->calendarRepository = $calendarRepository;
     }
 
     function indexAction()
@@ -132,9 +139,12 @@ final class UserController extends Controller
 
     function calendarAction($userName)
     {
+        $calendars = $this->calendarRepository->allCalendarsByUserName($userName);
+
+        #return json_encode($calendars);
         return $this->render('admin/user/calendars', [
             'username'  => $userName,
-            'calendars' => [],
+            'calendars' => $calendars,
         ]);
     }
 
