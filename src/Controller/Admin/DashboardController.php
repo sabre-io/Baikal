@@ -2,7 +2,6 @@
 
 namespace Baikal\Controller\Admin;
 
-use Baikal\Repository\UserRepository;
 use Baikal\Repository\CalendarRepository;
 use Baikal\Controller\Controller;
 use Baikal\Repository\UserRepository;
@@ -30,7 +29,7 @@ final class DashboardController extends Controller
 
     function indexAction()
     {
-        return $this->render('Admin/dashboard', [
+        return $this->render('admin/dashboard', [
             'users'               => $this->userRepository->count(),
             'nbcalendars'         => $this->calendarRepository->countAllCalendars(),
             'nbevents'            => $this->calendarRepository->countAllEvents(),
