@@ -2,9 +2,8 @@
 {% block content %}
     <header class="jumbotron subhead" id="overview">
         <h1><i class="glyph2x-calendar"></i>Calendars</h1>
-        <p class="lead">Manage Calendars for<i class="glyph-user"></i><strong>{{ username }}</strong>.</p>
-        <p class="pull-left"><a href="{{ path('admin_users') }}" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
-        <p class="pull-right"><a class="btn btn-inverse" href="#"><i class="icon-white icon-calendar"></i> + Add calendar</a></p>
+        <p class="lead pull-left">Manage Calendars for<i class="glyph-user"></i><strong>{{ username }}</strong>.</p>
+        <p class="lead pull-right"><a class="btn btn-inverse" href="#"><i class="icon-white icon-calendar"></i> + Add calendar</a></p>
     </header>
 
     <table class="table table-bordered table-striped calendars">
@@ -18,7 +17,7 @@
         <tbody>
         {% for calendar in calendars %}
             <tr>
-                <td class="col-displayname"><i class="{{ calendar.icon }}"></i>{{ calendar.label|escape }}</td>
+                <td class="col-displayname"><i class="icon-calendar"></i>{{ calendar.displayName|escape }}</td>
                 <td class="col-description">{{ calendar.description|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
@@ -30,6 +29,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <p class="lead pull-left"><a href="{{ path('admin_user_index') }}" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
 
     <a id='form'></a>
 {% endblock %}
