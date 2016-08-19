@@ -362,6 +362,36 @@ CREATE TABLE calendars (
             }
 
         }
+        if (version_compare($sVersionFrom, '0.4.5', '<=')) {
+
+            // Similar to upgrading from older than 0.4.5, there were still
+            // issues with a missing DEFAULT 1 for sthe synctoken field in the
+            // addressbook.
+            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+
+                $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
+
+                $tmpTable = '_' . time();
+                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks' . $tmpTable);
+
+                $pdo->exec('
+CREATE TABLE addressbooks (
+    id integer primary key asc NOT NULL,
+    principaluri text NOT NULL,
+    displayname text,
+    uri text NOT NULL,
+    description text,
+    synctoken integer DEFAULT 1 NOT NULL
+);
+                ');
+
+                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks' . $tmpTable);
+                $this->aSuccess[] = 'Updated addressbooks tables';
+
+            }
+
+        }
+
 
         $this->updateConfiguredVersion($sVersionTo);
         return true;
