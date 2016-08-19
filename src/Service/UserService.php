@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal\Repository;
+namespace Baikal\Service;
 
 use Baikal\Domain\User;
 use Generator;
@@ -11,8 +11,8 @@ use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
 /**
  * UserRepository implementation using PDO
  */
-final class UserRepository
-{
+class UserService {
+
     /**
      * @var PDO
      */

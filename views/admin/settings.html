@@ -7,51 +7,32 @@
     	<input type="hidden" name="refreshed" value="0">
         <fieldset>
             <legend style="line-height: 40px;">Editing Standard<i class="glyph-cogwheel"></i><strong>Baïkal Settings</strong></legend>
-            <div class="control-group">
-				<label class="control-label" for="PROJECT_TIMEZONE">Server Time zone</label>
+			<div class="control-group">
+				<label class="control-label" for="caldav-enabled">Enable CalDAV</label>
 				<div class="controls">
-					<select class="" id="PROJECT_TIMEZONE" name="data[PROJECT_TIMEZONE]">
-						{% for timezone in timeZones %}
-							{% if timezone == currentTimeZone %}
-								<option selected="true">{{ timezone }}</option>
-							{% else %}
-								<option>{{ timezone }}</option>
-							{% endif %}
-						{% endfor %}
+					<input class="input-xlarge" id="caldav-enabled" name="config[caldav][enabled]" value="1" {% if config.caldav.enabled %} checked="checked" {% endif %} type="checkbox">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="carddav-enabled">Enable CardDAV</label>
+				<div class="controls">
+					<input class="input-xlarge" id="carddav-enabled" name="config[carddav][enabled]" value="1" {% if config.carddav.enabled %} checked="checked" {% endif %} type="checkbox">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="auth-type">WebDAV authentication type</label>
+				<div class="controls">
+					<select class="" id="auth-type" name="config[auth][type]">
+                        <option value="Basic" {% if config.auth.type == "Basic" %}selected="selected"{% endif %}>Basic</option>
+                        <option value="Digest" {% if config.auth.type == "Digest" %}selected="selected"{% endif %}>Digest</option>
+
 					</select>
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="BAIKAL_CAL_ENABLED">Enable CalDAV</label>
+				<label class="control-label" for="debug-mode">Debug mode</label>
 				<div class="controls">
-					<input class="input-xlarge" id="BAIKAL_CAL_ENABLED" name="data[BAIKAL_CAL_ENABLED]" value="1" {% if app.config.caldav.enabled %} checked="checked" {% endif %} type="checkbox">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="BAIKAL_CARD_ENABLED">Enable CardDAV</label>
-				<div class="controls">
-					<input class="input-xlarge" id="BAIKAL_CARD_ENABLED" name="data[BAIKAL_CARD_ENABLED]" value="1" {% if app.config.carddav.enabled %} checked="checked" {% endif %} type="checkbox">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="BAIKAL_DAV_AUTH_TYPE">WebDAV authentication type</label>
-				<div class="controls">
-					<select class="" id="BAIKAL_DAV_AUTH_TYPE" name="data[BAIKAL_DAV_AUTH_TYPE]">
-						<option selected="selected">Digest</option>
-						<option>Basic</option>
-					</select>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="BAIKAL_ADMIN_PASSWORDHASH">Admin password</label>
-				<div class="controls">
-					<input class="input-xlarge" id="BAIKAL_ADMIN_PASSWORDHASH" name="data[BAIKAL_ADMIN_PASSWORDHASH]" value="" placeholder="-- Leave empty to keep current password --" type="password">
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="BAIKAL_ADMIN_PASSWORDHASH_CONFIRM">Admin password, confirmation</label>
-				<div class="controls">
-					<input class="input-xlarge" id="BAIKAL_ADMIN_PASSWORDHASH_CONFIRM" name="data[BAIKAL_ADMIN_PASSWORDHASH_CONFIRM]" value="" placeholder="-- Leave empty to keep current password --" type="password">
+					<input class="input-xlarge" id="debug-mode" name="config[debug]" value="1" {% if config.debug %} checked="checked" {% endif %} type="checkbox">
 				</div>
 			</div>
 			<div class="form-actions">

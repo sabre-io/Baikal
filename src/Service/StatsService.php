@@ -1,6 +1,6 @@
 <?php
 
-namespace Baikal;
+namespace Baikal\Service;
 
 class StatsService {
 

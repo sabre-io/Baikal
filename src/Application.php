@@ -81,7 +81,7 @@ class Application extends \Silex\Application {
             return $pdo;
         };
 
-        $this['stats'] = function() {
+        $this['service.stats'] = function() {
 
             return new StatsService(
                 $this['pdo']
@@ -89,8 +89,14 @@ class Application extends \Silex\Application {
 
         };
 
-        $this['repository.user'] = function() {
-            return new Repository\UserRepository(
+        $this['service.config'] = function() {
+
+            return new Service\ConfigService();
+
+        };
+
+        $this['service.user'] = function() {
+            return new Service\UserService(
                 $this['pdo'],
                 $this['config']['auth']['realm'],
                 $this['sabredav.backend.caldav'],
