@@ -7,6 +7,7 @@ ChangeLog
 * Updated sabre/dav database definitions
 * #559: Fix contacts in new addressbooks not syncing
 * Now allows creation of calendars that contain VJOURNAL, VTODO and VEVENT.
+* Upgrading from Baikal version 0.2.3 and older is no longer supported.
 * Ships with sabre/dav 3.1.4
 
 
