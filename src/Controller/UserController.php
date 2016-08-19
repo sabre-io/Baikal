@@ -1,7 +1,9 @@
 <?php
 
-namespace Baikal\Controller\Admin;
+namespace Baikal\Controller;
 
+use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 use Baikal\Controller\Controller;
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
@@ -12,37 +14,43 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
-final class UserController extends Controller
-{
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+class UserController implements ControllerProviderInterface {
 
-    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
-    {
-        parent::__construct($twig, $urlGenerator);
-        $this->userRepository = $userRepository;
+    function connect(Application $app) {
+
+        $controllers = $app['controllers_factory'];
+        $controllers->get('/', [$this, 'indexAction'])->bind('admin_user_index');
+
+        $controllers->get('/new',        [$this, 'createAction'])->bind('admin_user_create');
+        $controllers->post('/new',       [$this, 'postCreateAction'])->bind('admin_user_create_post');
+        $controllers->get('{userName}',  [$this,'editAction'])->bind('admin_user_edit');
+        $controllers->post('{userName}', [$this, 'postEditAction'])->bind('admin_user_edit_post');
+
+        $controllers->get('{userName}/delete',  [$this,'deleteAction'])->bind('admin_user_delete');
+        $controllers->post('{userName}/delete',  [$this,'postDeleteAction'])->bind('admin_user_delete_post');
+        $controllers->get('{userName}/calendars', 'controller.calendar:index')->bind('admin_user_calendars');
+        $controllers->get('{userName}/addressbooks', 'controller.addressbook:index')->bind('admin_user_addressbooks');
+
+        return $controllers;
     }
 
-    function indexAction()
-    {
-        $users = $this->userRepository->all();
+    function indexAction(Application $app) {
+        $users = $app['repository.user']->all();
 
-        return $this->render('admin/user/index', [
+        return $app['twig']->render('admin/user/index.html', [
             'users'    => $users,
             'messages' => '',
             'form'     => '',
         ]);
     }
 
-    function createAction(Request $request)
-    {
+    function createAction(Application $app, Request $request) {
+
         if ($request->getMethod() !== Request::METHOD_GET) {
             throw new MethodNotAllowedException([Request::METHOD_GET]);
         }
 
-        return $this->render('admin/user/create', [
+        return $app['twig']->render('admin/user/create.html', [
             'user' => [
                 'username'    => '',
                 'displayName' => '',
@@ -52,8 +60,8 @@ final class UserController extends Controller
         ]);
     }
 
-    function postCreateAction(Request $request)
-    {
+    function postCreateAction(Application $app, Request $request) {
+
         if ($request->getMethod() !== Request::METHOD_POST) {
             throw new MethodNotAllowedException([Request::METHOD_POST]);
         }
@@ -64,14 +72,14 @@ final class UserController extends Controller
         }
 
         $user = User::fromPostForm($userData);
-        $this->userRepository->create($user);
+        $app['repository.user']->create($user);
 
-        return $this->redirect('admin_user_index');
+        return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function editAction($userName)
-    {
-        $user = $this->userRepository->getByUsername($userName);
+    function editAction(Application $app, $userName) {
+
+        $user = $app['repository.user']->getByUsername($userName);
 
         if ($user === null) {
             $user = [
@@ -82,13 +90,13 @@ final class UserController extends Controller
             ];
         }
 
-        return $this->render('admin/user/edit', [
+        return $app['twig']->render('admin/user/edit.html', [
             'user' => $user,
         ]);
     }
 
-    function postEditAction($userName, Request $request)
-    {
+    function postEditAction(Application $app, Request $request, $userName) {
+
         if ($request->getMethod() !== Request::METHOD_POST) {
             throw new MethodNotAllowedException([Request::METHOD_POST]);
         }
@@ -100,35 +108,26 @@ final class UserController extends Controller
         }
 
         $user = User::fromPostForm($userData);
-        $this->userRepository->update($user);
+        $app['repository.user']->update($user);
 
-        return $this->redirect('admin_user_index');
+        return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function deleteAction($userName)
+    function deleteAction(Application $app, $userName)
     {
-        $user = $this->userRepository->getByUsername($userName);
+        $user = $app['repository.user']->getByUsername($userName);
 
-        if ($user === null) {
-            return $this->redirect('admin_user_index');
-        }
-
-        return $this->render('admin/user/delete', [
+        return $app['twig']->render('admin/user/delete.html', [
             'user' => $user,
         ]);
     }
 
-    function postDeleteAction($userName)
+    function postDeleteAction(Application $app, $userName)
     {
-        $user = $this->userRepository->getByUsername($userName);
+        $user = $app['repository.user']->getByUsername($userName);
+        $app['repository.user']->remove($user);
 
-        if ($user === null) {
-            return $this->redirect('admin_user_index');
-        }
-
-        $this->userRepository->remove($user);
-
-        return $this->redirect('admin_user_index');
+        return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
     function calendarAction($userName)

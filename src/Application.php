@@ -33,29 +33,22 @@ class Application extends \Silex\Application {
      */
     protected function initControllers() {
 
-        $this['index.controller'] = function() {
+        $this['controller.admin'] = function() {
+            return new Controller\AdminController();
+        };
+
+        $this['controller.index'] = function() {
             return new Controller\IndexController($this['twig'], $this['url_generator']);
         };
 
-        $this['admin.controller'] = function() {
-            return new Controller\AdminController($this['twig'], $this['url_generator']);
+        $this['controller.user'] = function() {
+            return new Controller\UserController();
         };
 
-        $this['admin.dashboard.controller'] = function() {
-            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user']);
+        $this['controller.settings'] = function() {
+            return new Controller\SettingsController();
         };
 
-        $this['admin.user.controller'] = function() {
-            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user']);
-        };
-
-        $this['admin.settings.standard.controller'] = function() {
-            return new Controller\Admin\StandardSettingsController($this['twig'], $this['url_generator']);
-        };
-
-        $this['admin.settings.system.controller'] = function() {
-            return new Controller\Admin\SystemSettingsController($this['twig'], $this['url_generator']);
-        };
     }
 
     protected function initMiddleware() {
@@ -78,10 +71,6 @@ class Application extends \Silex\Application {
             'twig.path' => __DIR__ . '/../views/',
         ]);
 
-        $this['resolver'] = function() {
-            return new ControllerResolver($this);
-        };
-
         $this['pdo'] = function() {
             $pdo = new PDO(
                 $this['config']['pdo']['dsn'],
@@ -90,6 +79,14 @@ class Application extends \Silex\Application {
             );
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
+        };
+
+        $this['stats'] = function() {
+
+            return new StatsService(
+                $this['pdo']
+            );
+
         };
 
         $this['repository.user'] = function() {
@@ -108,7 +105,10 @@ class Application extends \Silex\Application {
      */
     protected function initRoutes() {
 
-        $this->get('/', 'index.controller:indexAction')->bind('home');
+        $this->get('/', 'controller.index:indexAction')->bind('home');
+        $this->mount('/admin',  $this['controller.admin']);
+
+        /*
         $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');
 
         $this->get('/admin/users', 'admin.user.controller:indexAction')->bind('admin_user_index');
@@ -125,8 +125,7 @@ class Application extends \Silex\Application {
         $this->get('/admin/settings/standard', 'admin.settings.standard.controller:indexAction')->bind('admin_settings_standard_index');
 
         $this->get('/admin/settings/system', 'admin.settings.system.controller:indexAction')->bind('admin_settings_system_index');
-
-        $this->get('/admin/logout', 'admin.controller:logoutAction')->bind('admin_logout');
+         */
 
     }
 
