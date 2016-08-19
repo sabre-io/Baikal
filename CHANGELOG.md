@@ -1,6 +1,15 @@
 ChangeLog
 =========
 
+0.4.6 (????-??-??)
+------------------
+
+* Updated sabre/dav database definitions
+* #559: Fix contacts in new addressbooks not syncing
+* Now allows creation of calendars that contain VJOURNAL, VTODO and VEVENT.
+* Ships with sabre/dav 3.1.4
+
+
 0.4.5 (2016-05-28)
 ------------------
 
