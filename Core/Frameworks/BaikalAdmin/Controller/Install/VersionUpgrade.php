@@ -83,73 +83,8 @@ HTML;
 
     protected function upgrade($sVersionFrom, $sVersionTo) {
 
-        if ($sVersionFrom === "0.2.0") {
-
-            $sOldDbFilePath = PROJECT_PATH_SPECIFIC . "Db/.ht.db.sqlite";
-
-            if (PROJECT_SQLITE_FILE === $sOldDbFilePath) {
-                $sNewDbFilePath = PROJECT_PATH_SPECIFIC . "Db/db.sqlite";
-
-                # Move old db from Specific/Db/.ht.db.sqlite to Specific/Db/db.sqlite
-                if (!file_exists($sNewDbFilePath)) {
-                    if (!is_writable(dirname($sNewDbFilePath))) {
-                        $this->aErrors[] = "DB file path '" . dirname($sNewDbFilePath) . "' is not writable";
-                        return false;
-                    }
-
-                    if (!@copy($sOldDbFilePath, $sNewDbFilePath)) {
-                        $this->aErrors[] = "DB could not be copied from '" . $sOldDbFilePath . "' to '" . $sNewDbFilePath . "'.";
-                        return false;
-                    }
-
-                    $this->aSuccess[] = "SQLite database has been renamed from '" . $sOldDbFilePath . "' to '" . $sNewDbFilePath . "'";
-                }
-            }
-        }
-
         if (version_compare($sVersionFrom, '0.2.3', '<=')) {
-            # Upgrading DB
-
-            #	etag VARCHAR(32),
-            #	size INT(11) UNSIGNED NOT NULL,
-            #	componenttype VARCHAR(8),
-            #	firstoccurence INT(11) UNSIGNED,
-            #	lastoccurence INT(11) UNSIGNED,
-
-            if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
-                $aSql = [
-                    "ALTER TABLE calendarobjects ADD COLUMN etag VARCHAR(32)",
-                    "ALTER TABLE calendarobjects ADD COLUMN size INT(11) UNSIGNED NOT NULL",
-                    "ALTER TABLE calendarobjects ADD COLUMN componenttype VARCHAR(8)",
-                    "ALTER TABLE calendarobjects ADD COLUMN firstoccurence INT(11) UNSIGNED",
-                    "ALTER TABLE calendarobjects ADD COLUMN lastoccurence INT(11) UNSIGNED",
-                    "ALTER TABLE calendars ADD COLUMN transparent TINYINT(1) NOT NULL DEFAULT '0'",
-                ];
-
-                $this->aSuccess[] = "MySQL database has been successfuly upgraded.";
-            } else {
-                $aSql = [
-                    "ALTER TABLE calendarobjects ADD COLUMN etag text",
-                    "ALTER TABLE calendarobjects ADD COLUMN size integer",
-                    "ALTER TABLE calendarobjects ADD COLUMN componenttype text",
-                    "ALTER TABLE calendarobjects ADD COLUMN firstoccurence integer",
-                    "ALTER TABLE calendarobjects ADD COLUMN lastoccurence integer",
-                    "ALTER TABLE calendars ADD COLUMN transparent bool",
-                    "ALTER TABLE principals ADD COLUMN vcardurl text",    # This one is added in SQLite but not MySQL, because it is already there since the beginning in MySQL
-                ];
-
-                $this->aSuccess[] = "SQLite database has been successfuly upgraded.'";
-            }
-
-            try{
-                foreach ($aSql as $sAlterTableSql) {
-                    $GLOBALS["DB"]->query($sAlterTableSql);
-                }
-            } catch (\Exception $e) {
-                $this->aSuccess = [];
-                $this->aErrors[] = "<p>Database cannot be upgraded.<br />Caught exception: " . $e->getMessage() . "</p>";
-                return false;
-            }
+            throw new \Exception('This version of Baikal does not support upgrading from version 0.2.3 and older. Please request help on Github if this is a problem.');
         }
 
         $pdo = $GLOBALS['DB']->getPDO();
@@ -387,22 +322,9 @@ HTML;
             if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
 
                 $pdo->exec('UPDATE calendars SET synctoken = 1 WHERE synctoken IS NULL');
-                $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
 
                 $tmpTable = '_' . time();
                 $pdo->exec('ALTER TABLE calendars RENAME TO calendars' . $tmpTable);
-                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks' . $tmpTable);
-
-                $pdo->exec('
-CREATE TABLE addressbooks (
-    id integer primary key asc NOT NULL,
-    principaluri text NOT NULL,
-    displayname text,
-    uri text NOT NULL,
-    description text,
-    synctoken integer DEFAULT 1 NOT NULL
-);
-                ');
 
                 $pdo->exec('
 CREATE TABLE calendars (
@@ -420,13 +342,42 @@ CREATE TABLE calendars (
 );');
 
                 $pdo->exec('INSERT INTO calendars SELECT id, principaluri, displayname, uri, synctoken, description, calendarorder, calendarcolor, timezone, components, transparent FROM calendars' . $tmpTable);
-                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks' . $tmpTable);
 
-                $this->aSuccess[] = 'Updated calendars and addressbooks tables';
+                $this->aSuccess[] = 'Updated calendars table';
 
             }
 
         }
+        if (version_compare($sVersionFrom, '0.4.5', '<=')) {
+
+            // Similar to upgrading from older than 0.4.5, there were still
+            // issues with a missing DEFAULT 1 for sthe synctoken field in the
+            // addressbook.
+            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+
+                $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
+
+                $tmpTable = '_' . time();
+                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks' . $tmpTable);
+
+                $pdo->exec('
+CREATE TABLE addressbooks (
+    id integer primary key asc NOT NULL,
+    principaluri text NOT NULL,
+    displayname text,
+    uri text NOT NULL,
+    description text,
+    synctoken integer DEFAULT 1 NOT NULL
+);
+                ');
+
+                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks' . $tmpTable);
+                $this->aSuccess[] = 'Updated addressbooks table';
+
+            }
+
+        }
+
 
         $this->updateConfiguredVersion($sVersionTo);
         return true;
