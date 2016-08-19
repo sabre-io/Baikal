@@ -5,6 +5,8 @@ namespace Baikal\Repository;
 use Baikal\Domain\User;
 use Generator;
 use PDO;
+use Sabre\CalDAV\Backend\BackendInterface as CalBackend;
+use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
 
 /**
  * UserRepository implementation using PDO
@@ -24,12 +26,26 @@ final class UserRepository
     private $authRealm;
 
     /**
+     * @var CalBackend
+     */
+    private $calBackend;
+
+    /**
+     * @var CardBackend
+     */
+    private $cardBackend;
+
+    /**
      * @param PDO $pdo
      * @param string $authRealm
      */
-    function __construct(PDO $pdo, $authRealm) {
+    function __construct(PDO $pdo, $authRealm, CalBackend $calBackend, CardBackend $cardBackend) {
+
         $this->pdo = $pdo;
         $this->authRealm = $authRealm;
+        $this->calBackend = $calBackend;
+        $this->cardBackend = $cardBackend;
+
     }
 
     /**
@@ -84,7 +100,7 @@ final class UserRepository
      * Creates a new User
      */
     function create(User $user) {
-       
+
         $user->validateForCreate();
 
         $this->pdo->beginTransaction();
@@ -148,6 +164,42 @@ final class UserRepository
      * @param User $user
      */
     function remove(User $user) {
-        throw new \Exception('Not implemented!');
+
+        $this->pdo->beginTransaction();
+
+        $principalUri = $user->getPrincipalUri();
+        // Delete all calendars
+        foreach($this->calBackend->getCalendarsForUser($principalUri) as $calendarInfo) {
+            $this->calBackend->deleteCalendar($calendarInfo['id']);
+        }
+        // Delete all addressbooks
+        foreach($this->cardBackend->getAddressBooksForUser($principalUri) as $addressBookInfo) {
+            $this->calBackend->deleteAddressBook($addressBookInfo['id']);
+        }
+
+        // Get a list of principal ids
+        $relevantPrincipalsStmt = $this->pdo->prepare('SELECT id FROM principals WHERE uri = ? OR uri = ? OR uri = ?');
+
+        $relevantPrincipalsStmt->execute([
+            $principalUri,
+            $principalUri . '/calendar-proxy-read',
+            $principalUri . '/calendar-proxy-write',
+        ]);
+        $relevantPrincipals = $relevantPrincipalsStmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        // Delete principal and group membership information
+        $prinDelStmt = $this->pdo->prepare('DELETE FROM principals WHERE id = ?');
+        $memDelStmt = $this->pdo->prepare('DELETE FROM groupmembers WHERE principal_id = ? OR member_id = ?');
+        foreach($relevantPrincipals as $relevantPrincipal) {
+            $memDelStmt->execute([$relevantPrincipal, $relevantPrincipal]);
+            $prinDelStmt->execute([$relevantPrincipal]);
+        }
+
+        // Delete user record
+        $userDelStmt = $this->pdo->prepare('DELETE FROM users WHERE username = ?');
+        $userDelStmt->execute([$user->userName]);
+
+        $this->pdo->commit();
+
     }
 }

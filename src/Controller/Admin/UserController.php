@@ -19,16 +19,10 @@ final class UserController extends Controller
      */
     private $userRepository;
 
-    /**
-     * @var CalendarRepository
-     */
-    private $calendarRepository;
-
-    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository, CalendarRepository $calendarRepository)
+    function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
         parent::__construct($twig, $urlGenerator);
         $this->userRepository = $userRepository;
-        $this->calendarRepository = $calendarRepository;
     }
 
     function indexAction()

@@ -42,11 +42,11 @@ class Application extends \Silex\Application {
         };
 
         $this['admin.dashboard.controller'] = function() {
-            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user'], $this['repository.calendar']);
+            return new Controller\Admin\DashboardController($this['twig'], $this['url_generator'], $this['repository.user']);
         };
 
         $this['admin.user.controller'] = function() {
-            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user'], $this['repository.calendar']);
+            return new Controller\Admin\UserController($this['twig'], $this['url_generator'], $this['repository.user']);
         };
 
         $this['admin.settings.standard.controller'] = function() {
@@ -95,15 +95,12 @@ class Application extends \Silex\Application {
         $this['repository.user'] = function() {
             return new Repository\UserRepository(
                 $this['pdo'],
-                $this['config']['auth']['realm']
+                $this['config']['auth']['realm'],
+                $this['sabredav.backend.caldav'],
+                $this['sabredav.backend.carddav']
             );
         };
 
-        $this['repository.calendar'] = function() {
-            return new Repository\CalendarRepository(
-                $this['pdo']
-            );
-        };
     }
 
     /**
@@ -138,15 +135,23 @@ class Application extends \Silex\Application {
      */
     protected function initSabreDAV() {
 
+        $this['sabredav.backend.caldav'] = function() {
+
+            return new \Sabre\CalDAV\Backend\PDO($this['pdo']);
+
+        };
+
+        $this['sabredav.backend.carddav'] = function() {
+
+            return new \Sabre\CardDAV\Backend\PDO($this['pdo']);
+
+        };
+
         $this['sabredav'] = function() {
 
             return new DAV\Server(
-                $this['config']['caldav']['enabled'],
-                $this['config']['carddav']['enabled'],
-                $this['config']['auth']['type'],
-                $this['config']['auth']['realm'],
-                $this['pdo'],
-                '/dav.php'
+                $this,
+                null
             );
 
         };

@@ -28,6 +28,7 @@
 namespace Baikal\DAV;
 
 use PDO;
+use Baikal\Application;
 
 /**
  * The Baikal Server
@@ -39,20 +40,6 @@ use PDO;
  * @license http://sabre.io/license/ GPLv2
  */
 class Server {
-
-    /**
-     * Is CalDAV enabled?
-     *
-     * @var bool
-     */
-    protected $enableCalDAV;
-
-    /**
-     * is CardDAV enabled?
-     *
-     * @var bool
-     */
-    protected $enableCardDAV;
 
     /**
      * "Basic" or "Digest"
@@ -89,25 +76,26 @@ class Server {
      */
     protected $server;
 
+    /**
+     * Link to the Baikal Application DI container
+     *
+     * @var Application
+     */
+    protected $app;
 
     /**
      * Creates the server object.
      *
-     * @param bool $enableCalDAV
-     * @param bool $enableCardDAV
-     * @param string $authType
-     * @param string $authRealm
-     * @param PDO $pdo
-     * @param string $baseUri
+     * @param Application $app
+     * @param string|null $baseUri
      */
-    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
+    function __construct(Application $app, $baseUri) {
 
-        $this->enableCalDAV = $enableCalDAV;
-        $this->enableCardDAV = $enableCardDAV;
-        $this->authType = $authType;
-        $this->authRealm = $authRealm;
-        $this->pdo = $pdo;
+        $this->authType = $app['config']['auth']['type'];
+        $this->authRealm = $app['config']['auth']['realm'];
+        $this->pdo = $app['pdo'];
         $this->baseUri = $baseUri;
+        $this->app = $app;
 
         $this->initServer();
 
@@ -131,6 +119,9 @@ class Server {
      */
     protected function initServer() {
 
+        $caldavEnabled = $app['config']['caldav']['enabled'];
+        $carddavEnabled = $app['config']['carddav']['enabled'];
+
         if ($this->authType === 'Basic') {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
         } else {
@@ -142,13 +133,17 @@ class Server {
         $nodes = [
             new \Sabre\CalDAV\Principal\Collection($principalBackend)
         ];
-        if ($this->enableCalDAV) {
-            $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);
-            $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
+        if ($caldavEnabled) {
+            $nodes[] = new \Sabre\CalDAV\CalendarRoot(
+                $principalBackend,
+                $app['sabredav.backend.caldav']
+            );
         }
-        if ($this->enableCardDAV) {
-            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
-            $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
+        if ($carddavEnabled) {
+            $nodes[] = new \Sabre\CardDAV\AddressBookRoot(
+                $principalBackend,
+                $app['sabredav.backend.carddav']
+            );
         }
 
         $this->server = new \Sabre\DAV\Server($nodes);
@@ -165,12 +160,12 @@ class Server {
         // WebDAV-Sync!
         $this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
-        if ($this->enableCalDAV) {
+        if ($caldavEnabled) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
         }
-        if ($this->enableCardDAV) {
+        if ($carddavEnabled) {
             $this->server->addPlugin(new \Sabre\CardDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
         }
