@@ -169,11 +169,11 @@ final class UserRepository
 
         $principalUri = $user->getPrincipalUri();
         // Delete all calendars
-        foreach($this->calBackend->getCalendarsForUser($principalUri) as $calendarInfo) {
+        foreach ($this->calBackend->getCalendarsForUser($principalUri) as $calendarInfo) {
             $this->calBackend->deleteCalendar($calendarInfo['id']);
         }
         // Delete all addressbooks
-        foreach($this->cardBackend->getAddressBooksForUser($principalUri) as $addressBookInfo) {
+        foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $addressBookInfo) {
             $this->calBackend->deleteAddressBook($addressBookInfo['id']);
         }
 
@@ -190,7 +190,7 @@ final class UserRepository
         // Delete principal and group membership information
         $prinDelStmt = $this->pdo->prepare('DELETE FROM principals WHERE id = ?');
         $memDelStmt = $this->pdo->prepare('DELETE FROM groupmembers WHERE principal_id = ? OR member_id = ?');
-        foreach($relevantPrincipals as $relevantPrincipal) {
+        foreach ($relevantPrincipals as $relevantPrincipal) {
             $memDelStmt->execute([$relevantPrincipal, $relevantPrincipal]);
             $prinDelStmt->execute([$relevantPrincipal]);
         }

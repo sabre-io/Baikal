@@ -2,8 +2,8 @@
 
 namespace Baikal\Controller\Admin;
 
-use Baikal\Repository\CalendarRepository;
 use Baikal\Controller\Controller;
+use Baikal\Repository\CalendarRepository;
 use Baikal\Repository\UserRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
@@ -30,11 +30,11 @@ final class DashboardController extends Controller
     function indexAction()
     {
         return $this->render('admin/dashboard', [
-            'users'               => $this->userRepository->count(),
-            'nbcalendars'         => $this->calendarRepository->countAllCalendars(),
-            'nbevents'            => $this->calendarRepository->countAllEvents(),
-            'nbbooks'             => 42,
-            'nbcontacts'          => 42,
+            'users'       => $this->userRepository->count(),
+            'nbcalendars' => $this->calendarRepository->countAllCalendars(),
+            'nbevents'    => $this->calendarRepository->countAllEvents(),
+            'nbbooks'     => 42,
+            'nbcontacts'  => 42,
         ]);
     }
 }

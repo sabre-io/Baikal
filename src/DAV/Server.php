@@ -27,8 +27,8 @@
 
 namespace Baikal\DAV;
 
-use PDO;
 use Baikal\Application;
+use PDO;
 
 /**
  * The Baikal Server
