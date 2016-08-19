@@ -2,17 +2,13 @@
 
 namespace Baikal\Controller;
 
-use Silex\Api\ControllerProviderInterface;
-use Silex\Application;
-use Baikal\Controller\Controller;
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
 use Baikal\Repository\CalendarRepository;
-use Baikal\Repository\UserRepository;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
 
 class UserController implements ControllerProviderInterface {
 
@@ -23,11 +19,11 @@ class UserController implements ControllerProviderInterface {
 
         $controllers->get('/new',        [$this, 'createAction'])->bind('admin_user_create');
         $controllers->post('/new',       [$this, 'postCreateAction'])->bind('admin_user_create_post');
-        $controllers->get('{userName}',  [$this,'editAction'])->bind('admin_user_edit');
+        $controllers->get('{userName}',  [$this, 'editAction'])->bind('admin_user_edit');
         $controllers->post('{userName}', [$this, 'postEditAction'])->bind('admin_user_edit_post');
 
-        $controllers->get('{userName}/delete',  [$this,'deleteAction'])->bind('admin_user_delete');
-        $controllers->post('{userName}/delete',  [$this,'postDeleteAction'])->bind('admin_user_delete_post');
+        $controllers->get('{userName}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
+        $controllers->post('{userName}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
         $controllers->get('{userName}/calendars', 'controller.calendar:index')->bind('admin_user_calendars');
         $controllers->get('{userName}/addressbooks', 'controller.addressbook:index')->bind('admin_user_addressbooks');
 
