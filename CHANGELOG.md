@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-0.4.6 (????-??-??)
+0.4.6 (2016-08-19)
 ------------------
 
 * Updated sabre/dav database definitions
