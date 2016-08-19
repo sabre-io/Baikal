@@ -26,7 +26,7 @@ before_script:
 
 script:
     - find Core -name "*.php" | xargs -n1 php -l 
-    - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
+    - ./vendor/bin/sabre-cs-fixer fix src/ --dry-run --diff
 
 cache:
   directories:
