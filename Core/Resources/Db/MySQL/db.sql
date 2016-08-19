@@ -51,7 +51,7 @@ CREATE TABLE calendars (
     calendarorder INT(11) UNSIGNED NOT NULL DEFAULT '0',
     calendarcolor VARBINARY(10),
     timezone TEXT,
-    components VARBINARY(20),
+    components VARBINARY(21),
     transparent TINYINT(1) NOT NULL DEFAULT '0',
     UNIQUE(principaluri, uri)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
