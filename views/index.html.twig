@@ -21,11 +21,14 @@
             margin-right: auto;
             margin-left: auto;
         }
-        button {
+        .button {
             font-size: 20px;
             font-weight:bold;
             padding: 8px 16px 8px;
             text-shadow: 0 1px 1px #003863;
+            display: inline-block;
+            background: #ccc;
+            text-decoration: none;
         }
         h1 {
             font-weight: bold;
@@ -67,10 +70,10 @@
         <p style="line-height: 0; margin-bottom: 0;">&nbsp;</p>
         <h3>Baïkal</h3>
         <p>Lightweight CalDAV+CardDAV server</p>
-        <h1>Baïkal is running alright.</h1>
-        <button style="color:#005799;" onclick="location.href='http://baikal-server.com/'" >Get your own!</button>
+        <h1>Baïkal is up and running!</h1>
+        <a class="button" style="color:#005799" href="http://sabre.io/baikal/">Get your own!</a>
         &nbsp; &nbsp;
-        <button style="color:#d9150b;" onclick="location.href='admin'" >Admin page</button>
+        <a class="button" style="color:#d9150b" href="index.php/admin">Admin page</a>
     </div>
 </div>
 </body>
