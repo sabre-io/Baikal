@@ -31,7 +31,7 @@ class UserController implements ControllerProviderInterface {
     }
 
     function indexAction(Application $app) {
-        $users = $app['repository.user']->all();
+        $users = $app['service.user']->all();
 
         return $app['twig']->render('admin/user/index.html', [
             'users'    => $users,
@@ -68,14 +68,14 @@ class UserController implements ControllerProviderInterface {
         }
 
         $user = User::fromPostForm($userData);
-        $app['repository.user']->create($user);
+        $app['service.user']->create($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
     function editAction(Application $app, $userName) {
 
-        $user = $app['repository.user']->getByUsername($userName);
+        $user = $app['service.user']->getByUsername($userName);
 
         if ($user === null) {
             $user = [
@@ -100,14 +100,14 @@ class UserController implements ControllerProviderInterface {
         }
 
         $user = User::fromPostForm($userData);
-        $app['repository.user']->update($user);
+        $app['service.user']->update($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
     function deleteAction(Application $app, $userName)
     {
-        $user = $app['repository.user']->getByUsername($userName);
+        $user = $app['service.user']->getByUsername($userName);
 
         return $app['twig']->render('admin/user/delete.html', [
             'user' => $user,
@@ -116,8 +116,8 @@ class UserController implements ControllerProviderInterface {
 
     function postDeleteAction(Application $app, $userName)
     {
-        $user = $app['repository.user']->getByUsername($userName);
-        $app['repository.user']->remove($user);
+        $user = $app['service.user']->getByUsername($userName);
+        $app['service.user']->remove($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
