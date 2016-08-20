@@ -17,7 +17,7 @@ class SettingsController implements ControllerProviderInterface {
     function indexAction(Application $app) {
 
         return $app['twig']->render('admin/settings.html', [
-            'config' => $app['service.config']->get(),
+            'config'      => $app['service.config']->get(),
             'is_writable' => $app['service.config']->isWritable()
         ]);
     }
