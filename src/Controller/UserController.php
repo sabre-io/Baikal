@@ -93,10 +93,6 @@ class UserController implements ControllerProviderInterface {
 
     function postEditAction(Application $app, Request $request, $userName) {
 
-        if ($request->getMethod() !== Request::METHOD_POST) {
-            throw new MethodNotAllowedException([Request::METHOD_POST]);
-        }
-
         $userData = $request->get('data');
         $userData['userName'] = $userName;
         if ($userData['password'] != $userData['passwordconfirm']) {

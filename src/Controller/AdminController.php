@@ -17,11 +17,11 @@ class AdminController implements ControllerProviderInterface {
         $controllers->mount('/settings', $app['controller.settings']->connect($app));
 
         return $controllers;
-    }
+   }
 
     function dashboard(Application $app) {
 
-        $statsService = $app['stats'];
+        $statsService = $app['service.stats'];
 
         return $app['twig']->render('admin/dashboard.html', [
             'users'       => $statsService->users(),

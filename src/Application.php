@@ -83,7 +83,7 @@ class Application extends \Silex\Application {
 
         $this['service.stats'] = function() {
 
-            return new StatsService(
+            return new Service\StatsService(
                 $this['pdo']
             );
 
