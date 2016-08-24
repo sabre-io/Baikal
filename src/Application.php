@@ -111,7 +111,7 @@ class Application extends \Silex\Application {
      */
     protected function initRoutes() {
 
-        $this->get('/', 'controller.index:indexAction')->bind('home');
+        $this->get('/', $this['controller.index'])->bind('home');
         $this->mount('/admin',  $this['controller.admin']);
 
         /*

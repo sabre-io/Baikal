@@ -24,7 +24,7 @@ class UserController implements ControllerProviderInterface {
 
         $controllers->get('{userName}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
         $controllers->post('{userName}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
-        $controllers->get('{userName}/calendars', 'controller.calendar:index')->bind('admin_user_calendars');
+        $controllers->get('{userName}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
         $controllers->get('{userName}/addressbooks', 'controller.addressbook:index')->bind('admin_user_addressbooks');
 
         return $controllers;
@@ -122,12 +122,12 @@ class UserController implements ControllerProviderInterface {
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function calendarAction($userName)
+    function calendarAction(Application $app, $userName)
     {
-        $calendars = $this->calendarRepository->allCalendarsByUserName($userName);
+        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $userName);
 
         #return json_encode($calendars);
-        return $this->render('admin/user/calendars', [
+        return $app['twig']->render('admin/user/calendars.html', [
             'username'  => $userName,
             'calendars' => $calendars,
         ]);
