@@ -17,8 +17,8 @@
         <tbody>
         {% for addressbook in addressbooks %}
             <tr>
-                <td class="col-displayname"><i class="{{ addressbook.icon }}"></i>{{ addressbook.label|escape }}</td>
-                <td class="col-description">{{ addressbook.description|escape }}</td>
+                <td class="col-displayname"><i class="icon-book"></i>{{ attribute(addressbook, "\{DAV:\}displayname")|escape }}</td>
+                <td class="col-description">{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
                         <nobr><a class="btn btn-primary" href="#"><i class="icon-edit icon-white"></i> Edit</a></nobr>
