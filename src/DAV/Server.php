@@ -119,8 +119,8 @@ class Server {
      */
     protected function initServer() {
 
-        $caldavEnabled = $app['config']['caldav']['enabled'];
-        $carddavEnabled = $app['config']['carddav']['enabled'];
+        $caldavEnabled = $this->app['config']['caldav']['enabled'];
+        $carddavEnabled = $this->app['config']['carddav']['enabled'];
 
         if ($this->authType === 'Basic') {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
@@ -136,13 +136,13 @@ class Server {
         if ($caldavEnabled) {
             $nodes[] = new \Sabre\CalDAV\CalendarRoot(
                 $principalBackend,
-                $app['sabredav.backend.caldav']
+                $this->app['sabredav.backend.caldav']
             );
         }
         if ($carddavEnabled) {
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot(
                 $principalBackend,
-                $app['sabredav.backend.carddav']
+                $this->app['sabredav.backend.carddav']
             );
         }
 
