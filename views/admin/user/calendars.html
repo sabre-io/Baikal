@@ -17,8 +17,8 @@
         <tbody>
         {% for calendar in calendars %}
             <tr>
-                <td class="col-displayname"><i class="icon-calendar"></i>{{ calendar.displayName|escape }}</td>
-                <td class="col-description">{{ calendar.description|escape }}</td>
+                <td class="col-displayname"><i class="icon-calendar"></i>{{ attribute(calendar, "\{DAV:\}displayname")|escape }}</td>
+                <td class="col-description">{{ attribute(calendar, "\{urn:ietf:params:xml:ns:caldav\}calendar-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
                         <nobr><a class="btn btn-primary" href="#"><i class="icon-edit icon-white"></i> Edit</a></nobr>

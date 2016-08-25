@@ -38,7 +38,7 @@ class Application extends \Silex\Application {
         };
 
         $this['controller.index'] = function() {
-            return new Controller\IndexController($this['twig'], $this['url_generator']);
+            return new Controller\IndexController();
         };
 
         $this['controller.user'] = function() {
@@ -111,9 +111,10 @@ class Application extends \Silex\Application {
      */
     protected function initRoutes() {
 
-        $this->get('/', 'controller.index:indexAction')->bind('home');
-        $this->mount('/admin',  $this['controller.admin']);
-
+        #$this->get('/', $this['controller.index'])->bind('home');
+        $this->mount('/',		$this['controller.index']);
+		$this->mount('/admin',	$this['controller.admin']);
+		
         /*
         $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');
 

@@ -24,8 +24,8 @@ class UserController implements ControllerProviderInterface {
 
         $controllers->get('{userName}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
         $controllers->post('{userName}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
-        $controllers->get('{userName}/calendars', 'controller.calendar:index')->bind('admin_user_calendars');
-        $controllers->get('{userName}/addressbooks', 'controller.addressbook:index')->bind('admin_user_addressbooks');
+        $controllers->get('{userName}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
+        $controllers->get('{userName}/addressbooks', [$this, 'addressbookAction'])->bind('admin_user_addressbooks');
 
         return $controllers;
     }
@@ -105,8 +105,7 @@ class UserController implements ControllerProviderInterface {
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function deleteAction(Application $app, $userName)
-    {
+    function deleteAction(Application $app, $userName) {
         $user = $app['service.user']->getByUsername($userName);
 
         return $app['twig']->render('admin/user/delete.html', [
@@ -114,30 +113,28 @@ class UserController implements ControllerProviderInterface {
         ]);
     }
 
-    function postDeleteAction(Application $app, $userName)
-    {
+    function postDeleteAction(Application $app, $userName) {
         $user = $app['service.user']->getByUsername($userName);
         $app['service.user']->remove($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function calendarAction($userName)
-    {
-        $calendars = $this->calendarRepository->allCalendarsByUserName($userName);
+    function calendarAction(Application $app, $userName) {
+        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $userName);
 
-        #return json_encode($calendars);
-        return $this->render('admin/user/calendars', [
+        return $app['twig']->render('admin/user/calendars.html', [
             'username'  => $userName,
             'calendars' => $calendars,
         ]);
     }
 
-    function addressbookAction($userName)
-    {
-        return $this->render('admin/user/addressbooks', [
+    function addressbookAction(Application $app, $userName) {
+        $addressbooks = $app['sabredav.backend.carddav']->getAddressBooksForUser('principals/' . $userName);
+		
+		return $app['twig']->render('admin/user/addressbooks.html', [
             'username'     => $userName,
-            'addressbooks' => [],
+            'addressbooks' => $addressbooks,
         ]);
     }
 }

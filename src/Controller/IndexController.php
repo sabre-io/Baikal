@@ -2,13 +2,21 @@
 
 namespace Baikal\Controller;
 
-final class IndexController extends Controller
-{
-    /**
-     * @return string
-     */
-    function indexAction()
+use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
+
+class IndexController implements ControllerProviderInterface {
+
+    function connect(Application $app) {
+
+        $controllers = $app['controllers_factory'];
+        $controllers->get('/', [$this, 'indexAction'])->bind('home');
+
+        return $controllers;
+   }
+   
+	function indexAction(Application $app)
     {
-        return $this->render('index');
+        return $app['twig']->render('index.html');
     }
 }
