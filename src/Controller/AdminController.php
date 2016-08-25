@@ -14,7 +14,7 @@ class AdminController implements ControllerProviderInterface {
         $controllers->get('/logout',    [$this, 'logout'])->bind('admin_logout');
 
         $controllers->mount('/users',   $app['controller.user']->connect($app));
-        $controllers->mount('/settings',$app['controller.settings']->connect($app));
+        $controllers->mount('/settings', $app['controller.settings']->connect($app));
 
         return $controllers;
    }

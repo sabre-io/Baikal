@@ -4,7 +4,6 @@ namespace Baikal\Controller;
 
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
-use Baikal\Repository\CalendarRepository;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,8 +130,8 @@ class UserController implements ControllerProviderInterface {
 
     function addressbookAction(Application $app, $userName) {
         $addressbooks = $app['sabredav.backend.carddav']->getAddressBooksForUser('principals/' . $userName);
-		
-		return $app['twig']->render('admin/user/addressbooks.html', [
+
+        return $app['twig']->render('admin/user/addressbooks.html', [
             'username'     => $userName,
             'addressbooks' => $addressbooks,
         ]);

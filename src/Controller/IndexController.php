@@ -15,7 +15,7 @@ class IndexController implements ControllerProviderInterface {
         return $controllers;
    }
    
-	function indexAction(Application $app)
+    function indexAction(Application $app)
     {
         return $app['twig']->render('index.html');
     }

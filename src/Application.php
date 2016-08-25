@@ -112,9 +112,9 @@ class Application extends \Silex\Application {
     protected function initRoutes() {
 
         #$this->get('/', $this['controller.index'])->bind('home');
-        $this->mount('/',		$this['controller.index']);
-		$this->mount('/admin',	$this['controller.admin']);
-		
+        $this->mount('/',        $this['controller.index']);
+        $this->mount('/admin',    $this['controller.admin']);
+ 
         /*
         $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');
 
