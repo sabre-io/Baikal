@@ -3,10 +3,7 @@
 namespace Baikal\Service;
 
 use Baikal\Domain\User;
-#use Generator;
-use PDO;
 use Sabre\CalDAV\Backend\BackendInterface as CalBackend;
-#use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
 
 /**
  * UserRepository implementation using PDO
