@@ -104,6 +104,12 @@ class Application extends \Silex\Application {
             );
         };
 
+        $this['service.calendar'] = function() {
+            return new Service\CalendarService(
+                $this['sabredav.backend.caldav']
+            );
+        };
+
     }
 
     /**
