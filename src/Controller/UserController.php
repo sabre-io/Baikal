@@ -80,6 +80,7 @@ class UserController implements ControllerProviderInterface {
         $user = User::fromPostForm($userData);
         $app['service.user']->create($user);
         $app['service.calendar']->createDefault($user);
+        $app['service.addressbook']->createDefault($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }

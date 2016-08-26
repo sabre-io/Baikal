@@ -110,6 +110,12 @@ class Application extends \Silex\Application {
             );
         };
 
+        $this['service.addressbook'] = function() {
+            return new Service\AddressbookService(
+                $this['sabredav.backend.carddav']
+            );
+        };
+
     }
 
     /**
