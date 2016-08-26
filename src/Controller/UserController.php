@@ -37,8 +37,8 @@ class UserController implements ControllerProviderInterface {
             $calendars = count($app['sabredav.backend.caldav']->getCalendarsForUser($user->getPrincipalUri()));
             $addressbooks = count($app['sabredav.backend.carddav']->getAddressBooksForUser($user->getPrincipalUri()));
             $usersData[] = [
-                'userInfo' => $user,
-                'calendars' => $calendars,
+                'userInfo'     => $user,
+                'calendars'    => $calendars,
                 'addressbooks' => $addressbooks
             ];
         }

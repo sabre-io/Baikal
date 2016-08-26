@@ -3,7 +3,7 @@
 namespace Baikal\Service;
 
 use Baikal\Domain\User;
-use Generator;
+#use Generator;
 use PDO;
 #use Sabre\CalDAV\Backend\BackendInterface as CalBackend;
 use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
@@ -30,8 +30,8 @@ class AddressbookService {
     function createDefault(User $user) {
 
         $this->cardBackend->createAddressBook($user->getPrincipalUri(), 'default', [
-            '{DAV:}displayname'                                         => 'Default Addressbook',
-            '{urn:ietf:params:xml:ns:carddav}addressbook-description'    => 'Default Description',
+            '{DAV:}displayname'                                       => 'Default Addressbook',
+            '{urn:ietf:params:xml:ns:carddav}addressbook-description' => 'Default Description',
         ]);
     }
 
