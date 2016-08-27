@@ -25,7 +25,7 @@ class CalendarService {
      */
     function provision(User $user) {
 
-        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID() , [
+        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
             '{DAV:}displayname'                                               => 'HOME',
             '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default calendar for your private events',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
