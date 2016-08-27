@@ -24,11 +24,10 @@ class AddressbookService {
     /**
      * Creates a new Addressbook for a new User
      */
-    function createDefault(User $user) {
+    function provision(User $user) {
 
         $this->cardBackend->createAddressBook($user->getPrincipalUri(), 'default', [
-            '{DAV:}displayname'                                       => 'Default Addressbook',
-            '{urn:ietf:params:xml:ns:carddav}addressbook-description' => 'Default Description',
+            '{DAV:}displayname' => 'Default Contacts'
         ]);
     }
 
