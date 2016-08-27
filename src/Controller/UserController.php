@@ -129,19 +129,33 @@ class UserController implements ControllerProviderInterface {
 
     function calendarAction(Application $app, $userName) {
         $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $userName);
+        $calendarsData = [];
 
+        foreach ($calendars as $calendar) {
+            $calendarId = $calendar['id'];
+            $calendar['eventCount'] = count($app['sabredav.backend.caldav']->getCalendarObjects($calendarId));
+            $calendarsData[] = $calendar;
+        }
+        #return json_encode($calendarsData);
         return $app['twig']->render('admin/user/calendars.html', [
             'username'  => $userName,
-            'calendars' => $calendars,
+            'calendars' => $calendarsData,
         ]);
     }
 
     function addressbookAction(Application $app, $userName) {
         $addressbooks = $app['sabredav.backend.carddav']->getAddressBooksForUser('principals/' . $userName);
+        $addressbooksData = [];
 
+        foreach ($addressbooks as $addressbook) {
+            $addressbookId = $addressbook['id'];
+            $addressbook['cardCount'] = count($app['sabredav.backend.carddav']->getCards($addressbookId));
+            $addressbooksData[] = $addressbook;
+        }
+        #return json_encode($addressbooksData);
         return $app['twig']->render('admin/user/addressbooks.html', [
             'username'     => $userName,
-            'addressbooks' => $addressbooks,
+            'addressbooks' => $addressbooksData,
         ]);
     }
 }
