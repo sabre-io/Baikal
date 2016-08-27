@@ -5,9 +5,6 @@ namespace Baikal\Service;
 use Baikal\Domain\User;
 use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
 
-/**
- * UserRepository implementation using PDO
- */
 class AddressbookService {
 
     /**

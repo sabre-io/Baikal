@@ -5,10 +5,8 @@ namespace Baikal\Service;
 use Baikal\Domain\User;
 use Sabre\CalDAV\Backend\BackendInterface as CalBackend;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
+use Sabre\DAV\UUIDUtil;
 
-/**
- * UserRepository implementation using PDO
- */
 class CalendarService {
 
     /**
@@ -27,18 +25,17 @@ class CalendarService {
      */
     function provision(User $user) {
 
-        #CalDAV\Xml\Property\SupportedCalendarComponentSet
-        $this->calBackend->createCalendar($user->getPrincipalUri(), 'home', [
+        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID() , [
             '{DAV:}displayname'                                               => 'HOME',
             '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default calendar for your private events',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
         ]);
-        $this->calBackend->createCalendar($user->getPrincipalUri(), 'work', [
+        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
             '{DAV:}displayname'                                               => 'WORK',
             '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default calendar for your businesslike events',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
         ]);
-        $this->calBackend->createCalendar($user->getPrincipalUri(), 'tasks', [
+        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
             '{DAV:}displayname'                                               => 'TASKS',
             '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default Storage for your tasks',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO'])
