@@ -54,9 +54,9 @@ class UserService {
     function all()
     {
         if ($this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
-            $userQuery = $this->pdo->query("SELECT username as userName, email, displayname as displayName FROM users LEFT JOIN principals ON principals.uri = CONCAT('principals/', username)");
+            $userQuery = $this->pdo->query("SELECT users.id, username as userName, email, displayname as displayName FROM users LEFT JOIN principals ON principals.uri = CONCAT('principals/', username)");
         } else {
-            $userQuery = $this->pdo->query("SELECT username as userName, email, displayname as displayName FROM users LEFT JOIN principals ON principals.uri = ('principals/' || username)");
+            $userQuery = $this->pdo->query("SELECT users.id, username as userName, email, displayname as displayName FROM users LEFT JOIN principals ON principals.uri = ('principals/' || username)");
         }
 
         $users = [];
