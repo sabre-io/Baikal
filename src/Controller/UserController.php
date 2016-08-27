@@ -31,20 +31,15 @@ class UserController implements ControllerProviderInterface {
 
     function indexAction(Application $app) {
         $users = $app['service.user']->all();
-        $usersData = [];
 
         foreach ($users as $user) {
-            $calendars = count($app['sabredav.backend.caldav']->getCalendarsForUser($user->getPrincipalUri()));
-            $addressbooks = count($app['sabredav.backend.carddav']->getAddressBooksForUser($user->getPrincipalUri()));
-            $usersData[] = [
-                'userInfo'     => $user,
-                'calendars'    => $calendars,
-                'addressbooks' => $addressbooks
-            ];
+            $principalsUri = $user->getPrincipalUri();
+            $user->calendarCount = count($app['sabredav.backend.caldav']->getCalendarsForUser($principalsUri));
+            $user->addressbookCount = count($app['sabredav.backend.carddav']->getAddressBooksForUser($principalsUri));
         }
 
         return $app['twig']->render('admin/user/index.html', [
-            'users'    => $usersData,
+            'users'    => $users,
             'messages' => '',
             'form'     => '',
         ]);

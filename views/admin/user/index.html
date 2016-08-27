@@ -10,15 +10,15 @@
         {% for user in users %}
             <tr>
                 <td class="col-userName">
-                    <i class="icon-user"></i> <strong>{{ user.userInfo.userName }}</strong><br />
-                    {{ user.userInfo.displayName }} <a href="mailto:{{ user.userInfo.email }}">&lt;{{ user.userInfo.email }}&gt;</a>
+                    <i class="icon-user"></i> <strong>{{ user.userName }}</strong><br />
+                    {{ user.displayName }} <a href="mailto:{{ user.email }}">&lt;{{ user.email }}&gt;</a>
                 </td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
-                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {userName: user.userInfo.userName}) }}"><i class="icon-calendar"></i> Calendars <span class="badge">{{ user.calendars }}</span></a></nobr>
-                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {userName: user.userInfo.userName}) }}"><i class="icon-book"></i> Address Books <span class="badge">{{ user.addressbooks }}</span></a></nobr>
-                        <nobr><a class="btn btn-primary" href="{{ path('admin_user_edit', {userName: user.userInfo.userName}) }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
-                        <nobr><a class="btn btn-danger" href="{{ path('admin_user_delete', {userName: user.userInfo.userName}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {userName: user.userName}) }}"><i class="icon-calendar"></i> Calendars <span class="badge">{{ user.calendarCount }}</span></a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {userName: user.userName}) }}"><i class="icon-book"></i> Address Books <span class="badge">{{ user.addressbookCount }}</span></a></nobr>
+                        <nobr><a class="btn btn-primary" href="{{ path('admin_user_edit', {userName: user.userName}) }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
+                        <nobr><a class="btn btn-danger" href="{{ path('admin_user_delete', {userName: user.userName}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>
                 </td>
             </tr>
