@@ -28,4 +28,12 @@ class AddressbookService {
         ]);
     }
 
+    function getByUserNameAndAddressbookId($userName, $addressbookId) {
+        $addressbooks = $this->cardBackend->getAddressbooksForUser('principals/' . $userName);
+        foreach ($addressbooks as $addressbook) {
+            if ($addressbook['id'] == $addressbookId) {
+               return $addressbook;
+            }
+        }
+    }
 }
