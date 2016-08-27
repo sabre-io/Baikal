@@ -174,7 +174,7 @@ class UserService {
         }
         // Delete all addressbooks
         foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $addressBookInfo) {
-            $this->calBackend->deleteAddressBook($addressBookInfo['id']);
+            $this->cardBackend->deleteAddressBook($addressBookInfo['id']);
         }
 
         // Get a list of principal ids
