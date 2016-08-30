@@ -18,16 +18,21 @@ class UserController implements ControllerProviderInterface {
 
         $controllers->get('/new',        [$this, 'createAction'])->bind('admin_user_create');
         $controllers->post('/new',       [$this, 'postCreateAction'])->bind('admin_user_create_post');
-        $controllers->get('{userName}',  [$this, 'editAction'])->bind('admin_user_edit');
-        $controllers->post('{userName}', [$this, 'postEditAction'])->bind('admin_user_edit_post');
+        $controllers->get('{user}',  [$this, 'editAction'])->bind('admin_user_edit');
+        $controllers->post('{user}', [$this, 'postEditAction'])->bind('admin_user_edit_post');
 
-        $controllers->get('{userName}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
-        $controllers->post('{userName}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
-        $controllers->get('{userName}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
+        $controllers->get('{user}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
+        $controllers->post('{user}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
+        $controllers->get('{user}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
         
-        $controllers->get('{userName}/addressbooks',                         [$this, 'addressbookAction'])->bind('admin_user_addressbooks');
-        $controllers->get('{userName}/addressbooks/{addressbookId}/delete',  [$this, 'deleteAddressbookAction'])->bind('admin_addressbook_delete');
-        $controllers->post('{userName}/addressbooks/{addressbookId}/delete', [$this, 'postDeleteAddressbookAction'])->bind('admin_addressbook_delete_post');
+        $controllers->get('{user}/addressbooks',                        AddressBookController::class . '::indexAction')->bind('admin_user_addressbooks');
+        $controllers->get('{user}/addressbooks/{addressbookId}/delete', AddressBookController::class . '::deleteAction')->bind('admin_addressbook_delete');
+        $controllers->post('{user}/addressbooks/{addressbookId}/delete', AddressBookController::class . '::postDeleteAction')->bind('admin_addressbook_delete_post');
+
+        $controllers->convert('user', function($user) use ($app) {
+            if ($user === null) return;
+            return $app['service.user']->getByUsername($user);
+        });
 
         return $controllers;
     }
@@ -83,9 +88,7 @@ class UserController implements ControllerProviderInterface {
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function editAction(Application $app, $userName) {
-
-        $user = $app['service.user']->getByUsername($userName);
+    function editAction(Application $app, User $user) {
 
         if ($user === null) {
             $user = [
@@ -101,10 +104,10 @@ class UserController implements ControllerProviderInterface {
         ]);
     }
 
-    function postEditAction(Application $app, Request $request, $userName) {
+    function postEditAction(Application $app, Request $request, User $user) {
 
         $userData = $request->get('data');
-        $userData['userName'] = $userName;
+        $userData['userName'] = $user->userName;
         if ($userData['password'] != $userData['passwordconfirm']) {
             throw new \InvalidArgumentException('Passwords did not match');
         }
@@ -115,23 +118,21 @@ class UserController implements ControllerProviderInterface {
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function deleteAction(Application $app, $userName) {
-        $user = $app['service.user']->getByUsername($userName);
+    function deleteAction(Application $app, User $user) {
 
         return $app['twig']->render('admin/user/delete.html', [
             'user' => $user,
         ]);
     }
 
-    function postDeleteAction(Application $app, $userName) {
-        $user = $app['service.user']->getByUsername($userName);
-        $app['service.user']->remove($user);
+    function postDeleteAction(Application $app, User $user) {
 
+        $app['service.user']->remove($user);
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
 
-    function calendarAction(Application $app, $userName) {
-        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $userName);
+    function calendarAction(Application $app, User $user) {
+        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $user->userName);
         $calendarsData = [];
 
         foreach ($calendars as $calendar) {
@@ -141,44 +142,11 @@ class UserController implements ControllerProviderInterface {
         }
         #return json_encode($calendarsData);
         return $app['twig']->render('admin/user/calendars.html', [
-            'username'  => $userName,
+            'user'      => $user,
             'calendars' => $calendarsData,
         ]);
     }
 
-    function addressbookAction(Application $app, $userName) {
-        $addressbooks = $app['sabredav.backend.carddav']->getAddressBooksForUser('principals/' . $userName);
-        $addressbooksData = [];
 
-        foreach ($addressbooks as $addressbook) {
-            $addressbookId = $addressbook['id'];
-            $addressbook['cardCount'] = count($app['sabredav.backend.carddav']->getCards($addressbookId));
-            $addressbooksData[] = $addressbook;
-        }
-        #return json_encode($addressbooksData);
-        return $app['twig']->render('admin/user/addressbooks.html', [
-            'username'     => $userName,
-            'addressbooks' => $addressbooksData,
-        ]);
-    }
-
-    function deleteAddressbookAction(Application $app, $userName, $addressbookId) {
-        
-        $user = $app['service.user']->getByUsername($userName);
-        $addressbook = $app['service.addressbook']->getByUserNameAndAddressBookId($userName, $addressbookId);
-
-        #return json_encode([$user, $addressbook]);
-        return $app['twig']->render('admin/addressbook/delete.html', [
-            'user'        => $user,
-            'addressbook' => $addressbook
-        ]);
-    }
-
-    function postDeleteAddressbookAction(Application $app, $userName, $addressbookId) {
-        
-        $app['sabredav.backend.carddav']->deleteAddressbook($addressbookId);
-
-        return $app->redirect($app['url_generator']->generate('admin_user_addressbooks', ['userName' => $userName]));
-    }
 
 }

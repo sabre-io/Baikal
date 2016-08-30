@@ -26,18 +26,15 @@ class CalendarService {
     function provision(User $user) {
 
         $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
-            '{DAV:}displayname'                                               => 'HOME',
-            '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default calendar for your private events',
+            '{DAV:}displayname'                                               => 'Home',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
         ]);
         $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
-            '{DAV:}displayname'                                               => 'WORK',
-            '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default calendar for your businesslike events',
+            '{DAV:}displayname'                                               => 'Work',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
         ]);
         $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
-            '{DAV:}displayname'                                               => 'TASKS',
-            '{urn:ietf:params:xml:ns:caldav}calendar-description'             => 'Default Storage for your tasks',
+            '{DAV:}displayname'                                               => 'Tasks',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO'])
         ]);
 

@@ -4,6 +4,7 @@ namespace Baikal\Service;
 
 use Baikal\Domain\User;
 use Sabre\CardDAV\Backend\BackendInterface as CardBackend;
+use Sabre\DAV\UUIDUtil;
 
 class AddressbookService {
 
@@ -23,7 +24,7 @@ class AddressbookService {
      */
     function provision(User $user) {
 
-        $this->cardBackend->createAddressBook($user->getPrincipalUri(), 'default', [
+        $this->cardBackend->createAddressBook($user->getPrincipalUri(), UUIDUtil::getUUID(), [
             '{DAV:}displayname' => 'Default Contacts'
         ]);
     }
