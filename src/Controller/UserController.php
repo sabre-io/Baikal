@@ -24,13 +24,22 @@ class UserController implements ControllerProviderInterface {
         $controllers->get('{userName}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
         $controllers->post('{userName}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
         $controllers->get('{userName}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
-        $controllers->get('{userName}/addressbooks', [$this, 'addressbookAction'])->bind('admin_user_addressbooks');
+        
+        $controllers->get('{userName}/addressbooks',                         [$this, 'addressbookAction'])->bind('admin_user_addressbooks');
+        $controllers->get('{userName}/addressbooks/{addressbookId}/delete',  [$this, 'deleteAddressbookAction'])->bind('admin_addressbook_delete');
+        $controllers->post('{userName}/addressbooks/{addressbookId}/delete', [$this, 'postDeleteAddressbookAction'])->bind('admin_addressbook_delete_post');
 
         return $controllers;
     }
 
     function indexAction(Application $app) {
         $users = $app['service.user']->all();
+
+        foreach ($users as $user) {
+            $principalsUri = $user->getPrincipalUri();
+            $user->calendarCount = count($app['sabredav.backend.caldav']->getCalendarsForUser($principalsUri));
+            $user->addressbookCount = count($app['sabredav.backend.carddav']->getAddressBooksForUser($principalsUri));
+        }
 
         return $app['twig']->render('admin/user/index.html', [
             'users'    => $users,
@@ -68,6 +77,8 @@ class UserController implements ControllerProviderInterface {
 
         $user = User::fromPostForm($userData);
         $app['service.user']->create($user);
+        $app['service.calendar']->provision($user);
+        $app['service.addressbook']->provision($user);
 
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
@@ -121,19 +132,53 @@ class UserController implements ControllerProviderInterface {
 
     function calendarAction(Application $app, $userName) {
         $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $userName);
+        $calendarsData = [];
 
+        foreach ($calendars as $calendar) {
+            $calendarId = $calendar['id'];
+            $calendar['eventCount'] = count($app['sabredav.backend.caldav']->getCalendarObjects($calendarId));
+            $calendarsData[] = $calendar;
+        }
+        #return json_encode($calendarsData);
         return $app['twig']->render('admin/user/calendars.html', [
             'username'  => $userName,
-            'calendars' => $calendars,
+            'calendars' => $calendarsData,
         ]);
     }
 
     function addressbookAction(Application $app, $userName) {
         $addressbooks = $app['sabredav.backend.carddav']->getAddressBooksForUser('principals/' . $userName);
+        $addressbooksData = [];
 
+        foreach ($addressbooks as $addressbook) {
+            $addressbookId = $addressbook['id'];
+            $addressbook['cardCount'] = count($app['sabredav.backend.carddav']->getCards($addressbookId));
+            $addressbooksData[] = $addressbook;
+        }
+        #return json_encode($addressbooksData);
         return $app['twig']->render('admin/user/addressbooks.html', [
             'username'     => $userName,
-            'addressbooks' => $addressbooks,
+            'addressbooks' => $addressbooksData,
         ]);
     }
+
+    function deleteAddressbookAction(Application $app, $userName, $addressbookId) {
+        
+        $user = $app['service.user']->getByUsername($userName);
+        $addressbook = $app['service.addressbook']->getByUserNameAndAddressBookId($userName, $addressbookId);
+
+        #return json_encode([$user, $addressbook]);
+        return $app['twig']->render('admin/addressbook/delete.html', [
+            'user'        => $user,
+            'addressbook' => $addressbook
+        ]);
+    }
+
+    function postDeleteAddressbookAction(Application $app, $userName, $addressbookId) {
+        
+        $app['sabredav.backend.carddav']->deleteAddressbook($addressbookId);
+
+        return $app->redirect($app['url_generator']->generate('admin_user_addressbooks', ['userName' => $userName]));
+    }
+
 }

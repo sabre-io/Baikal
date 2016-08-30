@@ -10,6 +10,7 @@
         <thead>
         <tr>
             <th>Display name</th>
+            <th>Events</th>
             <th>Description</th>
             <th class="no-border-left"></th>
         </tr>
@@ -18,6 +19,7 @@
         {% for calendar in calendars %}
             <tr>
                 <td class="col-displayname"><i class="icon-calendar"></i>{{ attribute(calendar, "\{DAV:\}displayname")|escape }}</td>
+                <td><span class="badge">{{ calendar.eventCount }}</span></td>
                 <td class="col-description">{{ attribute(calendar, "\{urn:ietf:params:xml:ns:caldav\}calendar-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">

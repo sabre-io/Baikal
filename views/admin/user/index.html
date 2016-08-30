@@ -15,8 +15,8 @@
                 </td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
-                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {userName: user.userName}) }}"><i class="icon-calendar"></i> Calendars</a></nobr>
-                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {userName: user.userName}) }}"><i class="icon-book"></i> Address Books</a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_calendars', {userName: user.userName}) }}"><i class="icon-calendar"></i> Calendars <span class="badge">{{ user.calendarCount }}</span></a></nobr>
+                        <nobr><a class="btn" href="{{ path('admin_user_addressbooks', {userName: user.userName}) }}"><i class="icon-book"></i> Address Books <span class="badge">{{ user.addressbookCount }}</span></a></nobr>
                         <nobr><a class="btn btn-primary" href="{{ path('admin_user_edit', {userName: user.userName}) }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>
                         <nobr><a class="btn btn-danger" href="{{ path('admin_user_delete', {userName: user.userName}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>

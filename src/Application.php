@@ -104,6 +104,18 @@ class Application extends \Silex\Application {
             );
         };
 
+        $this['service.calendar'] = function() {
+            return new Service\CalendarService(
+                $this['sabredav.backend.caldav']
+            );
+        };
+
+        $this['service.addressbook'] = function() {
+            return new Service\AddressbookService(
+                $this['sabredav.backend.carddav']
+            );
+        };
+
     }
 
     /**

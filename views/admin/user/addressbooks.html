@@ -10,6 +10,7 @@
         <thead>
         <tr>
             <th>Display name</th>
+            <th>Cards</th>
             <th>Description</th>
             <th class="no-border-left"></th>
         </tr>
@@ -18,11 +19,12 @@
         {% for addressbook in addressbooks %}
             <tr>
                 <td class="col-displayname"><i class="icon-book"></i>{{ attribute(addressbook, "\{DAV:\}displayname")|escape }}</td>
+                <td><span class="badge">{{ addressbook.cardCount }}</span></td>
                 <td class="col-description">{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
                         <nobr><a class="btn btn-primary" href="#"><i class="icon-edit icon-white"></i> Edit</a></nobr>
-                        <nobr><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+                        <nobr><a class="btn btn-danger" href="{{ path('admin_addressbook_delete', {'userName' : username, 'addressbookId' : addressbook.id}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>
                 </td>
             </tr>
