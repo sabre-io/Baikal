@@ -3,7 +3,7 @@
 <header class="jumbotron subhead" id="overview">
     <h1><i class="glyph2x-group"></i>Delete addressbook</h1>
 </header>
-<form class="form-horizontal" action="{{ path('admin_addressbook_delete_post', {userName: user.userName, addressbookId : addressbook.id}) }}" method="post" enctype="multipart/formdata">
+<form class="form-horizontal" action="{{ path('admin_addressbook_delete_post', {user: user.userName, addressbookId : addressbook.id}) }}" method="post" enctype="multipart/formdata">
     <h3>Are you sure you want to delete Addressbook '{{ attribute(addressbook, "\{DAV:\}displayname") }}' of User '{{ user.userName }}'?</h3>
     <div class="form-actions">
         <button type="submit" class="btn btn-primary">Confirm delete</button>
