@@ -1,6 +1,8 @@
 Baïkal
 ======
 
+[![Build Status](https://travis-ci.org/fruux/Baikal.svg?branch=master)](https://travis-ci.org/fruux/Baikal)
+
 This is the source repository for the Baïkal CalDAV and CardDAV server.
 
 * Go to [baikal-server.com][1] to get more information about this project.
