@@ -158,7 +158,7 @@ class System extends \Flake\Core\Controller {
                         $sMessage
                     );
                 }
-                return ;
+                return;
             } catch (\Exception $e) {
                 $oForm->declareError(
                     $oMorpho->element("PROJECT_SQLITE_FILE"),

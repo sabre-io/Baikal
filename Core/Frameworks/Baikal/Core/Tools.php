@@ -130,7 +130,7 @@ class Tools {
     }
 
     static function bashPrompt($prompt) {
-        print $prompt;
+        echo $prompt;
         @flush();
         @ob_flush();
         $confirmation = @trim(fgets(STDIN));
