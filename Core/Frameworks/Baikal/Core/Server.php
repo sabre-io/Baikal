@@ -187,6 +187,9 @@ class Server {
             $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
         }
         if ($this->enableWebDAV) {
+            $lockBackend = new \Sabre\DAV\Locks\Backend\PDO($this->pdo);
+            $this->server->addPlugin(new \Sabre\DAV\Locks\Plugin($lockBackend));
+            $this->server->addPlugin(new \Sabre\DAV\PartialUpdate\Plugin());
             $this->server->addPlugin(new \Sabre\DAV\TemporaryFileFilterPlugin('../temp'));
         }
 
