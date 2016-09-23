@@ -160,7 +160,7 @@ class Server {
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
         if ($this->enableWebDAV) {
-            $nodes[] = new \Sabre\DAV\FS('../public');
+            $nodes[] = new \Sabre\DAV\FS\Directory('../public');
         }
 
         $this->server = new \Sabre\DAV\Server($nodes);
