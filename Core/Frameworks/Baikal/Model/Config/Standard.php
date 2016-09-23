@@ -42,6 +42,10 @@ class Standard extends \Baikal\Model\Config {
             "type"    => "boolean",
             "comment" => "CalDAV ON/OFF switch; default TRUE",
         ],
+        "BAIKAL_WEBDAV_ENABLED" => [
+            "type"    => "boolean",
+            "comment" => "WebDAV ON/OFF switch; default TRUE",
+        ],
         "BAIKAL_DAV_AUTH_TYPE" => [
             "type"    => "string",
             "comment" => "HTTP authentication type for WebDAV; default Digest"
@@ -57,6 +61,7 @@ class Standard extends \Baikal\Model\Config {
         "PROJECT_TIMEZONE"          => "Europe/Paris",
         "BAIKAL_CARD_ENABLED"       => true,
         "BAIKAL_CAL_ENABLED"        => true,
+        "BAIKAL_WEBDAV_ENABLED"     => true,
         "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
@@ -80,6 +85,11 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "BAIKAL_CARD_ENABLED",
             "label" => "Enable CardDAV"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"  => "BAIKAL_WEBDAV_ENABLED",
+            "label" => "Enable WebDAV"
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
@@ -173,6 +183,9 @@ define("PROJECT_TIMEZONE", "Europe/Paris");
 
 # CardDAV ON/OFF switch; default TRUE
 define("BAIKAL_CARD_ENABLED", TRUE);
+
+# WebDAV ON/OFF switch; default TRUE
+define("BAIKAL_WEBDAV_ENABLED", TRUE);
 
 # CalDAV ON/OFF switch; default TRUE
 define("BAIKAL_CAL_ENABLED", TRUE);
