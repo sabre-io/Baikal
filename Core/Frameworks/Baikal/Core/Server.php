@@ -160,7 +160,7 @@ class Server {
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
         if ($this->enableWebDAV) {
-            $nodes[] = new \Sabre\DAV\FS('public');
+            $nodes[] = new \Sabre\DAV\FS('../public');
         }
 
         $this->server = new \Sabre\DAV\Server($nodes);
@@ -187,7 +187,7 @@ class Server {
             $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
         }
         if ($this->enableWebDAV) {
-            $this->server->addPlugin(new \Sabre\DAV\TemporaryFileFilterPlugin('temp'));
+            $this->server->addPlugin(new \Sabre\DAV\TemporaryFileFilterPlugin('../temp'));
         }
 
     }
