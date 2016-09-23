@@ -55,6 +55,13 @@ class Server {
     protected $enableCardDAV;
 
     /**
+     * is WebDAV enabled?
+     *
+     * @var bool
+     */
+    protected $enableWebDAV;
+
+    /**
      * "Basic" or "Digest"
      *
      * @var string
@@ -95,15 +102,17 @@ class Server {
      *
      * @param bool $enableCalDAV
      * @param bool $enableCardDAV
+     * @param bool $enableWebDAV
      * @param string $authType
      * @param string $authRealm
      * @param PDO $pdo
      * @param string $baseUri
      */
-    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
+    function __construct($enableCalDAV, $enableCardDAV, $enableWebDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
 
         $this->enableCalDAV = $enableCalDAV;
         $this->enableCardDAV = $enableCardDAV;
+        $this->enableWebDAV = $enableWebDAV;
         $this->authType = $authType;
         $this->authRealm = $authRealm;
         $this->pdo = $pdo;
@@ -150,6 +159,9 @@ class Server {
             $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
+        if ($this->enableWebDAV) {
+            $nodes[] = new \Sabre\DAV\FS('public');
+        }
 
         $this->server = new \Sabre\DAV\Server($nodes);
         $this->server->setBaseUri($this->baseUri);
@@ -173,6 +185,9 @@ class Server {
         if ($this->enableCardDAV) {
             $this->server->addPlugin(new \Sabre\CardDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
+        }
+        if ($this->enableWebDAV) {
+            $this->server->addPlugin(new \Sabre\DAV\TemporaryFileFilterPlugin('temp'));
         }
 
     }
