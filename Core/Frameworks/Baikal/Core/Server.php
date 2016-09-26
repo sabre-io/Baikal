@@ -161,6 +161,7 @@ class Server {
         }
         if ($this->enableWebDAV) {
             $nodes[] = new \Sabre\DAV\FS\Directory('../public');
+            $nodes[] = new \Sabre\DAVACL\FS\HomeCollection($principalBackend, '../private');
         }
 
         $this->server = new \Sabre\DAV\Server($nodes);
