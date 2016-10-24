@@ -63,13 +63,6 @@ class Server {
     protected $pdo;
 
     /**
-     * baseUri for the sabre/dav server
-     *
-     * @var string
-     */
-    protected $baseUri;
-
-    /**
      * The sabre/dav Server object
      *
      * @var \Sabre\DAV\Server
@@ -87,14 +80,12 @@ class Server {
      * Creates the server object.
      *
      * @param Application $app
-     * @param string|null $baseUri
      */
-    function __construct(Application $app, $baseUri) {
+    function __construct(Application $app) {
 
         $this->authType = $app['config']['auth']['type'];
         $this->authRealm = $app['config']['auth']['realm'];
         $this->pdo = $app['pdo'];
-        $this->baseUri = $baseUri;
         $this->app = $app;
 
         $this->initServer();
@@ -147,7 +138,6 @@ class Server {
         }
 
         $this->server = new \Sabre\DAV\Server($nodes);
-        $this->server->setBaseUri($this->baseUri);
 
         $this->server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, $this->authRealm));
         $this->server->addPlugin(new \Sabre\DAVACL\Plugin());

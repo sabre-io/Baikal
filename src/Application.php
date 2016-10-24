@@ -167,10 +167,7 @@ class Application extends \Silex\Application {
 
         $this['sabredav'] = function() {
 
-            return new DAV\Server(
-                $this,
-                null
-            );
+            return new DAV\Server($this);
 
         };
 
