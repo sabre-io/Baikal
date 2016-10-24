@@ -1,0 +1,42 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+
+<header class="jumbotron subhead" id="overview">
+	<h1><i class="glyph2x-adress-book"></i>Address Books</h1>
+	<p class="lead">Manage Address Books for<i class="glyph-user"></i><strong>bar</strong>.</p>
+	<p class="pull-left"><a href="/~evert/baikal/html.old/admin/?/users/" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
+	<p class="pull-right"><a class="btn btn btn-inverse" href="/~evert/baikal/html.old/admin/?/users/addressbooks/user/3/new/1/#form"><i class="icon-white icon-book"></i> + Add address book</a></p>
+</header>
+
+<a id='form'></a>
+
+<br style="clear: both" />
+<form class="form-horizontal" action="{{ path('admin_addressbook_edit_post', {user: user.userName, addressbookId : addressbook.id }) }}" method="post" enctype="multipart/formdata">
+    <fieldset>
+        <legend style="line-height: 40px;">Editing Address Book<i class=glyph-adress-book></i><strong>{{ attribute(addressbook, "\{DAV:\}displayname")}}</strong></legend>
+        
+        <div class="control-group">
+            <label class="control-label" for="uri">Sync URL</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge popover-focus " id="uri" name="data[uri]" value="{{ addressbook.path }}" disabled title="Address Book token ID"  data-content="The unique identifier for this address book." />
+                
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="displayname">Display name</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge popover-focus " id="displayname" name="data[displayname]" value="{{ attribute(addressbook, "\{DAV:\}displayname") }}" title="Display name"  data-content="This is the name that will be displayed in your CardDAV client." />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="description">Description</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="description" name="data[description]" value="{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description") }}"/>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

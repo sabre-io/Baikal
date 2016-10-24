@@ -24,10 +24,13 @@ class UserController implements ControllerProviderInterface {
         $controllers->get('{user}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
         $controllers->post('{user}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
         $controllers->get('{user}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
-        
-        $controllers->get('{user}/addressbooks',                        AddressBookController::class . '::indexAction')->bind('admin_user_addressbooks');
-        $controllers->get('{user}/addressbooks/{addressbookId}/delete', AddressBookController::class . '::deleteAction')->bind('admin_addressbook_delete');
+
+        $controllers->get('{user}/addressbooks',                         AddressBookController::class . '::indexAction')->bind('admin_user_addressbooks');
+        $controllers->get('{user}/addressbooks/{addressbookId}',         AddressBookController::class . '::editAction')->bind('admin_addressbook_edit');
+        $controllers->post('{user}/addressbooks/{addressbookId}',        AddressBookController::class . '::postEditAction')->bind('admin_addressbook_edit_post');
+        $controllers->get('{user}/addressbooks/{addressbookId}/delete',  AddressBookController::class . '::deleteAction')->bind('admin_addressbook_delete');
         $controllers->post('{user}/addressbooks/{addressbookId}/delete', AddressBookController::class . '::postDeleteAction')->bind('admin_addressbook_delete_post');
+
 
         $controllers->convert('user', function($user) use ($app) {
             if ($user === null) return;

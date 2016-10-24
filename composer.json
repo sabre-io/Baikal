@@ -20,7 +20,7 @@
         "symfony/twig-bridge": "^3.1"
     },
     "require-dev" : {
-        "sabre/cs"      : "~0.0.6"
+        "sabre/cs"      : "^1.0.0"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"

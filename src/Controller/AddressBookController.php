@@ -4,7 +4,9 @@ namespace Baikal\Controller;
 
 use Baikal\Domain\User;
 use Baikal\Domain\User\Username;
+use Sabre\DAV\PropPatch;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class AddressBookController {
 
@@ -24,8 +26,33 @@ class AddressBookController {
         ]);
     }
 
+    function editAction(Application $app, User $user, $addressbookId) {
+
+        $addressbook = $app['service.addressbook']->getByUserNameAndAddressBookId($user->userName, $addressbookId);
+
+        return $app['twig']->render('admin/addressbook/edit.html', [
+            'user'        => $user,
+            'addressbook' => $addressbook
+        ]);
+    }
+
+    function postEditAction(Application $app, Request $request, User $user, $addressbookId) {
+
+        $proppatch = new PropPatch([
+            '{DAV:}displayname'                                       => $request->get('data')['displayname'],
+            '{urn:ietf:params:xml:ns:carddav}addressbook-description' => $request->get('data')['description']
+        ]);
+        $addressbook = $app['sabredav.backend.carddav']->updateAddressBook(
+            $addressbookId,
+            $proppatch
+        );
+        $proppatch->commit();
+        return $app->redirect($app['url_generator']->generate('admin_user_addressbooks', ['user' => $user->userName]));
+
+    }
+
     function deleteAction(Application $app, User $user, $addressbookId) {
-        
+
         $addressbook = $app['service.addressbook']->getByUserNameAndAddressBookId($user->userName, $addressbookId);
 
         return $app['twig']->render('admin/addressbook/delete.html', [
@@ -35,7 +62,7 @@ class AddressBookController {
     }
 
     function postDeleteAction(Application $app, User $user, $addressbookId) {
-        
+
         $app['sabredav.backend.carddav']->deleteAddressbook($addressbookId);
         return $app->redirect($app['url_generator']->generate('admin_user_addressbooks', ['user' => $user->userName]));
 
