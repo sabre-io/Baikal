@@ -28,7 +28,7 @@
 namespace Baikal\Model;
 
 class Calendar extends \Flake\Core\Model\Db {
-    const DATATABLE = "calendars";
+    const DATATABLE = "calendarinstances";
     const PRIMARYKEY = "id";
     const LABELFIELD = "displayname";
 
