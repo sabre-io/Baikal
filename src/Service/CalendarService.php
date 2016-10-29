@@ -48,7 +48,7 @@ class CalendarService {
             '{urn:ietf:params:xml:ns:caldav}calendar-description'             => $calendarDescription,
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
         ]);
-    }    
+    }
 
     function getByUserNameAndCalendarId($userName, $calendarId) {
         $calendars = $this->calBackend->getCalendarsForUser('principals/' . $userName);
