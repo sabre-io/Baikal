@@ -141,23 +141,4 @@ class UserController implements ControllerProviderInterface {
         $app['service.user']->remove($user);
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
-
-    function calendarAction(Application $app, User $user) {
-        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $user->userName);
-        $calendarsData = [];
-
-        foreach ($calendars as $calendar) {
-            $calendarId = $calendar['id'];
-            $calendar['eventCount'] = count($app['sabredav.backend.caldav']->getCalendarObjects($calendarId));
-            $calendarsData[] = $calendar;
-        }
-        #return json_encode($calendarsData);
-        return $app['twig']->render('admin/user/calendars.html', [
-            'user'      => $user,
-            'calendars' => $calendarsData,
-        ]);
-    }
-
-
-
 }
