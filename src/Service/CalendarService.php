@@ -20,7 +20,7 @@ class CalendarService {
     }
 
     /**
-     * Creates a new Calendar for a new User
+     * Creates the three default calendars for a new user
      */
     function provision(User $user) {
 
@@ -36,8 +36,19 @@ class CalendarService {
             '{DAV:}displayname'                                               => 'Tasks',
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO'])
         ]);
-
     }
+
+    /**
+     * Creates a new calendar for a user
+     */
+    function createCalendar(User $user, $displayName, $calendarDescription) {
+
+        $this->calBackend->createCalendar($user->getPrincipalUri(), UUIDUtil::getUUID(), [
+            '{DAV:}displayname'                                               => $displayName,
+            '{urn:ietf:params:xml:ns:caldav}calendar-description'             => $calendarDescription,
+            '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT'])
+        ]);
+    }    
 
     function getByUserNameAndCalendarId($userName, $calendarId) {
         $calendars = $this->calBackend->getCalendarsForUser('principals/' . $userName);

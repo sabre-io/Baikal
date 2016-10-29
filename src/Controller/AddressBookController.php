@@ -26,6 +26,34 @@ class AddressBookController {
         ]);
     }
 
+    function createAction(Application $app, Request $request, User $user) {
+
+        if ($request->getMethod() !== Request::METHOD_GET) {
+            throw new MethodNotAllowedException([Request::METHOD_GET]);
+        }
+
+        return $app['twig']->render('admin/addressbook/create.html', [
+            'user'         => $user,
+//            'calendar' => [
+//                  'displayName' => '',
+//                  'calendarDescription' => '',
+//            ],
+        ]);
+    }
+
+    function postCreateAction(Application $app, Request $request, User $user) {
+
+        if ($request->getMethod() !== Request::METHOD_POST) {
+            throw new MethodNotAllowedException([Request::METHOD_POST]);
+        }
+
+        $addressbookData = $request->get('data');
+
+        $app['service.addressbook']->createAddressBook($user, $addressbookData['displayName'], $addressbookData['addressbookDescription']);
+
+        return $app->redirect($app['url_generator']->generate('admin_user_addressbooks', ['user' => $user->userName]));
+    }
+
     function editAction(Application $app, User $user, $addressbookId) {
 
         $addressbook = $app['service.addressbook']->getByUserNameAndAddressBookId($user->userName, $addressbookId);

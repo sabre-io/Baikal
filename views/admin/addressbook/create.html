@@ -1,0 +1,29 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<header class="jumbotron subhead" id="overview">
+    <h1><i class="glyph2x-group"></i>Address books</h1>
+    <p class="lead">Creating a new<i class=glyph-adress-book></i><strong>address book</strong> for user<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
+</header>
+<form class="form-horizontal" action="{{ path('admin_addressbook_create_post', {'user' : user.userName }) }}" method="post" enctype="multipart/formdata">
+    <input type="hidden" name="refreshed" value="0" />
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="displayName">Display name</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge popover-focus " id="displayName" name="data[displayName]" value="" title="Display name"  data-content="This is the name that will be displayed in your CalDAV/CardDAV clients." />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="addressbookDescription">Description</label>
+            <div class="controls">
+                <input type="password" class="input-xlarge" id="addressbookDescription" name="data[addressbookDescription]" value=""/>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
