@@ -67,8 +67,8 @@ class CalendarController {
     function postEditAction(Application $app, Request $request, User $user, $calendarId) {
 
         $proppatch = new PropPatch([
-            '{DAV:}displayname'                                   => $request->get('data')['displayname'],
-            '{urn:ietf:params:xml:ns:caldav}calendar-description' => $request->get('data')['description']
+            '{DAV:}displayname'                                   => $request->get('data')['displayName'],
+            '{urn:ietf:params:xml:ns:caldav}calendar-description' => $request->get('data')['calendarDescription']
         ]);
         $calendar = $app['sabredav.backend.caldav']->updateCalendar(
             $calendarId,

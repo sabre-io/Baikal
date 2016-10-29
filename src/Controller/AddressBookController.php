@@ -67,8 +67,8 @@ class AddressBookController {
     function postEditAction(Application $app, Request $request, User $user, $addressbookId) {
 
         $proppatch = new PropPatch([
-            '{DAV:}displayname'                                       => $request->get('data')['displayname'],
-            '{urn:ietf:params:xml:ns:carddav}addressbook-description' => $request->get('data')['description']
+            '{DAV:}displayname'                                       => $request->get('data')['displayName'],
+            '{urn:ietf:params:xml:ns:carddav}addressbook-description' => $request->get('data')['addressbookDescription']
         ]);
         $addressbook = $app['sabredav.backend.carddav']->updateAddressBook(
             $addressbookId,
