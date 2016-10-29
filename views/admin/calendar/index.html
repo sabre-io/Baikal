@@ -2,7 +2,7 @@
 {% block content %}
     <header class="jumbotron subhead" id="overview">
         <h1><i class="glyph2x-calendar"></i>Calendars</h1>
-        <p class="lead pull-left">Manage Calendars for<i class="glyph-user"></i><strong>{{ user.userName }}</strong>.</p>
+        <p class="lead pull-left">Manage calendars for<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
         <p class="lead pull-right"><a class="btn btn-inverse" href="#"><i class="icon-white icon-calendar"></i> + Add calendar</a></p>
     </header>
 
@@ -23,8 +23,8 @@
                 <td class="col-description">{{ attribute(calendar, "\{urn:ietf:params:xml:ns:caldav\}calendar-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
-                        <nobr><a class="btn btn-primary" href="#"><i class="icon-edit icon-white"></i> Edit</a></nobr>
-                        <nobr><a class="btn btn-danger" href="#"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+                        <nobr><a class="btn btn-primary" href="{{ path('admin_calendar_edit', {'user' : user.userName, 'calendarId' : calendar.id }) }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
+                        <nobr><a class="btn btn-danger" href="{{ path('admin_calendar_delete', {'user' : user.userName, 'calendarId' : calendar.id }) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>
                 </td>
             </tr>

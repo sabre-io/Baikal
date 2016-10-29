@@ -1,0 +1,13 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<header class="jumbotron subhead" id="overview">
+    <h1><i class="glyph2x-calendar"></i>Delete calendar</h1>
+    <p class="lead">Are you sure you want to delete calendar<i class="glyph-calendar"></i><strong>{{ attribute(calendar, "\{DAV:\}displayname") }}</strong> of user<i class="glyph-user"></i><strong>{{ user.userName }}</strong>?</p>
+</header>
+<form class="form-horizontal" action="{{ path('admin_calendar_delete_post', {user: user.userName, calendarId : calendar.id}) }}" method="post" enctype="multipart/formdata">
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Confirm delete</button>
+    </div>
+</form>
+
+{% endblock %}

@@ -17,7 +17,6 @@ class CalendarService {
     function __construct(CalBackend $calBackend) {
 
         $this->calBackend = $calBackend;
-        
     }
 
     /**
@@ -38,6 +37,16 @@ class CalendarService {
             '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO'])
         ]);
 
+    }
+
+    function getByUserNameAndCalendarId($userName, $calendarId) {
+        $calendars = $this->calBackend->getCalendarsForUser('principals/' . $userName);
+        foreach ($calendars as $calendar) {
+            if ($calendar['id'] == $calendarId) {
+                $calendar['path'] = 'calendars/' . $userName . '/' . $calendar['uri'] . '/';
+                return $calendar;
+            }
+        }
     }
 
 }
