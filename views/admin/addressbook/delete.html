@@ -1,10 +1,10 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
 <header class="jumbotron subhead" id="overview">
-    <h1><i class="glyph2x-group"></i>Delete addressbook</h1>
+    <h1><i class="glyph2x-adress-book"></i>Delete address book</h1>
+    <p class="lead">Are you sure you want to delete address book<i class="glyph-adress-book"></i><strong>{{ attribute(addressbook, "\{DAV:\}displayname") }}</strong> of user<i class="glyph-user"></i><strong>{{ user.userName }}</strong>?</p>
 </header>
 <form class="form-horizontal" action="{{ path('admin_addressbook_delete_post', {user: user.userName, addressbookId : addressbook.id}) }}" method="post" enctype="multipart/formdata">
-    <h3>Are you sure you want to delete Addressbook '{{ attribute(addressbook, "\{DAV:\}displayname") }}' of User '{{ user.userName }}'?</h3>
     <div class="form-actions">
         <button type="submit" class="btn btn-primary">Confirm delete</button>
     </div>

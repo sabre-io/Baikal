@@ -1,8 +1,8 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
     <header class="jumbotron subhead" id="overview">
-        <h1><i class="glyph2x-adress-book"></i>Address Books</h1>
-        <p class="lead pull-left">Manage Address Books for<i class="glyph-user"></i><strong>{{ user.userName }}</strong>.</p>
+        <h1><i class="glyph2x-adress-book"></i>Address books</h1>
+        <p class="lead pull-left">Manage address books for<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
         <p class="lead pull-right"><a class="btn btn-inverse" href="#"><i class="icon-white icon-book"></i> + Add address book</a></p>
     </header>
 
@@ -23,7 +23,7 @@
                 <td class="col-description">{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description")|escape }}</td>
                 <td class="col-actions no-border-left">
                     <p class="pull-right">
-                    <nobr><a class="btn btn-primary" href="{{ path('admin_addressbook_edit', {'user' : user.userName, 'addressbookId' : addressbook.id }) }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
+                        <nobr><a class="btn btn-primary" href="{{ path('admin_addressbook_edit', {'user' : user.userName, 'addressbookId' : addressbook.id }) }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
                         <nobr><a class="btn btn-danger" href="{{ path('admin_addressbook_delete', {'user' : user.userName, 'addressbookId' : addressbook.id}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
                     </p>
                 </td>

@@ -55,7 +55,7 @@ class Application extends \Silex\Application {
 
         $this->before(function(Request $request) {
 
-            $this['twig']->addGlobal('assetPath', dirname($request->getBaseUrl()) . '/assets/');
+            $this['twig']->addGlobal('assetPath', dirname($request->getBaseUrl()) . 'assets/');
 
         });
 

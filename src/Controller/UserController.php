@@ -16,14 +16,18 @@ class UserController implements ControllerProviderInterface {
         $controllers = $app['controllers_factory'];
         $controllers->get('/', [$this, 'indexAction'])->bind('admin_user_index');
 
-        $controllers->get('/new',        [$this, 'createAction'])->bind('admin_user_create');
-        $controllers->post('/new',       [$this, 'postCreateAction'])->bind('admin_user_create_post');
-        $controllers->get('{user}',  [$this, 'editAction'])->bind('admin_user_edit');
-        $controllers->post('{user}', [$this, 'postEditAction'])->bind('admin_user_edit_post');
-
+        $controllers->get('/new',           [$this, 'createAction'])->bind('admin_user_create');
+        $controllers->post('/new',          [$this, 'postCreateAction'])->bind('admin_user_create_post');
+        $controllers->get('{user}',         [$this, 'editAction'])->bind('admin_user_edit');
+        $controllers->post('{user}',        [$this, 'postEditAction'])->bind('admin_user_edit_post');
         $controllers->get('{user}/delete',  [$this, 'deleteAction'])->bind('admin_user_delete');
-        $controllers->post('{user}/delete',  [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
-        $controllers->get('{user}/calendars', [$this, 'calendarAction'])->bind('admin_user_calendars');
+        $controllers->post('{user}/delete', [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
+
+        $controllers->get('{user}/calendars',                      CalendarController::class . '::indexAction')->bind('admin_user_calendars');
+        $controllers->get('{user}/calendars/{calendarId}',         CalendarController::class . '::editAction')->bind('admin_calendar_edit');
+        $controllers->post('{user}/calendars/{calendarId}',        CalendarController::class . '::postEditAction')->bind('admin_calendar_edit_post');
+        $controllers->get('{user}/calendars/{calendarId}/delete',  CalendarController::class . '::deleteAction')->bind('admin_calendar_delete');
+        $controllers->post('{user}/calendars/{calendarId}/delete', CalendarController::class . '::postDeleteAction')->bind('admin_calendar_delete_post');
 
         $controllers->get('{user}/addressbooks',                         AddressBookController::class . '::indexAction')->bind('admin_user_addressbooks');
         $controllers->get('{user}/addressbooks/{addressbookId}',         AddressBookController::class . '::editAction')->bind('admin_addressbook_edit');
