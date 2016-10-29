@@ -2,17 +2,15 @@
 {% block content %}
 
 <header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-adress-book"></i>Address Books</h1>
-	<p class="lead">Manage Address Books for<i class="glyph-user"></i><strong>bar</strong>.</p>
+	<h1><i class="glyph2x-adress-book"></i>Address books</h1>
+	<p class="lead">Edit address book<i class="glyph-adress-book"></i><strong>{{ attribute(addressbook, "\{DAV:\}displayname") }}</strong> of user <i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
 </header>
 
 <a id='form'></a>
 
 <br style="clear: both" />
 <form class="form-horizontal" action="{{ path('admin_addressbook_edit_post', {user: user.userName, addressbookId : addressbook.id }) }}" method="post" enctype="multipart/formdata">
-    <fieldset>
-        <legend style="line-height: 40px;">Editing Address Book<i class=glyph-adress-book></i><strong>{{ attribute(addressbook, "\{DAV:\}displayname")}}</strong></legend>
-        
+    <fieldset>        
         <div class="control-group">
             <label class="control-label" for="uri">Sync URL</label>
             <div class="controls">
