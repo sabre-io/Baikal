@@ -2,9 +2,9 @@
 {% block content %}
 <header class="jumbotron subhead" id="overview">
     <h1><i class="glyph2x-group"></i>Delete user</h1>
+    <p class="lead">Are you sure you want to delete user<i class="glyph-user"></i><strong>{{ user.userName }}</strong>?</p>
 </header>
-<form class="form-horizontal" action="{{ path('admin_user_delete_post', {userName: user.userName}) }}" method="post" enctype="multipart/formdata">
-    <h3>Are you sure you want to delete User '{{ user.userName }}'?</h3>
+<form class="form-horizontal" action="{{ path('admin_user_delete_post', {user: user.userName}) }}" method="post" enctype="multipart/formdata">
     <div class="form-actions">
         <button type="submit" class="btn btn-primary">Confirm delete</button>
     </div>
