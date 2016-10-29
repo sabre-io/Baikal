@@ -21,8 +21,8 @@ class CalendarController {
             $calendarsData[] = $calendar;
         }
         return $app['twig']->render('admin/calendar/index.html', [
-            'user'         => $user,
-            'calendars'    => $calendarsData,
+            'user'      => $user,
+            'calendars' => $calendarsData,
         ]);
     }
 
