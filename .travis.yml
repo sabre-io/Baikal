@@ -18,10 +18,9 @@ services:
 
 sudo: false
 
-cache: vendor
-
 before_script:
   # - mysql -e 'create database sabredav'
+  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
   # - composer self-update
   - composer update --prefer-source $LOWEST_DEPS
 
@@ -29,3 +28,6 @@ script:
     - find Core -name "*.php" | xargs -n1 php -l 
     - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
 
+cache:
+  directories:
+    - $HOME/.composer/cache

@@ -1,6 +1,28 @@
 ChangeLog
 =========
 
+0.5.0 (????-??-??)
+------------------
+
+
+0.4.6 (2016-08-19)
+------------------
+
+* Updated sabre/dav database definitions
+* #559: Fix contacts in new addressbooks not syncing
+* Now allows creation of calendars that contain VJOURNAL, VTODO and VEVENT.
+* Upgrading from Baikal version 0.2.3 and older is no longer supported.
+* Ships with sabre/dav 3.1.4
+
+
+0.4.5 (2016-05-28)
+------------------
+
+* #552: PHP 7.0.7 introduced a subtle BC break that caused Baikal to error.
+* Upgraded sabre/dav, which fixes CardDAV performance problems.
+* Ships with sabre/dav 3.1.4
+
+
 0.4.4 (2016-03-30)
 ------------------
 

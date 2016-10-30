@@ -4,6 +4,7 @@ logs
 # Specific
 Specific/config.php
 Specific/config.system.php
+Specific/INSTALL_DISABLED
 
 # Composer stuff
 composer.lock

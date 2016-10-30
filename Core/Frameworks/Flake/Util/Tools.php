@@ -99,7 +99,7 @@ class Tools extends \Flake\Core\FLObject {
             }
             $result .= '</table>';
         } else    {
-            $result  = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
+            $result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
 					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string)$array_in)) . '<br /></font></td>
 				</tr>
@@ -336,7 +336,7 @@ class Tools extends \Flake\Core\FLObject {
 </html>
 TEST;
 
-        $sHeaders  = "From: " . $sFromName . "<" . $sFromAddress . ">" . "\r\n";
+        $sHeaders = "From: " . $sFromName . "<" . $sFromAddress . ">" . "\r\n";
         $sHeaders .= "Reply-To: " . $sReplyToName . "<" . $sReplyToAddress . ">" . "\r\n";
         $sHeaders .= "Bcc: " . $sReplyToName . "<" . $sReplyToAddress . ">" . "\r\n";
         $sHeaders .= "Content-Type: text/html" . "\r\n";
@@ -415,7 +415,7 @@ TEST;
     static function number2Human($a) {
         $temp = explode('.', $a);
         if (isset($temp[1]) && $temp[1] != '') {
-            return self::number2Human($temp[0]) . ' virgule ' . self::number2Human($temp[1]) ;
+            return self::number2Human($temp[0]) . ' virgule ' . self::number2Human($temp[1]);
         }
 
         if ($a < 0) return 'moins ' . self::number2Human(-$a);
@@ -664,7 +664,7 @@ TEST;
             return null;  // Not GZIP format (See RFC 1952)
         }
         $method = ord(substr($data, 2, 1));  // Compression method
-        $flags  = ord(substr($data, 3, 1));  // Flags
+        $flags = ord(substr($data, 3, 1));  // Flags
         if ($flags & 31 != $flags) {
             $error = "Reserved bits not allowed.";
             return null;
@@ -672,11 +672,11 @@ TEST;
         // NOTE: $mtime may be negative (PHP integer limitations)
         $mtime = unpack("V", substr($data, 4, 4));
         $mtime = $mtime[1];
-        $xfl   = substr($data, 8, 1);
-        $os    = substr($data, 8, 1);
+        $xfl = substr($data, 8, 1);
+        $os = substr($data, 8, 1);
         $headerlen = 10;
-        $extralen  = 0;
-        $extra     = "";
+        $extralen = 0;
+        $extra = "";
         if ($flags & 4) {
             // 2-byte length prefixed EXTRA data in header
             if ($len - $headerlen - 2 < 8) {
@@ -758,7 +758,7 @@ TEST;
             }
         }  // zero-byte body content is allowed
         // Verifiy CRC32
-        $crc   = sprintf("%u", crc32($data));
+        $crc = sprintf("%u", crc32($data));
         $crcOK = $crc == $datacrc;
         $lenOK = $isize == strlen($data);
         if (!$lenOK || !$crcOK) {
