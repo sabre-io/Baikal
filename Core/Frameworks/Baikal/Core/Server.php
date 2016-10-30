@@ -131,11 +131,21 @@ class Server {
      */
     protected function initServer() {
 
-        if ($this->authType === 'Basic') {
-            $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
-        } else {
-            $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
-            $authBackend->setRealm($this->authRealm);
+        switch ($this->authType) {
+            case 'Basic':
+                $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
+                break;
+            case "Mail":
+                $authBackend = new \Baikal\Core\MailAuth($this->pdo, $this->authRealm);
+                break;
+            case "LDAP-UserBind":
+                $authBackend = new \Baikal\Core\LDAPUserBindAuth($this->pdo, $this->authRealm);
+                break;
+            case 'Digest':
+            default:
+                $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
+                $authBackend->setRealm($this->authRealm);
+                break;
         }
         $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($this->pdo);
 

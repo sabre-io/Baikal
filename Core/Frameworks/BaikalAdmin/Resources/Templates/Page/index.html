@@ -48,6 +48,25 @@
 				trigger: 'focus',
 				placement: 'bottom'
 			});
+
+			function toggleStandardAuthParameter() {
+				$(".auth_ldap-userbind").hide();
+				$(".auth_mail").hide();
+				var type = ".auth_" + $("#BAIKAL_DAV_AUTH_TYPE").val().toLowerCase();
+				$(type).show();
+				toggleStandardAuthMailSSL();
+			}
+			function toggleStandardAuthMailSSL() {
+				var val = $("#BAIKAL_DAV_MAIL_PROTOCOL").val();
+				if ( val == "pop3" || val == "imap" || val == "smtp" ) {
+					$(".auth_mail_ssl").hide();
+				} else {
+					$(".auth_mail_ssl").show();
+				}
+			}
+			$("#BAIKAL_DAV_AUTH_TYPE").change(function() {toggleStandardAuthParameter();});
+			$("#BAIKAL_DAV_MAIL_PROTOCOL").change(function() {toggleStandardAuthMailSSL();});
+			toggleStandardAuthParameter();
 		</script>
 		{{ javascript }}
 	</body>

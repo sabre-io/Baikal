@@ -46,6 +46,38 @@ class Standard extends \Baikal\Model\Config {
             "type"    => "string",
             "comment" => "HTTP authentication type for WebDAV; default Digest"
         ],
+        "BAIKAL_DAV_LDAP_URI" => [
+            "type" => "string",
+            "comment" => "URI to LDAP Server (for ldap-userbind auth); default ldapi:///"
+        ],
+        "BAIKAL_DAV_LDAP_DN_TEMPLATE" => [
+            "type" => "string",
+            "comment" => "User DN for bind; with replacments %n => username, %u => user part, %d => domain part of username"
+        ],
+        "BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR" => [
+            "type" => "string",
+            "comment" => "LDAP attribute for displayname; default cn"
+        ],
+        "BAIKAL_DAV_LDAP_EMAIL_ATTR" => [
+            "type" => "string",
+            "comment" => "LDAP attribute for email; default mail"
+        ],
+        "BAIKAL_DAV_MAIL_PROTOCOL" => [
+            "type" => "string",
+            "comment" => "used protocol; default 'imap (unencrypted)'"
+        ],
+        "BAIKAL_DAV_MAIL_SERVER" => [
+            "type" => "string",
+            "comment" => "host:port of mail server; default localhost:143"
+        ],
+        "BAIKAL_DAV_MAIL_CHECK_CERT" => [
+            "type" => "boolean",
+            "comment" => "validate ssl certificate; default yes"
+        ],
+        "BAIKAL_DAV_AUTO_CREATE_USER" => [
+            "type" => "boolean",
+            "comment" => "automatic creation of users; default yes"
+        ],
         "BAIKAL_ADMIN_PASSWORDHASH" => [
             "type"    => "string",
             "comment" => "Baïkal Web admin password hash; Set via Baïkal Web Admin",
@@ -58,6 +90,14 @@ class Standard extends \Baikal\Model\Config {
         "BAIKAL_CARD_ENABLED"       => true,
         "BAIKAL_CAL_ENABLED"        => true,
         "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
+        "BAIKAL_DAV_LDAP_URI" => "ldapi:///",
+        "BAIKAL_DAV_LDAP_DN_TEMPLATE" => "uid=%n,dc=example,dc=com",
+        "BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR" => "cn",
+        "BAIKAL_DAV_LDAP_EMAIL_ATTR" => "mail",
+        "BAIKAL_DAV_MAIL_PROTOCOL" => "imap (unencrypted)",
+        "BAIKAL_DAV_MAIL_SERVER" => "localhost:143",
+        "BAIKAL_DAV_MAIL_CHECK_CERT" => true,
+        "BAIKAL_DAV_AUTO_CREATE_USER" => true,
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
 
@@ -85,7 +125,78 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "BAIKAL_DAV_AUTH_TYPE",
             "label"   => "WebDAV authentication type",
-            "options" => [ "Digest", "Basic" ]
+            "options" => [ "Digest", "Basic", "LDAP-UserBind", "Mail" ]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "BAIKAL_DAV_LDAP_URI",
+            "label" => "LDAP URI",
+            "class" => "auth_ldap-userbind"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "BAIKAL_DAV_LDAP_DN_TEMPLATE",
+            "label" => "LDAP DN template",
+            "class" => "auth_ldap-userbind",
+            "popover" => [
+                "title" => "posible placeholder",
+                "content" => "<strong>%n</strong> - username<br /><strong>%u</strong> - user part of username , when it is an email address)<br /><strong>%d</strong> - domain part",
+            ]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR",
+            "label" => "LDAP attribute for DisplayName",
+            "class" => "auth_ldap-userbind"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "BAIKAL_DAV_LDAP_EMAIL_ATTR",
+            "label" => "LDAP attribute for eMail",
+            "class" => "auth_ldap-userbind"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Listbox([
+            "prop" => "BAIKAL_DAV_MAIL_PROTOCOL",
+            "label" => "MailAuth Protocol",
+            "class" => "auth_mail",
+            "options" => [
+                "imap" => "imap (unencrypted)",
+                "imaps" => "imaps (SSL)",
+                "imaptls" => "imap (StartTLS)",
+                "pop3" => "pop3 (unencrypted)",
+                "pop3s" => "pop3s (SSL)",
+                "pop3tls" => "pop3 (StartTLS)",
+                "smtp" => "smtp (unencrypted)",
+                "smtps" => "smtps (SSL)",
+                "smtptls" => "smtp (StartTLS)"
+            ]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "BAIKAL_DAV_MAIL_SERVER",
+            "label" => "MailAuth Server",
+            "class" => "auth_mail",
+            "popover" => [
+                "title" => "Format",
+                "content" => "host:port"
+            ]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop" => "BAIKAL_DAV_MAIL_CHECK_CERT",
+            "label" => "MailAuth Check SSL-Certificate",
+            "class" => "auth_mail auth_mail_ssl",
+            "popover" => [
+                "title" => "Security",
+                "content" => "validate the server certificate"
+            ]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop" => "BAIKAL_DAV_AUTO_CREATE_USER",
+            "label" => "Automatically create users",
+            "class" => "auth_mail auth_ldap-userbind"
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
@@ -179,6 +290,33 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 
 # WebDAV authentication type; default Digest
 define("BAIKAL_DAV_AUTH_TYPE", "Digest");
+
+# Auth Backend LDAP-UserBind; LDAP URI
+define("BAIKAL_DAV_LDAP_URI", 'ldapi:///');
+
+# Auth Backend LDAP-UserBind; Template for userbind
+# %n => username
+# %u => user part of username when it is an email
+# %u => domain part of username when it is an email
+define("BAIKAL_DAV_LDAP_DN_TEMPLATE", 'cn=%u,dc=%d,ou=domains,o=server');
+
+# Auth Backend LDAP-UserBind; attribute for displayname
+define("BAIKAL_DAV_LDAP_DISPLAYNAME_ATTR", 'cn');
+
+# Auth Backend LDAP-UserBind; attribute for email
+define("BAIKAL_DAV_LDAP_EMAIL_ATTR", 'mail');
+
+# Auth Backend Mail; protocol of service
+define("BAIKAL_DAV_MAIL_PROTOCOL", 'imap');
+
+# Auth Backend Mail; server host:port
+define("BAIKAL_DAV_MAIL_SERVER", 'localhost:143');
+
+# Auth Backend Mail; validate the ssl-certificate
+define("BAIKAL_DAV_MAIL_CHECK_CERT", TRUE);
+
+# Auth Backends: automatic creation of users; default yes"
+define("BAIKAL_DAV_AUTO_CREATE_USER", TRUE);
 
 # Baïkal Web admin password hash; Set via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");
