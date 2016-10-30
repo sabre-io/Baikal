@@ -42,7 +42,7 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * @param string $realm
      * @param string $tableName The PDO table name to use
      */
-    public function __construct(\PDO $pdo, $realm = 'BaikalDAV', $tableName = 'users') {
+    function __construct(\PDO $pdo, $realm = 'BaikalDAV', $tableName = 'users') {
 
         $this->pdo = $pdo;
         $this->tableName = $tableName;
@@ -59,23 +59,23 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * @param string $password
      * @return bool
      */
-    public function validateUserPass($username, $password) {
+    function validateUserPass($username, $password) {
 
         /* auth user agains backend */
         if (!$this->validateUserPassExternal($username, $password))
              return false;
 
         /* check user exists already */
-        $stmt = $this->pdo->prepare('SELECT username FROM '.$this->tableName.' WHERE username = ?');
-        $stmt->execute(array($username));
+        $stmt = $this->pdo->prepare('SELECT username FROM ' . $this->tableName . ' WHERE username = ?');
+        $stmt->execute([$username]);
         $result = $stmt->fetchAll();
-        if( count($result) == 1) {
+        if (count($result) == 1) {
              $this->currentUser = $username;
              return true;
         }
 
         /* failed login, when new user should not create */
-        if( !BAIKAL_DAV_AUTO_CREATE_USER || !$this->enableAutoCreation)
+        if (!BAIKAL_DAV_AUTO_CREATE_USER || !$this->enableAutoCreation)
             return false;
 
         /* create user */
@@ -94,7 +94,7 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * @param string $password
      * @return bool
      */
-    public abstract function validateUserPassExternal($username, $password);
+    abstract function validateUserPassExternal($username, $password);
 
     /**
      * return the displayname and email from the external Backend
@@ -102,9 +102,9 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
      * @param string $username
      * @return array ('displayname' => string, 'email' => string)
      */
-    public function getAccountValues($username) {
+    function getAccountValues($username) {
 
-        return array();
+        return [];
     }
 
     /**
@@ -116,10 +116,10 @@ abstract class AbstractExternalAuth extends \Sabre\DAV\Auth\Backend\AbstractBasi
         
         /* get account values from backend */
         $values = $this->getAccountValues($username);
-        if (!isset($values['displayname']) OR strlen($values['displayname']) === 0)
+        if (!isset($values['displayname']) or strlen($values['displayname']) === 0)
              $values['displayname'] = $username;
-        if (!isset($values['email']) OR strlen($values['email']) === 0) {
-             if(filter_var($username, FILTER_VALIDATE_EMAIL))
+        if (!isset($values['email']) or strlen($values['email']) === 0) {
+             if (filter_var($username, FILTER_VALIDATE_EMAIL))
                  $values['email'] = $username;
              else
                  $values['email'] = 'unset-mail';
