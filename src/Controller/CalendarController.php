@@ -33,7 +33,7 @@ class CalendarController {
         }
 
         return $app['twig']->render('admin/calendar/create.html', [
-            'user'         => $user,
+            'user' => $user,
 //            'calendar' => [
 //                  'displayName' => '',
 //                  'calendarDescription' => '',

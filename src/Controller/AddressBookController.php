@@ -33,7 +33,7 @@ class AddressBookController {
         }
 
         return $app['twig']->render('admin/addressbook/create.html', [
-            'user'         => $user,
+            'user' => $user,
 //            'calendar' => [
 //                  'displayName' => '',
 //                  'calendarDescription' => '',
