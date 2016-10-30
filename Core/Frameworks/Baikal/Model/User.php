@@ -237,19 +237,19 @@ class User extends \Flake\Core\Model\Db {
             $oMorpho->element("username")->setOption("readonly", true);
         }
 
-        if( BAIKAL_DAV_AUTH_TYPE == "Digest" || BAIKAL_DAV_AUTH_TYPE == "Basic") {
+        if (BAIKAL_DAV_AUTH_TYPE == "Digest" || BAIKAL_DAV_AUTH_TYPE == "Basic") {
             $oMorpho->add(new \Formal\Element\Password([
-                "prop" => "password",
+                "prop"  => "password",
                 "label" => "Password",
             ]));
 
             $oMorpho->add(new \Formal\Element\Password([
-                "prop" => "passwordconfirm",
-                "label" => "Confirm password",
+                "prop"       => "passwordconfirm",
+                "label"      => "Confirm password",
                 "validation" => "sameas:password",
             ]));
 
-            if($this->floating()) {
+            if ($this->floating()) {
                 $oMorpho->element("password")->setOption("validation", "required");
             } else {
                 $sNotice = "-- Leave empty to keep current password --";

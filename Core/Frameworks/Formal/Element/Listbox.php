@@ -50,7 +50,7 @@ class Listbox extends \Formal\Element {
             $groupclass .= " error";
         }
 
-        if( trim($this->option("class")) !== "") {
+        if (trim($this->option("class")) !== "") {
             $groupclass .= " " . $this->option("class");
         }
 
