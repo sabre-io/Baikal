@@ -30,7 +30,7 @@ class LDAPUserBindAuth extends AbstractExternalAuth {
         $conn = ldap_connect(BAIKAL_DAV_LDAP_URI);
         if (!$conn)
           return false;
-        if (!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION,3))
+        if (!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3))
           return false;
 
         /* bind with user 
