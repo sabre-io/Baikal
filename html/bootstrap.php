@@ -29,5 +29,14 @@ set_error_handler("exception_error_handler");
 $config = require __DIR__ . '/../config/config.php';
 
 $app = new Baikal\Application(['config' => $config]);
+$app['session']->start();
+// $app->before(function() use ($app) {
+//    if ( !$app['session']->get('authenticated') ) {
+//     	$subRequest = Symfony\Component\HttpFoundation\Request::create('/admin/login', 'GET');
+// 	   	$subRequest = Symfony\Component\HttpFoundation\Request::create($app['url_generator']->generate('admin_login'), 'GET');
+//     	return $app->handle($subRequest, Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST);
+//         return $app->redirect($app['url_generator']->generate('admin_login'));
+//     }
+//});
 
 return $app;
