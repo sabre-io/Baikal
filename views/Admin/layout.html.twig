@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{{ app.pagetitle }}</title>
+    <base href="{{ app.baseurl }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="res/core/TwitterBootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="res/core/BaikalAdmin/GlyphiconsPro/glyphpro.css" rel="stylesheet" />
+    <link href="res/core/BaikalAdmin/GlyphiconsPro/glyphpro-2x.css" rel="stylesheet" />
+    <link href="res/core/BaikalAdmin/Templates/Page/style.css" rel="stylesheet" />
+    <link href="res/core/TwitterBootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="res/core/BaikalAdmin/html5.js"></script>
+    <![endif]-->
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+{% block navbar %}
+    {% embed "Admin/navbar.html.twig" %}
+    {% endembed %}
+{% endblock %}
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="res/core/TwitterBootstrap/js/jquery-1.7.1.min.js"></script>
+<script src="res/core/TwitterBootstrap/js/bootstrap.min.js"></script>
+<script src="res/core/TwitterBootstrap/js/bootstrap-tooltip.js"></script>
+<script src="res/core/TwitterBootstrap/js/bootstrap-popover.js"></script>
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(".popover-hover").popover();
+    $(".popover-focus").popover({
+        trigger: 'focus'
+    });
+    $(".popover-focus-top").popover({
+        trigger: 'focus',
+        placement: 'top'
+    });
+    $(".popover-focus-bottom").popover({
+        trigger: 'focus',
+        placement: 'bottom'
+    });
+</script>
+{% block javascript %}
+{% endblock %}
+</body>
+</html>

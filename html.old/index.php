@@ -1,0 +1,1 @@
+../Core/Frameworks/Baikal/WWWRoot/index.php

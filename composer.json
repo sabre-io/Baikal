@@ -15,7 +15,9 @@
     "require": {
         "php"           : ">=5.5",
         "sabre/dav"     : "~3.1.2",
-        "twig/twig"     : "~1.8.0"
+        "twig/twig"     : "^1.24",
+        "silex/silex": "^2.0",
+        "symfony/twig-bridge": "^3.1"
     },
     "require-dev" : {
         "sabre/cs"      : "~0.0.6"
@@ -24,10 +26,11 @@
         "jeromeschneider/baikal" : "self.version"
     },
     "autoload": {
-        "psr-0" : {
-            "Baikal"         : "Core/Frameworks/",
-            "Flake"          : "Core/Frameworks/",
-            "Formal"         : "Core/Frameworks/"
+        "psr-4": {
+            "Baikal\\"         : ["Core/Frameworks/Baikal/", "src/"],
+            "BaikalAdmin\\"    : ["Core/Frameworks/BaikalAdmin/"],
+            "Flake\\"          : ["Core/Frameworks/Flake/"],
+            "Formal\\"         : ["Core/Frameworks/Formal/"]
         }
     },
     "support" : {
