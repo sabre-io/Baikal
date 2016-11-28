@@ -158,7 +158,7 @@ class Framework extends \Flake\Core\Framework {
         define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 
         # Determine PROJECT_BASEURI
-        $sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
+        $sScript = $_SERVER["SCRIPT_NAME"];
         $sDirName = str_replace("\\", "/", dirname($sScript));    # fix windows backslashes
 
         if ($sDirName !== ".") {
