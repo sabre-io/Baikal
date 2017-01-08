@@ -28,10 +28,6 @@ class CalendarController {
 
     function createAction(Application $app, Request $request, User $user) {
 
-        if ($request->getMethod() !== Request::METHOD_GET) {
-            throw new MethodNotAllowedException([Request::METHOD_GET]);
-        }
-
         return $app['twig']->render('admin/calendar/create.html', [
             'user' => $user,
 //            'calendar' => [
@@ -42,10 +38,6 @@ class CalendarController {
     }
 
     function postCreateAction(Application $app, Request $request, User $user) {
-
-        if ($request->getMethod() !== Request::METHOD_POST) {
-            throw new MethodNotAllowedException([Request::METHOD_POST]);
-        }
 
         $calendarData = $request->get('data');
 
