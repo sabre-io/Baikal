@@ -24,12 +24,16 @@ class UserController implements ControllerProviderInterface {
         $controllers->post('{user}/delete', [$this, 'postDeleteAction'])->bind('admin_user_delete_post');
 
         $controllers->get('{user}/calendars',                      CalendarController::class . '::indexAction')->bind('admin_user_calendars');
+        $controllers->get('{user}/calendars/new',                  CalendarController::class . '::createAction')->bind('admin_calendar_create');
+        $controllers->post('{user}/calendars/new',                 CalendarController::class . '::postCreateAction')->bind('admin_calendar_create_post');
         $controllers->get('{user}/calendars/{calendarId}',         CalendarController::class . '::editAction')->bind('admin_calendar_edit');
         $controllers->post('{user}/calendars/{calendarId}',        CalendarController::class . '::postEditAction')->bind('admin_calendar_edit_post');
         $controllers->get('{user}/calendars/{calendarId}/delete',  CalendarController::class . '::deleteAction')->bind('admin_calendar_delete');
         $controllers->post('{user}/calendars/{calendarId}/delete', CalendarController::class . '::postDeleteAction')->bind('admin_calendar_delete_post');
 
         $controllers->get('{user}/addressbooks',                         AddressBookController::class . '::indexAction')->bind('admin_user_addressbooks');
+        $controllers->get('{user}/addressbooks/new',                     AddressBookController::class . '::createAction')->bind('admin_addressbook_create');
+        $controllers->post('{user}/addressbooks/new',                    AddressBookController::class . '::postCreateAction')->bind('admin_addressbook_create_post');
         $controllers->get('{user}/addressbooks/{addressbookId}',         AddressBookController::class . '::editAction')->bind('admin_addressbook_edit');
         $controllers->post('{user}/addressbooks/{addressbookId}',        AddressBookController::class . '::postEditAction')->bind('admin_addressbook_edit_post');
         $controllers->get('{user}/addressbooks/{addressbookId}/delete',  AddressBookController::class . '::deleteAction')->bind('admin_addressbook_delete');
@@ -137,23 +141,4 @@ class UserController implements ControllerProviderInterface {
         $app['service.user']->remove($user);
         return $app->redirect($app['url_generator']->generate('admin_user_index'));
     }
-
-    function calendarAction(Application $app, User $user) {
-        $calendars = $app['sabredav.backend.caldav']->getCalendarsForUser('principals/' . $user->userName);
-        $calendarsData = [];
-
-        foreach ($calendars as $calendar) {
-            $calendarId = $calendar['id'];
-            $calendar['eventCount'] = count($app['sabredav.backend.caldav']->getCalendarObjects($calendarId));
-            $calendarsData[] = $calendar;
-        }
-        #return json_encode($calendarsData);
-        return $app['twig']->render('admin/user/calendars.html', [
-            'user'      => $user,
-            'calendars' => $calendarsData,
-        ]);
-    }
-
-
-
 }

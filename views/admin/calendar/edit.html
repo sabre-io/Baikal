@@ -1,15 +1,11 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
-
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-calendar"></i>Calendars</h1>
 	<p class="lead">Edit calendar<i class=glyph-calendar></i><strong>{{ attribute(calendar, "\{DAV:\}displayname") }}</strong> for<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
 </header>
-
-<a id='form'></a>
-
 <br style="clear: both" />
-<form class="form-horizontal" action="{{ path('admin_calendar_edit_post', {user: user.userName, calendarId : calendar.id }) }}" method="post" enctype="multipart/formdata">
+<form class="form-horizontal" action="{{ path('admin_calendar_edit_post', {user: user.userName, calendarId: calendar.id }) }}" method="post" enctype="multipart/formdata">
     <fieldset>        
         <div class="control-group">
             <label class="control-label" for="uri">Sync URL</label>
@@ -18,15 +14,15 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="displayname">Display name</label>
+            <label class="control-label" for="displayName">Display name</label>
             <div class="controls">
-                <input type="text" class="input-xlarge popover-focus " id="displayname" name="data[displayname]" value="{{ attribute(calendar, "\{DAV:\}displayname") }}" title="Display name" data-content="This is the name that will be displayed in your CalDAV client." />
+                <input type="text" class="input-xlarge popover-focus " id="displayName" name="data[displayName]" value="{{ attribute(calendar, "\{DAV:\}displayname") }}" title="Display name" data-content="This is the name that will be displayed in your CalDAV client." />
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="description">Description</label>
+            <label class="control-label" for="calendarDescription">Description</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="description" name="data[description]" value="{{ attribute(calendar, "\{urn:ietf:params:xml:ns:caldav\}calendar-description") }}" title="Description" data-content="Give your calendar a description." />
+                <input type="text" class="input-xlarge" id="calendarDescription" name="data[calendarDescription]" value="{{ attribute(calendar, "\{urn:ietf:params:xml:ns:caldav\}calendar-description") }}" title="Description" data-content="Give your calendar a description." />
             </div>
         </div>
         <div class="form-actions">

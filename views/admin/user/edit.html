@@ -1,11 +1,12 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
-
+    <header class="jumbotron subhead" id="overview">
+        <h1><i class="glyph2x-group"></i>Users</h1>
+        <p class="lead">Edit user<i class=glyph-user></i><strong>{{ user.userName }}</strong></p>
+    </header>
     <form class="form-horizontal" action="?" method="post">
         <input type="hidden" name="refreshed" value="0" />
         <fieldset>
-            <legend style="line-height: 40px;">Edit <i class=glyph-user></i><strong>User</strong></legend>
-
             <div class="control-group">
                 <label class="control-label" for="userName">Username</label>
                 <div class="controls">

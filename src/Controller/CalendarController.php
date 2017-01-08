@@ -26,6 +26,34 @@ class CalendarController {
         ]);
     }
 
+    function createAction(Application $app, Request $request, User $user) {
+
+        if ($request->getMethod() !== Request::METHOD_GET) {
+            throw new MethodNotAllowedException([Request::METHOD_GET]);
+        }
+
+        return $app['twig']->render('admin/calendar/create.html', [
+            'user' => $user,
+//            'calendar' => [
+//                  'displayName' => '',
+//                  'calendarDescription' => '',
+//            ],
+        ]);
+    }
+
+    function postCreateAction(Application $app, Request $request, User $user) {
+
+        if ($request->getMethod() !== Request::METHOD_POST) {
+            throw new MethodNotAllowedException([Request::METHOD_POST]);
+        }
+
+        $calendarData = $request->get('data');
+
+        $app['service.calendar']->createCalendar($user, $calendarData['displayName'], $calendarData['calendarDescription']);
+
+        return $app->redirect($app['url_generator']->generate('admin_user_calendars', ['user' => $user->userName]));
+    }
+
     function editAction(Application $app, User $user, $calendarId) {
 
         $calendar = $app['service.calendar']->getByUserNameAndCalendarId($user->userName, $calendarId);
@@ -39,8 +67,8 @@ class CalendarController {
     function postEditAction(Application $app, Request $request, User $user, $calendarId) {
 
         $proppatch = new PropPatch([
-            '{DAV:}displayname'                                   => $request->get('data')['displayname'],
-            '{urn:ietf:params:xml:ns:caldav}calendar-description' => $request->get('data')['description']
+            '{DAV:}displayname'                                   => $request->get('data')['displayName'],
+            '{urn:ietf:params:xml:ns:caldav}calendar-description' => $request->get('data')['calendarDescription']
         ]);
         $calendar = $app['sabredav.backend.caldav']->updateCalendar(
             $calendarId,

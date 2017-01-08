@@ -1,37 +1,34 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
-    <header class="jumbotron subhead" id="overview">
-        <h1><i class="glyph2x-adress-book"></i>Address books</h1>
-        <p class="lead pull-left">Manage address books for<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
-        <p class="lead pull-right"><a class="btn btn-inverse" href="#"><i class="icon-white icon-book"></i> + Add address book</a></p>
-    </header>
-
-    <table class="table table-bordered table-striped addressbooks">
-        <thead>
+<header class="jumbotron subhead" id="overview">
+    <h1><i class="glyph2x-adress-book"></i>Address books</h1>
+    <p class="lead pull-left">Manage address books for<i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
+    <p class="lead pull-right"><a class="btn btn-inverse" href="{{ path('admin_addressbook_create', {'user' : user.userName }) }}"><i class="icon-white icon-book"></i> + Add address book</a></p>
+</header>
+<table class="table table-bordered table-striped addressbooks">
+    <thead>
+    <tr>
+        <th>Display name</th>
+        <th>Cards</th>
+        <th>Description</th>
+        <th class="no-border-left"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for addressbook in addressbooks %}
         <tr>
-            <th>Display name</th>
-            <th>Cards</th>
-            <th>Description</th>
-            <th class="no-border-left"></th>
+            <td class="col-displayname"><i class="icon-book"></i>{{ attribute(addressbook, "\{DAV:\}displayname")|escape }}</td>
+            <td><span class="badge">{{ addressbook.cardCount }}</span></td>
+            <td class="col-description">{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description")|escape }}</td>
+            <td class="col-actions no-border-left">
+                <p class="pull-right">
+                    <nobr><a class="btn btn-primary" href="{{ path('admin_addressbook_edit', {'user' : user.userName, 'addressbookId' : addressbook.id }) }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
+                    <nobr><a class="btn btn-danger" href="{{ path('admin_addressbook_delete', {'user' : user.userName, 'addressbookId' : addressbook.id}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
+                </p>
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        {% for addressbook in addressbooks %}
-            <tr>
-                <td class="col-displayname"><i class="icon-book"></i>{{ attribute(addressbook, "\{DAV:\}displayname")|escape }}</td>
-                <td><span class="badge">{{ addressbook.cardCount }}</span></td>
-                <td class="col-description">{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description")|escape }}</td>
-                <td class="col-actions no-border-left">
-                    <p class="pull-right">
-                        <nobr><a class="btn btn-primary" href="{{ path('admin_addressbook_edit', {'user' : user.userName, 'addressbookId' : addressbook.id }) }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
-                        <nobr><a class="btn btn-danger" href="{{ path('admin_addressbook_delete', {'user' : user.userName, 'addressbookId' : addressbook.id}) }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-                    </p>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <p class="lead pull-left"><a href="{{ path('admin_user_index') }}" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
-
-    <a id='form'></a>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="lead pull-left"><a href="{{ path('admin_user_index') }}" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
 {% endblock %}

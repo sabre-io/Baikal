@@ -1,0 +1,30 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+    <header class="jumbotron subhead" id="overview">
+        <h1><i class="glyph2x-lock"></i>Authentication</h1>
+        <p class="lead">Please authenticate to access Baikal Web Admin.</p>
+    </header>
+    {# {{ msg }} #}
+    <form class="form-horizontal" action="{{ path("admin_login_post") }}" method="post">
+        <fieldset>
+
+			<div class="control-group">
+                <label class="control-label" for="login">Login</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge popover-focus " id="login" name="data[login]" value="admin"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="displayName">Password</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge popover-focus " id="password" name="data[password]" value=""/>
+                </div>
+            </div>
+
+			<div class="form-actions">
+                <button type="submit" class="btn btn-primary">Authenticate</button>
+    	    </div>
+        </fieldset>
+    </form>
+{% endblock %}

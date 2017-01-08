@@ -3,6 +3,7 @@
 namespace Baikal;
 
 use PDO;
+use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -70,6 +71,10 @@ class Application extends \Silex\Application {
         $this->register(new TwigServiceProvider(), [
             'twig.path' => __DIR__ . '/../views/',
         ]);
+
+        // Session
+        $this->register(new SessionServiceProvider()
+        );
 
         $this['pdo'] = function() {
             $pdo = new PDO(

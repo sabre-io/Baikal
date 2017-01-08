@@ -1,13 +1,9 @@
 {% extends 'admin/layout.html' %}
 {% block content %}
-
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-adress-book"></i>Address books</h1>
 	<p class="lead">Edit address book<i class="glyph-adress-book"></i><strong>{{ attribute(addressbook, "\{DAV:\}displayname") }}</strong> of user <i class="glyph-user"></i><strong>{{ user.userName }}</strong></p>
 </header>
-
-<a id='form'></a>
-
 <br style="clear: both" />
 <form class="form-horizontal" action="{{ path('admin_addressbook_edit_post', {user: user.userName, addressbookId : addressbook.id }) }}" method="post" enctype="multipart/formdata">
     <fieldset>        
@@ -15,21 +11,23 @@
             <label class="control-label" for="uri">Sync URL</label>
             <div class="controls">
                 <input type="text" class="input-xlarge popover-focus " id="uri" name="data[uri]" value="{{ addressbook.path }}" disabled title="Address Book token ID"  data-content="The unique identifier for this address book." />
-                
             </div>
         </div>
+
         <div class="control-group">
-            <label class="control-label" for="displayname">Display name</label>
+            <label class="control-label" for="displayName">Display name</label>
             <div class="controls">
-                <input type="text" class="input-xlarge popover-focus " id="displayname" name="data[displayname]" value="{{ attribute(addressbook, "\{DAV:\}displayname") }}" title="Display name"  data-content="This is the name that will be displayed in your CardDAV client." />
+                <input type="text" class="input-xlarge popover-focus " id="displayName" name="data[displayName]" value="{{ attribute(addressbook, "\{DAV:\}displayname") }}" title="Display name"  data-content="This is the name that will be displayed in your CardDAV client." />
             </div>
         </div>
+
         <div class="control-group">
-            <label class="control-label" for="description">Description</label>
+            <label class="control-label" for="addressbookDescription">Description</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="description" name="data[description]" value="{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description") }}"/>
+                <input type="text" class="input-xlarge" id="addressbookDescription" name="data[addressbookDescription]" value="{{ attribute(addressbook, "\{urn:ietf:params:xml:ns:carddav\}addressbook-description") }}"/>
             </div>
         </div>
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
