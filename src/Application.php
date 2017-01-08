@@ -71,6 +71,7 @@ class Application extends \Silex\Application {
         $this->register(new TwigServiceProvider(), [
             'twig.path' => __DIR__ . '/../views/',
         ]);
+        $this->register(new SessionServiceProvider());
 
         $this['pdo'] = function() {
             $pdo = new PDO(
