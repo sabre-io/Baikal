@@ -28,10 +28,6 @@ class AddressBookController {
 
     function createAction(Application $app, Request $request, User $user) {
 
-        if ($request->getMethod() !== Request::METHOD_GET) {
-            throw new MethodNotAllowedException([Request::METHOD_GET]);
-        }
-
         return $app['twig']->render('admin/addressbook/create.html', [
             'user' => $user,
 //            'calendar' => [
@@ -42,10 +38,6 @@ class AddressBookController {
     }
 
     function postCreateAction(Application $app, Request $request, User $user) {
-
-        if ($request->getMethod() !== Request::METHOD_POST) {
-            throw new MethodNotAllowedException([Request::METHOD_POST]);
-        }
 
         $addressbookData = $request->get('data');
 
