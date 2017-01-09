@@ -23,6 +23,6 @@ return array (
     'username' => NULL,
     'password' => NULL,
   ),
-  'admin_passwordhash' => 'e4bf30b3515ecb0d9307219031949e97',
-  'auth_realm' => 'BaikalDAV',
+  // password is 'admin'. Temporary though
+  'admin_passwordhash' => '142ff212f9ed2f8f8b5e7b96f6929f78',
 );

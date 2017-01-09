@@ -56,7 +56,23 @@ class Application extends \Silex\Application {
 
         $this->before(function(Request $request) {
 
+            // Twig global variables
             $this['twig']->addGlobal('assetPath', dirname($request->getBaseUrl()) . '/assets/');
+            $this['twig']->addGlobal('authenticated', $this['session']->get('authenticated'));
+
+            switch ($request->getPathInfo()) {
+
+                case '/login' :
+                case '/logout' :
+                case '/' :
+                   return;
+                default:
+                    if ($this['session']->get('authenticated')) {
+                        return;
+                    }
+                    return $this->redirect($this['url_generator']->generate('login'));
+
+            }
 
         });
 
@@ -125,10 +141,9 @@ class Application extends \Silex\Application {
      */
     protected function initRoutes() {
 
-        #$this->get('/', $this['controller.index'])->bind('home');
-        $this->mount('/',        $this['controller.index']);
-        $this->mount('/admin',    $this['controller.admin']);
- 
+        $this->mount('/',       $this['controller.index']);
+        $this->mount('/admin',  $this['controller.admin']);
+
         /*
         $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');
 
