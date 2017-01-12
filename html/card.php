@@ -24,6 +24,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+ini_set("session.cookie_httponly", 1);
+ini_set("display_errors", 0);
+ini_set("log_errors", 1);
+
 define("BAIKAL_CONTEXT", true);
 define("PROJECT_CONTEXT_BASEURI", "/");
 
