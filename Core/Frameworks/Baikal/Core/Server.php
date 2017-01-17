@@ -133,6 +133,8 @@ class Server {
 
         if ($this->authType === 'Basic') {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
+        } elseif ($this->authType === 'Http') {
+            $authBackend = new \Sabre\DAV\Auth\Backend\Apache();
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
             $authBackend->setRealm($this->authRealm);
