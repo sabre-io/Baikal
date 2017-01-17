@@ -35,8 +35,8 @@ CREATE TABLE calendarobjects (
     etag VARBINARY(32),
     size INT(11) UNSIGNED NOT NULL,
     componenttype VARBINARY(8),
-    firstoccurence INT(11) UNSIGNED,
-    lastoccurence INT(11) UNSIGNED,
+    firstoccurence BIGINT(20),
+    lastoccurence BIGINT(20),
     uid VARBINARY(200),
     UNIQUE(calendarid, uri)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
