@@ -37,6 +37,14 @@
 				{% set carddavtext = 'Off' %}
 			{% endif %}
 			
+			{% if BAIKAL_WEBDAV_ENABLED %}
+				{% set webdavclass = 'label-success' %}
+				{% set webdavtext = 'On' %}
+			{% else %}
+				{% set webdavclass = 'label-important' %}
+				{% set webdavtext = 'Off' %}
+			{% endif %}
+			
 			<table class="table">
 				<tbody>
 					<tr>
@@ -50,6 +58,10 @@
 					<tr>
 						<td>CardDAV</td>
 						<td><span class="label {{ carddavclass }} label-intext">{{ carddavtext }}</span></td>
+					</tr>
+					<tr>
+						<td>WebDAV</td>
+						<td><span class="label {{ webdavclass }} label-intext">{{ webdavtext }}</span></td>
 					</tr>
 				</tbody>
 			</table>

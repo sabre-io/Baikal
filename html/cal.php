@@ -57,6 +57,7 @@ if (!defined("BAIKAL_CAL_ENABLED") || BAIKAL_CAL_ENABLED !== true) {
 $server = new \Baikal\Core\Server(
     BAIKAL_CAL_ENABLED,
     BAIKAL_CARD_ENABLED,
+    BAIKAL_WEBDAV_ENABLED,
     BAIKAL_DAV_AUTH_TYPE,
     BAIKAL_AUTH_REALM,
     $GLOBALS['DB']->getPDO(),
