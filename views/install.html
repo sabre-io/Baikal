@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <header class="jumbotron subhead" id="overview">
+        <h1><i class="glyph2x-lock"></i>Installation</h1>
+        <p class="lead">Welcome to your shiny new Baïkal installation. We're now checking if your system can support Baïkal.</p>
+    </header>
+    {# {{ msg }} #}
+
+    <table>
+        {% for item in compatTable %}
+          <tr>
+              <td>{{ item.label }}</td>
+              <td class="{{ item.status }}">{{ item.status }}</td>
+          </tr>
+          {% if item.status != 'good' %}
+          <tr>
+              <td colspan="2">
+                  {{ item.extraInfo }}
+              </td>
+          </tr>
+          {% endif %}
+        {% endfor %} 
+    </table>
+
+{% endblock %}
