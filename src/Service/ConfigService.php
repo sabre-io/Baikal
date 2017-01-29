@@ -2,6 +2,8 @@
 
 namespace Baikal\Service;
 
+use Baikal\Version;
+
 class ConfigService {
 
     /**
@@ -11,7 +13,56 @@ class ConfigService {
      */
     function get() {
 
-        return include $this->getConfigFileName();
+        if ($this->exists()) {
+            $config = include $this->getConfigFileName();
+            $config['isDefault'] = false;
+        } else {
+            return $this->getDefault();
+        }
+
+    }
+
+    /**
+     * Does the configuration file exists?
+     *
+     * @return bool
+     */
+    function exists() {
+
+        return file_exists($this->getConfigFileName());
+
+    }
+
+    /**
+     * The default configuration. This will be used if baikal was not
+     * installed yet.
+     *
+     * @return array
+     */
+    function getDefault() {
+
+        return [
+            'isDefault' => true,
+            'version'   => Version::VERSION,
+            'caldav'    => [
+                'enabled' => true,
+            ],
+            'carddav' => [
+                'enabled' => true,
+            ],
+            'auth' => [
+                'type'  => 'Digest',
+                'realm' => 'BaikalDAV',
+            ],
+            'debug' => true,
+            'pdo'   => [
+                'dsn'      => null,
+                'username' => null,
+                'password' => null,
+            ],
+            // Initially the password is 'admin'.
+            'adminPassword' => '142ff212f9ed2f8f8b5e7b96f6929f78',
+        ];
 
     }
 
@@ -23,6 +74,10 @@ class ConfigService {
     function set(array $config) {
 
         $configStr = "<?php\n// This configuration file is automatically generated. Any changes made here may be overwritten.\n\nreturn " . var_export($config, true) . ';';
+
+        // This is a generated configuration property. It doesn't need to be
+        // stored.
+        unset($config['isDefault']);
 
         file_put_contents(
             $this->getConfigFileName(),
@@ -53,7 +108,7 @@ class ConfigService {
      */
     protected function getConfigFileName() {
 
-        return realpath(__DIR__ . '/../../config/config.php');
+        return '/../../config/config.php';
 
     }
 

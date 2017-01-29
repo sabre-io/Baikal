@@ -18,16 +18,37 @@ class Application extends \Silex\Application {
 
         parent::__construct($values);
 
-        // Putting Silex in debug mode, if this was specified in the config.
-        $this['debug'] = $this['config']['debug'];
-
-        $this->initControllers();
+        $this->initConfig();
         $this->initServices();
+        $this->initControllers();
         $this->initMiddleware();
         $this->initRoutes();
         $this->initSabreDAV();
 
     }
+
+    /**
+     * Get configuration from file.
+     */
+    protected function initConfig() {
+
+        $configService = new Service\ConfigService();
+        $this['service.config'] = $configService;
+
+        $config = $configService->get();
+
+        if ($config['debug']) {
+            // Putting Silex in debug mode, if this was specified in the config.
+            $this['debug'] = true;
+        }
+        $this['config'] = $config;
+
+        // If  this is a default configuration, it means that baikal has not
+        // been installed yet.
+        $this['needsInstall'] = $config['isDefault'];
+
+    }
+
 
     /**
      * Initialize Silex controllers
@@ -50,6 +71,9 @@ class Application extends \Silex\Application {
             return new Controller\SettingsController();
         };
 
+        $this['controller.install'] = function() {
+            return new Controller\InstallController();
+        };
     }
 
     protected function initMiddleware() {
@@ -60,18 +84,20 @@ class Application extends \Silex\Application {
             $this['twig']->addGlobal('assetPath', dirname($request->getBaseUrl()) . '/assets/');
             $this['twig']->addGlobal('authenticated', $this['session']->get('authenticated'));
 
-            switch ($request->getPathInfo()) {
+            // Do we need to start the installer?
+            if ($this['needsInstall'])  {
+                if ($request->getPathInfo() !== '/install/') {
+                    // Redirect to the installer
+                    return $this->redirect($this['url_generator']->generate('install'));
+                } else {
+                    //  Stop messing around
+                    return;
+                }
+            }
 
-                case '/login' :
-                case '/logout' :
-                case '/' :
-                   return;
-                default:
-                    if ($this['session']->get('authenticated')) {
-                        return;
-                    }
-                    return $this->redirect($this['url_generator']->generate('login'));
-
+            // Do we need to display the login screen?
+            if (!$this['session']->get('authenticated') && $request->getPathInfo() !== '/login') {
+                return $this->redirect($this['url_generator']->generate('login'));
             }
 
         });
@@ -107,12 +133,6 @@ class Application extends \Silex\Application {
 
         };
 
-        $this['service.config'] = function() {
-
-            return new Service\ConfigService();
-
-        };
-
         $this['service.user'] = function() {
             return new Service\UserService(
                 $this['pdo'],
@@ -143,6 +163,7 @@ class Application extends \Silex\Application {
 
         $this->mount('/',       $this['controller.index']);
         $this->mount('/admin',  $this['controller.admin']);
+        $this->mount('/install', $this['controller.install']);
 
         /*
         $this->get('/admin', 'admin.dashboard.controller:indexAction')->bind('admin_dashboard');

@@ -26,9 +26,7 @@ function exception_error_handler($errno, $errstr, $errfile, $errline) {
 }
 set_error_handler("exception_error_handler");
 
-$config = require __DIR__ . '/../config/config.php';
-
-$app = new Baikal\Application(['config' => $config]);
+$app = new Baikal\Application();
 $app['session']->start();
 // $app->before(function() use ($app) {
 //    if ( !$app['session']->get('authenticated') ) {
