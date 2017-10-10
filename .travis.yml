@@ -17,6 +17,7 @@ env:
 services:
   - mysql
 
+dist: trusty
 sudo: false
 
 before_script:
