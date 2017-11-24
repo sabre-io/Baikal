@@ -59,10 +59,9 @@ abstract class Router extends \Flake\Core\FLObject {
 
         $aRoutes = $GLOBALS["ROUTER"]::getRoutes();
 
-        reset($aRoutes);
-        while (list($sRoute, ) = each($aRoutes)) {
-            if (str_replace("\\Route", "\\Controller", $aRoutes[$sRoute]) === $sController) {
-                return $sRoute;
+        foreach ($aRoutes as $sKey => $sRoute) {
+            if (str_replace("\\Route", "\\Controller", $sRoute) === $sController) {
+                return $sKey;
             }
         }
 
