@@ -75,7 +75,7 @@ class Tools extends \Flake\Core\FLObject {
         if (is_array($array_in))    {
             $result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
             if (!count($array_in))    {$result .= '<tr><td><font face="Verdana,Arial" size="1"><b>' . htmlspecialchars("EMPTY!") . '</b></font></td></tr>';}
-            while (list($key, $val) = each($array_in))    {
+            foreach ($array_in as $key => $val) {
                 $result .= '<tr><td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string)$key) . '</font></td><td>';
                 if (is_array($array_in[$key]))    {
                     $result .= \Flake\Util\Tools::view_array($array_in[$key]);

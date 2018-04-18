@@ -39,9 +39,8 @@ class Cli extends \Flake\Core\Render\Container {
     }
 
     function execute() {
-        reset($this->aSequence);
-        while (list($sKey, ) = each($this->aSequence)) {
-            $this->aSequence[$sKey]["block"]->execute();
+        foreach ($this->aSequence as $aStep) {
+            $aStep["block"]->execute();
         }
     }
 
