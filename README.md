@@ -7,6 +7,13 @@ This is the source repository for the Baïkal CalDAV and CardDAV server.
 
 Head to [sabre.io/baikal][2] for information about installation, upgrading and troubleshooting.
 
+## Run on YunoHost
+[![Install Baikal with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=baikal)
+
+Baïkal app for [YunoHost](https://yunohost.org). See [here](https://github.com/YunoHost-apps/baikal_ynh)
+
+## Production
+
 Upgrading from 0.2.7
 --------------------
 
