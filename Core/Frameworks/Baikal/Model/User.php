@@ -211,7 +211,7 @@ class User extends \Flake\Core\Model\Db {
             "validation" => "required,unique",
             "popover"    => [
                 "title"   => "Username",
-                "content" => "The login for this user account.<br />It has to be unique.",
+                "content" => "The login for this user account. It has to be unique.",
             ]
         ]));
 
