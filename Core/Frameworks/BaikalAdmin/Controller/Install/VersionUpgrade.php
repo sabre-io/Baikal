@@ -429,9 +429,9 @@ FROM calendars
 ');
                 $this->aSuccess[] = 'Migrated calendarinstances table';
                 $calendarBackup = 'calendars_3_1';
-                $pdo->exec('ALTER TABLE calendars RENAME TO '.$calendarBackup);
+                $pdo->exec('ALTER TABLE calendars RENAME TO ' . $calendarBackup);
                 $this->aSuccess[] = 'Did calendars backup';
-            
+
                 $pdo->exec(<<<SQL
 CREATE TABLE calendars (
     id integer primary key asc NOT NULL,
@@ -492,9 +492,9 @@ FROM calendars
 ');
                 $this->aSuccess[] = 'Migrated calendarinstances table';
                 $calendarBackup = 'calendars_3_1';
-                $pdo->exec('RENAME TABLE calendars TO '.$calendarBackup);
+                $pdo->exec('RENAME TABLE calendars TO ' . $calendarBackup);
                 $this->aSuccess[] = 'Did calendars backup';
-                
+
                 $pdo->exec(<<<SQL
 CREATE TABLE calendars (
     id INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -505,7 +505,7 @@ SQL
 );
                 $this->aSuccess[] = 'Created new calendars table';
             }
-            
+
             $pdo->exec(<<<SQL
 INSERT INTO calendars (id, synctoken, components) SELECT id, synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
 SQL
