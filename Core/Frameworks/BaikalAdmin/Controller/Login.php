@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller;
 
+use Baikal\Core\Tools;
+
 class Login extends \Flake\Core\Controller {
 
     function execute() {
@@ -42,6 +44,7 @@ class Login extends \Flake\Core\Controller {
                 "The login/password you provided is invalid. Please retry.",
                 "Authentication error"
             );
+            Tools::logFailureLogin();
         } elseif (self::justLoggedOut()) {
             $sMessage = \Formal\Core\Message::notice(
                 "You have been disconnected from your session.",

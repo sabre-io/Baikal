@@ -28,6 +28,7 @@
 namespace Baikal\Core;
 
 class Tools {
+    const FAILED_LOGIN_LOG_PATH = PROJECT_PATH_ROOT . '/Specific/failed-logins.log';
     static function &db() {
         return $GLOBALS["pdo"];
     }
@@ -212,5 +213,29 @@ CODE;
 
         reset($aZones);
         return $aZones;
+    }
+
+    static function timezones() {
+        $aZones = \DateTimeZone::listIdentifiers();
+
+        reset($aZones);
+        return $aZones;
+    }
+
+    private static function getRemoteIp() {
+      //In case we are using nginx proxy, we should look into HTTP_X_REAL_IP instead of REMOTE_ADDR
+       return isset($_SERVER['HTTP_X_REAL_IP'])
+          ? $_SERVER['HTTP_X_REAL_IP']
+          : $_SERVER['REMOTE_ADDR'];
+    }
+
+    private static function getTimestamp() {
+       return date_timestamp_get(date_create());
+    }
+
+    static function logFailureLogin() {
+       $ip = self::getRemoteIp();
+       $timestamp = self::getTimestamp();
+       file_put_contents(self::FAILED_LOGIN_LOG_PATH, $ip . ' ' . $timestamp . PHP_EOL, FILE_APPEND);
     }
 }
