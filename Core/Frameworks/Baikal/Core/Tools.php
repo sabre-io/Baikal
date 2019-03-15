@@ -230,7 +230,7 @@ CODE;
     }
 
     private static function getTimestamp() {
-       return date_timestamp_get(date_create());
+       return date('d/M/Y:h:i:s', time());
     }
 
     static function logFailureLogin() {
