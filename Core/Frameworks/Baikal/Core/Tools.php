@@ -215,13 +215,6 @@ CODE;
         return $aZones;
     }
 
-    static function timezones() {
-        $aZones = \DateTimeZone::listIdentifiers();
-
-        reset($aZones);
-        return $aZones;
-    }
-
     private static function getRemoteIp() {
       //In case we are using nginx proxy, we should look into HTTP_X_REAL_IP instead of REMOTE_ADDR
        return isset($_SERVER['HTTP_X_REAL_IP'])
