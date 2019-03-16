@@ -28,7 +28,6 @@
 namespace Baikal\Core;
 
 class Tools {
-    const FAILED_LOGIN_LOG_PATH = PROJECT_PATH_ROOT . '/Specific/failed-logins.log';
     static function &db() {
         return $GLOBALS["pdo"];
     }
@@ -229,6 +228,7 @@ CODE;
     static function logFailureLogin() {
        $ip = self::getRemoteIp();
        $timestamp = self::getTimestamp();
-       file_put_contents(self::FAILED_LOGIN_LOG_PATH, $ip . ' ' . $timestamp . PHP_EOL, FILE_APPEND);
+       $failedLoginLogPath = PROJECT_PATH_ROOT . '/Specific/failed-logins.log';
+       file_put_contents($failedLoginLogPath, $ip . ' ' . $timestamp . PHP_EOL, FILE_APPEND);
     }
 }
