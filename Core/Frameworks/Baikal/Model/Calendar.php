@@ -46,7 +46,7 @@ class Calendar extends \Flake\Core\Model\Db {
 
     protected function initFloating() {
         parent::initFloating();
-        $this->oCalendar  = new Calendar\Calendar();
+        $this->oCalendar = new Calendar\Calendar();
     }
 
     protected function initByPrimary($sPrimary) {
