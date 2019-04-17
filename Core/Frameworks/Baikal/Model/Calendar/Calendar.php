@@ -36,4 +36,25 @@ class Calendar extends \Flake\Core\Model\Db {
         "synctoken"    => "",
         "components"   => ""
     ];
+
+    function hasInstances() {
+        $rSql = $GLOBALS["DB"]->exec_SELECTquery(
+            "*",
+            "calendarinstances",
+            "calendarid" . "='" . $this->aData["id"] . "'"
+        );
+
+        if (($aRs = $rSql->fetch()) === false) {
+            return false;
+        } else {
+            reset($aRs);
+            return true;
+        }
+    }
+
+    function destroy() {
+        if (!$this->hasInstances()) {
+            parent::destroy();
+        }
+    }
 }
