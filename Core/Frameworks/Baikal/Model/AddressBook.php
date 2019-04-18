@@ -89,9 +89,8 @@ class AddressBook extends \Flake\Core\Model\Db {
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
-            "prop"       => "description",
-            "label"      => "Description",
-            "validation" => "required"
+            "prop"  => "description",
+            "label" => "Description"
         ]));
 
         if ($this->floating()) {
