@@ -24,5 +24,37 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKAL_VERSION", "0.5.1");
-define("BAIKAL_HOMEPAGE", "http://sabre.io/baikal/");
+
+namespace Baikal\Model\Calendar;
+
+class Calendar extends \Flake\Core\Model\Db {
+    const DATATABLE = "calendars";
+    const PRIMARYKEY = "id";
+    const LABELFIELD = "components";
+
+    protected $aData = [
+        "synctoken"  => "",
+        "components" => ""
+    ];
+
+    function hasInstances() {
+        $rSql = $GLOBALS["DB"]->exec_SELECTquery(
+            "*",
+            "calendarinstances",
+            "calendarid" . "='" . $this->aData["id"] . "'"
+        );
+
+        if (($aRs = $rSql->fetch()) === false) {
+            return false;
+        } else {
+            reset($aRs);
+            return true;
+        }
+    }
+
+    function destroy() {
+        if (!$this->hasInstances()) {
+            parent::destroy();
+        }
+    }
+}
