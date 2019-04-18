@@ -7,8 +7,8 @@ This is the source repository for the Baïkal CalDAV and CardDAV server.
 
 Head to [sabre.io/baikal][2] for information about installation, upgrading and troubleshooting.
 
-Upgrading from 0.2.7
---------------------
+Upgrading
+---------
 
 Please follow [the upgrade instructions][5].
 
