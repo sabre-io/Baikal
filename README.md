@@ -16,7 +16,7 @@ Credits
 -------
 
 Bäikal is developed by [Jérôme Schneider][3] from [Net Gusto][3] and [fruux][4].
-Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page (http://baikal-server.com).
+Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality of the project page.
 
 [2]: http://sabre.io/baikal/
 [3]: http://netgusto.com/
