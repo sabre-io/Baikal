@@ -33,7 +33,6 @@ class Calendar extends \Flake\Core\Model\Db {
     const LABELFIELD = "components";
 
     protected $aData = [
-        "synctoken"  => "",
         "components" => ""
     ];
 
