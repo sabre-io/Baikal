@@ -5,7 +5,7 @@
 #  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
-#  http://baikal-server.com
+#  http://sabre.io/baikal
 #
 #  This script is part of the Baïkal Server project. The Baïkal
 #  Server project is free software; you can redistribute it
@@ -28,7 +28,7 @@
 namespace Baikal\Model;
 
 class Calendar extends \Flake\Core\Model\Db {
-    const DATATABLE = "calendars";
+    const DATATABLE = "calendarinstances";
     const PRIMARYKEY = "id";
     const LABELFIELD = "displayname";
 
@@ -40,8 +40,25 @@ class Calendar extends \Flake\Core\Model\Db {
         "calendarorder" => 0,
         "calendarcolor" => "",
         "timezone"      => "",
-        "components"    => "",
+        "calendarid"    => 0
     ];
+    protected $oCalendar; # Baikal\Model\Calendar\Calendar
+
+    protected function initFloating() {
+        parent::initFloating();
+        $this->oCalendar = new Calendar\Calendar();
+    }
+
+    protected function initByPrimary($sPrimary) {
+        parent::initByPrimary($sPrimary);
+        $this->oCalendar = new Calendar\Calendar($this->get("calendarid"));
+    }
+
+    function persist() {
+        $this->oCalendar->persist();
+        $this->aData["calendarid"] = $this->oCalendar->get("id");
+        parent::persist();
+    }
 
     static function icon() {
         return "icon-calendar";
@@ -66,6 +83,10 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function get($sPropName) {
+
+        if ($sPropName === "components") {
+            return $this->oCalendar->get($sPropName);
+        }
 
         if ($sPropName === "todos") {
             # TRUE if components contains VTODO, FALSE otherwise
@@ -94,6 +115,10 @@ class Calendar extends \Flake\Core\Model\Db {
 
     function set($sPropName, $sValue) {
 
+        if ($sPropName === "components") {
+            return $this->oCalendar->set($sPropName, $sValue);
+        }
+
         if ($sPropName === "todos") {
 
             if (($sComponents = $this->get("components")) !== "") {
@@ -112,7 +137,7 @@ class Calendar extends \Flake\Core\Model\Db {
                 }
             }
 
-            return parent::set("components", implode(",", $aComponents));
+            return $this->set("components", implode(",", $aComponents));
         }
 
         if ($sPropName === "notes") {
@@ -133,7 +158,7 @@ class Calendar extends \Flake\Core\Model\Db {
                 }
             }
 
-            return parent::set("components", implode(",", $aComponents));
+            return $this->set("components", implode(",", $aComponents));
         }
 
         return parent::set($sPropName, $sValue);
@@ -215,5 +240,6 @@ class Calendar extends \Flake\Core\Model\Db {
         }
 
         parent::destroy();
+        $this->oCalendar->destroy();
     }
 }

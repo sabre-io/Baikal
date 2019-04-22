@@ -24,14 +24,37 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKALADMIN_PATH_TEMPLATES", BAIKALADMIN_PATH_ROOT . "Resources/Templates/");
 
-$GLOBALS["ROUTES"] = [
-    "default"            => "\BaikalAdmin\Route\Dashboard",
-    "users"              => "\BaikalAdmin\Route\Users",
-    "users/calendars"    => "\BaikalAdmin\Route\User\Calendars",
-    "users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
-    "settings/standard"  => "\BaikalAdmin\Route\Settings\Standard",
-    "settings/system"    => "\BaikalAdmin\Route\Settings\System",
-    "logout"             => "\BaikalAdmin\Route\Logout"
-];
+namespace Baikal\Model\Calendar;
+
+class Calendar extends \Flake\Core\Model\Db {
+    const DATATABLE = "calendars";
+    const PRIMARYKEY = "id";
+    const LABELFIELD = "components";
+
+    protected $aData = [
+        "synctoken"  => "",
+        "components" => ""
+    ];
+
+    function hasInstances() {
+        $rSql = $GLOBALS["DB"]->exec_SELECTquery(
+            "*",
+            "calendarinstances",
+            "calendarid" . "='" . $this->aData["id"] . "'"
+        );
+
+        if (($aRs = $rSql->fetch()) === false) {
+            return false;
+        } else {
+            reset($aRs);
+            return true;
+        }
+    }
+
+    function destroy() {
+        if (!$this->hasInstances()) {
+            parent::destroy();
+        }
+    }
+}
