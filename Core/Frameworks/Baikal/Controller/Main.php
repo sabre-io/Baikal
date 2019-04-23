@@ -37,4 +37,3 @@ class Main extends \Flake\Core\Controller {
         return $oView->render();
     }
 }
-
