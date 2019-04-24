@@ -14,3 +14,8 @@
 <IfModule mod_expires.c>
 	ExpiresActive Off
 </IfModule>
+
+<IfModule mod_alias.c>
+	Redirect 308 /.well-known/caldav /dav.php
+	Redirect 308 /.well-known/carddav /dav.php
+</IfModule>
