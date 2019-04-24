@@ -49,7 +49,6 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 \Flake\Framework::bootstrap();
 
 # Bootstrapping Baïkal
-//\Baikal\Framework::bootstrap();
 \BaikalAdmin\Framework::bootstrap();
 
 # Create and setup a page object
