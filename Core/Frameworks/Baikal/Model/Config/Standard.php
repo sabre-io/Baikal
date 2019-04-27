@@ -42,6 +42,10 @@ class Standard extends \Baikal\Model\Config {
             "type"    => "boolean",
             "comment" => "CalDAV ON/OFF switch; default TRUE",
         ],
+        "BAIKAL_INVITE_FROM" => [
+            "type"    => "string",
+            "comment" => "CalDAV invite From: mail address (comment or leave blank to disable notifications)",
+        ],
         "BAIKAL_DAV_AUTH_TYPE" => [
             "type"    => "string",
             "comment" => "HTTP authentication type for WebDAV; default Digest"
@@ -57,6 +61,7 @@ class Standard extends \Baikal\Model\Config {
         "PROJECT_TIMEZONE"          => "Europe/Paris",
         "BAIKAL_CARD_ENABLED"       => true,
         "BAIKAL_CAL_ENABLED"        => true,
+        "BAIKAL_INVITE_FROM"        => "",
         "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
