@@ -175,6 +175,21 @@ class Server {
             $this->server->addPlugin(new \Sabre\CardDAV\VCFExportPlugin());
         }
 
+        $this->server->on('exception', [$this, 'exception']);
+
+    }
+
+    /**
+     * Log failed accesses, for further processing by other tools (fail2ban)
+     *
+     * @return void
+     */
+    public function exception($e) {
+        if ($e instanceof \Sabre\DAV\Exception\NotAuthenticated) {
+            if (strpos($e->getMessage(), "No 'Authorization: Digest' header found.") === false) {
+                error_log('user not authorized: '.$e->getMessage());
+            }
+        }
     }
 
 }
