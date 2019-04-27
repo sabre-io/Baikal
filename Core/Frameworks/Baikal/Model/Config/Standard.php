@@ -178,7 +178,7 @@ define("BAIKAL_CARD_ENABLED", TRUE);
 define("BAIKAL_CAL_ENABLED", TRUE);
 
 # CalDAV invite From: mail address
-define("BAIKAL_INVITE_FROM", 'noreply@'.$_SERVER['SERVER_NAME']);
+define("BAIKAL_INVITE_FROM", "noreply@".\$_SERVER["SERVER_NAME"]);
 
 # WebDAV authentication type; default Digest
 define("BAIKAL_DAV_AUTH_TYPE", "Digest");
