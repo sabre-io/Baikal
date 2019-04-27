@@ -77,7 +77,7 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
         }
 
         if ($sRoute === "default" && empty($aParams)) {
-            $sUrl =  "/";
+            $sUrl = "/";
         } else {
             $sUrl = "/" . $sRoute . "/" . $sParams;
         }

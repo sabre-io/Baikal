@@ -5,7 +5,7 @@
 #  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
-#  http://baikal-server.com
+#  http://sabre.io/baikal
 #
 #  This script is part of the Baïkal Server project. The Baïkal
 #  Server project is free software; you can redistribute it
@@ -211,7 +211,7 @@ class User extends \Flake\Core\Model\Db {
             "validation" => "required,unique",
             "popover"    => [
                 "title"   => "Username",
-                "content" => "The login for this user account.<br />It has to be unique.",
+                "content" => "The login for this user account. It has to be unique.",
             ]
         ]));
 

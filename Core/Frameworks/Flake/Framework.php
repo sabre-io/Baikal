@@ -122,7 +122,7 @@ class Framework extends \Flake\Core\Framework {
             if (isset($_COOKIE) && is_array($_COOKIE)) { $process[] = &$_COOKIE;}
             if (isset($_REQUEST) && is_array($_REQUEST)) { $process[] = &$_REQUEST;}
 
-            while (list($key, $val) = each($process)) {
+            foreach ($process as $key => $val) {
                 foreach ($val as $k => $v) {
                     unset($process[$key][$k]);
                     if (is_array($v)) {

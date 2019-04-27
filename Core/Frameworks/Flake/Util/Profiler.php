@@ -62,6 +62,6 @@ class Profiler extends \Flake\Core\FLObject {
         $tv_usec = (($dat["ru_utime.tv_sec"] * 1e6) + $dat["ru_utime.tv_usec"]) - self::$RUSAGE;
         $time = (microtime(true) - self::$TUSAGE) * 1e6;
         $cpuusage = ($tv_usec / $time);
-        return round(($time  / 1000) * $cpuusage);
+        return round(($time / 1000) * $cpuusage);
     }
 }

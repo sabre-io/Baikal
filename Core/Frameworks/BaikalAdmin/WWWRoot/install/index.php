@@ -5,7 +5,7 @@
 *  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 *  All rights reserved
 *
-*  http://baikal-server.com
+*  http://sabre.io/baikal
 *
 *  This script is part of the Baïkal Server project. The Baïkal
 *  Server project is free software; you can redistribute it
@@ -26,6 +26,11 @@
 
 ini_set("session.cookie_httponly", 1);
 ini_set("log_errors", 1);
+$maxtime = ini_get('max_execution_time');
+if ($maxtime != 0 && $maxtime < 3600) {
+    ini_set('max_execution_time', 3600); // 1 hour
+}
+ini_set('ignore_user_abort', true);
 error_reporting(E_ALL);
 
 define("BAIKAL_CONTEXT", true);

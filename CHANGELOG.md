@@ -18,7 +18,7 @@ ChangeLog
 0.4.5 (2016-05-28)
 ------------------
 
-* #552: PHP 7.0.7 introduced a sublte BC break that caused Baikal to error.
+* #552: PHP 7.0.7 introduced a subtle BC break that caused Baikal to error.
 * Upgraded sabre/dav, which fixes CardDAV performance problems.
 * Ships with sabre/dav 3.1.4
 

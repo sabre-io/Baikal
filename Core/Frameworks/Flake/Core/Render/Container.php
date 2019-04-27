@@ -58,23 +58,20 @@ abstract class Container extends \Flake\Core\Controller {
     }
 
     function execute() {
-        reset($this->aSequence);
-        while (list($sKey, ) = each($this->aSequence)) {
-            $this->aSequence[$sKey]["block"]->execute();
+        foreach ($this->aSequence as $aStep) {
+            $aStep["block"]->execute();
         }
     }
 
     protected function renderBlocks() {
         $aHtml = [];
-        reset($this->aSequence);
-        while (list($sKey, ) = each($this->aSequence)) {
+        foreach ($this->aSequence as $sKey => $aStep) {
             $this->aSequence[$sKey]["rendu"] = $this->aSequence[$sKey]["block"]->render();
         }
 
         $aHtml = [];
-        reset($this->aBlocks);
-        while (list($sZone, ) = each($this->aBlocks)) {
-            $aHtml[$sZone] = implode("", $this->aBlocks[$sZone]);
+        foreach ($this->aBlocks as $sZone => $aBlock) {
+            $aHtml[$sZone] = implode("", $aBlock);
         }
 
         reset($aHtml);
