@@ -78,13 +78,19 @@ class Standard extends \Baikal\Model\Config {
 
 
         $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"  => "BAIKAL_CARD_ENABLED",
+            "label" => "Enable CardDAV"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "BAIKAL_CAL_ENABLED",
             "label" => "Enable CalDAV"
         ]));
 
-        $oMorpho->add(new \Formal\Element\Checkbox([
-            "prop"  => "BAIKAL_CARD_ENABLED",
-            "label" => "Enable CardDAV"
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "BAIKAL_INVITE_FROM",
+            "label" => "Email invite sender address",
+            "help"  => "Leave empty to disable sending invite emails"
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
