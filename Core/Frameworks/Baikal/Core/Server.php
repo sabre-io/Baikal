@@ -169,6 +169,7 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
+            $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin(BAIKAL_INVITE_FROM));
         }
         if ($this->enableCardDAV) {
             $this->server->addPlugin(new \Sabre\CardDAV\Plugin());
