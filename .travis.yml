@@ -1,12 +1,19 @@
 language: php
 dist: trusty
 php:
-  - 5.5
-  - 5.6
-  - 7
-  - 7.2
+  - "5.5"
+  - "5.6"
+  - "7.0"
+  - "7.1"
+  - "7.2"
+  - "7.3"
 
 matrix:
+  include:
+    - name: 'PHPStan'
+      php: "7.2"
+      env: RUN_PHPSTAN="TRUE"
+
   fast_finish: true
 
 env:
@@ -19,15 +26,18 @@ services:
 
 sudo: false
 
+install:
+  - if [ $RUN_PHPSTAN == "TRUE"  ]; then wget https://github.com/phpstan/phpstan/releases/download/0.11.5/phpstan.phar; fi
+
 before_script:
   # - mysql -e 'create database sabredav'
-  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
+  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   # - composer self-update
   - composer update --prefer-source $LOWEST_DEPS
 
 script:
-    - find Core -name "*.php" | xargs -n1 php -l 
-    - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
+  - find Core -name "*.php" | xargs -n1 php -l
+  - if [ $RUN_PHPSTAN == "TRUE"  ]; then php phpstan.phar analyse -c phpstan.neon Core html Specific; fi
 
 cache:
   directories:

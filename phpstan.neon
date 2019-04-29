@@ -1,0 +1,6 @@
+parameters:
+  level: 0
+  bootstrap: %currentWorkingDirectory%/vendor/autoload.php
+
+  excludes_analyse:
+  - %currentWorkingDirectory%/Core/Resources/*.php
