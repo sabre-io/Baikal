@@ -27,7 +27,7 @@
 
 namespace Flake\Controller;
 
-class HtmlBlockTemplated extends \Flake\Core\Controller {
+abstract class HtmlBlockTemplated extends \Flake\Core\Controller {
 
     function __construct($sTemplatePath, $aMarkers = []) {
         $this->sTemplatePath = $sTemplatePath;
