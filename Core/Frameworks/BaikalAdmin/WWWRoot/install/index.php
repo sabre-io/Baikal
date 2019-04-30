@@ -75,7 +75,11 @@ if (!defined("BAIKAL_CONFIGURED_VERSION")) {
 } else {
     if (BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
-        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+        if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
+            $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
+        } else {
+            $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\UpgradeConfirmation());
+        }
     } elseif (!file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
     } else {
