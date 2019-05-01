@@ -509,7 +509,7 @@ SQL
             }
 
             $pdo->exec(<<<SQL
-INSERT INTO calendars (id, synctoken, components) SELECT id, synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
+INSERT INTO calendars (id, synctoken, components) SELECT id, COALESCE(synctoken,1) as synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
 SQL
     );
             $this->aSuccess[] = 'Migrated calendars table';
