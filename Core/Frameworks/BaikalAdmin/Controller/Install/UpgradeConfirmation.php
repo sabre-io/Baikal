@@ -24,5 +24,25 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKAL_VERSION", "0.5.3");
-define("BAIKAL_HOMEPAGE", "http://sabre.io/baikal/");
+
+namespace BaikalAdmin\Controller\Install;
+
+class UpgradeConfirmation extends \Flake\Core\Controller {
+
+    function execute() {
+    }
+
+    function render() {
+        $oView = new \BaikalAdmin\View\Install\UpgradeConfirmation();
+
+        if (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
+            $sMessage = "Your system is configured to use version <strong>" . BAIKAL_CONFIGURED_VERSION . "</strong>.<br />There's no upgrade to be done.";
+        } else {
+            $sMessage = "Upgrading Baïkal from version <strong>" . BAIKAL_CONFIGURED_VERSION . "</strong> to version <strong>" . BAIKAL_VERSION . "</strong>";
+        }
+
+        $oView->setData("message", $sMessage);
+        $oView->setData("projectUri", PROJECT_URI);
+        return $oView->render();
+    }
+}

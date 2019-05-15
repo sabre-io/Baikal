@@ -87,6 +87,8 @@ HTML;
             throw new \Exception('This version of Baikal does not support upgrading from version 0.2.3 and older. Please request help on Github if this is a problem.');
         }
 
+        $this->assertConfigWritable();
+
         $pdo = $GLOBALS['DB']->getPDO();
         if (version_compare($sVersionFrom, '0.3.0', '<')) {
             // Upgrading from sabre/dav 1.8 schema to 3.1 schema.
@@ -507,7 +509,7 @@ SQL
             }
 
             $pdo->exec(<<<SQL
-INSERT INTO calendars (id, synctoken, components) SELECT id, synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
+INSERT INTO calendars (id, synctoken, components) SELECT id, COALESCE(synctoken,1) as synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
 SQL
     );
             $this->aSuccess[] = 'Migrated calendars table';
@@ -528,5 +530,17 @@ SQL
         $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
         $oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
         $oConfig->persist();
+    }
+
+    protected function assertConfigWritable() {
+        # Parsing the config also makes sure that it is not malformed
+        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        if ($oConfig->writable() === false) {
+            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.php is not writable");
+        }
+        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+        if ($oConfig->writable() === false) {
+            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.system.php is not writable");
+        }
     }
 }

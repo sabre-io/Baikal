@@ -206,7 +206,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
         $sLines = implode("\n", $aLines);
         $sSandboxedCode = str_replace(["<?php", "<?", "?>"], "", $sLines);
         $sRand = (string)rand();
-        $sCode = "if(0) {" . $sSandboxedCode . "}; echo '" . $sRand . "';";
+        $sCode = "if(0) {" . $sSandboxedCode . "\n}; echo '" . $sRand . "';";
         ob_start();
         eval($sCode);
         $sRes = ob_get_contents();

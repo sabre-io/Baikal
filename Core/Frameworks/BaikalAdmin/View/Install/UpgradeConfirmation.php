@@ -24,5 +24,8 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKAL_VERSION", "0.5.3");
-define("BAIKAL_HOMEPAGE", "http://sabre.io/baikal/");
+
+namespace BaikalAdmin\View\Install;
+
+class UpgradeConfirmation extends \BaikalAdmin\Core\View {
+}

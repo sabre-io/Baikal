@@ -1,0 +1,19 @@
+{% autoescape false %}
+<header class="jumbotron subhead" id="overview">
+    <h1><i class="glyph2x-magic"></i>Baïkal upgrade wizard</h1>
+    <p class="lead">{{ message }}</p>
+</header>
+<p>Please create a backup before upgrading.</p>
+<p>Upgrading might take a few minutes depending on the number of events and contacts. <strong>Do not interrupt the upgrade!</strong></p>
+<p>&nbsp;</p>
+<p>
+<div id="loader" class="loader" style="display: none;"></div>
+<a id="upgradeButton" class="btn btn-success" onclick="showLoader()" href="{{ projectUri }}admin/install/?upgradeConfirmed=true">Start upgrade</a>
+</p>
+<script>
+    function showLoader() {
+        $("#upgradeButton").hide();
+        $("#loader").show();
+    }
+</script>
+{% endautoescape %}
