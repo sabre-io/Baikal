@@ -38,6 +38,8 @@ class Login extends \Flake\Core\Controller {
         $sMessage = "";
 
         if (self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
+            // Log failed accesses, for further processing by other tools (fail2ban)
+            error_log('user not authorized: Baikal GUI');
             $sMessage = \Formal\Core\Message::error(
                 "The login/password you provided is invalid. Please retry.",
                 "Authentication error"
