@@ -191,6 +191,8 @@ class Server {
             if (strpos($e->getMessage(), "No 'Authorization: Digest' header found.") === false) {
                 error_log('user not authorized: Baikal DAV: ' . $e->getMessage());
             }
+        } else {
+            error_log($e);
         }
     }
 
