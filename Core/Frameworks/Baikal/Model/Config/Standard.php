@@ -42,6 +42,10 @@ class Standard extends \Baikal\Model\Config {
             "type"    => "boolean",
             "comment" => "CalDAV ON/OFF switch; default TRUE",
         ],
+        "BAIKAL_INVITE_FROM" => [
+            "type"    => "string",
+            "comment" => "CalDAV invite From: mail address (comment or leave blank to disable notifications)",
+        ],
         "BAIKAL_DAV_AUTH_TYPE" => [
             "type"    => "string",
             "comment" => "HTTP authentication type for WebDAV; default Digest"
@@ -57,6 +61,7 @@ class Standard extends \Baikal\Model\Config {
         "PROJECT_TIMEZONE"          => "Europe/Paris",
         "BAIKAL_CARD_ENABLED"       => true,
         "BAIKAL_CAL_ENABLED"        => true,
+        "BAIKAL_INVITE_FROM"        => "",
         "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
@@ -73,13 +78,19 @@ class Standard extends \Baikal\Model\Config {
 
 
         $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"  => "BAIKAL_CARD_ENABLED",
+            "label" => "Enable CardDAV"
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "BAIKAL_CAL_ENABLED",
             "label" => "Enable CalDAV"
         ]));
 
-        $oMorpho->add(new \Formal\Element\Checkbox([
-            "prop"  => "BAIKAL_CARD_ENABLED",
-            "label" => "Enable CardDAV"
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "BAIKAL_INVITE_FROM",
+            "label" => "Email invite sender address",
+            "help"  => "Leave empty to disable sending invite emails"
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
@@ -176,6 +187,9 @@ define("BAIKAL_CARD_ENABLED", TRUE);
 
 # CalDAV ON/OFF switch; default TRUE
 define("BAIKAL_CAL_ENABLED", TRUE);
+
+# CalDAV invite From: mail address (comment or leave blank to disable notifications)
+define("BAIKAL_INVITE_FROM", "noreply@\$_SERVER[SERVER_NAME]");
 
 # WebDAV authentication type; default Digest
 define("BAIKAL_DAV_AUTH_TYPE", "Digest");
