@@ -1,6 +1,15 @@
 ChangeLog
 =========
 
+0.6.0 (2019-08-25)
+------------------
+
+* Added support for php 7.3
+* REMOVED support for php 5.x
+* Enabled event invitation plugin
+* Enabled calendar sharing plugin
+* Ships with sabre/dav 4.0.1
+
 0.5.3 (2019-05-13)
 ------------------
 
