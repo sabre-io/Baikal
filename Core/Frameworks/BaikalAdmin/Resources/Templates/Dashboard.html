@@ -14,10 +14,27 @@
 	<div class="row">
 		<div class="span3">
 			<h2>Version</h2>
-			<p>This systems runs<br />
-				Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span>
+			<p>This systems runs Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span><br />
 				<small><a href="{{ url }}" target="_blank">{{ url }}</a></small>
 			</p>
+			<p id="newVersionContainer" style="display: none;">
+				<a class="alert alert-info" href="https://github.com/sabre-io/Baikal/releases/latest" target="_blank">
+					New version available: <span id="newVersion" class="label label-info label-intext">0.0.0</span>
+				</a>
+			</p>
+			<script type="text/javascript">
+				window.onload = function () {
+					jQuery.ajax({
+						url: "https://api.github.com/repos/sabre-io/Baikal/releases/latest",
+						success: function(result) {
+							if (result.name != "{{ BAIKAL_VERSION }}") {
+								$("#newVersion").text(result.name);
+								$("#newVersionContainer").show();
+							}
+						}
+					});
+				};
+			</script>
 		</div>
 		<div class="span3">
 			<h2>Services</h2>
@@ -58,7 +75,7 @@
 			<h2>License and credits</h2>
 			<p>Baïkal is open source software licensed under the terms of the GNU GPL v3.</p>
 			<p>Baïkal is based upon other open source projects.<br />Read the <a href="https://github.com/sabre-io/Baikal/blob/master/README.md" target="_blank">README.md</a> file to learn about that.</p>
-			<p>Baïkal is developed by <a href="https://github.com/jeromeschneider" target="_blank">Jérôme Schneider</a>.
+			<p>Baïkal was created by <a href="https://github.com/jeromeschneider" target="_blank">Jérôme Schneider</a><br />and is now developed by volunteers on <a href="https://github.com/sabre-io/Baikal/" target="_blank">GitHub</a>.
 		</div>
 	</div>
 </section>
