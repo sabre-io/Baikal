@@ -36,9 +36,9 @@ class Initialize extends \Flake\Core\Controller {
     function execute() {
         # Assert that /Specific is writable
 
-        if (!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
+        if (!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC) || !file_exists(PROJECT_PATH_CONFIG) || !is_dir(PROJECT_PATH_CONFIG) || !is_writable(PROJECT_PATH_CONFIG)) {
             $message = "<h1>Error - Insufficient  permissions on the <span style='background-color: yellow;'>Specific/</span> folder</h1><p>";
-            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> folder.</p>";
+            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> and <strong>config/</strong> folder.</p>";
 
             die($message);
         }

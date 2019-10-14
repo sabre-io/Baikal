@@ -36,7 +36,7 @@ class Database extends \Flake\Core\Controller {
     protected $oForm;    # \Formal\Form
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\Database(PROJECT_PATH_CONFIG . "system.yaml");
+        $this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close"           => false,
@@ -62,7 +62,7 @@ class Database extends \Flake\Core\Controller {
 
         if ($this->oForm->persisted()) {
 
-            $sMessage = "<p>Baïkal is now installed, and it's database properly configured. <strong>For security reasons, this installation wizard is now disabled.</strong></p>";
+            $sMessage = "<p>Baïkal is now installed, and its database properly configured. <strong>For security reasons, this installation wizard is now disabled.</strong></p>";
             $sMessage . "<p>&nbsp;</p>";
             $sMessage .= "<p><a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Start using Baïkal</a></p>";
             $sForm = "";
