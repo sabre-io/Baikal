@@ -257,19 +257,19 @@ class Framework extends \Flake\Core\Framework {
     protected static function initDbMysql(array $config) {
 
         if (!$config['parameters']['PROJECT_DB_MYSQL_HOST']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
         if (!$config['parameters']['PROJECT_DB_MYSQL_DBNAME']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
         if (!$config['parameters']['PROJECT_DB_MYSQL_USERNAME']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
         if (!$config['parameters']['PROJECT_DB_MYSQL_PASSWORD']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
         try {

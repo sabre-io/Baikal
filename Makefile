@@ -31,4 +31,4 @@ composer.lock: composer.json
 
 clean:
 	# Wipe out all local data, and go back to a clean install
-	rm Specific/config.php Specific/config.system.php Specific/db/db.sqlite; true
+	rm config/config.yaml config/system.yaml Specific/db/db.sqlite; true
