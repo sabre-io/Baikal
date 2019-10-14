@@ -1,0 +1,9 @@
+parameters:
+    PROJECT_SQLITE_FILE: "absolute/path/to/Specific/db/db.sqlite"
+    PROJECT_DB_MYSQL: true
+    PROJECT_DB_MYSQL_HOST: 'localhost'
+    PROJECT_DB_MYSQL_DBNAME: 'baikal'
+    PROJECT_DB_MYSQL_USERNAME: 'baikal'
+    PROJECT_DB_MYSQL_PASSWORD: 'baikal'
+    BAIKAL_ENCRYPTION_KEY: '5d3f0fa0192e3058ea70f1bb20924add'
+    BAIKAL_CONFIGURED_VERSION: '0.6.0'

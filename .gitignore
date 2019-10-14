@@ -2,8 +2,8 @@
 logs
 
 # Specific
-Specific/config.php
-Specific/config.system.php
+config/config.yaml
+config/system.yaml
 Specific/INSTALL_DISABLED
 
 # Composer stuff
@@ -15,3 +15,6 @@ vendor
 
 # Vim
 .*.swp
+
+# Others
+.DS_Store
