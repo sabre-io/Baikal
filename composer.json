@@ -1,6 +1,6 @@
 {
     "name": "fruux/baikal",
-    "description": "Baïkal is a lightweight CalDAV + CardDAV server based on PHP, SQLite or MySQLc and SabreDAV",
+    "description": "Baïkal is a lightweight CalDAV + CardDAV server based on PHP, SQLite or MySQL, and SabreDAV",
     "keywords": ["Framework", "WebDAV", "CalDAV", "CardDAV", "iCalendar"],
     "homepage": "http://sabre.io/baikal/",
     "license" : "GPL-3.0",
