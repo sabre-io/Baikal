@@ -27,18 +27,23 @@
 
 namespace BaikalAdmin\Controller;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Dashboard extends \Flake\Core\Controller {
 
     function execute() {
     }
 
     function render() {
+
+        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+
         $oView = new \BaikalAdmin\View\Dashboard();
         $oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
 
         # Services status
-        $oView->setData("BAIKAL_CAL_ENABLED", BAIKAL_CAL_ENABLED);
-        $oView->setData("BAIKAL_CARD_ENABLED", BAIKAL_CARD_ENABLED);
+        $oView->setData("BAIKAL_CAL_ENABLED", $config['parameters']['BAIKAL_CAL_ENABLED']);
+        $oView->setData("BAIKAL_CARD_ENABLED", $config['parameters']['BAIKAL_CARD_ENABLED']);
 
         # Statistics: Users
         $iNbUsers = \Baikal\Model\User::getBaseRequester()->count();

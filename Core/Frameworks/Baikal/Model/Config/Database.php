@@ -58,7 +58,7 @@ class Database extends \Baikal\Model\Config {
 
     # Default values
     protected $aData = [
-        "PROJECT_SQLITE_FILE"       => 'PROJECT_PATH_SPECIFIC . "db/db.sqlite"',
+        "PROJECT_SQLITE_FILE"       => PROJECT_PATH_SPECIFIC . "db/db.sqlite",
         "PROJECT_DB_MYSQL"          => false,
         "PROJECT_DB_MYSQL_HOST"     => "",
         "PROJECT_DB_MYSQL_DBNAME"   => "",

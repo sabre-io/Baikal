@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\Install;
 
+use Symfony\Component\Yaml\Yaml;
+
 class VersionUpgrade extends \Flake\Core\Controller {
 
     protected $aMessages = [];

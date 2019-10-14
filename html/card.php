@@ -24,6 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Symfony\Component\Yaml\Yaml;
+
 ini_set("session.cookie_httponly", 1);
 ini_set("display_errors", 0);
 ini_set("log_errors", 1);
@@ -51,16 +53,23 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 # Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
 
-if (!defined("BAIKAL_CARD_ENABLED") || BAIKAL_CARD_ENABLED !== true) {
+
+try {
+    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+} catch (\Exception $e) {
+    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
+}
+
+if (!isset($config['parameters']["BAIKAL_CARD_ENABLED"]) || $config['parameters']["BAIKAL_CARD_ENABLED"] !== true) {
     throw new ErrorException("Baikal CardDAV is disabled.", 0, 255, __FILE__, __LINE__);
 }
 
 $server = new \Baikal\Core\Server(
-    BAIKAL_CAL_ENABLED,
-    BAIKAL_CARD_ENABLED,
-    BAIKAL_DAV_AUTH_TYPE,
-    BAIKAL_AUTH_REALM,
+    $config['parameters']["BAIKAL_CAL_ENABLED"],
+    $config['parameters']["BAIKAL_CARD_ENABLED"],
+    $config['parameters']["BAIKAL_DAV_AUTH_TYPE"],
+    $config['parameters']["BAIKAL_AUTH_REALM"],
     $GLOBALS['DB']->getPDO(),
-    BAIKAL_CARD_BASEURI
+    PROJECT_BASEURI . 'card.php/'
 );
 $server->start();

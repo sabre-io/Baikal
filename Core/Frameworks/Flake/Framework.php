@@ -27,6 +27,8 @@
 
 namespace Flake;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Framework extends \Flake\Core\Framework {
 
     static function rmBeginSlash($sString) {
@@ -150,6 +152,7 @@ class Framework extends \Flake\Core\Framework {
         define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
         define("PROJECT_PATH_CORERESOURCES", PROJECT_PATH_CORE . "Resources/");
         define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
+        define("PROJECT_PATH_CONFIG", PROJECT_PATH_ROOT . "config/");
         define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
         define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
 
@@ -206,88 +209,75 @@ class Framework extends \Flake\Core\Framework {
         define("FLAKE_URIPATH", \Flake\Util\Tools::stripBeginSlash($aUrlInfo["path"]));
         unset($aUrlInfo);
 
-
-        # Include Project config
-        # NOTE: DB initialization and App config files inclusion
-        # do not break execution if not properly executed, as
-        # these errors will have to be caught later in the process
-        # notably by the App install tool, if available; breaking right now
-        # would forbid such install tool forwarding, for instance
-
-        $sConfigPath = PROJECT_PATH_SPECIFIC . "config.php";
-        $sConfigSystemPath = PROJECT_PATH_SPECIFIC . "config.system.php";
-
-        if (file_exists($sConfigPath)) {
-            require_once($sConfigPath);
-        }
-
-        if (file_exists($sConfigSystemPath)) {
-            require_once($sConfigSystemPath);
-        }
-
         self::initDb();
     }
 
     protected static function initDb() {
-        # Dont init db on install, but in normal mode and when upgrading
-        if (defined("BAIKAL_CONTEXT_INSTALL") && (!defined('BAIKAL_CONFIGURED_VERSION') || BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION)) {
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+        } catch(\Exception $e) {
             return true;
         }
-        if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
-            self::initDbMysql();
+        # Dont init db on install, but in normal mode and when upgrading
+        if (defined("BAIKAL_CONTEXT_INSTALL") && (!isset($config['parameters']['BAIKAL_CONFIGURED_VERSION']) || $config['parameters']['BAIKAL_CONFIGURED_VERSION'] === BAIKAL_VERSION)) {
+            return true;
+        }
+        if ($config['parameters']['PROJECT_DB_MYSQL'] === true) {
+            self::initDbMysql($config);
         } else {
-            self::initDbSqlite();
+            self::initDbSqlite($config);
         }
     }
 
-    protected static function initDbSqlite() {
+    protected static function initDbSqlite(array $config) {
         # Asserting DB filepath is set
-        if (!defined("PROJECT_SQLITE_FILE")) {
+        if (!$config['parameters']['PROJECT_SQLITE_FILE']) {
             return false;
         }
 
         # Asserting DB file is writable
-        if (file_exists(PROJECT_SQLITE_FILE) && !is_writable(PROJECT_SQLITE_FILE)) {
-            die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . PROJECT_SQLITE_FILE . "</span>'</h3>");
+        if (file_exists($config['parameters']['PROJECT_SQLITE_FILE']) && !is_writable($config['parameters']['PROJECT_SQLITE_FILE'])) {
+            die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . $config['parameters']['PROJECT_SQLITE_FILE'] . "</span>'</h3>");
         }
 
         # Asserting DB directory is writable
-        if (!is_writable(dirname(PROJECT_SQLITE_FILE))) {
-            die("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname(PROJECT_SQLITE_FILE) . "</span>'</h3>");
+        if (!is_writable(dirname($config['parameters']['PROJECT_SQLITE_FILE']))) {
+            die("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname($config['parameters']['PROJECT_SQLITE_FILE']) . "</span>'</h3>");
         }
 
-        if (file_exists(PROJECT_SQLITE_FILE) && is_readable(PROJECT_SQLITE_FILE) && !isset($GLOBALS["DB"])) {
-            $GLOBALS["DB"] = new \Flake\Core\Database\Sqlite(PROJECT_SQLITE_FILE);
+        if (file_exists($config['parameters']['PROJECT_SQLITE_FILE']) && is_readable($config['parameters']['PROJECT_SQLITE_FILE']) && !isset($GLOBALS["DB"])) {
+            $GLOBALS["DB"] = new \Flake\Core\Database\Sqlite($config['parameters']['PROJECT_SQLITE_FILE']);
             return true;
         }
 
         return false;
     }
 
-    protected static function initDbMysql() {
+    protected static function initDbMysql(array $config) {
 
-        if (!defined("PROJECT_DB_MYSQL_HOST")) {
+        if (!$config['parameters']['PROJECT_DB_MYSQL_HOST']) {
             die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in Specific/config.system.php</h3>");
         }
 
-        if (!defined("PROJECT_DB_MYSQL_DBNAME")) {
+        if (!$config['parameters']['PROJECT_DB_MYSQL_DBNAME']) {
             die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in Specific/config.system.php</h3>");
         }
 
-        if (!defined("PROJECT_DB_MYSQL_USERNAME")) {
+        if (!$config['parameters']['PROJECT_DB_MYSQL_USERNAME']) {
             die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in Specific/config.system.php</h3>");
         }
 
-        if (!defined("PROJECT_DB_MYSQL_PASSWORD")) {
+        if (!$config['parameters']['PROJECT_DB_MYSQL_PASSWORD']) {
             die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in Specific/config.system.php</h3>");
         }
 
         try {
             $GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
-                PROJECT_DB_MYSQL_HOST,
-                PROJECT_DB_MYSQL_DBNAME,
-                PROJECT_DB_MYSQL_USERNAME,
-                PROJECT_DB_MYSQL_PASSWORD
+                $config['parameters']['PROJECT_DB_MYSQL_HOST'],
+                $config['parameters']['PROJECT_DB_MYSQL_DBNAME'],
+                $config['parameters']['PROJECT_DB_MYSQL_USERNAME'],
+                $config['parameters']['PROJECT_DB_MYSQL_PASSWORD']
             );
 
             # We now setup t6he connexion to use UTF8

@@ -27,14 +27,16 @@
 
 namespace BaikalAdmin\Controller\Settings;
 
+use Symfony\Component\Yaml\Yaml;
+
 class System extends \Flake\Core\Controller {
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+        $this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
 
         # Assert that config file is writable
         if (!$this->oModel->writable()) {
-            throw new \Exception("System config file is not writable;" . __FILE__ . " > " . __LINE__);
+            throw new \Exception("Config file is not writable;" . __FILE__ . " > " . __LINE__);
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
@@ -66,7 +68,10 @@ class System extends \Flake\Core\Controller {
         if ($oForm->submitted()) {
             $bMySQL = (intval($oForm->postValue("PROJECT_DB_MYSQL")) === 1);
         } else {
-            $bMySQL = PROJECT_DB_MYSQL;
+            try {
+                $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+            } catch(\Exception $e) {}
+            $bMySQL = $config['parameters']['PROJECT_DB_MYSQL'] ?? true;
         }
 
         if ($bMySQL === true) {

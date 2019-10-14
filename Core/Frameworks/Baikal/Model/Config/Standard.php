@@ -27,6 +27,8 @@
 
 namespace Baikal\Model\Config;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Standard extends \Baikal\Model\Config {
 
     protected $aConstants = [
@@ -63,7 +65,8 @@ class Standard extends \Baikal\Model\Config {
         "BAIKAL_CAL_ENABLED"        => true,
         "BAIKAL_INVITE_FROM"        => "",
         "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
-        "BAIKAL_ADMIN_PASSWORDHASH" => ""
+        "BAIKAL_ADMIN_PASSWORDHASH" => "",
+        "BAIKAL_AUTH_REALM"         => "BaikalDAV"
     ];
 
     function formMorphologyForThisModelInstance() {
@@ -110,7 +113,11 @@ class Standard extends \Baikal\Model\Config {
             "validation" => "sameas:BAIKAL_ADMIN_PASSWORDHASH",
         ]));
 
-        if (!defined("BAIKAL_ADMIN_PASSWORDHASH") || trim(BAIKAL_ADMIN_PASSWORDHASH) === "") {
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+        } catch(\Exception $e) {}
+
+        if (!isset($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) || trim($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) === "") {
 
             # No password set (Form is used in install tool), so password is required as it has to be defined
             $oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("validation", "required");
@@ -152,52 +159,16 @@ class Standard extends \Baikal\Model\Config {
         return parent::get($sProp);
     }
 
-    protected function createDefaultConfigFilesIfNeeded() {
-
-        # Create empty config.php if needed
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-            @touch(PROJECT_PATH_SPECIFIC . "config.php");
-            $sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-            $sContent .= $this->getDefaultConfig();
-            file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
-        }
-
-        # Create empty config.system.php if needed
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            @touch(PROJECT_PATH_SPECIFIC . "config.system.php");
-            $sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-            $sContent .= $this->getDefaultSystemConfig();
-            file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
-        }
-    }
-
     protected static function getDefaultConfig() {
 
-        $sCode = <<<CODE
-##############################################################################
-# Required configuration
-# You *have* to review these settings for Baïkal to run properly
-#
-
-# Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-define("PROJECT_TIMEZONE", "Europe/Paris");
-
-# CardDAV ON/OFF switch; default TRUE
-define("BAIKAL_CARD_ENABLED", TRUE);
-
-# CalDAV ON/OFF switch; default TRUE
-define("BAIKAL_CAL_ENABLED", TRUE);
-
-# CalDAV invite From: mail address (comment or leave blank to disable notifications)
-define("BAIKAL_INVITE_FROM", "noreply@$_SERVER[SERVER_NAME]");
-
-# WebDAV authentication type; default Digest
-define("BAIKAL_DAV_AUTH_TYPE", "Digest");
-
-# Baïkal Web admin password hash; Set via Baïkal Web Admin
-define("BAIKAL_ADMIN_PASSWORDHASH", "");
-CODE;
-        $sCode = trim($sCode);
-        return $sCode;
+        return [
+            "PROJECT_TIMEZONE" => "Europe/Paris",
+            "BAIKAL_CARD_ENABLED" => true,
+            "BAIKAL_CAL_ENABLED" => true,
+            "BAIKAL_INVITE_FROM" => "noreply@" . $_SERVER['SERVER_NAME'],
+            "BAIKAL_DAV_AUTH_TYPE" => "Digest",
+            "BAIKAL_ADMIN_PASSWORDHASH" => "",
+            "BAIKAL_AUTH_REALM" => "BaikalDAV",
+        ];
     }
 }

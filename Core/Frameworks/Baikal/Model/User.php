@@ -279,6 +279,11 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function getPasswordHashForPassword($sPassword) {
-        return md5($this->get("username") . ':' . BAIKAL_AUTH_REALM . ':' . $sPassword);
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+        } catch(\Exception $e) {}
+
+        return md5($this->get("username") . ':' . $config['parameters']['BAIKAL_AUTH_REALM'] . ':' . $sPassword);
     }
 }

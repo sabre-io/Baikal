@@ -45,7 +45,7 @@ class Initialize extends \Flake\Core\Controller {
 
         $this->createHtaccessFilesIfNeeded();
 
-        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close" => false
@@ -57,7 +57,7 @@ class Initialize extends \Flake\Core\Controller {
             if ($this->oForm->persisted()) {
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+                $oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
                 $oSystemConfig->set("BAIKAL_ENCRYPTION_KEY",  md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?

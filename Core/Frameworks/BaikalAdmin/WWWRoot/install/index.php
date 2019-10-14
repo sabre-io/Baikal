@@ -24,6 +24,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use Symfony\Component\Yaml\Yaml;
+
 ini_set("session.cookie_httponly", 1);
 ini_set("log_errors", 1);
 $maxtime = ini_get('max_execution_time');
@@ -65,15 +67,22 @@ $oPage->setBaseUrl(PROJECT_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
-if (!defined("BAIKAL_CONFIGURED_VERSION")) {
+try {
+    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+} catch (\Exception $e) { $config = null; }
+try {
+    $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+} catch (\Exception $e) { $configSystem = null; }
+
+if (!$configSystem || !isset($configSystem['parameters']["BAIKAL_CONFIGURED_VERSION"])) {
     # we have to upgrade Baïkal (existing installation)
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 
-} elseif (!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
+} elseif (!$config || !isset($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"])) {
     # we have to set an admin password
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
-    if (BAIKAL_CONFIGURED_VERSION !== BAIKAL_VERSION) {
+    if ($configSystem['parameters']["BAIKAL_CONFIGURED_VERSION"] !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
         if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());

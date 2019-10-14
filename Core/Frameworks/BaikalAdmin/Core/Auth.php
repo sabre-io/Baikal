@@ -27,9 +27,14 @@
 
 namespace BaikalAdmin\Core;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Auth {
     static function isAuthenticated() {
-        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5(BAIKAL_ADMIN_PASSWORDHASH)) {
+
+        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+
+        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['parameters']['BAIKAL_ADMIN_PASSWORDHASH'])) {
             return true;
         }
 
@@ -46,9 +51,13 @@ class Auth {
         $sPass = \Flake\Util\Tools::POST("password");
 
         $sPassHash = self::hashAdminPassword($sPass);
-
-        if ($sUser === "admin" && $sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
-            $_SESSION["baikaladminauth"] = md5(BAIKAL_ADMIN_PASSWORDHASH);
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+        } catch (\Exception $e) {
+            
+        }
+        if ($sUser === "admin" && $sPassHash === $config['parameters']['BAIKAL_ADMIN_PASSWORDHASH']) {
+            $_SESSION["baikaladminauth"] = md5($config['parameters']['BAIKAL_ADMIN_PASSWORDHASH']);
             return true;
         }
 
@@ -61,11 +70,13 @@ class Auth {
     }
 
     static function hashAdminPassword($sPassword) {
-        if (defined("BAIKAL_AUTH_REALM")) {
-            $sAuthRealm = BAIKAL_AUTH_REALM;
-        } else {
-            $sAuthRealm = "BaikalDAV";    # Fallback to default value; useful when initializing App, as all constants are not set yet
-        }
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+        } catch (\Exception $e) { }
+
+        # Fallback to default value; useful when initializing App, as all constants are not set yet
+        $sAuthRealm = $config['parameters']['BAIKAL_AUTH_REALM'] ?? "BaikalDAV";
 
         return md5('admin:' . $sAuthRealm . ':' . $sPassword);
     }

@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\Install;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Database extends \Flake\Core\Controller {
 
     protected $aMessages = [];
@@ -34,7 +36,7 @@ class Database extends \Flake\Core\Controller {
     protected $oForm;    # \Formal\Form
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\Database(PROJECT_PATH_SPECIFIC . "config.system.php");
+        $this->oModel = new \Baikal\Model\Config\Database(PROJECT_PATH_CONFIG . "system.yaml");
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close"           => false,
@@ -198,7 +200,10 @@ class Database extends \Flake\Core\Controller {
         if ($oForm->submitted()) {
             $bMySQL = (intval($oForm->postValue("PROJECT_DB_MYSQL")) === 1);
         } else {
-            $bMySQL = PROJECT_DB_MYSQL;
+            try {
+                $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+            } catch (\Exception $e) {}
+            $bMySQL = $configSystem['parameters']['PROJECT_DB_MYSQL'] ?? true;
         }
 
         if ($bMySQL === true) {

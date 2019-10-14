@@ -30,7 +30,7 @@ namespace BaikalAdmin\Controller\Settings;
 class Standard extends \Flake\Core\Controller {
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
 
         # Assert that config file is writable
         if (!$this->oModel->writable()) {
