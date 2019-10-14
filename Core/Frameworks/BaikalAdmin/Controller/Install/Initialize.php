@@ -47,6 +47,16 @@ class Initialize extends \Flake\Core\Controller {
 
         $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
 
+        // If we come from pre-0.7.0, we need to get the values from the config.php and config.system.php files 
+        if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+            require_once(PROJECT_PATH_SPECIFIC . "config.php");
+            $this->oModel->set('PROJECT_TIMEZONE', PROJECT_TIMEZONE);
+            $this->oModel->set('BAIKAL_CARD_ENABLED', BAIKAL_CARD_ENABLED);
+            $this->oModel->set('BAIKAL_CAL_ENABLED', BAIKAL_CAL_ENABLED);
+            $this->oModel->set('BAIKAL_INVITE_FROM', BAIKAL_INVITE_FROM);
+            $this->oModel->set('BAIKAL_DAV_AUTH_TYPE', BAIKAL_DAV_AUTH_TYPE);
+        }
+
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close" => false
         ]);
@@ -55,6 +65,14 @@ class Initialize extends \Flake\Core\Controller {
             $this->oForm->execute();
 
             if ($this->oForm->persisted()) {
+
+                // If we come from pre-0.7.0, we need to remove the INSTALL_DISABLED file so we go to the next step
+                if (file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+                    unlink(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+                }
+                if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+                    unlink(PROJECT_PATH_SPECIFIC . "config.php");
+                }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
                 $oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");

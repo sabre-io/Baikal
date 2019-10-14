@@ -525,24 +525,24 @@ SQL
     protected function updateConfiguredVersion($sVersionTo) {
 
         # Create new settings
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
         $oConfig->persist();
 
         # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
         $oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
         $oConfig->persist();
     }
 
     protected function assertConfigWritable() {
         # Parsing the config also makes sure that it is not malformed
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
         if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.php is not writable");
+            throw new \Exception(PROJECT_PATH_CONFIG . "config.yaml is not writable");
         }
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
+        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
         if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.system.php is not writable");
+            throw new \Exception(PROJECT_PATH_CONFIG . "system.yaml is not writable");
         }
     }
 }
