@@ -125,13 +125,13 @@ class System extends \Baikal\Model\Config {
     protected static function getDefaultConfig() {
 
         return [
-            "PROJECT_SQLITE_FILE" => "db/db.sqlite",
-            "PROJECT_DB_MYSQL" => false,
-            "PROJECT_DB_MYSQL_HOST" => "",
-            "PROJECT_DB_MYSQL_DBNAME" => "",
+            "PROJECT_SQLITE_FILE"       => "db/db.sqlite",
+            "PROJECT_DB_MYSQL"          => false,
+            "PROJECT_DB_MYSQL_HOST"     => "",
+            "PROJECT_DB_MYSQL_DBNAME"   => "",
             "PROJECT_DB_MYSQL_USERNAME" => "",
             "PROJECT_DB_MYSQL_PASSWORD" => "",
-            "BAIKAL_ENCRYPTION_KEY" => "",
+            "BAIKAL_ENCRYPTION_KEY"     => "",
             "BAIKAL_CONFIGURED_VERSION" => BAIKAL_VERSION
         ];
     }

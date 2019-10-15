@@ -115,7 +115,7 @@ class Standard extends \Baikal\Model\Config {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         if (!isset($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) || trim($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) === "") {
 
@@ -162,13 +162,13 @@ class Standard extends \Baikal\Model\Config {
     protected static function getDefaultConfig() {
 
         return [
-            "PROJECT_TIMEZONE" => "Europe/Paris",
-            "BAIKAL_CARD_ENABLED" => true,
-            "BAIKAL_CAL_ENABLED" => true,
-            "BAIKAL_INVITE_FROM" => "noreply@" . $_SERVER['SERVER_NAME'],
-            "BAIKAL_DAV_AUTH_TYPE" => "Digest",
+            "PROJECT_TIMEZONE"          => "Europe/Paris",
+            "BAIKAL_CARD_ENABLED"       => true,
+            "BAIKAL_CAL_ENABLED"        => true,
+            "BAIKAL_INVITE_FROM"        => "noreply@" . $_SERVER['SERVER_NAME'],
+            "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
             "BAIKAL_ADMIN_PASSWORDHASH" => "",
-            "BAIKAL_AUTH_REALM" => "BaikalDAV",
+            "BAIKAL_AUTH_REALM"         => "BaikalDAV",
         ];
     }
 }

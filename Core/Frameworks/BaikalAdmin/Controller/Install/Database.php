@@ -40,13 +40,13 @@ class Database extends \Flake\Core\Controller {
 
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
             require_once(PROJECT_PATH_SPECIFIC . "config.system.php");
-            $this->oModel->set('PROJECT_SQLITE_FILE',PROJECT_SQLITE_FILE);
-            $this->oModel->set('PROJECT_DB_MYSQL',PROJECT_DB_MYSQL);
-            $this->oModel->set('PROJECT_DB_MYSQL_HOST',PROJECT_DB_MYSQL_HOST);
-            $this->oModel->set('PROJECT_DB_MYSQL_DBNAME',PROJECT_DB_MYSQL_DBNAME);
-            $this->oModel->set('PROJECT_DB_MYSQL_USERNAME',PROJECT_DB_MYSQL_USERNAME);
-            $this->oModel->set('PROJECT_DB_MYSQL_PASSWORD',PROJECT_DB_MYSQL_PASSWORD);
-            $this->oModel->set('BAIKAL_ENCRYPTION_KEY',BAIKAL_ENCRYPTION_KEY);
+            $this->oModel->set('PROJECT_SQLITE_FILE', PROJECT_SQLITE_FILE);
+            $this->oModel->set('PROJECT_DB_MYSQL', PROJECT_DB_MYSQL);
+            $this->oModel->set('PROJECT_DB_MYSQL_HOST', PROJECT_DB_MYSQL_HOST);
+            $this->oModel->set('PROJECT_DB_MYSQL_DBNAME', PROJECT_DB_MYSQL_DBNAME);
+            $this->oModel->set('PROJECT_DB_MYSQL_USERNAME', PROJECT_DB_MYSQL_USERNAME);
+            $this->oModel->set('PROJECT_DB_MYSQL_PASSWORD', PROJECT_DB_MYSQL_PASSWORD);
+            $this->oModel->set('BAIKAL_ENCRYPTION_KEY', BAIKAL_ENCRYPTION_KEY);
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
