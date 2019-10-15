@@ -286,6 +286,6 @@ class User extends \Flake\Core\Model\Db {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
         } catch (\Exception $e) {}
 
-        return md5($this->get("username") . ':' . $config['parameters']['BAIKAL_AUTH_REALM'] . ':' . $sPassword);
+        return md5($this->get("username") . ':' . $config['parameters']['baikal_auth_realm'] . ':' . $sPassword);
     }
 }

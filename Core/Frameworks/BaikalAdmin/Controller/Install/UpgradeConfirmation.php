@@ -41,8 +41,8 @@ class UpgradeConfirmation extends \Flake\Core\Controller {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
         } catch (\Exception $e) {}
 
-        if (isset($config['parameters']['BAIKAL_CONFIGURED_VERSION']) && $config['parameters']['BAIKAL_CONFIGURED_VERSION'] === BAIKAL_VERSION) {
-            $sMessage = "Your system is configured to use version <strong>" . $config['parameters']['BAIKAL_CONFIGURED_VERSION'] . "</strong>.<br />There's no upgrade to be done.";
+        if (isset($config['parameters']['baikal_configured_version']) && $config['parameters']['baikal_configured_version'] === BAIKAL_VERSION) {
+            $sMessage = "Your system is configured to use version <strong>" . $config['parameters']['baikal_configured_version'] . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . "Unknown" . "</strong> to version <strong>" . BAIKAL_VERSION . "</strong>";
         }

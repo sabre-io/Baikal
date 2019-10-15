@@ -34,7 +34,7 @@ class Auth {
 
         $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
 
-        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['parameters']['BAIKAL_ADMIN_PASSWORDHASH'])) {
+        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['parameters']['baikal_admin_passwordhash'])) {
             return true;
         }
 
@@ -56,8 +56,8 @@ class Auth {
         } catch (\Exception $e) {
             
         }
-        if ($sUser === "admin" && $sPassHash === $config['parameters']['BAIKAL_ADMIN_PASSWORDHASH']) {
-            $_SESSION["baikaladminauth"] = md5($config['parameters']['BAIKAL_ADMIN_PASSWORDHASH']);
+        if ($sUser === "admin" && $sPassHash === $config['parameters']['baikal_admin_passwordhash']) {
+            $_SESSION["baikaladminauth"] = md5($config['parameters']['baikal_admin_passwordhash']);
             return true;
         }
 
@@ -76,7 +76,7 @@ class Auth {
         } catch (\Exception $e) { }
 
         # Fallback to default value; useful when initializing App, as all constants are not set yet
-        $sAuthRealm = $config['parameters']['BAIKAL_AUTH_REALM'] ?? "BaikalDAV";
+        $sAuthRealm = $config['parameters']['baikal_auth_realm'] ?? "BaikalDAV";
 
         return md5('admin:' . $sAuthRealm . ':' . $sPassword);
     }

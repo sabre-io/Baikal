@@ -42,8 +42,8 @@ class Dashboard extends \Flake\Core\Controller {
         $oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
 
         # Services status
-        $oView->setData("BAIKAL_CAL_ENABLED", $config['parameters']['BAIKAL_CAL_ENABLED']);
-        $oView->setData("BAIKAL_CARD_ENABLED", $config['parameters']['BAIKAL_CARD_ENABLED']);
+        $oView->setData("BAIKAL_CAL_ENABLED", $config['parameters']['baikal_cal_enabled']);
+        $oView->setData("BAIKAL_CARD_ENABLED", $config['parameters']['baikal_card_enabled']);
 
         # Statistics: Users
         $iNbUsers = \Baikal\Model\User::getBaseRequester()->count();

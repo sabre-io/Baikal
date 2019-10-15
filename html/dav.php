@@ -59,10 +59,10 @@ try {
 }
 
 $server = new \Baikal\Core\Server(
-    $config['parameters']["BAIKAL_CAL_ENABLED"],
-    $config['parameters']["BAIKAL_CARD_ENABLED"],
-    $config['parameters']["BAIKAL_DAV_AUTH_TYPE"],
-    $config['parameters']["BAIKAL_AUTH_REALM"],
+    $config['parameters']["baikal_cal_enabled"],
+    $config['parameters']["baikal_card_enabled"],
+    $config['parameters']["baikal_dav_auth_type"],
+    $config['parameters']["baikal_auth_realm"],
     $GLOBALS['DB']->getPDO(),
     PROJECT_BASEURI . 'dav.php/'
 );

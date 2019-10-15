@@ -74,15 +74,15 @@ try {
     $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
 } catch (\Exception $e) { $configSystem = null; }
 
-if (!$configSystem || !isset($configSystem['parameters']["BAIKAL_CONFIGURED_VERSION"])) {
+if (!$configSystem || !isset($configSystem['parameters']["baikal_configured_version"])) {
     # we have to upgrade Baïkal (existing installation)
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 
-} elseif (!$config || !isset($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"])) {
+} elseif (!$config || !isset($config['parameters']["baikal_admin_passwordhash"])) {
     # we have to set an admin password
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
-    if ($configSystem['parameters']["BAIKAL_CONFIGURED_VERSION"] !== BAIKAL_VERSION) {
+    if ($configSystem['parameters']["baikal_configured_version"] !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
         if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());

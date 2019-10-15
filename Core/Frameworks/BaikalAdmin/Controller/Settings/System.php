@@ -71,7 +71,7 @@ class System extends \Flake\Core\Controller {
             try {
                 $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
             } catch (\Exception $e) {}
-            $bMySQL = $config['parameters']['PROJECT_DB_MYSQL'] ?? true;
+            $bMySQL = $config['parameters']['project_db_mysql'] ?? true;
         }
 
         if ($bMySQL === true) {

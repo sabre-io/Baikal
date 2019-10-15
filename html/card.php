@@ -60,15 +60,15 @@ try {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
 }
 
-if (!isset($config['parameters']["BAIKAL_CARD_ENABLED"]) || $config['parameters']["BAIKAL_CARD_ENABLED"] !== true) {
+if (!isset($config['parameters']["baikal_card_enabled"]) || $config['parameters']["baikal_card_enabled"] !== true) {
     throw new ErrorException("Baikal CardDAV is disabled.", 0, 255, __FILE__, __LINE__);
 }
 
 $server = new \Baikal\Core\Server(
-    $config['parameters']["BAIKAL_CAL_ENABLED"],
-    $config['parameters']["BAIKAL_CARD_ENABLED"],
-    $config['parameters']["BAIKAL_DAV_AUTH_TYPE"],
-    $config['parameters']["BAIKAL_AUTH_REALM"],
+    $config['parameters']["baikal_cal_enabled"],
+    $config['parameters']["baikal_card_enabled"],
+    $config['parameters']["baikal_dav_auth_type"],
+    $config['parameters']["baikal_auth_realm"],
     $GLOBALS['DB']->getPDO(),
     PROJECT_BASEURI . 'card.php/'
 );
