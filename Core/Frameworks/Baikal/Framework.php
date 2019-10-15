@@ -61,22 +61,22 @@ class Framework extends \Flake\Core\Framework {
 
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
             $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-            date_default_timezone_set($config['parameters']['PROJECT_TIMEZONE']);
+            date_default_timezone_set($config['parameters']['project_timezone']);
 
             # Check that Baïkal is already configured
-            if (!isset($configSystem['parameters']['BAIKAL_CONFIGURED_VERSION'])) {
+            if (!isset($configSystem['parameters']['baikal_configured_version'])) {
                 self::installTool();
 
             } else {
 
                 # Check that running version matches configured version
-                if (version_compare(BAIKAL_VERSION, $configSystem['parameters']['BAIKAL_CONFIGURED_VERSION']) > 0) {
+                if (version_compare(BAIKAL_VERSION, $configSystem['parameters']['baikal_configured_version']) > 0) {
                     self::installTool();
 
                 } else {
 
                     # Check that admin password is set
-                    if (!$config['parameters']['BAIKAL_ADMIN_PASSWORDHASH']) {
+                    if (!$config['parameters']['baikal_admin_passwordhash']) {
                         self::installTool();
                     }
 
