@@ -217,6 +217,7 @@ class Framework extends \Flake\Core\Framework {
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
         } catch (\Exception $e) {
+            error_log('Error reading system.yaml file : ' . $e->getMessage());
             return true;
         }
         # Dont init db on install, but in normal mode and when upgrading

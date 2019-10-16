@@ -284,7 +284,9 @@ class User extends \Flake\Core\Model\Db {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            error_log('Error reading config.yaml file : ' . $e->getMessage());
+        }
 
         return md5($this->get("username") . ':' . $config['parameters']['baikal_auth_realm'] . ':' . $sPassword);
     }

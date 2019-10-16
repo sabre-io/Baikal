@@ -134,7 +134,9 @@ class Server {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            error_log('Error reading config.yaml file : ' . $e->getMessage());
+        }
 
         if ($this->authType === 'Basic') {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);

@@ -115,7 +115,9 @@ class Standard extends \Baikal\Model\Config {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            error_log('Error reading system.yaml file : ' . $e->getMessage());
+        }
 
         if (!isset($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) || trim($config['parameters']["BAIKAL_ADMIN_PASSWORDHASH"]) === "") {
 

@@ -54,7 +54,7 @@ class Auth {
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
         } catch (\Exception $e) {
-            
+            error_log('Error reading config.yaml file : ' . $e->getMessage());
         }
         if ($sUser === "admin" && $sPassHash === $config['parameters']['baikal_admin_passwordhash']) {
             $_SESSION["baikaladminauth"] = md5($config['parameters']['baikal_admin_passwordhash']);
@@ -73,7 +73,9 @@ class Auth {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+            error_log('Error reading config.yaml file : ' . $e->getMessage());
+        }
 
         # Fallback to default value; useful when initializing App, as all constants are not set yet
         $sAuthRealm = $config['parameters']['baikal_auth_realm'] ?? "BaikalDAV";

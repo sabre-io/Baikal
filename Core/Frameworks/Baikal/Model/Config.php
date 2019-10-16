@@ -43,6 +43,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
             $config = Yaml::parseFile($this->sConfigFilePath);
             $aConfig = $config['parameters'];
         } catch (\Exception $e) {
+            error_log('Error reading "' . $this->sConfigFilePath . '" file : ' . $e->getMessage());
             $aConfig = static::getDefaultConfig();
         }
 

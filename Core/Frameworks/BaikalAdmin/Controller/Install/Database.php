@@ -214,7 +214,9 @@ class Database extends \Flake\Core\Controller {
         } else {
             try {
                 $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                error_log('Error reading system.yaml file : ' . $e->getMessage());
+            }
             $bMySQL = $configSystem['parameters']['PROJECT_DB_MYSQL'] ?? true;
         }
 

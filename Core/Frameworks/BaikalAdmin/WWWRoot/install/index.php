@@ -69,10 +69,16 @@ $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\I
 
 try {
     $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
-} catch (\Exception $e) { $config = null; }
+} catch (\Exception $e) {
+    $config = null;
+    error_log('Error reading config.yaml file : ' . $e->getMessage());
+}
 try {
     $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-} catch (\Exception $e) { $configSystem = null; }
+} catch (\Exception $e) {
+    $configSystem = null;
+    error_log('Error reading system.yaml file : ' . $e->getMessage());
+}
 
 if (!$configSystem || !isset($configSystem['parameters']["baikal_configured_version"])) {
     # we have to upgrade Baïkal (existing installation)

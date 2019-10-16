@@ -70,7 +70,9 @@ class System extends \Flake\Core\Controller {
         } else {
             try {
                 $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                error_log('Error reading system.yaml file : ' . $e->getMessage());
+            }
             $bMySQL = $config['parameters']['project_db_mysql'] ?? true;
         }
 
