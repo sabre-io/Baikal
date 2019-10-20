@@ -193,7 +193,8 @@ class Server {
         if ($e instanceof \Sabre\DAV\Exception\NotAuthenticated) {
             // Applications may make their first call without auth so don't log these attempts
             // Pattern from sabre/dav/lib/DAV/Auth/Backend/AbstractDigest.php
-            if (strpos($e->getMessage(), "No 'Authorization: Digest' header found.") === false) {
+            if (strpos($e->getMessage(), "No 'Authorization: Digest' header found.") === false
+                && strpos($e->getMessage(), "No 'Authorization: Basic' header found.") === false) {
                 error_log('user not authorized: Baikal DAV: ' . $e->getMessage());
             }
         } else {
