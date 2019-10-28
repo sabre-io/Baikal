@@ -42,11 +42,18 @@ class VersionUpgrade extends \Flake\Core\Controller {
     }
 
     function render() {
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading system.yaml file : ' . $e->getMessage());
+        }
+
         $sBigIcon = "glyph2x-magic";
         $sBaikalVersion = BAIKAL_VERSION;
-        $sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
+        $sBaikalConfiguredVersion = $config['parameters']['baikal_configured_version'];
 
-        if (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
+        if ($config['parameters']['baikal_configured_version'] === BAIKAL_VERSION) {
             $sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
@@ -60,7 +67,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 HTML;
 
         try {
-            $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
+            $bSuccess = $this->upgrade($config['parameters']['baikal_configured_version'], BAIKAL_VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
@@ -530,7 +537,7 @@ SQL
 
         # Update BAIKAL_CONFIGURED_VERSION
         $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
-        $oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
+        $oConfig->set("baikal_configured_version", $sVersionTo);
         $oConfig->persist();
     }
 

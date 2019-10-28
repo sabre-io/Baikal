@@ -40,13 +40,13 @@ class Database extends \Flake\Core\Controller {
 
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
             require_once(PROJECT_PATH_SPECIFIC . "config.system.php");
-            $this->oModel->set('PROJECT_SQLITE_FILE', PROJECT_SQLITE_FILE);
-            $this->oModel->set('PROJECT_DB_MYSQL', PROJECT_DB_MYSQL);
-            $this->oModel->set('PROJECT_DB_MYSQL_HOST', PROJECT_DB_MYSQL_HOST);
-            $this->oModel->set('PROJECT_DB_MYSQL_DBNAME', PROJECT_DB_MYSQL_DBNAME);
-            $this->oModel->set('PROJECT_DB_MYSQL_USERNAME', PROJECT_DB_MYSQL_USERNAME);
-            $this->oModel->set('PROJECT_DB_MYSQL_PASSWORD', PROJECT_DB_MYSQL_PASSWORD);
-            $this->oModel->set('BAIKAL_ENCRYPTION_KEY', BAIKAL_ENCRYPTION_KEY);
+            $this->oModel->set('project_sqlite_file', PROJECT_SQLITE_FILE);
+            $this->oModel->set('project_db_mysql', PROJECT_DB_MYSQL);
+            $this->oModel->set('project_db_mysql_host', PROJECT_DB_MYSQL_HOST);
+            $this->oModel->set('project_db_mysql_dbname', PROJECT_DB_MYSQL_DBNAME);
+            $this->oModel->set('project_db_mysql_username', PROJECT_DB_MYSQL_USERNAME);
+            $this->oModel->set('project_db_mysql_password', PROJECT_DB_MYSQL_PASSWORD);
+            $this->oModel->set('baikal_encryption_key', BAIKAL_ENCRYPTION_KEY);
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
@@ -93,14 +93,14 @@ class Database extends \Flake\Core\Controller {
         if ($oForm->refreshed()){
             return true;
         }
-        $bMySQLEnabled = $oMorpho->element("PROJECT_DB_MYSQL")->value();
+        $bMySQLEnabled = $oMorpho->element("project_db_mysql")->value();
 
         if ($bMySQLEnabled) {
 
-            $sHost = $oMorpho->element("PROJECT_DB_MYSQL_HOST")->value();
-            $sDbname = $oMorpho->element("PROJECT_DB_MYSQL_DBNAME")->value();
-            $sUsername = $oMorpho->element("PROJECT_DB_MYSQL_USERNAME")->value();
-            $sPassword = $oMorpho->element("PROJECT_DB_MYSQL_PASSWORD")->value();
+            $sHost = $oMorpho->element("project_db_mysql_host")->value();
+            $sDbname = $oMorpho->element("project_db_mysql_dbname")->value();
+            $sUsername = $oMorpho->element("project_db_mysql_username")->value();
+            $sPassword = $oMorpho->element("project_db_mysql_password")->value();
 
             try {
                 $oDb = new \Flake\Core\Database\Mysql(
@@ -121,7 +121,7 @@ class Database extends \Flake\Core\Controller {
                         $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
                         $oForm->declareError(
-                            $oMorpho->element("PROJECT_DB_MYSQL"),
+                            $oMorpho->element("project_db_mysql"),
                             $sMessage
                         );
                     } else {
@@ -134,16 +134,16 @@ class Database extends \Flake\Core\Controller {
 
                 return true;
             } catch (\Exception $e) {
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL"),
+                $oForm->declareError($oMorpho->element("project_db_mysql"),
                     "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_HOST"));
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_host"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_dbname"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_username"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_password"));
             }
         } else {
 
-            $sFile = $oMorpho->element("PROJECT_SQLITE_FILE")->value();
+            $sFile = $oMorpho->element("project_sqlite_file")->value();
 
             try {
 
@@ -156,13 +156,13 @@ class Database extends \Flake\Core\Controller {
                 # Asserting DB file is writable
                 if (file_exists($sFile) && !is_writable($sFile)) {
                     $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
-                    $oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"), $sMessage);
+                    $oForm->declareError($oMorpho->element("project_sqlite_file"), $sMessage);
                     return false;
                 }
                 # Asserting DB directory is writable
                 if (!is_writable(dirname($sFile))) {
                     $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
-                    $oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"), $sMessage);
+                    $oForm->declareError($oMorpho->element("project_sqlite_file"), $sMessage);
                     return false;
                 }
 
@@ -182,7 +182,7 @@ class Database extends \Flake\Core\Controller {
                         $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
                         $oForm->declareError(
-                            $oMorpho->element("PROJECT_SQLITE_FILE"),
+                            $oMorpho->element("project_sqlite_file"),
                             $sMessage
                         );
                     } else {
@@ -199,7 +199,7 @@ class Database extends \Flake\Core\Controller {
                 return true;
             } catch (\Exception $e) {
                 $oForm->declareError(
-                    $oMorpho->element("PROJECT_SQLITE_FILE"),
+                    $oMorpho->element("project_sqlite_file"),
                     "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string)$e
                 );
             }
@@ -210,24 +210,24 @@ class Database extends \Flake\Core\Controller {
     function hideMySQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
 
         if ($oForm->submitted()) {
-            $bMySQL = (intval($oForm->postValue("PROJECT_DB_MYSQL")) === 1);
+            $bMySQL = (intval($oForm->postValue("project_db_mysql")) === 1);
         } else {
             try {
                 $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
             } catch (\Exception $e) {
                 error_log('Error reading system.yaml file : ' . $e->getMessage());
             }
-            $bMySQL = $configSystem['parameters']['PROJECT_DB_MYSQL'] ?? true;
+            $bMySQL = $configSystem['parameters']['project_db_mysql'] ?? true;
         }
 
         if ($bMySQL === true) {
-            $oMorpho->remove("PROJECT_SQLITE_FILE");
+            $oMorpho->remove("project_sqlite_file");
         } else {
 
-            $oMorpho->remove("PROJECT_DB_MYSQL_HOST");
-            $oMorpho->remove("PROJECT_DB_MYSQL_DBNAME");
-            $oMorpho->remove("PROJECT_DB_MYSQL_USERNAME");
-            $oMorpho->remove("PROJECT_DB_MYSQL_PASSWORD");
+            $oMorpho->remove("project_db_mysql_host");
+            $oMorpho->remove("project_db_mysql_dbname");
+            $oMorpho->remove("project_db_mysql_username");
+            $oMorpho->remove("project_db_mysql_password");
         }
     }
 }
