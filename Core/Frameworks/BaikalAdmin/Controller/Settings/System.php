@@ -66,7 +66,7 @@ class System extends \Flake\Core\Controller {
 
     function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
-            $bMySQL = (intval($oForm->postValue("PROJECT_DB_MYSQL")) === 1);
+            $bMySQL = (intval($oForm->postValue("project_db_mysql")) === 1);
         } else {
             try {
                 $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
@@ -77,13 +77,13 @@ class System extends \Flake\Core\Controller {
         }
 
         if ($bMySQL === true) {
-            $oMorpho->remove("PROJECT_SQLITE_FILE");
+            $oMorpho->remove("project_sqlite_file");
         } else {
 
-            $oMorpho->remove("PROJECT_DB_MYSQL_HOST");
-            $oMorpho->remove("PROJECT_DB_MYSQL_DBNAME");
-            $oMorpho->remove("PROJECT_DB_MYSQL_USERNAME");
-            $oMorpho->remove("PROJECT_DB_MYSQL_PASSWORD");
+            $oMorpho->remove("project_db_mysql_host");
+            $oMorpho->remove("project_db_mysql_dbname");
+            $oMorpho->remove("project_db_mysql_username");
+            $oMorpho->remove("project_db_mysql_password");
         }
     }
 
@@ -91,13 +91,13 @@ class System extends \Flake\Core\Controller {
         if ($oForm->refreshed()){
             return true;
         }
-        if (intval($oForm->modelInstance()->get("PROJECT_DB_MYSQL")) === 1) {
+        if (intval($oForm->modelInstance()->get("project_db_mysql")) === 1) {
 
             # We have to check the MySQL connection
-            $sHost = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_HOST");
-            $sDbName = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_DBNAME");
-            $sUsername = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_USERNAME");
-            $sPassword = $oForm->modelInstance()->get("PROJECT_DB_MYSQL_PASSWORD");
+            $sHost = $oForm->modelInstance()->get("project_db_mysql_host");
+            $sDbName = $oForm->modelInstance()->get("project_db_mysql_dbname");
+            $sUsername = $oForm->modelInstance()->get("project_db_mysql_username");
+            $sPassword = $oForm->modelInstance()->get("project_db_mysql_password");
 
             try {
                 $oDB = new \Flake\Core\Database\Mysql(
@@ -109,10 +109,10 @@ class System extends \Flake\Core\Controller {
             } catch (\Exception $e) {
                 $sMessage = "<strong>MySQL error:</strong> " . $e->getMessage();
                 $sMessage .= "<br /><strong>Nothing has been saved</strong>";
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_HOST"), $sMessage);
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_DBNAME"));
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_USERNAME"));
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL_PASSWORD"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_host"), $sMessage);
+                $oForm->declareError($oMorpho->element("project_db_mysql_dbname"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_username"));
+                $oForm->declareError($oMorpho->element("project_db_mysql_password"));
                 return;
             }
 
@@ -121,12 +121,12 @@ class System extends \Flake\Core\Controller {
                 $sMessage .= "You may want create these tables using the file <strong>Core/Resources/Db/MySQL/db.sql</strong>";
                 $sMessage .= "<br /><br /><strong>Nothing has been saved</strong>";
 
-                $oForm->declareError($oMorpho->element("PROJECT_DB_MYSQL"), $sMessage);
+                $oForm->declareError($oMorpho->element("project_db_mysql"), $sMessage);
                 return;
             }
         } else {
 
-            $sFile = $oMorpho->element("PROJECT_SQLITE_FILE")->value();
+            $sFile = $oMorpho->element("project_sqlite_file")->value();
 
             try {
 
@@ -139,13 +139,13 @@ class System extends \Flake\Core\Controller {
                 # Asserting DB file is writable
                 if (file_exists($sFile) && !is_writable($sFile)) {
                     $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
-                    $oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"), $sMessage);
+                    $oForm->declareError($oMorpho->element("project_sqlite_file"), $sMessage);
                     return;
                 }
                 # Asserting DB directory is writable
                 if (!is_writable(dirname($sFile))) {
                     $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
-                    $oForm->declareError($oMorpho->element("PROJECT_SQLITE_FILE"), $sMessage);
+                    $oForm->declareError($oMorpho->element("project_sqlite_file"), $sMessage);
                     return;
                 }
 
@@ -161,14 +161,14 @@ class System extends \Flake\Core\Controller {
                     $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
                     $oForm->declareError(
-                        $oMorpho->element("PROJECT_SQLITE_FILE"),
+                        $oMorpho->element("project_sqlite_file"),
                         $sMessage
                     );
                 }
                 return;
             } catch (\Exception $e) {
                 $oForm->declareError(
-                    $oMorpho->element("PROJECT_SQLITE_FILE"),
+                    $oMorpho->element("project_sqlite_file"),
                         "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string)$e
                         );
             }
