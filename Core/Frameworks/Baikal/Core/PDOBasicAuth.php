@@ -68,7 +68,7 @@ class PDOBasicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 
         if (!count($result)) return false;
 
-        $hash = md5($username . ':' . $this->authRealm . ':' . $password);
+        $hash = hash("sha256", $username . ':' . $this->authRealm . ':' . $password);
         if ($result[0]['digesta1'] === $hash)
         {
             $this->currentUser = $username;
