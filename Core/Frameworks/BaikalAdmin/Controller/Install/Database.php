@@ -149,12 +149,6 @@ class Database extends \Flake\Core\Controller {
 
             try {
 
-                // not sure yet how to better address this
-                // yup! this is mental, but even if we don't use eval, effectively these
-                // config settings are eval'ed because they are written as raw php files.
-                // We'll have to clean this up later.
-                $sFile = eval('return ' . $sFile . ';');
-
                 # Asserting DB file is writable
                 if (file_exists($sFile) && !is_writable($sFile)) {
                     $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
