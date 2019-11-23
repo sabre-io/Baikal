@@ -97,6 +97,11 @@ class Initialize extends \Flake\Core\Controller {
         $oView = new \BaikalAdmin\View\Install\Initialize();
         $oView->setData("baikalversion", BAIKAL_VERSION);
 
+        // If we come from pre-0.7.0 (old config files are still present),
+        // we need to tell the installer page to show a warning message.
+        $oView->setData("oldConfigSystem", file_exists(PROJECT_PATH_SPECIFIC . "config.system.php"));
+
+
         if ($this->oForm->persisted()) {
             $sLink = PROJECT_URI . "admin/install/?/database";
             \Flake\Util\Tools::redirect($sLink);
