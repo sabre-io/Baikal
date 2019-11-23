@@ -59,7 +59,9 @@ class Database extends \Flake\Core\Controller {
             $this->oForm->execute();
 
             if ($this->oForm->persisted()) {
-                unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
+                if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
+                    @unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
+                }
                 touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
             }
         }

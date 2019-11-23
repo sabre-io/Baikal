@@ -68,10 +68,10 @@ class Initialize extends \Flake\Core\Controller {
 
                 // If we come from pre-0.7.0, we need to remove the INSTALL_DISABLED file so we go to the next step
                 if (file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
-                    unlink(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+                    @unlink(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
                 }
                 if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-                    unlink(PROJECT_PATH_SPECIFIC . "config.php");
+                    @unlink(PROJECT_PATH_SPECIFIC . "config.php");
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
