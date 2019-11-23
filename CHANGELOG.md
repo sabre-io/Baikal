@@ -7,6 +7,12 @@ ChangeLog
 * Changed to YAML configuration files
 * Minor configuration improvements
 
+0.6.1 (2019-11-13)
+------------------
+
+* Fixed sync issues with Thunderbird
+* Ships with sabre/dav 4.0.2
+
 0.6.0 (2019-08-25)
 ------------------
 
