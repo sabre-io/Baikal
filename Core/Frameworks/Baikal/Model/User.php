@@ -288,6 +288,6 @@ class User extends \Flake\Core\Model\Db {
             error_log('Error reading config.yaml file : ' . $e->getMessage());
         }
 
-        return hash("sha256", $this->get("username") . ':' . $config['parameters']['baikal_auth_realm'] . ':' . $sPassword);
+        return md5($this->get("username") . ':' . $config['parameters']['baikal_auth_realm'] . ':' . $sPassword);
     }
 }
