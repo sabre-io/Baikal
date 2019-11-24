@@ -80,7 +80,7 @@ class Auth {
         # Fallback to default value; useful when initializing App, as all constants are not set yet
         $sAuthRealm = $config['parameters']['baikal_auth_realm'] ?? "BaikalDAV";
 
-        return md5('admin:' . $sAuthRealm . ':' . $sPassword);
+        return hash('sha256', 'admin:' . $sAuthRealm . ':' . $sPassword);
     }
 
 }
