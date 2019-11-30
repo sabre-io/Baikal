@@ -53,7 +53,7 @@ abstract class Router extends \Flake\Core\FLObject {
 
     static function getRouteForController($sController) {
 
-        if ($sController{0} !== "\\") {
+        if ($sController[0] !== "\\") {
             $sController = "\\" . $sController;
         }
 
