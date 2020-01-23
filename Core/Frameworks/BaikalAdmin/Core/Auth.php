@@ -45,9 +45,18 @@ class Auth {
         $sUser = \Flake\Util\Tools::POST("login");
         $sPass = \Flake\Util\Tools::POST("password");
 
-        $sPassHash = self::hashAdminPassword($sPass);
+	if (substr(BAIKAL_ADMIN_PASSWORDHASH,0,4) == "$2y$") {
+	        $sPassHash = password_verify($sPass, BAIKAL_ADMIN_PASSWORDHASH);
+	} else {
+		$sPassHash = self::hashAdminPassword($sPass);
+		if ($sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
+			$sPassHash = true;
+		} else {
+			$sPassHash = false;
+		}
+	}
 
-        if ($sUser === "admin" && $sPassHash === BAIKAL_ADMIN_PASSWORDHASH) {
+        if ($sUser === "admin" && $sPassHash == true) {
             $_SESSION["baikaladminauth"] = md5(BAIKAL_ADMIN_PASSWORDHASH);
             return true;
         }
@@ -66,7 +75,7 @@ class Auth {
         } else {
             $sAuthRealm = "BaikalDAV";    # Fallback to default value; useful when initializing App, as all constants are not set yet
         }
-
+	
         return md5('admin:' . $sAuthRealm . ':' . $sPassword);
     }
 
