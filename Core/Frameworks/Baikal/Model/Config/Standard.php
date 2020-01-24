@@ -106,9 +106,9 @@ class Standard extends \Baikal\Model\Config {
 
 	$oMorpho->add(new \Formal\Element\Listbox([
 	    "prop"    => "BAIKAL_USER_AUTH_TYPE",
-	    "label"   => "Password Storage Engine",
+	    "label"   => "Password Storage Hash Type",
 	    "options" => ["Bcrypt","MD5"],
-	    "help"    => "If set to BCrypt, WebDAV must be set to BASIC.<br><strong>If you change this setting, you must change your password before you log out or you will be locked out!</strong>"
+	    "help"    => "If set to BCrypt, WebDAV must be set to BASIC."
 	]));
 
         $oMorpho->add(new \Formal\Element\Password([
@@ -144,18 +144,11 @@ class Standard extends \Baikal\Model\Config {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
-		if (!defined("BAIKAL_USER_AUTH_TYPE") || BAIKAL_USER_AUTH_TYPE === "Bcrypt") {
 	                parent::set(
         	            "BAIKAL_ADMIN_PASSWORDHASH",
 			    password_hash($sValue,PASSWORD_BCRYPT)
 	                );
-            	} else {
-			parent::set(
-	                    "BAIKAL_ADMIN_PASSWORDHASH",
-        	            \BaikalAdmin\Core\Auth::hashAdminPassword($sValue)
-	                );
 		  }
-              }
 	    return $this;
 	  }
 
@@ -213,7 +206,7 @@ define("BAIKAL_INVITE_FROM", "noreply@$_SERVER[SERVER_NAME]");
 define("BAIKAL_DAV_AUTH_TYPE", "Basic");
 
 
-# Baikal user authentication mechanism; default bcrypt
+# Baikal user password hash method; default bcrypt
 define("BAIKAL_USER_AUTH_TYPE", "Bcrypt");
 
 # Baïkal Web admin password hash; Set via Baïkal Web Admin

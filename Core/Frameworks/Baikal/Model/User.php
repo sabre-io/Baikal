@@ -104,7 +104,7 @@ class User extends \Flake\Core\Model\Db {
             # Special handling for password and passwordconfirm
 
             if ($sPropName === "password" && $sPropValue !== "") {
-		if (BAIKAL_USER_AUTH_TYPE === "BCrypt") {
+		if (BAIKAL_USER_AUTH_TYPE === "Bcrypt") {
 			parent::set(
 		            "digesta1",
 			    password_hash($sPropValue,PASSWORD_BCRYPT)
