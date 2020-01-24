@@ -101,13 +101,13 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "BAIKAL_DAV_AUTH_TYPE",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic"]
+            "options" => ["Digest","Digest"]
         ]));
 
 	$oMorpho->add(new \Formal\Element\Listbox([
 	    "prop"    => "BAIKAL_USER_AUTH_TYPE",
 	    "label"   => "Password Storage Engine",
-	    "options" => ["MD5","BCrypt"],
+	    "options" => ["Bcrypt","MD5"],
 	    "help"    => "If set to BCrypt, WebDAV must be set to BASIC.<br><strong>If you change this setting, you must change your password before you log out or you will be locked out!</strong>"
 	]));
 
@@ -209,8 +209,8 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 # CalDAV invite From: mail address (comment or leave blank to disable notifications)
 define("BAIKAL_INVITE_FROM", "noreply@$_SERVER[SERVER_NAME]");
 
-# WebDAV authentication type; default Digest
-define("BAIKAL_DAV_AUTH_TYPE", "Digest");
+# WebDAV authentication type; default Basic
+define("BAIKAL_DAV_AUTH_TYPE", "Basic");
 
 
 # Baikal user authentication mechanism; default bcrypt
