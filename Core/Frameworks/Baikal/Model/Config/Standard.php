@@ -144,7 +144,7 @@ class Standard extends \Baikal\Model\Config {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
-		if ("BAIKAL_USER_AUTH_TYPE" === "BCrypt") {
+		if (!defined("BAIKAL_USER_AUTH_TYPE") || BAIKAL_USER_AUTH_TYPE === "Bcrypt") {
 	                parent::set(
         	            "BAIKAL_ADMIN_PASSWORDHASH",
 			    password_hash($sValue,PASSWORD_BCRYPT)
