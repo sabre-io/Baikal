@@ -218,8 +218,8 @@ class Calendar extends \Flake\Core\Model\Db {
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
-            "prop"  => "retention",
-            "label" => "Retention",
+            "prop"       => "retention",
+            "label"      => "Retention",
             "validation" => "positivenumber",
             "popover"    => [
                 "title"   => "Retention",
