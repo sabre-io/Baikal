@@ -63,6 +63,7 @@ CREATE TABLE calendarinstances (
     share_href VARBINARY(100),
     share_displayname VARCHAR(100),
     share_invitestatus TINYINT(1) NOT NULL DEFAULT '2',
+    retention INTEGER UNSIGNED NOT NULL DEFAULT '0',
     UNIQUE(principaluri, uri),
     UNIQUE(calendarid, principaluri),
     UNIQUE(calendarid, share_href)

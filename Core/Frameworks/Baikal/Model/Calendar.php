@@ -40,7 +40,8 @@ class Calendar extends \Flake\Core\Model\Db {
         "calendarorder" => 0,
         "calendarcolor" => "",
         "timezone"      => "",
-        "calendarid"    => 0
+        "calendarid"    => 0,
+        "retention"     => 0
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
@@ -216,6 +217,15 @@ class Calendar extends \Flake\Core\Model\Db {
             "help"  => "If checked, notes will be enabled on this calendar.",
         ]));
 
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "retention",
+            "label" => "Retention",
+            "validation" => "positivenumber",
+            "popover"    => [
+                "title"   => "Retention",
+                "content" => "Number of days to keep passed events (0 to prevent deletion)."
+            ]
+        ]));
 
         if ($this->floating()) {
             $oMorpho->element("uri")->setOption(

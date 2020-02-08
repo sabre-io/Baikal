@@ -515,10 +515,20 @@ SQL
             $this->aSuccess[] = 'Migrated calendars table';
         }
 
+        if (version_compare($sVersionFrom, '0.6.2', '<')) {
+            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+                $pdo->exec("ALTER TABLE calendarinstances ADD retention integer DEFAULT '0' NOT NULL");
+                $this->aSuccess[] = 'Updated calendarinstances table';
+            } else { // mysql
+                $pdo->exec("ALTER TABLE calendarinstances ADD retention INTEGER UNSIGNED NOT NULL DEFAULT '0'");
+                $this->aSuccess[] = 'Updated calendarinstances table';
+            }
+        }
 
         $this->updateConfiguredVersion($sVersionTo);
         return true;
     }
+
 
     protected function updateConfiguredVersion($sVersionTo) {
 
