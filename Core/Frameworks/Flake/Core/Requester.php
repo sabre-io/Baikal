@@ -39,7 +39,7 @@ abstract class Requester extends \Flake\Core\FLObject {
 
     function limit($iStart, $iNumber = false) {
         if ($iNumber !== false) {
-            return $this->setLimitStart($iStart)->setLimitNumber($iLimitNumber);
+            return $this->setLimitStart($iStart)->setLimitNumber($iNumber);
         }
 
         return $this->setLimitStart($iStart);
