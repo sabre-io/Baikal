@@ -35,6 +35,11 @@ class PDOBasicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic
     protected $authRealm;
 
     /**
+     * @var string
+     */
+    private $currentUser;
+
+    /**
      * Creates the backend object.
      *
      * If the filename argument is passed in, it will parse out the specified file fist.
