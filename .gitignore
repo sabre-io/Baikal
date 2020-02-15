@@ -15,3 +15,6 @@ vendor
 
 # Vim
 .*.swp
+
+# Tests
+.php_cs.cache

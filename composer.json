@@ -14,11 +14,12 @@
     ],
     "require": {
         "php"           : "^7.0",
-        "sabre/dav"     : "~4.0.2",
+        "sabre/dav"     : "~4.0.3",
         "twig/twig"     : "~1.8.0"
     },
     "require-dev" : {
-        "sabre/cs"      : "~0.0.6"
+        "friendsofphp/php-cs-fixer": "~2.16.1",
+        "phpstan/phpstan": "^0.12"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"
@@ -32,5 +33,17 @@
     },
     "support" : {
         "source" : "https://github.com/fruux/Baikal"
+    },
+    "scripts": {
+        "phpstan": [
+            "phpstan analyse Core html"
+        ],
+        "cs-fixer": [
+            "php-cs-fixer fix"
+        ],
+        "test": [
+            "composer phpstan",
+            "composer cs-fixer"
+        ]
     }
 }
