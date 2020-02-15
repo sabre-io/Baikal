@@ -44,4 +44,9 @@ class HtmlBlockTemplated extends \Flake\Core\Controller
 
         return $sHtml;
     }
+
+    public function execute()
+    {
+        // TODO: Implement execute() method.
+    }
 }
