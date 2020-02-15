@@ -24,30 +24,30 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-ini_set("session.cookie_httponly", 1);
-ini_set("display_errors", 0);
-ini_set("log_errors", 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
-define("BAIKAL_CONTEXT", true);
-define("PROJECT_CONTEXT_BASEURI", "/");
+define('BAIKAL_CONTEXT', true);
+define('PROJECT_CONTEXT_BASEURI', '/');
 
-if (file_exists(getcwd() . "/Core")) {
-    # Flat FTP mode
-    define("PROJECT_PATH_ROOT", getcwd() . "/");    #./
+if (file_exists(getcwd().'/Core')) {
+    // Flat FTP mode
+    define('PROJECT_PATH_ROOT', getcwd().'/');    //./
 } else {
-    # Dedicated server mode
-    define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");    #../
+    // Dedicated server mode
+    define('PROJECT_PATH_ROOT', dirname(getcwd()).'/');    //../
 }
 
-if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+if (!file_exists(PROJECT_PATH_ROOT.'vendor/')) {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
-require PROJECT_PATH_ROOT . 'vendor/autoload.php';
+require PROJECT_PATH_ROOT.'vendor/autoload.php';
 
-# Bootstraping Flake
+// Bootstraping Flake
 \Flake\Framework::bootstrap();
 
-# Bootstrapping Baïkal
+// Bootstrapping Baïkal
 \Baikal\Framework::bootstrap();
 
 $server = new \Baikal\Core\Server(

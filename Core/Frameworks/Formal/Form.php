@@ -1,94 +1,102 @@
 <?php
-#################################################################
-#  Copyright notice
-#
-#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
-#  All rights reserved
-#
-#  http://formal.codr.fr
-#
-#  This script is part of the Formal project. The Formal
-#  project is free software; you can redistribute it
-#  and/or modify it under the terms of the GNU General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
-#
-#  The GNU General Public License can be found at
-#  http://www.gnu.org/copyleft/gpl.html.
-#
-#  This script is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  This copyright notice MUST APPEAR in all copies of the script!
-#################################################################
 
+//################################################################
+//  Copyright notice
+//
+//  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
+//  All rights reserved
+//
+//  http://formal.codr.fr
+//
+//  This script is part of the Formal project. The Formal
+//  project is free software; you can redistribute it
+//  and/or modify it under the terms of the GNU General Public
+//  License as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//
+//  The GNU General Public License can be found at
+//  http://www.gnu.org/copyleft/gpl.html.
+//
+//  This script is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  This copyright notice MUST APPEAR in all copies of the script!
+//################################################################
 
 namespace Formal;
 
-class Form {
-
-    protected $sModelClass = "";
+class Form
+{
+    protected $sModelClass = '';
     protected $aOptions = [
-        "action"          => "",
-        "close"           => true,
-        "closeurl"        => "",
-        "hook.validation" => false,
-        "hook.morphology" => false,
+        'action' => '',
+        'close' => true,
+        'closeurl' => '',
+        'hook.validation' => false,
+        'hook.morphology' => false,
     ];
     protected $oModelInstance = null;
     protected $oElements = null;
     protected $aErrors = [];
-    protected $bPersisted = null;        # TRUE when form has persisted; available only after execute
+    protected $bPersisted = null;        // TRUE when form has persisted; available only after execute
 
-    protected $sDisplayTitle = "";        # Displayed form title; generated in setModelInstance()
-    protected $sDisplayMessage = "";    # Displayed confirm message; generated in execute()
+    protected $sDisplayTitle = '';        // Displayed form title; generated in setModelInstance()
+    protected $sDisplayMessage = '';    // Displayed confirm message; generated in execute()
 
     protected $oMorpho = null;
 
-    function __construct($sModelClass, $aOptions = []) {
+    public function __construct($sModelClass, $aOptions = [])
+    {
         $this->sModelClass = $sModelClass;
         $this->aOptions = array_merge($this->aOptions, $aOptions);
         $this->oElements = new \Flake\Core\CollectionTyped("\Formal\Element");
     }
 
-    function option($sName) {
+    public function option($sName)
+    {
         if (array_key_exists($sName, $this->aOptions)) {
             return $this->aOptions[$sName];
         }
 
-        throw new \Exception("\Formal\Form->option(): Option '" . htmlspecialchars($sName) . "' not found.");
+        throw new \Exception("\Formal\Form->option(): Option '".htmlspecialchars($sName)."' not found.");
     }
 
-    function setOption($sName, $sValue) {
+    public function setOption($sName, $sValue)
+    {
         $this->aOptions[$sName] = $sValue;
+
         return $this;
     }
 
-    function options() {
+    public function options()
+    {
         $aOptions = $this->aOptions;
+
         return $aOptions;
     }
 
-    function getMorpho() {
+    public function getMorpho()
+    {
         if (!is_null($this->oMorpho)) {
             return $this->oMorpho;
         }
 
         $this->oMorpho = $this->modelInstance()->formMorphologyForThisModelInstance();
 
-        # Calling validation hook if defined
-        if (($aHook = $this->option("hook.morphology")) !== false) {
+        // Calling validation hook if defined
+        if (false !== ($aHook = $this->option('hook.morphology'))) {
             call_user_func($aHook, $this, $this->oMorpho);
         }
 
         return $this->oMorpho;
     }
 
-    function setModelInstance($oModelInstance) {
+    public function setModelInstance($oModelInstance)
+    {
         if (!\Flake\Util\Tools::is_a($oModelInstance, $this->sModelClass)) {
-            throw new \Exception("\Formal\Core->setModelInstance(): Given instance is not of class '" . $this->sModelClass . "'");
+            throw new \Exception("\Formal\Core->setModelInstance(): Given instance is not of class '".$this->sModelClass."'");
         }
 
         $this->oModelInstance = $oModelInstance;
@@ -97,48 +105,50 @@ class Form {
         foreach ($this->oElements as $oElement) {
             $oElement->setValue(
                 $this->modelInstance()->get(
-                    $oElement->option("prop")
+                    $oElement->option('prop')
                 )
             );
         }
 
-        # Displayed form title is generated depending on modelInstance floatingness
+        // Displayed form title is generated depending on modelInstance floatingness
 
         if ($this->floatingModelInstance()) {
-            $this->sDisplayTitle = "Creating new<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->humanName() . "</strong>";
+            $this->sDisplayTitle = 'Creating new<i class='.$this->modelInstance()->mediumicon().'></i><strong>'.$this->modelInstance()->humanName().'</strong>';
         } else {
-            # This is changed if form is persisted, after persistance, to reflect possible change in model instance label
-            $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+            // This is changed if form is persisted, after persistance, to reflect possible change in model instance label
+            $this->sDisplayTitle = 'Editing '.$this->modelInstance()->humanName().'<i class='.$this->modelInstance()->mediumicon().'></i><strong>'.$this->modelInstance()->label().'</strong>';
         }
 
         return $this;
     }
 
-    function modelInstance() {
+    public function modelInstance()
+    {
         return $this->oModelInstance;
     }
 
-    function floatingModelInstance() {
+    public function floatingModelInstance()
+    {
         return $this->modelInstance()->floating();
     }
 
-    function execute() {
-        # Obtaining morphology from model object
+    public function execute()
+    {
+        // Obtaining morphology from model object
         $oMorpho = $this->getMorpho();
 
         $this->aErrors = [];
         $oMorpho->elements()->reset();
         foreach ($oMorpho->elements() as $oElement) {
-            # If element is readonly, skip process
-            if ($oElement->option("readonly")) {
+            // If element is readonly, skip process
+            if ($oElement->option('readonly')) {
                 continue;
             }
 
-            $sPropName = $oElement->option("prop");
+            $sPropName = $oElement->option('prop');
 
-            # posted value is fetched, then passes to element before persistance
+            // posted value is fetched, then passes to element before persistance
             if ($oElement->posted()) {
-
                 $sPostValue = $this->postValue($sPropName);
                 $oElement->setValue($sPostValue);
 
@@ -159,7 +169,7 @@ class Form {
 
         $oMorpho->elements()->reset();
         foreach ($oMorpho->elements() as $oElement) {
-            $aValidation = $oElement->optionArray("validation");
+            $aValidation = $oElement->optionArray('validation');
             if (empty($aValidation)) {
                 continue;
             }
@@ -167,66 +177,64 @@ class Form {
             $sValue = $oElement->value();
 
             foreach ($aValidation as $sValidation) {
-
-                # If element is readonly, skip process
-                if ($oElement->option("readonly")) {
+                // If element is readonly, skip process
+                if ($oElement->option('readonly')) {
                     continue;
                 }
 
                 $sParam = false;
-                if (strpos($sValidation, ":") !== false) {
-                    $sValidation = strtok($sValidation, ":");
-                    $sParam = strtok(":");
+                if (false !== strpos($sValidation, ':')) {
+                    $sValidation = strtok($sValidation, ':');
+                    $sParam = strtok(':');
                 }
 
-                $sMethod = "validate" . ucfirst(strtolower($sValidation));
+                $sMethod = 'validate'.ucfirst(strtolower($sValidation));
                 if (!method_exists($this, $sMethod)) {
-                    throw new \Exception("\Formal\Form::execute(): no validation method for '" . htmlspecialchars($sValidation) . "'");
+                    throw new \Exception("\Formal\Form::execute(): no validation method for '".htmlspecialchars($sValidation)."'");
                 }
 
-                if ($sParam === false) {
+                if (false === $sParam) {
                     $mValid = $this->$sMethod($sValue, $oMorpho, $oElement);
                 } else {
                     $mValid = $this->$sMethod($sValue, $oMorpho, $oElement, $sParam);
                 }
 
-                if ($mValid !== true) {
+                if (true !== $mValid) {
                     $this->declareError($oElement, $mValid);
-                    break;    # one error per element per submit
+                    break;    // one error per element per submit
                 }
             }
         }
 
-        # Calling validation hook if defined
-        if (($aHook = $this->option("hook.validation")) !== false) {
+        // Calling validation hook if defined
+        if (false !== ($aHook = $this->option('hook.validation'))) {
             call_user_func($aHook, $this, $oMorpho);
         }
 
         if (!$this->refreshed() && empty($this->aErrors)) {
-
-            # Model object is persisted
-            # Last chance to generate a confirm message corresponding to what *was* submitted ("Creating", instead of "Editing")
+            // Model object is persisted
+            // Last chance to generate a confirm message corresponding to what *was* submitted ("Creating", instead of "Editing")
 
             if ($this->floatingModelInstance()) {
                 $this->sDisplayMessage = \Formal\Core\Message::notice(
-                    $this->modelInstance()->humanName() . " <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> has been created.",
-                    "",
+                    $this->modelInstance()->humanName()." <i class='".$this->modelInstance()->icon()."'></i> <strong>".$this->modelInstance()->label().'</strong> has been created.',
+                    '',
                     false
                 );
                 $bWasFloating = true;
             } else {
                 $bWasFloating = false;
                 $this->sDisplayMessage = \Formal\Core\Message::notice(
-                    "Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> have been saved.",
-                    false,    # No title
-                    false    # No close button
+                    "Changes on <i class='".$this->modelInstance()->icon()."'></i> <strong>".$this->modelInstance()->label().'</strong> have been saved.',
+                    false,    // No title
+                    false    // No close button
                 );
             }
 
             $this->modelInstance()->persist();
-            if ($bWasFloating === false) {
-                # Title is generated now, as submitted data might have changed the model instance label
-                $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+            if (false === $bWasFloating) {
+                // Title is generated now, as submitted data might have changed the model instance label
+                $this->sDisplayTitle = 'Editing '.$this->modelInstance()->humanName().'<i class='.$this->modelInstance()->mediumicon().'></i><strong>'.$this->modelInstance()->label().'</strong>';
             }
             $this->bPersisted = true;
         } else {
@@ -234,17 +242,19 @@ class Form {
         }
     }
 
-    # public, as it may be called from a hook
-    function declareError(\Formal\Element $oElement, $sMessage = "") {
+    // public, as it may be called from a hook
+    public function declareError(\Formal\Element $oElement, $sMessage = '')
+    {
         $this->aErrors[] = [
-            "element" => $oElement,
-            "message" => $sMessage,
+            'element' => $oElement,
+            'message' => $sMessage,
         ];
 
-        $oElement->setOption("error", true);
+        $oElement->setOption('error', true);
     }
 
-    function persisted() {
+    public function persisted()
+    {
         if ($this->submitted()) {
             if (is_null($this->bPersisted)) {
                 throw new \Exception("\Formal\Form->persisted(): information is not available yet. This method may only be called after execute()");
@@ -256,41 +266,45 @@ class Form {
         return false;
     }
 
-    function validateRequired($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
-        if (trim($sValue) !== "") {
+    public function validateRequired($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement)
+    {
+        if ('' !== trim($sValue)) {
             return true;
         }
 
-        return "<strong>" . $oElement->option("label") . "</strong> is required.";
+        return '<strong>'.$oElement->option('label').'</strong> is required.';
     }
 
-    function validateEmail($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    public function validateEmail($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement)
+    {
         if (\Flake\Util\Tools::validEmail($sValue)) {
             return true;
         }
 
-        return "<strong>" . $oElement->option("label") . "</strong> should be an email.";
+        return '<strong>'.$oElement->option('label').'</strong> should be an email.';
     }
 
-    function validateSameas($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement, $sReferencePropName) {
+    public function validateSameas($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement, $sReferencePropName)
+    {
         $sReferenceValue = $oMorpho->element($sReferencePropName)->value();
         if ($sValue === $sReferenceValue) {
             return true;
         }
 
-        return "<strong>" . $oElement->option("label") . "</strong> does not match " . $oMorpho->element($sReferencePropName)->option("label") . ".";
+        return '<strong>'.$oElement->option('label').'</strong> does not match '.$oMorpho->element($sReferencePropName)->option('label').'.';
     }
 
-    function validateUnique($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    public function validateUnique($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement)
+    {
         $oModelInstance = $this->modelInstance();
 
         $oRequest = $oModelInstance->getBaseRequester()->addClauseEquals(
-            $oElement->option("prop"),
+            $oElement->option('prop'),
             $sValue
         );
 
         if (!$oModelInstance->floating()) {
-            # checking id only if model instance is not floating
+            // checking id only if model instance is not floating
             $oRequest->addClauseNotEquals(
                 $oModelInstance::PRIMARYKEY,
                 $oModelInstance->get(
@@ -302,53 +316,56 @@ class Form {
         $oColl = $oRequest->execute();
 
         if ($oColl->count() > 0) {
-            return "<strong>" . $oElement->option("label") . "</strong> has to be unique. Given value is not available.";
+            return '<strong>'.$oElement->option('label').'</strong> has to be unique. Given value is not available.';
         }
 
         return true;
     }
 
-    function validateTokenid($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    public function validateTokenid($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement)
+    {
         if (!preg_match("/^[a-z0-9\-_]+$/", $sValue)) {
-            return "<strong>" . $oElement->option("label") . "</strong> is not valid. Allowed characters are digits, lowercase letters, the dash and underscore symbol.";
+            return '<strong>'.$oElement->option('label').'</strong> is not valid. Allowed characters are digits, lowercase letters, the dash and underscore symbol.';
         }
 
         return true;
     }
 
-    function validateColor($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
-        if (!empty($sValue) && !preg_match("/^#[a-fA-F0-9]{6}([a-fA-F0-9]{2})?$/", $sValue)) {
-            return "<strong>" . $oElement->option("label") . "</strong> is not a valid color with format '#RRGGBB' or '#RRGGBBAA' in hexadecimal values.";
+    public function validateColor($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement)
+    {
+        if (!empty($sValue) && !preg_match('/^#[a-fA-F0-9]{6}([a-fA-F0-9]{2})?$/', $sValue)) {
+            return '<strong>'.$oElement->option('label')."</strong> is not a valid color with format '#RRGGBB' or '#RRGGBBAA' in hexadecimal values.";
         }
 
         return true;
     }
 
-    function postValue($sPropName) {
-        $aData = \Flake\Util\Tools::POST("data");
+    public function postValue($sPropName)
+    {
+        $aData = \Flake\Util\Tools::POST('data');
 
         if (is_array($aData) && array_key_exists($sPropName, $aData)) {
             return $aData[$sPropName];
         }
 
-        return "";
+        return '';
     }
 
-    function render() {
+    public function render()
+    {
         $aHtml = [];
 
         $oMorpho = $this->getMorpho();
 
         $oMorpho->elements()->reset();
         foreach ($oMorpho->elements() as $oElement) {
-
-            # Setting current prop value for element
-            # Set on empty (just created) FormMorphology
-            # And obtained from Model instance
+            // Setting current prop value for element
+            // Set on empty (just created) FormMorphology
+            // And obtained from Model instance
 
             $oElement->setValue(
                 $this->modelInstance()->get(
-                    $oElement->option("prop")
+                    $oElement->option('prop')
                 )
             );
 
@@ -358,40 +375,39 @@ class Form {
         $elements = implode("\n", $aHtml);
         $sModelClass = $this->sModelClass;
 
-        ######################################################
-        # Displaying messages
-        ######################################################
+        //#####################################################
+        // Displaying messages
+        //#####################################################
 
         if ($this->submitted()) {
-
-            # There were errors detected during execute()
-            # Error messages are displayed
+            // There were errors detected during execute()
+            // Error messages are displayed
 
             if (!empty($this->aErrors)) {
-                $this->sDisplayMessage = "";
+                $this->sDisplayMessage = '';
                 $aMessages = [];
                 reset($this->aErrors);
                 foreach ($this->aErrors as $aError) {
-                    if (trim($aError["message"]) === "") {
+                    if ('' === trim($aError['message'])) {
                         continue;
                     }
 
-                    $aMessages[] = $aError["message"];
+                    $aMessages[] = $aError['message'];
                 }
 
                 $this->sDisplayMessage = \Formal\Core\Message::error(
-                    implode("<br />", $aMessages),
-                    "Validation error"
+                    implode('<br />', $aMessages),
+                    'Validation error'
                 );
             }
         }
 
         $sSubmittedFlagName = $this->submitSignatureName();
-        if ($this->option("close") === true) {
-            $sCloseUrl = $this->option("closeurl");
-            $sCloseButton = '<a class="btn" href="' . $sCloseUrl . '">Close</a>';
+        if (true === $this->option('close')) {
+            $sCloseUrl = $this->option('closeurl');
+            $sCloseButton = '<a class="btn" href="'.$sCloseUrl.'">Close</a>';
         } else {
-            $sCloseButton = "";
+            $sCloseButton = '';
         }
 
         if (!isset($_SESSION['CSRF_TOKEN'])) {
@@ -399,7 +415,7 @@ class Form {
         }
         $csrfToken = htmlspecialchars($_SESSION['CSRF_TOKEN']);
 
-        $sActionUrl = $this->option("action");
+        $sActionUrl = $this->option('action');
 
         $sHtml = <<<HTML
 <form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/formdata">
@@ -421,15 +437,18 @@ HTML;
         return $sHtml;
     }
 
-    protected function submitSignatureName() {
-        return str_replace('\\', '_', $this->sModelClass . "::submitted");
+    protected function submitSignatureName()
+    {
+        return str_replace('\\', '_', $this->sModelClass.'::submitted');
     }
 
-    function submitted() {
-        return intval(\Flake\Util\Tools::POST($this->submitSignatureName())) === 1;
+    public function submitted()
+    {
+        return 1 === intval(\Flake\Util\Tools::POST($this->submitSignatureName()));
     }
 
-    function refreshed() {
-        return intval(\Flake\Util\Tools::POST("refreshed")) === 1;
+    public function refreshed()
+    {
+        return 1 === intval(\Flake\Util\Tools::POST('refreshed'));
     }
 }

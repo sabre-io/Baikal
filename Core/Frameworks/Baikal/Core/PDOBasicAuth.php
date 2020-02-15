@@ -11,24 +11,24 @@ namespace Baikal\Core;
  * @author Lukasz Janyst <ljanyst@buggybrain.net>
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class PDOBasicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
-
+class PDOBasicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic
+{
     /**
-     * Reference to PDO connection
+     * Reference to PDO connection.
      *
      * @var PDO
      */
     protected $pdo;
 
     /**
-     * PDO table name we'll be using
+     * PDO table name we'll be using.
      *
      * @var string
      */
     protected $tableName;
 
     /**
-     * Authentication realm
+     * Authentication realm.
      *
      * @var string
      */
@@ -39,43 +39,44 @@ class PDOBasicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      *
      * If the filename argument is passed in, it will parse out the specified file fist.
      *
-     * @param PDO $pdo
+     * @param PDO    $pdo
      * @param string $tableName The PDO table name to use
      */
-    function __construct(\PDO $pdo, $authRealm, $tableName = 'users') {
-
+    public function __construct(\PDO $pdo, $authRealm, $tableName = 'users')
+    {
         $this->pdo = $pdo;
         $this->tableName = $tableName;
         $this->authRealm = $authRealm;
     }
 
     /**
-     * Validates a username and password
+     * Validates a username and password.
      *
      * This method should return true or false depending on if login
      * succeeded.
      *
      * @param string $username
      * @param string $password
+     *
      * @return bool
      */
-    function validateUserPass($username, $password) {
-
-        $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM ' . $this->tableName . ' WHERE username = ?');
+    public function validateUserPass($username, $password)
+    {
+        $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM '.$this->tableName.' WHERE username = ?');
         $stmt->execute([$username]);
         $result = $stmt->fetchAll();
 
+        if (!count($result)) {
+            return false;
+        }
 
-        if (!count($result)) return false;
-
-        $hash = md5($username . ':' . $this->authRealm . ':' . $password);
-        if ($result[0]['digesta1'] === $hash)
-        {
+        $hash = md5($username.':'.$this->authRealm.':'.$password);
+        if ($result[0]['digesta1'] === $hash) {
             $this->currentUser = $username;
+
             return true;
         }
+
         return false;
-
     }
-
 }

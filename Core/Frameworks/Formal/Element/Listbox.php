@@ -1,68 +1,69 @@
 <?php
-#################################################################
-#  Copyright notice
-#
-#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
-#  All rights reserved
-#
-#  http://formal.codr.fr
-#
-#  This script is part of the Formal project. The Formal
-#  project is free software; you can redistribute it
-#  and/or modify it under the terms of the GNU General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
-#
-#  The GNU General Public License can be found at
-#  http://www.gnu.org/copyleft/gpl.html.
-#
-#  This script is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  This copyright notice MUST APPEAR in all copies of the script!
-#################################################################
 
+//################################################################
+//  Copyright notice
+//
+//  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
+//  All rights reserved
+//
+//  http://formal.codr.fr
+//
+//  This script is part of the Formal project. The Formal
+//  project is free software; you can redistribute it
+//  and/or modify it under the terms of the GNU General Public
+//  License as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//
+//  The GNU General Public License can be found at
+//  http://www.gnu.org/copyleft/gpl.html.
+//
+//  This script is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  This copyright notice MUST APPEAR in all copies of the script!
+//################################################################
 
 namespace Formal\Element;
 
-class Listbox extends \Formal\Element {
-    function render() {
-
-        $disabled = "";
-        $inputclass = "";
-        $groupclass = "";
-        $placeholder = "";
+class Listbox extends \Formal\Element
+{
+    public function render()
+    {
+        $disabled = '';
+        $inputclass = '';
+        $groupclass = '';
+        $placeholder = '';
 
         $value = $this->value();
-        $label = $this->option("label");
-        $prop = $this->option("prop");
-        $helpblock = "";
-        $popover = "";
+        $label = $this->option('label');
+        $prop = $this->option('prop');
+        $helpblock = '';
+        $popover = '';
 
-        if ($this->option("readonly") === true) {
-            $inputclass .= " disabled";
-            $disabled = " disabled";
+        if (true === $this->option('readonly')) {
+            $inputclass .= ' disabled';
+            $disabled = ' disabled';
         }
 
-        if ($this->option("error") === true) {
-            $groupclass .= " error";
+        if (true === $this->option('error')) {
+            $groupclass .= ' error';
         }
 
-        $aOptions = $this->option("options");
+        $aOptions = $this->option('options');
         if (!is_array($aOptions)) {
             throw new \Exception("\Formal\Element\Listbox->render(): 'options' has to be an array.");
         }
 
-        if (($sHelp = trim($this->option("help"))) !== "") {
-            $helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+        if ('' !== ($sHelp = trim($this->option('help')))) {
+            $helpblock = '<p class="help-block">'.$sHelp.'</p>';
         }
 
-        if (($aPopover = $this->option("popover")) !== "") {
-            $inputclass .= " popover-focus ";
-            $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+        if ('' !== ($aPopover = $this->option('popover'))) {
+            $inputclass .= ' popover-focus ';
+            $popover = ' title="'.htmlspecialchars($aPopover['title']).'" ';
+            $popover .= ' data-content="'.htmlspecialchars($aPopover['content']).'" ';
         }
 
         $clientvalue = htmlspecialchars($value);
@@ -70,18 +71,18 @@ class Listbox extends \Formal\Element {
         $aRenderedOptions = [];
 
         if (\Flake\Util\Tools::arrayIsSeq($aOptions)) {
-            # Array is sequential
+            // Array is sequential
             reset($aOptions);
             foreach ($aOptions as $sOptionValue) {
-                $selected = ($sOptionValue === $value) ? " selected=\"selected\"" : "";
-                $aRenderedOptions[] = "<option" . $selected . ">" . htmlspecialchars($sOptionValue) . "</option>";
+                $selected = ($sOptionValue === $value) ? ' selected="selected"' : '';
+                $aRenderedOptions[] = '<option'.$selected.'>'.htmlspecialchars($sOptionValue).'</option>';
             }
         } else {
-            # Array is associative
+            // Array is associative
             reset($aOptions);
             foreach ($aOptions as $sOptionValue => $sOptionCaption) {
-                $selected = ($sOptionValue === $value) ? " selected=\"selected\"" : "";
-                $aRenderedOptions[] = "<option value=\"" . htmlspecialchars($sOptionValue) . "\"" . $selected . ">" . htmlspecialchars($sOptionCaption) . "</option>";
+                $selected = ($sOptionValue === $value) ? ' selected="selected"' : '';
+                $aRenderedOptions[] = '<option value="'.htmlspecialchars($sOptionValue).'"'.$selected.'>'.htmlspecialchars($sOptionCaption).'</option>';
             }
         }
 
@@ -100,6 +101,7 @@ class Listbox extends \Formal\Element {
 		</div>
 	</div>
 HTML;
-        return $sHtml . $this->renderWitness();
+
+        return $sHtml.$this->renderWitness();
     }
 }

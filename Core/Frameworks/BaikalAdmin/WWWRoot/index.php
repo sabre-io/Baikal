@@ -24,56 +24,54 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-ini_set("session.cookie_httponly", 1);
-ini_set("log_errors", 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('log_errors', 1);
 error_reporting(E_ALL);
 
-define("BAIKAL_CONTEXT", true);
-define("BAIKAL_CONTEXT_ADMIN", true);
-define("PROJECT_CONTEXT_BASEURI", "/admin/");
+define('BAIKAL_CONTEXT', true);
+define('BAIKAL_CONTEXT_ADMIN', true);
+define('PROJECT_CONTEXT_BASEURI', '/admin/');
 
-if (file_exists(dirname(getcwd()) . "/Core")) {
-    # Flat FTP mode
-    define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");    #../
+if (file_exists(dirname(getcwd()).'/Core')) {
+    // Flat FTP mode
+    define('PROJECT_PATH_ROOT', dirname(getcwd()).'/');    //../
 } else {
-    # Dedicated server mode
-    define("PROJECT_PATH_ROOT", dirname(dirname(getcwd())) . "/");    #../../
+    // Dedicated server mode
+    define('PROJECT_PATH_ROOT', dirname(dirname(getcwd())).'/');    //../../
 }
 
-if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+if (!file_exists(PROJECT_PATH_ROOT.'vendor/')) {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
 
-require PROJECT_PATH_ROOT . 'vendor/autoload.php';
+require PROJECT_PATH_ROOT.'vendor/autoload.php';
 
-# Bootstraping Flake
+// Bootstraping Flake
 \Flake\Framework::bootstrap();
 
-# Bootstrap BaikalAdmin
+// Bootstrap BaikalAdmin
 \BaikalAdmin\Framework::bootstrap();
 
-# Create and setup a page object
-$oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES . "Page/index.html");
+// Create and setup a page object
+$oPage = new \Flake\Controller\Page(BAIKALADMIN_PATH_TEMPLATES.'Page/index.html');
 $oPage->injectHTTPHeaders();
 
-$oPage->setTitle("Baïkal " . BAIKAL_VERSION . " Web Admin");
+$oPage->setTitle('Baïkal '.BAIKAL_VERSION.' Web Admin');
 $oPage->setBaseUrl(PROJECT_URI);
 
-if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
+if (!\BaikalAdmin\Core\Auth::isAuthenticated()) {
     if (\BaikalAdmin\Core\Auth::authenticate()) {
         // Redirect to itself
-        header('Location: ' . $_SERVER['REQUEST_URI']);
+        header('Location: '.$_SERVER['REQUEST_URI']);
         exit();
-
     } else {
         // Draw login page
-        $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
-        $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
+        $oPage->zone('navbar')->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
+        $oPage->zone('Payload')->addBlock(new \BaikalAdmin\Controller\Login());
     }
 } else {
-
     // CSRF token check
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         if (!isset($_POST['CSRF_TOKEN'])) {
             throw new \Exception('CSRF token was not submitted. Try removing your cookies and log in again');
         }
@@ -82,11 +80,11 @@ if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
         }
     }
 
-    $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
+    $oPage->zone('navbar')->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar());
 
-    # Route the request
-    $GLOBALS["ROUTER"]::route($oPage);
+    // Route the request
+    $GLOBALS['ROUTER']::route($oPage);
 }
 
-# Render the page
+// Render the page
 echo $oPage->render();

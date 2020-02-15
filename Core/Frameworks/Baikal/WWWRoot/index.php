@@ -24,42 +24,42 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-ini_set("session.cookie_httponly", 1);
-ini_set("display_errors", 0);
-ini_set("log_errors", 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 
-define("BAIKAL_CONTEXT", true);
-define("PROJECT_CONTEXT_BASEURI", "/");
+define('BAIKAL_CONTEXT', true);
+define('PROJECT_CONTEXT_BASEURI', '/');
 
-if (file_exists(getcwd() . "/Core")) {
-    # Flat FTP mode
-    define("PROJECT_PATH_ROOT", getcwd() . "/");    #./
+if (file_exists(getcwd().'/Core')) {
+    // Flat FTP mode
+    define('PROJECT_PATH_ROOT', getcwd().'/');    //./
 } else {
-    # Dedicated server mode
-    define("PROJECT_PATH_ROOT", dirname(getcwd()) . "/");    #../
+    // Dedicated server mode
+    define('PROJECT_PATH_ROOT', dirname(getcwd()).'/');    //../
 }
 
-if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
+if (!file_exists(PROJECT_PATH_ROOT.'vendor/')) {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. Please, execute "<strong>composer install</strong>" in the folder where you installed Ba&iuml;kal.');
 }
 
-require PROJECT_PATH_ROOT . 'vendor/autoload.php';
+require PROJECT_PATH_ROOT.'vendor/autoload.php';
 
-# Bootstraping Flake
+// Bootstraping Flake
 \Flake\Framework::bootstrap();
 
-# Bootstrapping Baïkal
+// Bootstrapping Baïkal
 \BaikalAdmin\Framework::bootstrap();
 
-# Create and setup a page object
-$oPage = new \Flake\Controller\Page(PROJECT_PATH_ROOT . "Core/Resources/Web/Baikal/Templates/Page/index.html");
+// Create and setup a page object
+$oPage = new \Flake\Controller\Page(PROJECT_PATH_ROOT.'Core/Resources/Web/Baikal/Templates/Page/index.html');
 $oPage->injectHTTPHeaders();
-$oPage->setTitle("Baïkal server");
+$oPage->setTitle('Baïkal server');
 $oPage->setBaseUrl(PROJECT_URI);
 
-# Draw page
-$oPage->zone("navbar")->addBlock(new \Baikal\Controller\Navigation\Topbar\Anonymous());
-$oPage->zone("Payload")->addBlock(new \Baikal\Controller\Main());
+// Draw page
+$oPage->zone('navbar')->addBlock(new \Baikal\Controller\Navigation\Topbar\Anonymous());
+$oPage->zone('Payload')->addBlock(new \Baikal\Controller\Main());
 
-# Render the page
+// Render the page
 echo $oPage->render();

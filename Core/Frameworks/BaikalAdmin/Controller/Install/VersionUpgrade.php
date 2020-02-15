@@ -1,53 +1,55 @@
 <?php
-#################################################################
-#  Copyright notice
-#
-#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
-#  All rights reserved
-#
-#  http://sabre.io/baikal
-#
-#  This script is part of the Baïkal Server project. The Baïkal
-#  Server project is free software; you can redistribute it
-#  and/or modify it under the terms of the GNU General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
-#
-#  The GNU General Public License can be found at
-#  http://www.gnu.org/copyleft/gpl.html.
-#
-#  This script is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  This copyright notice MUST APPEAR in all copies of the script!
-#################################################################
 
+//################################################################
+//  Copyright notice
+//
+//  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
+//  All rights reserved
+//
+//  http://sabre.io/baikal
+//
+//  This script is part of the Baïkal Server project. The Baïkal
+//  Server project is free software; you can redistribute it
+//  and/or modify it under the terms of the GNU General Public
+//  License as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//
+//  The GNU General Public License can be found at
+//  http://www.gnu.org/copyleft/gpl.html.
+//
+//  This script is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  This copyright notice MUST APPEAR in all copies of the script!
+//################################################################
 
 namespace BaikalAdmin\Controller\Install;
 
-class VersionUpgrade extends \Flake\Core\Controller {
-
+class VersionUpgrade extends \Flake\Core\Controller
+{
     protected $aMessages = [];
     protected $oModel;
-    protected $oForm;    # \Formal\Form
+    protected $oForm;    // \Formal\Form
 
     protected $aErrors = [];
     protected $aSuccess = [];
 
-    function execute() {
+    public function execute()
+    {
     }
 
-    function render() {
-        $sBigIcon = "glyph2x-magic";
+    public function render()
+    {
+        $sBigIcon = 'glyph2x-magic';
         $sBaikalVersion = BAIKAL_VERSION;
         $sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
 
         if (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
-            $sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
+            $sMessage = 'Your system is configured to use version <strong>'.$sBaikalConfiguredVersion."</strong>.<br />There's no upgrade to be done.";
         } else {
-            $sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
+            $sMessage = 'Upgrading Baïkal from version <strong>'.$sBaikalConfiguredVersion.'</strong> to version <strong>'.$sBaikalVersion.'</strong>';
         }
 
         $sHtml = <<<HTML
@@ -61,28 +63,28 @@ HTML;
             $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
-            $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
+            $this->aErrors[] = 'Uncaught exception during upgrade: '.(string) $e;
         }
 
         if (!empty($this->aErrors)) {
-            $sHtml .= "<h3>Errors</h3>" . implode("<br />\n", $this->aErrors);
+            $sHtml .= '<h3>Errors</h3>'.implode("<br />\n", $this->aErrors);
         }
 
         if (!empty($this->aSuccess)) {
-            $sHtml .= "<h3>Successful operations</h3>" . implode("<br />\n", $this->aSuccess);
+            $sHtml .= '<h3>Successful operations</h3>'.implode("<br />\n", $this->aSuccess);
         }
 
-        if ($bSuccess === false) {
+        if (false === $bSuccess) {
             $sHtml .= "<p>&nbsp;</p><p><span class='label label-important'>Error</span> Baïkal has not been upgraded. See the section 'Errors' for details.</p>";
         } else {
-            $sHtml .= "<p>&nbsp;</p><p>Baïkal has been successfully upgraded. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></p>";
+            $sHtml .= "<p>&nbsp;</p><p>Baïkal has been successfully upgraded. You may now <a class='btn btn-success' href='".PROJECT_URI."admin/'>Access the Baïkal admin</a></p>";
         }
 
         return $sHtml;
     }
 
-    protected function upgrade($sVersionFrom, $sVersionTo) {
-
+    protected function upgrade($sVersionFrom, $sVersionTo)
+    {
         if (version_compare($sVersionFrom, '0.2.3', '<=')) {
             throw new \Exception('This version of Baikal does not support upgrading from version 0.2.3 and older. Please request help on Github if this is a problem.');
         }
@@ -93,21 +95,19 @@ HTML;
         if (version_compare($sVersionFrom, '0.3.0', '<')) {
             // Upgrading from sabre/dav 1.8 schema to 3.1 schema.
 
-            if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
-
+            if (defined('PROJECT_DB_MYSQL') && PROJECT_DB_MYSQL === true) {
                 // MySQL upgrade
 
                 // sabre/dav 2.0 changes
                 foreach (['calendar', 'addressbook'] as $dataType) {
-
-                    $tableName = $dataType . 's';
+                    $tableName = $dataType.'s';
                     $pdo->exec("ALTER TABLE $tableName ADD synctoken INT(11) UNSIGNED NOT NULL DEFAULT '1'");
-                    $this->aSuccess[] = 'synctoken was added to ' . $tableName;
+                    $this->aSuccess[] = 'synctoken was added to '.$tableName;
 
                     $pdo->exec("ALTER TABLE $tableName DROP ctag");
-                    $this->aSuccess[] = 'ctag was removed from ' . $tableName;
+                    $this->aSuccess[] = 'ctag was removed from '.$tableName;
 
-                    $changesTable = $dataType . 'changes';
+                    $changesTable = $dataType.'changes';
                     $pdo->exec("
                         CREATE TABLE $changesTable (
                             id INT(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -118,8 +118,7 @@ HTML;
                             INDEX {$dataType}id_synctoken ({$dataType}id, synctoken)
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
                     ");
-                    $this->aSuccess[] = $changesTable . ' was created';
-
+                    $this->aSuccess[] = $changesTable.' was created';
                 }
 
                 $pdo->exec("
@@ -141,11 +140,11 @@ HTML;
                 ");
                 $this->aSuccess[] = 'calendarsubscriptions was created';
 
-                $pdo->exec("
+                $pdo->exec('
                     ALTER TABLE cards
                     ADD etag VARBINARY(32),
                     ADD size INT(11) UNSIGNED NOT NULL;
-                ");
+                ');
                 $this->aSuccess[] = 'etag and size were added to cards';
 
                 // sabre/dav 2.1 changes;
@@ -169,7 +168,7 @@ HTML;
                 $this->aSuccess[] = 'schedulingobjects was created';
 
                 // sabre/dav 3.0 changes
-                $pdo->exec("
+                $pdo->exec('
                     CREATE TABLE propertystorage (
                         id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
                         path VARBINARY(1024) NOT NULL,
@@ -177,22 +176,20 @@ HTML;
                         valuetype INT UNSIGNED,
                         value MEDIUMBLOB
                     );
-                ");
+                ');
                 $pdo->exec('CREATE UNIQUE INDEX path_property ON propertystorage (path(600), name(100));');
                 $this->aSuccess[] = 'propertystorage was created';
-
             } else {
                 // SQLite upgrade
 
                 // sabre/dav 2.0 changes
                 foreach (['calendar', 'addressbook'] as $dataType) {
-
-                    $tableName = $dataType . 's';
+                    $tableName = $dataType.'s';
                     // Note: we can't remove the ctag field in sqlite :(;
                     $pdo->exec("ALTER TABLE $tableName ADD synctoken integer");
-                    $this->aSuccess[] = 'synctoken was added to ' . $tableName;
+                    $this->aSuccess[] = 'synctoken was added to '.$tableName;
 
-                    $changesTable = $dataType . 'changes';
+                    $changesTable = $dataType.'changes';
                     $pdo->exec("
                         CREATE TABLE $changesTable (
                             id integer primary key asc,
@@ -202,10 +199,9 @@ HTML;
                             operation bool
                         );
                     ");
-                    $this->aSuccess[] = $changesTable . ' was created';
-
+                    $this->aSuccess[] = $changesTable.' was created';
                 }
-                $pdo->exec("
+                $pdo->exec('
                     CREATE TABLE calendarsubscriptions (
                         id integer primary key asc,
                         uri text,
@@ -220,14 +216,14 @@ HTML;
                         stripattachments bool,
                         lastmodified int
                     );
-                ");
+                ');
                 $this->aSuccess[] = 'calendarsubscriptions was created';
-                $pdo->exec("CREATE INDEX principaluri_uri ON calendarsubscriptions (principaluri, uri);");
+                $pdo->exec('CREATE INDEX principaluri_uri ON calendarsubscriptions (principaluri, uri);');
 
-                $pdo->exec("
+                $pdo->exec('
                     ALTER TABLE cards ADD etag text;
                     ALTER TABLE cards ADD size integer;
-                ");
+                ');
                 $this->aSuccess[] = 'etag and size were added to cards';
 
                 // sabre/dav 2.1 changes;
@@ -248,7 +244,7 @@ HTML;
                 $this->aSuccess[] = 'schedulingobjects was created';
 
                 // sabre/dav 3.0 changes
-                $pdo->exec("
+                $pdo->exec('
                     CREATE TABLE propertystorage (
                         id integer primary key asc,
                         path text,
@@ -256,11 +252,9 @@ HTML;
                         valuetype integer,
                         value blob
                     );
-                ");
+                ');
                 $pdo->exec('CREATE UNIQUE INDEX path_property ON propertystorage (path, name);');
                 $this->aSuccess[] = 'propertystorage was created';
-
-
             }
 
             // Statements for both SQLite and MySQL
@@ -270,7 +264,7 @@ HTML;
                 $stmt->execute([
                     md5($row['carddata']),
                     strlen($row['carddata']),
-                    $row['id']
+                    $row['id'],
                 ]);
             }
             $this->aSuccess[] = 'etag and size was recalculated for cards';
@@ -279,11 +273,10 @@ HTML;
             $counter = 0;
 
             while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-
                 try {
                     $vobj = \Sabre\VObject\Reader::read($row['calendardata']);
                 } catch (\Exception $e) {
-                    $this->aSuccess[] = 'warning: skipped record ' . $row['id'] . '. Error: ' . $e->getMessage();
+                    $this->aSuccess[] = 'warning: skipped record '.$row['id'].'. Error: '.$e->getMessage();
                     continue;
                 }
                 $uid = null;
@@ -292,11 +285,10 @@ HTML;
                     $vobj->destroy();
                     continue;
                 }
-                $uid = (string)$item->UID;
+                $uid = (string) $item->UID;
                 $stmt->execute([$uid, $row['id']]);
-                $counter++;
+                ++$counter;
                 $vobj->destroy();
-
             }
             $this->aSuccess[] = 'uid was recalculated for calendarobjects';
 
@@ -304,29 +296,24 @@ HTML;
             $stmt1 = $pdo->prepare('INSERT INTO propertystorage (path, name, valuetype, value) VALUES (?, ?, 3, ?)');
 
             while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-
                 // Inserting the new record
                 $stmt1->execute([
-                    'addressbooks/' . basename($row['uri']),
+                    'addressbooks/'.basename($row['uri']),
                     '{http://calendarserver.org/ns/}me-card',
-                    serialize(new \Sabre\DAV\Xml\Property\Href($row['vcardurl']))
+                    serialize(new \Sabre\DAV\Xml\Property\Href($row['vcardurl'])),
                 ]);
-
             }
             $this->aSuccess[] = 'vcardurl was migrated to the propertystorage system';
-
         }
         if (version_compare($sVersionFrom, '0.4.0', '<')) {
-
             // The sqlite schema had issues with both the calendar and
             // addressbooks tables. The tables didn't have a DEFAULT '1' for
             // the synctoken column. So we're adding it now.
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
-
+            if (!defined('PROJECT_DB_MYSQL') || PROJECT_DB_MYSQL === false) {
                 $pdo->exec('UPDATE calendars SET synctoken = 1 WHERE synctoken IS NULL');
 
-                $tmpTable = '_' . time();
-                $pdo->exec('ALTER TABLE calendars RENAME TO calendars' . $tmpTable);
+                $tmpTable = '_'.time();
+                $pdo->exec('ALTER TABLE calendars RENAME TO calendars'.$tmpTable);
 
                 $pdo->exec('
 CREATE TABLE calendars (
@@ -343,24 +330,20 @@ CREATE TABLE calendars (
     transparent bool
 );');
 
-                $pdo->exec('INSERT INTO calendars SELECT id, principaluri, displayname, uri, synctoken, description, calendarorder, calendarcolor, timezone, components, transparent FROM calendars' . $tmpTable);
+                $pdo->exec('INSERT INTO calendars SELECT id, principaluri, displayname, uri, synctoken, description, calendarorder, calendarcolor, timezone, components, transparent FROM calendars'.$tmpTable);
 
                 $this->aSuccess[] = 'Updated calendars table';
-
             }
-
         }
         if (version_compare($sVersionFrom, '0.4.5', '<=')) {
-
             // Similar to upgrading from older than 0.4.5, there were still
             // issues with a missing DEFAULT 1 for sthe synctoken field in the
             // addressbook.
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
-
+            if (!defined('PROJECT_DB_MYSQL') || PROJECT_DB_MYSQL === false) {
                 $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
 
-                $tmpTable = '_' . time();
-                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks' . $tmpTable);
+                $tmpTable = '_'.time();
+                $pdo->exec('ALTER TABLE addressbooks RENAME TO addressbooks'.$tmpTable);
 
                 $pdo->exec('
 CREATE TABLE addressbooks (
@@ -373,14 +356,12 @@ CREATE TABLE addressbooks (
 );
                 ');
 
-                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks' . $tmpTable);
+                $pdo->exec('INSERT INTO addressbooks SELECT id, principaluri, displayname, uri, description, synctoken FROM addressbooks'.$tmpTable);
                 $this->aSuccess[] = 'Updated addressbooks table';
-
             }
-
         }
         if (version_compare($sVersionFrom, '0.5.1', '<')) {
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+            if (!defined('PROJECT_DB_MYSQL') || PROJECT_DB_MYSQL === false) {
                 $pdo->exec(<<<SQL
 CREATE TABLE calendarinstances (
     id integer primary key asc NOT NULL,
@@ -431,7 +412,7 @@ FROM calendars
 ');
                 $this->aSuccess[] = 'Migrated calendarinstances table';
                 $calendarBackup = 'calendars_3_1';
-                $pdo->exec('ALTER TABLE calendars RENAME TO ' . $calendarBackup);
+                $pdo->exec('ALTER TABLE calendars RENAME TO '.$calendarBackup);
                 $this->aSuccess[] = 'Did calendars backup';
 
                 $pdo->exec(<<<SQL
@@ -494,7 +475,7 @@ FROM calendars
 ');
                 $this->aSuccess[] = 'Migrated calendarinstances table';
                 $calendarBackup = 'calendars_3_1';
-                $pdo->exec('RENAME TABLE calendars TO ' . $calendarBackup);
+                $pdo->exec('RENAME TABLE calendars TO '.$calendarBackup);
                 $this->aSuccess[] = 'Did calendars backup';
 
                 $pdo->exec(<<<SQL
@@ -515,32 +496,33 @@ SQL
             $this->aSuccess[] = 'Migrated calendars table';
         }
 
-
         $this->updateConfiguredVersion($sVersionTo);
+
         return true;
     }
 
-    protected function updateConfiguredVersion($sVersionTo) {
-
-        # Create new settings
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+    protected function updateConfiguredVersion($sVersionTo)
+    {
+        // Create new settings
+        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC.'config.php');
         $oConfig->persist();
 
-        # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
-        $oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
+        // Update BAIKAL_CONFIGURED_VERSION
+        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC.'config.system.php');
+        $oConfig->set('BAIKAL_CONFIGURED_VERSION', $sVersionTo);
         $oConfig->persist();
     }
 
-    protected function assertConfigWritable() {
-        # Parsing the config also makes sure that it is not malformed
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
-        if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.php is not writable");
+    protected function assertConfigWritable()
+    {
+        // Parsing the config also makes sure that it is not malformed
+        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC.'config.php');
+        if (false === $oConfig->writable()) {
+            throw new \Exception(PROJECT_PATH_SPECIFIC.'config.php is not writable');
         }
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
-        if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.system.php is not writable");
+        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC.'config.system.php');
+        if (false === $oConfig->writable()) {
+            throw new \Exception(PROJECT_PATH_SPECIFIC.'config.system.php is not writable');
         }
     }
 }

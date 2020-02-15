@@ -1,36 +1,36 @@
 <?php
-#################################################################
-#  Copyright notice
-#
-#  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
-#  All rights reserved
-#
-#  http://sabre.io/baikal
-#
-#  This script is part of the Baïkal Server project. The Baïkal
-#  Server project is free software; you can redistribute it
-#  and/or modify it under the terms of the GNU General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
-#
-#  The GNU General Public License can be found at
-#  http://www.gnu.org/copyleft/gpl.html.
-#
-#  This script is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  This copyright notice MUST APPEAR in all copies of the script!
-#################################################################
 
+//################################################################
+//  Copyright notice
+//
+//  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
+//  All rights reserved
+//
+//  http://sabre.io/baikal
+//
+//  This script is part of the Baïkal Server project. The Baïkal
+//  Server project is free software; you can redistribute it
+//  and/or modify it under the terms of the GNU General Public
+//  License as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//
+//  The GNU General Public License can be found at
+//  http://www.gnu.org/copyleft/gpl.html.
+//
+//  This script is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  This copyright notice MUST APPEAR in all copies of the script!
+//################################################################
 
 namespace Baikal\Core;
 
 use PDO;
 
 /**
- * The Baikal Server
+ * The Baikal Server.
  *
  * This class sets up the underlying Sabre\DAV\Server object.
  *
@@ -38,8 +38,8 @@ use PDO;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ GPLv2
  */
-class Server {
-
+class Server
+{
     /**
      * Is CalDAV enabled?
      *
@@ -55,53 +55,51 @@ class Server {
     protected $enableCardDAV;
 
     /**
-     * "Basic" or "Digest"
+     * "Basic" or "Digest".
      *
      * @var string
      */
     protected $authType;
 
     /**
-     * HTTP authentication realm
+     * HTTP authentication realm.
      *
      * @var string
      */
     protected $authRealm;
 
     /**
-     * Reference to Database object
+     * Reference to Database object.
      *
      * @var PDO
      */
     protected $pdo;
 
     /**
-     * baseUri for the sabre/dav server
+     * baseUri for the sabre/dav server.
      *
      * @var string
      */
     protected $baseUri;
 
     /**
-     * The sabre/dav Server object
+     * The sabre/dav Server object.
      *
      * @var \Sabre\DAV\Server
      */
     protected $server;
 
-
     /**
      * Creates the server object.
      *
-     * @param bool $enableCalDAV
-     * @param bool $enableCardDAV
+     * @param bool   $enableCalDAV
+     * @param bool   $enableCardDAV
      * @param string $authType
      * @param string $authRealm
-     * @param PDO $pdo
      * @param string $baseUri
      */
-    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
-
+    public function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri)
+    {
         $this->enableCalDAV = $enableCalDAV;
         $this->enableCardDAV = $enableCardDAV;
         $this->authType = $authType;
@@ -110,28 +108,26 @@ class Server {
         $this->baseUri = $baseUri;
 
         $this->initServer();
-
     }
 
     /**
-     * Starts processing
+     * Starts processing.
      *
      * @return void
      */
-    function start() {
-
+    public function start()
+    {
         $this->server->exec();
-
     }
 
     /**
-     * Initializes the server object
+     * Initializes the server object.
      *
      * @return void
      */
-    protected function initServer() {
-
-        if ($this->authType === 'Basic') {
+    protected function initServer()
+    {
+        if ('Basic' === $this->authType) {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
@@ -140,7 +136,7 @@ class Server {
         $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($this->pdo);
 
         $nodes = [
-            new \Sabre\CalDAV\Principal\Collection($principalBackend)
+            new \Sabre\CalDAV\Principal\Collection($principalBackend),
         ];
         if ($this->enableCalDAV) {
             $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);
@@ -171,7 +167,7 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
-            if (defined("BAIKAL_INVITE_FROM") && BAIKAL_INVITE_FROM !== "") {
+            if (defined('BAIKAL_INVITE_FROM') && BAIKAL_INVITE_FROM !== '') {
                 $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin(BAIKAL_INVITE_FROM));
             }
         }
@@ -181,7 +177,6 @@ class Server {
         }
 
         $this->server->on('exception', [$this, 'exception']);
-
     }
 
     /**
@@ -189,7 +184,8 @@ class Server {
      *
      * @return void
      */
-    function exception($e) {
+    public function exception($e)
+    {
         if ($e instanceof \Sabre\DAV\Exception\NotAuthenticated) {
             // Applications may make their first call without auth so don't log these attempts
             // Pattern from sabre/dav/lib/DAV/Auth/Backend/AbstractDigest.php
@@ -204,5 +200,4 @@ class Server {
             error_log($e);
         }
     }
-
 }
