@@ -31,6 +31,16 @@ class Users extends \Flake\Core\Controller
 {
     protected $aMessages = [];
 
+    /**
+     * @var \Baikal\Model\User
+     */
+    private $oModel;
+
+    /**
+     * @var \Formal\Form
+     */
+    private $oForm;
+
     public function execute()
     {
         if ($this->actionEditRequested()) {

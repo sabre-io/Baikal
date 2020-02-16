@@ -29,6 +29,11 @@ namespace Flake\Controller;
 
 class HtmlBlock extends \Flake\Core\Controller
 {
+    /**
+     * @var string
+     */
+    private $sHtml;
+
     public function __construct($sHtml)
     {
         $this->sHtml = $sHtml;

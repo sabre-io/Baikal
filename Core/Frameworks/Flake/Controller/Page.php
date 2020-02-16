@@ -34,6 +34,11 @@ class Page extends \Flake\Core\Render\Container
     protected $sMetaDescription = '';
     protected $sTemplatePath = '';
 
+    /**
+     * @var string
+     */
+    private $sBaseUrl;
+
     public function __construct($sTemplatePath)
     {
         $this->sTemplatePath = $sTemplatePath;

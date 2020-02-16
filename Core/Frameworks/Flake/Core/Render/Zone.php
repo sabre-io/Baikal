@@ -29,6 +29,9 @@ namespace Flake\Core\Render;
 
 class Zone extends \Flake\Core\FLObject
 {
+    private $sZone;
+    private $oZonableObject;
+
     public function __construct(&$oZonableObject, $sZone)
     {
         $this->oZonableObject = &$oZonableObject;

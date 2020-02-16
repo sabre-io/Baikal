@@ -51,7 +51,7 @@ abstract class Db extends \Flake\Core\Model
         return $oRequester;
     }
 
-    public static function &getByRequest(\FS\Core\Requester\Sql $oRequester)
+    public static function &getByRequest(\Flake\Core\Requester\Sql $oRequester)
     {
         // renvoie une collection de la classe du modèle courant (this)
         return $oRequester->execute();

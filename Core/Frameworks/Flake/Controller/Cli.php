@@ -29,6 +29,11 @@ namespace Flake\Controller;
 
 class Cli extends \Flake\Core\Render\Container
 {
+    /**
+     * @var array
+     */
+    private $aArgs;
+
     public function render()
     {
         $this->sys_init();
