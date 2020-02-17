@@ -28,6 +28,12 @@
 namespace Flake\Core;
 
 abstract class Requester extends \Flake\Core\FLObject {
+    protected $sModelClass = '';
+    protected $sOrderField = '';
+    protected $sOrderDirection = 'ASC';
+    protected $iLimitStart = false;
+    protected $iLimitNumber = false;
+
     function __construct($sModelClass) {
         $this->sModelClass = $sModelClass;
     }
@@ -61,6 +67,7 @@ abstract class Requester extends \Flake\Core\FLObject {
         return $this;
     }
 
+    abstract function addClauseEquals($sField, $sValue);
     abstract function execute();
     abstract function count();
 }
