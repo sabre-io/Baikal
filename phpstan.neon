@@ -1,0 +1,6 @@
+parameters:
+  level: 0
+  excludes_analyse:
+    - Core/Frameworks/BaikalAdmin/Resources/GlyphiconsPro/generate-sprite.php
+    - Core/Resources/Web/BaikalAdmin/GlyphiconsPro/generate-sprite.php
+    - html/res/core/BaikalAdmin/GlyphiconsPro/generate-sprite.php
