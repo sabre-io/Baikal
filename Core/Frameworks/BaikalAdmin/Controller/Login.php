@@ -39,14 +39,14 @@ class Login extends \Flake\Core\Controller
         $sSubmittedFlagName = 'auth';
         $sMessage = '';
 
-        $sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
+        $sLogin = htmlspecialchars(\Flake\Util\Tools::POST('login'));
 
         if (self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
             // Log failed accesses, matching the default fail2ban nginx/apache auth rules
             if (isset($_SERVER['SERVER_SOFTWARE']) && preg_match('/nginx/i', $_SERVER['SERVER_SOFTWARE'])) {
-                error_log('user "' . $sLogin . '" was not found in "Baikal GUI"', 4);
+                error_log('user "'.$sLogin.'" was not found in "Baikal GUI"', 4);
             } else {
-                error_log('user "' . $sLogin . '" authentication failure for "Baikal GUI"', 4);
+                error_log('user "'.$sLogin.'" authentication failure for "Baikal GUI"', 4);
             }
             $sMessage = \Formal\Core\Message::error(
                 'The login/password you provided is invalid. Please retry.',
@@ -60,7 +60,7 @@ class Login extends \Flake\Core\Controller
             );
         }
 
-        $sPassword = htmlspecialchars(\Flake\Util\Tools::POST("password"));
+        $sPassword = htmlspecialchars(\Flake\Util\Tools::POST('password'));
 
         if ('' === trim($sLogin)) {
             $sLogin = 'admin';

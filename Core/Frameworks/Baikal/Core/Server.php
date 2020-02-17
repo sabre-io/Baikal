@@ -180,7 +180,7 @@ class Server
     }
 
     /**
-     * Log failed accesses, matching the default fail2ban nginx/apache auth rules
+     * Log failed accesses, matching the default fail2ban nginx/apache auth rules.
      *
      * @return void
      */
