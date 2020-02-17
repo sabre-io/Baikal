@@ -12,8 +12,8 @@ matrix:
 
 env:
   matrix:
-    - LOWEST_DEPS=""
-    - LOWEST_DEPS="--prefer-lowest"
+    - PREFER_LOWEST=""
+    - PREFER_LOWEST="--prefer-lowest"
 
 services:
   - mysql
@@ -24,11 +24,11 @@ before_script:
   # - mysql -e 'create database sabredav'
   - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
   # - composer self-update
-  - composer update --prefer-source $LOWEST_DEPS
+  - composer update $PREFER_LOWEST
 
 script:
-    - find Core -name "*.php" | xargs -n1 php -l 
-    - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
+  - find Core -name "*.php" | xargs -n1 php -l
+  - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
 
 cache:
   directories:
