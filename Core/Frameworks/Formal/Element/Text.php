@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal\Element;
 
 class Text extends \Formal\Element {
-
     protected function inputtype() {
         return "text";
     }
@@ -76,7 +75,6 @@ class Text extends \Formal\Element {
         }
 
         if (($aPopover = $this->option("popover")) !== "") {
-
             if (array_key_exists("position", $aPopover)) {
                 $sPosition = $aPopover["position"];
                 $inputclass .= " popover-focus-" . $sPosition;
@@ -97,6 +95,7 @@ class Text extends \Formal\Element {
 	</div>
 </div>
 HTML;
+
         return $sHtml . $this->renderWitness();
     }
 }

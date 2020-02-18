@@ -77,7 +77,6 @@ try {
 if (!$config || !isset($config['system']["configured_version"])) {
     # we have to upgrade Baïkal (existing installation)
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
-
 } elseif (!isset($config['system']["admin_passwordhash"])) {
     # we have to set an admin password
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Flake\Core\DOM;
 
@@ -58,7 +58,7 @@ class HTMLElement extends \DOMElement {
 
     function setInnerHTML($sHtml) {
         // first, empty the element
-        for ($x = $this->childNodes->length - 1; $x >= 0; $x--) {
+        for ($x = $this->childNodes->length - 1; $x >= 0; --$x) {
             $this->removeChild($this->childNodes->item($x));
         }
         // $value holds our new inner HTML
@@ -67,7 +67,9 @@ class HTMLElement extends \DOMElement {
             // appendXML() expects well-formed markup (XHTML)
             $result = @$f->appendXML($sHtml); // @ to suppress PHP warnings
             if ($result) {
-                if ($f->hasChildNodes()) $this->appendChild($f);
+                if ($f->hasChildNodes()) {
+                    $this->appendChild($f);
+                }
             } else {
                 // $value is probably ill-formed
                 $f = new \DOMDocument();
@@ -95,7 +97,7 @@ class HTMLElement extends \DOMElement {
     function getInnerHTML() {
         $sHtml = '';
         $iNodes = $this->childNodes->length;
-        for ($i = 0; $i < $iNodes; $i++) {
+        for ($i = 0; $i < $iNodes; ++$i) {
             $oItem = $this->childNodes->item($i);
             $sHtml .= $oItem->ownerDocument->saveHTML($oItem);
         }
@@ -113,7 +115,7 @@ class HTMLElement extends \DOMElement {
 
         while (!is_null($oNode->previousSibling)) {
             $oNode = $oNode->previousSibling;
-            $iPos++;
+            ++$iPos;
         }
 
         return $iPos;

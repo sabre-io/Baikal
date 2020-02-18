@@ -9,7 +9,7 @@ define("MATRIXHEIGHT", 1400);
 echo generateSprite(getSymbols(), COLUMNS, ROWS, MATRIXWIDTH, MATRIXHEIGHT, "glyph-");
 
 function getSymbols() {
-     # Glyphicons Png names, without extension
+    # Glyphicons Png names, without extension
     return [
         "000_glass",
         "001_leaf",
@@ -390,7 +390,7 @@ function generateSprite($aSymbols, $iCols, $iRows, $iPngWidth, $iPngHeight, $sCl
             "height" => ceil($iSymbolHeight)
         ];
 
-        $iKey++;
+        ++$iKey;
     }
 
     ##########################################################################
@@ -457,5 +457,6 @@ CSS;
     }
 
     $sCss = "\n" . "/* " . count($aSprites) . " glyphs, generated on " . strftime("%Y-%m-%d %H:%M:%S") . "; C=" . $iCols . "; R=" . $iRows . "; W=" . $iPngWidth . "; H=" . $iPngHeight . "; PREFIX=" . $sClassPrefix . " */\n" . $sCss;
+
     return $sCss;
 }

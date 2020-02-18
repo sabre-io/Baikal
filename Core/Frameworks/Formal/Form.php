@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal;
 
 class Form {
-
     protected $sModelClass = "";
     protected $aOptions = [
         "action"          => "",
@@ -63,11 +62,13 @@ class Form {
 
     function setOption($sName, $sValue) {
         $this->aOptions[$sName] = $sValue;
+
         return $this;
     }
 
     function options() {
         $aOptions = $this->aOptions;
+
         return $aOptions;
     }
 
@@ -138,7 +139,6 @@ class Form {
 
             # posted value is fetched, then passes to element before persistance
             if ($oElement->posted()) {
-
                 $sPostValue = $this->postValue($sPropName);
                 $oElement->setValue($sPostValue);
 
@@ -167,7 +167,6 @@ class Form {
             $sValue = $oElement->value();
 
             foreach ($aValidation as $sValidation) {
-
                 # If element is readonly, skip process
                 if ($oElement->option("readonly")) {
                     continue;
@@ -203,7 +202,6 @@ class Form {
         }
 
         if (!$this->refreshed() && empty($this->aErrors)) {
-
             # Model object is persisted
             # Last chance to generate a confirm message corresponding to what *was* submitted ("Creating", instead of "Editing")
 
@@ -341,7 +339,6 @@ class Form {
 
         $oMorpho->elements()->reset();
         foreach ($oMorpho->elements() as $oElement) {
-
             # Setting current prop value for element
             # Set on empty (just created) FormMorphology
             # And obtained from Model instance
@@ -363,7 +360,6 @@ class Form {
         ######################################################
 
         if ($this->submitted()) {
-
             # There were errors detected during execute()
             # Error messages are displayed
 

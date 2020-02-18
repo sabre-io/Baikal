@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller\Settings;
 
 use Symfony\Component\Yaml\Yaml;
 
 class System extends \Flake\Core\Controller {
-
     /**
      * @var \Baikal\Model\Config\System
      */
@@ -61,7 +60,6 @@ class System extends \Flake\Core\Controller {
     }
 
     function render() {
-
         $oView = new \BaikalAdmin\View\Settings\System();
         $oView->setData("message", \Formal\Core\Message::notice(
             "Do not change anything on this page unless you really know what you are doing.<br />You might break Baïkal if you misconfigure something here.",
@@ -89,7 +87,6 @@ class System extends \Flake\Core\Controller {
         if ($bMySQL === true) {
             $oMorpho->remove("sqlite_file");
         } else {
-
             $oMorpho->remove("mysql_host");
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
@@ -98,11 +95,10 @@ class System extends \Flake\Core\Controller {
     }
 
     function validationHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
-        if ($oForm->refreshed()){
+        if ($oForm->refreshed()) {
             return true;
         }
         if (intval($oForm->modelInstance()->get("mysql")) === 1) {
-
             # We have to check the MySQL connection
             $sHost = $oForm->modelInstance()->get("mysql_host");
             $sDbName = $oForm->modelInstance()->get("mysql_dbname");
@@ -123,6 +119,7 @@ class System extends \Flake\Core\Controller {
                 $oForm->declareError($oMorpho->element("mysql_dbname"));
                 $oForm->declareError($oMorpho->element("mysql_username"));
                 $oForm->declareError($oMorpho->element("mysql_password"));
+
                 return;
             }
 
@@ -132,10 +129,10 @@ class System extends \Flake\Core\Controller {
                 $sMessage .= "<br /><br /><strong>Nothing has been saved</strong>";
 
                 $oForm->declareError($oMorpho->element("mysql"), $sMessage);
+
                 return;
             }
         } else {
-
             $sFile = $oMorpho->element("sqlite_file")->value();
 
             try {
@@ -143,15 +140,16 @@ class System extends \Flake\Core\Controller {
                 if (file_exists($sFile) && !is_writable($sFile)) {
                     $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
                     $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
+
                     return;
                 }
                 # Asserting DB directory is writable
                 if (!is_writable(dirname($sFile))) {
                     $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
                     $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
+
                     return;
                 }
-
 
                 $oDb = new \Flake\Core\Database\Sqlite(
                     $sFile
@@ -168,11 +166,12 @@ class System extends \Flake\Core\Controller {
                         $sMessage
                     );
                 }
+
                 return;
             } catch (\Exception $e) {
                 $oForm->declareError(
                     $oMorpho->element("sqlite_file"),
-                        "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string)$e
+                        "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
                         );
             }
         }

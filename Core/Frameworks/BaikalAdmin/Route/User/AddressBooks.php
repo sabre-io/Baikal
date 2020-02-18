@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Route\User;
 
 class AddressBooks extends \Flake\Core\Route {
-
     static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
         $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\User\AddressBooks(
             self::getParams()

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core;
 
 abstract class Controller extends \Flake\Core\FLObject {
-
     protected $aParams = [];
 
     function __construct($aParams = []) {
@@ -53,5 +52,6 @@ abstract class Controller extends \Flake\Core\FLObject {
     }
 
     abstract function execute();
+
     abstract function render();
 }

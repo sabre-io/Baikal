@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,16 +25,15 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Controller;
 
 class Main extends \Flake\Core\Controller {
-
     function execute() {
     }
 
     function render() {
         $oView = new \Baikal\View\Main();
+
         return $oView->render();
     }
 }

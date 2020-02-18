@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,12 +25,10 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal\Element;
 
 class Checkbox extends \Formal\Element {
-
-    function setValue($sValue) {
+    public function setValue($sValue) {
         # Boolean
         $this->sValue = ((intval($sValue) === 1));
     }
@@ -80,6 +79,7 @@ class Checkbox extends \Formal\Element {
 	</div>
 </div>
 HTML;
+
         return $sHtml . $this->renderWitness();
     }
 }

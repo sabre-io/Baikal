@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Baikal\Model;
 
@@ -95,7 +95,6 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function get($sPropName) {
-
         if ($sPropName === "components") {
             return $this->oCalendar->get($sPropName);
         }
@@ -126,13 +125,11 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function set($sPropName, $sValue) {
-
         if ($sPropName === "components") {
             return $this->oCalendar->set($sPropName, $sValue);
         }
 
         if ($sPropName === "todos") {
-
             if (($sComponents = $this->get("components")) !== "") {
                 $aComponents = explode(",", $sComponents);
             } else {
@@ -153,7 +150,6 @@ class Calendar extends \Flake\Core\Model\Db {
         }
 
         if ($sPropName === "notes") {
-
             if (($sComponents = $this->get("components")) !== "") {
                 $aComponents = explode(",", $sComponents);
             } else {
@@ -227,7 +223,6 @@ class Calendar extends \Flake\Core\Model\Db {
             "label" => "Notes",
             "help"  => "If checked, notes will be enabled on this calendar.",
         ]));
-
 
         if ($this->floating()) {
             $oMorpho->element("uri")->setOption(

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Controller;
 
 class Cli extends \Flake\Core\Render\Container {
-
     /**
      * @var array
      */
@@ -92,7 +91,6 @@ class Cli extends \Flake\Core\Render\Container {
     }
 
     function header($sMsg) {
-
         $sStr = "\n" . str_repeat("#", 80);
         $sStr .= "\n" . "#" . str_repeat(" ", 78) . "#";
         $sStr .= "\n" . "#" . str_pad(strtoupper($sMsg), 78, " ", STR_PAD_BOTH) . "#";
@@ -101,36 +99,42 @@ class Cli extends \Flake\Core\Render\Container {
         $sStr .= "\n";
 
         $this->log($sStr);
+
         return $sStr;
     }
 
     function subHeader($sMsg) {
         $sStr = "\n\n# " . str_pad(strtoupper($sMsg) . " ", 78, "-", STR_PAD_RIGHT) . "\n";
         $this->log($sStr);
+
         return $sStr;
     }
 
     function subHeader2($sMsg) {
         $sStr = "\n# # " . str_pad($sMsg . " ", 76, "-", STR_PAD_RIGHT) . "\n";
         $this->log($sStr);
+
         return $sStr;
     }
 
     function textLine($sMsg) {
         $sStr = ". " . $sMsg . "\n";
         $this->log($sStr);
+
         return $sStr;
     }
 
     function rawLine($sMsg) {
         $sStr = $sMsg . "\n";
         $this->log($sStr);
+
         return $sStr;
     }
 
     function notice($sMsg) {
         $sStr = "\n" . str_pad($sMsg, 80, ".", STR_PAD_BOTH) . "\n";
         $this->log($sStr);
+
         return $sStr;
     }
 
@@ -139,7 +143,6 @@ class Cli extends \Flake\Core\Render\Container {
     }
 
     function file_writeBin($sPath, $sData, $bUTF8 = true) {
-
         $rFile = fopen($sPath, "wb");
 
         if ($bUTF8 === true) {

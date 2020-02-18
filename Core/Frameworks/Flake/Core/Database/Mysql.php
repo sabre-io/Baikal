@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Database;
 
 class Mysql extends \Flake\Core\Database {
-
     protected $sHost = "";
     protected $sDbName = "";
     protected $sUsername = "";
@@ -60,6 +59,7 @@ class Mysql extends \Flake\Core\Database {
 
         asort($aTables);
         reset($aTables);
+
         return $aTables;
     }
 }

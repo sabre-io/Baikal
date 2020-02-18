@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,16 +25,13 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller\Navigation;
 
 class Topbar extends \Flake\Core\Controller {
-
     function execute() {
     }
 
     function render() {
-
         $oView = new \BaikalAdmin\View\Navigation\Topbar();
 
         $sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Controller;
 
 class Rpc extends \Flake\Core\Render\Container {
-
     function initializeContext() {
         $this->injectHTTPHeaders();
         $GLOBALS["POSTCONNECTIONSERVICES"] = [];
@@ -44,7 +43,6 @@ class Rpc extends \Flake\Core\Render\Container {
         # Needed to cut client off when needed
         header("Connection: close\r\n");
         ignore_user_abort(true);
-
     }
 
     function P3PAllowCrossDomainCookies() {

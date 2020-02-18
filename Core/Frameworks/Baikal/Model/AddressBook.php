@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Baikal\Model;
 
@@ -106,7 +106,6 @@ class AddressBook extends \Flake\Core\Model\Db {
     }
 
     function destroy() {
-
         $oContacts = $this->getContactsBaseRequester()->execute();
         foreach ($oContacts as $contact) {
             $contact->destroy();

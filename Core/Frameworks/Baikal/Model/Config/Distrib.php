@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Model\Config;
 
 class Distrib extends \Baikal\Model\Config {
-
     protected $aConstants = [
         "BAIKAL_VERSION" => [
             "type"    => "string",
@@ -48,6 +47,7 @@ class Distrib extends \Baikal\Model\Config {
 
     function formMorphologyForThisModelInstance() {
         $oMorpho = new \Formal\Form\Morphology();
+
         return $oMorpho;
     }
 

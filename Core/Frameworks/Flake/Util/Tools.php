@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Util;
 
 class Tools extends \Flake\Core\FLObject {
-
     private function __construct() {    # private constructor to force static class
     }
 
@@ -72,24 +71,26 @@ class Tools extends \Flake\Core\FLObject {
     }
 
     static function view_array($array_in) {
-        if (is_array($array_in))    {
+        if (is_array($array_in)) {
             $result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
-            if (!count($array_in))    {$result .= '<tr><td><font face="Verdana,Arial" size="1"><b>' . htmlspecialchars("EMPTY!") . '</b></font></td></tr>';}
+            if (!count($array_in)) {
+                $result .= '<tr><td><font face="Verdana,Arial" size="1"><b>' . htmlspecialchars("EMPTY!") . '</b></font></td></tr>';
+            }
             foreach ($array_in as $key => $val) {
-                $result .= '<tr><td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string)$key) . '</font></td><td>';
-                if (is_array($array_in[$key]))    {
+                $result .= '<tr><td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string) $key) . '</font></td><td>';
+                if (is_array($array_in[$key])) {
                     $result .= \Flake\Util\Tools::view_array($array_in[$key]);
                 } else {
                     if (is_object($val)) {
                         if (method_exists($val, "__toString")) {
-                            $sWhat = nl2br(htmlspecialchars((string)$val));
+                            $sWhat = nl2br(htmlspecialchars((string) $val));
                         } else {
                             $sWhat = nl2br(htmlspecialchars(get_class($val)));
                         }
                     } elseif (is_bool($val)) {
                         $sWhat = ($val === true ? "boolean:TRUE" : "boolean:FALSE");
                     } else {
-                        $sWhat = nl2br(htmlspecialchars((string)$val));
+                        $sWhat = nl2br(htmlspecialchars((string) $val));
                     }
 
                     $result .= '<font face="Verdana,Arial" size="1" color="red">' . $sWhat . '<br /></font>';
@@ -98,13 +99,14 @@ class Tools extends \Flake\Core\FLObject {
                 $result .= '</td></tr>';
             }
             $result .= '</table>';
-        } else    {
+        } else {
             $result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
-					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string)$array_in)) . '<br /></font></td>
+					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string) $array_in)) . '<br /></font></td>
 				</tr>
 			</table>';    // Output it as a string.
         }
+
         return $result;
     }
 
@@ -135,18 +137,18 @@ class Tools extends \Flake\Core\FLObject {
             }
         }
 
-        if ($brOrHeader)    {
-            echo '<table border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">' . htmlspecialchars((string)$brOrHeader) . '</td></tr><tr><td>';
+        if ($brOrHeader) {
+            echo '<table border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">' . htmlspecialchars((string) $brOrHeader) . '</td></tr><tr><td>';
         }
 
-        if (is_array($var))    {
+        if (is_array($var)) {
             echo \Flake\Util\Tools::view_array($var);
-        } elseif (is_object($var))    {
+        } elseif (is_object($var)) {
             echo '<b>|Object:<pre>';
             print_r($var);
             echo '</pre>|</b>';
-        } elseif ((string)$var != '')    {
-            echo '<b>|' . htmlspecialchars((string)$var) . '|</b>';
+        } elseif ((string) $var != '') {
+            echo '<b>|' . htmlspecialchars((string) $var) . '|</b>';
         } else {
             echo '<b>| debug |</b>';
         }
@@ -162,7 +164,7 @@ class Tools extends \Flake\Core\FLObject {
         array_pop($trail);
 
         $path = [];
-        foreach ($trail as $dat)    {
+        foreach ($trail as $dat) {
             $path[] = $dat['class'] . $dat['type'] . $dat['function'];
         }
 
@@ -277,24 +279,28 @@ class Tools extends \Flake\Core\FLObject {
 
     /**
      * Taken from TYPO3
-     * Returns true if the first part of $str matches the string $partStr
+     * Returns true if the first part of $str matches the string $partStr.
      *
      * @param	string		Full string to check
      * @param	string		Reference string which must be found as the "first part" of the full string
+     *
      * @return	bool		True if $partStr was found to be equal to the first part of $str
      */
     static function isFirstPartOfStr($str, $partStr) {
         // Returns true, if the first part of a $str equals $partStr and $partStr is not ''
         $psLen = strlen($partStr);
-        if ($psLen)    {
-            return substr($str, 0, $psLen) == (string)$partStr;
-        } else return false;
+        if ($psLen) {
+            return substr($str, 0, $psLen) == (string) $partStr;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Binary-reads a file
+     * Binary-reads a file.
      *
      * @param	string		$sPath: absolute server path to file
+     *
      * @return	string		file contents
      */
     static function file_readBin($sPath) {
@@ -309,11 +315,12 @@ class Tools extends \Flake\Core\FLObject {
     }
 
     /**
-     * Binary-writes a file
+     * Binary-writes a file.
      *
      * @param	string		$sPath: absolute server path to file
      * @param	string		$sData: file contents
      * @param	bool		$bUTF8: add UTF8-BOM or not ?
+     *
      * @return	void
      */
     static function file_writeBin($sPath, $sData) {
@@ -323,7 +330,6 @@ class Tools extends \Flake\Core\FLObject {
     }
 
     static function sendHtmlMail($sToAddress, $sSubject, $sBody, $sFromName, $sFromAddress, $sReplyToName, $sReplyToAddress) {
-
         $sMessage = <<<TEST
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -357,18 +363,20 @@ TEST;
     }
 
     static function parseTemplateCode($sCode, $aMarkers) {
-
         $loader = new \Twig_Loader_String();
         $twig = new \Twig_Environment($loader);
 
         return $twig->render($sCode, $aMarkers);
     }
 
-
     static function is_a($object, $class) {
-        if (is_object($object)) return $object instanceof $class;
-        if (is_string($object)){
-            if (is_object($class)) $class = get_class($class);
+        if (is_object($object)) {
+            return $object instanceof $class;
+        }
+        if (is_string($object)) {
+            if (is_object($class)) {
+                $class = get_class($class);
+            }
 
             if (class_exists($class, true)) {    # TRUE to autoload class
                 return @is_subclass_of($object, $class) || $object == $class;
@@ -376,10 +384,11 @@ TEST;
 
             if (interface_exists($class)) {
                 $reflect = new \ReflectionClass($object);
+
                 return $reflect->implementsInterface($class);
             }
-
         }
+
         return false;
     }
 
@@ -418,7 +427,9 @@ TEST;
             return self::number2Human($temp[0]) . ' virgule ' . self::number2Human($temp[1]);
         }
 
-        if ($a < 0) return 'moins ' . self::number2Human(-$a);
+        if ($a < 0) {
+            return 'moins ' . self::number2Human(-$a);
+        }
 
         if ($a < 17) {
             switch ($a) {
@@ -455,8 +466,8 @@ TEST;
                     case 90: return 'quatre-vingt-dix';
                 }
             } elseif (substr($a, -1) == 1) {
-                if (((int)($a / 10) * 10) < 70) {
-                    return self::number2Human((int)($a / 10) * 10) . '-et-un';
+                if (((int) ($a / 10) * 10) < 70) {
+                    return self::number2Human((int) ($a / 10) * 10) . '-et-un';
                 } elseif ($a == 71) {
                     return 'soixante-et-onze';
                 } elseif ($a == 81) {
@@ -476,18 +487,17 @@ TEST;
         } elseif ($a < 200) {
             return self::number2Human(100) . ' ' . self::number2Human($a % 100);
         } elseif ($a < 1000) {
-            return self::number2Human((int)($a / 100)) . ' ' . self::number2Human(100) . ' ' . self::number2Human($a % 100);
+            return self::number2Human((int) ($a / 100)) . ' ' . self::number2Human(100) . ' ' . self::number2Human($a % 100);
         } elseif ($a == 1000) {
             return 'mille';
         } elseif ($a < 2000) {
             return self::number2Human(1000) . ' ' . self::number2Human($a % 1000) . ' ';
         } elseif ($a < 1000000) {
-            return self::number2Human((int)($a / 1000)) . ' ' . self::number2Human(1000) . ' ' . self::number2Human($a % 1000);
+            return self::number2Human((int) ($a / 1000)) . ' ' . self::number2Human(1000) . ' ' . self::number2Human($a % 1000);
         }
     }
 
     static function stringToUrlToken($sString) {
-
         # Taken from TYPO3 extension realurl
 
         $space = "-";
@@ -512,13 +522,11 @@ TEST;
     }
 
     static function getIP() {
-
         $alt_ip = $_SERVER['REMOTE_ADDR'];
 
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
             $alt_ip = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
-
             // make sure we dont pick up an internal IP defined by RFC1918
             foreach ($matches[0] as $ip) {
                 if (!preg_match('#^(10|172\.16|192\.168)\.#', $ip)) {
@@ -612,7 +620,7 @@ TEST;
 
         # Taken from http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-sequential#answer-4254008
         # count() will return 0 if numeric, and > 0 if assoc, even partially
-        return (bool)count(array_filter(array_keys($aArray), 'is_string'));
+        return (bool) count(array_filter(array_keys($aArray), 'is_string'));
     }
 
     static function arrayIsSeq($aArray) {
@@ -621,7 +629,7 @@ TEST;
 
     static function echoAndCutClient($sMessage = '') {
         ignore_user_abort(true);
-#		set_time_limit(0);
+        #		set_time_limit(0);
 
         header("Connection: close");
         header("Content-Length: " . strlen($sMessage));
@@ -635,7 +643,7 @@ TEST;
     }
 
     static function stopWatch($sWhat) {
-#		return;
+        #		return;
         $iStop = \Flake\Util\Tools::milliseconds();
 
         $trail = debug_backtrace();
@@ -661,12 +669,14 @@ TEST;
         $len = strlen($data);
         if ($len < 18 || strcmp(substr($data, 0, 2), "\x1f\x8b")) {
             $error = "Not in GZIP format.";
+
             return null;  // Not GZIP format (See RFC 1952)
         }
         $method = ord(substr($data, 2, 1));  // Compression method
         $flags = ord(substr($data, 3, 1));  // Flags
         if ($flags & 31 != $flags) {
             $error = "Reserved bits not allowed.";
+
             return null;
         }
         // NOTE: $mtime may be negative (PHP integer limitations)
@@ -729,6 +739,7 @@ TEST;
             $headercrc = $headercrc[1];
             if ($headercrc != $calccrc) {
                 $error = "Header checksum failed.";
+
                 return false;    // Bad header CRC
             }
             $headerlen += 2;
@@ -754,6 +765,7 @@ TEST;
                 break;
             default:
                 $error = "Unknown compression method.";
+
                 return false;
             }
         }  // zero-byte body content is allowed
@@ -763,8 +775,10 @@ TEST;
         $lenOK = $isize == strlen($data);
         if (!$lenOK || !$crcOK) {
             $error = ($lenOK ? '' : 'Length check FAILED. ') . ($crcOK ? '' : 'Checksum FAILED.');
+
             return false;
         }
+
         return $data;
     }
 }

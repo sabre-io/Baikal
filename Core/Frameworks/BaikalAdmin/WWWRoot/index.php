@@ -59,19 +59,17 @@ $oPage->injectHTTPHeaders();
 $oPage->setTitle("Baïkal " . BAIKAL_VERSION . " Web Admin");
 $oPage->setBaseUrl(PROJECT_URI);
 
-if (! \BaikalAdmin\Core\Auth::isAuthenticated()) {
+if (!\BaikalAdmin\Core\Auth::isAuthenticated()) {
     if (\BaikalAdmin\Core\Auth::authenticate()) {
         // Redirect to itself
         header('Location: ' . $_SERVER['REQUEST_URI']);
         exit();
-
     } else {
         // Draw login page
         $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Anonymous());
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Login());
     }
 } else {
-
     // CSRF token check
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($_POST['CSRF_TOKEN'])) {

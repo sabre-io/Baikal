@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Model\Config;
 
 use Symfony\Component\Yaml\Yaml;
 
 class Standard extends \Baikal\Model\Config {
-
     protected $aConstants = [
         "timezone" => [
             "type"    => "string",
@@ -84,7 +83,6 @@ class Standard extends \Baikal\Model\Config {
             "options"    => \Baikal\Core\Tools::timezones(),
         ]));
 
-
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "card_enabled",
             "label" => "Enable CardDAV"
@@ -125,7 +123,6 @@ class Standard extends \Baikal\Model\Config {
         }
 
         if (!isset($config['system']["admin_passwordhash"]) || trim($config['system']["admin_passwordhash"]) === "") {
-
             # No password set (Form is used in install tool), so password is required as it has to be defined
             $oMorpho->element("admin_passwordhash")->setOption("validation", "required");
         } else {

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller\Install;
 
 use Symfony\Component\Yaml\Yaml;
 
 class UpgradeConfirmation extends \Flake\Core\Controller {
-
     function execute() {
     }
 
@@ -51,6 +50,7 @@ class UpgradeConfirmation extends \Flake\Core\Controller {
 
         $oView->setData("message", $sMessage);
         $oView->setData("projectUri", PROJECT_URI);
+
         return $oView->render();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Flake\Core;
 
@@ -53,6 +53,7 @@ abstract class View extends \Flake\Core\FLObject {
     function render() {
         $sTemplatePath = $this->templatesPath();
         $oTemplate = new \Flake\Core\Template($this->templatesPath());
+
         return $oTemplate->parse($this->getData());
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Model\User;
 
 class Customer extends \Flake\Core\Model\Db implements \Flake\Model\IUser {
-
     const DATATABLE = "user";
     const PRIMARYKEY = "uid";
     const LABELFIELD = "username";
@@ -53,11 +52,9 @@ class Customer extends \Flake\Core\Model\Db implements \Flake\Model\IUser {
     }
 
     function persist() {
-
     }
 
     function destroy() {
-
     }
 
     static function hashPassword($sClearPassword, $sSalt) {
@@ -86,5 +83,4 @@ class Customer extends \Flake\Core\Model\Db implements \Flake\Model\IUser {
 
         return $oUser;
     }
-
 }

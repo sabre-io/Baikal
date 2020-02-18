@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Model\Config;
 
 class Database extends \Baikal\Model\Config {
-
     protected $aConstants = [
         "sqlite_file" => [
             "type"    => "litteral",

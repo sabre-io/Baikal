@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake;
 
 use Symfony\Component\Yaml\Yaml;
 
 class Framework extends \Flake\Core\Framework {
-
     static function rmBeginSlash($sString) {
         if (substr($sString, 0, 1) === "/") {
             $sString = substr($sString, 1);
@@ -65,13 +64,16 @@ class Framework extends \Flake\Core\Framework {
 
     static function rmQuery($sString) {
         $iStart = strpos($sString, "?");
+
         return ($iStart === false) ? $sString : substr($sString, 0, $iStart);
     }
 
     static function rmScriptName($sString, $sScriptName) {
         $sScriptBaseName = basename($sScriptName);
-        if (self::endswith($sString, $sScriptBaseName))
+        if (self::endswith($sString, $sScriptBaseName)) {
             return substr($sString, 0, -strlen($sScriptBaseName));
+        }
+
         return $sString;
     }
 
@@ -83,12 +85,14 @@ class Framework extends \Flake\Core\Framework {
 
     static function endsWith($sString, $sTest) {
         $iTestLen = strlen($sTest);
-        if ($iTestLen > strlen($sString)) return false;
+        if ($iTestLen > strlen($sString)) {
+            return false;
+        }
+
         return substr_compare($sString, $sTest, -$iTestLen) === 0;
     }
 
     static function bootstrap() {
-
         # Asserting PHP 5.5.0+
         if (version_compare(PHP_VERSION, '5.5.0', '<')) {
             die('Flake Fatal Error: Flake requires PHP 5.5.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
@@ -119,10 +123,18 @@ class Framework extends \Flake\Core\Framework {
         # Also: https://github.com/netgusto/Baikal/issues/155
         if (in_array(strtolower(ini_get('magic_quotes_gpc')), ['1', 'on'])) {
             $process = [];
-            if (isset($_GET) && is_array($_GET)) { $process[] = &$_GET;}
-            if (isset($_POST) && is_array($_POST)) { $process[] = &$_POST;}
-            if (isset($_COOKIE) && is_array($_COOKIE)) { $process[] = &$_COOKIE;}
-            if (isset($_REQUEST) && is_array($_REQUEST)) { $process[] = &$_REQUEST;}
+            if (isset($_GET) && is_array($_GET)) {
+                $process[] = &$_GET;
+            }
+            if (isset($_POST) && is_array($_POST)) {
+                $process[] = &$_POST;
+            }
+            if (isset($_COOKIE) && is_array($_COOKIE)) {
+                $process[] = &$_COOKIE;
+            }
+            if (isset($_REQUEST) && is_array($_REQUEST)) {
+                $process[] = &$_REQUEST;
+            }
 
             foreach ($process as $key => $val) {
                 foreach ($val as $k => $v) {
@@ -156,7 +168,7 @@ class Framework extends \Flake\Core\Framework {
         define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
         define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
 
-        require_once(PROJECT_PATH_CORE . "Distrib.php");
+        require_once PROJECT_PATH_CORE . "Distrib.php";
 
         define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 
@@ -180,12 +192,16 @@ class Framework extends \Flake\Core\Framework {
         $sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
         $sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);
         define("PROJECT_URI", $sProtocol . "://" . $_SERVER["HTTP_HOST"] . $sHttpBaseUrl);
-        unset($sScript); unset($sDirName); unset($sBaseUrl); unset($sProtocol); unset($sHttpBaseUrl);
+        unset($sScript);
+        unset($sDirName);
+        unset($sBaseUrl);
+        unset($sProtocol);
+        unset($sHttpBaseUrl);
 
         #################################################################################################
 
         # Include Flake Framework config
-        require_once(FLAKE_PATH_ROOT . "config.php");
+        require_once FLAKE_PATH_ROOT . "config.php";
 
         # Determine Router class
         $GLOBALS["ROUTER"] = \Flake\Util\Tools::router();
@@ -196,7 +212,6 @@ class Framework extends \Flake\Core\Framework {
             if (!isset($_SESSION['CSRF_TOKEN'])) {
                 $_SESSION['CSRF_TOKEN'] = bin2hex(openssl_random_pseudo_bytes(20));
             }
-
         }
 
         setlocale(LC_ALL, FLAKE_LOCALE);
@@ -213,11 +228,11 @@ class Framework extends \Flake\Core\Framework {
     }
 
     protected static function initDb() {
-
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+
             return true;
         }
         # Dont init db on install, but in normal mode and when upgrading
@@ -249,6 +264,7 @@ class Framework extends \Flake\Core\Framework {
 
         if (file_exists($config['database']['sqlite_file']) && is_readable($config['database']['sqlite_file']) && !isset($GLOBALS["DB"])) {
             $GLOBALS["DB"] = new \Flake\Core\Database\Sqlite($config['database']['sqlite_file']);
+
             return true;
         }
 
@@ -256,7 +272,6 @@ class Framework extends \Flake\Core\Framework {
     }
 
     protected static function initDbMysql(array $config) {
-
         if (!$config['database']['mysql_host']) {
             die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }

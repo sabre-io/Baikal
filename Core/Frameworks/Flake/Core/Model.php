@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core;
 
 abstract class Model extends \Flake\Core\FLObject {
@@ -32,6 +32,7 @@ abstract class Model extends \Flake\Core\FLObject {
 
     protected function getData() {
         reset($this->aData);
+
         return $this->aData;
     }
 
@@ -58,6 +59,7 @@ abstract class Model extends \Flake\Core\FLObject {
     function set($sPropName, $sPropValue) {
         if (array_key_exists($sPropName, $this->aData)) {
             $this->aData[$sPropName] = $sPropValue;
+
             return $this;
         }
 
@@ -82,6 +84,7 @@ abstract class Model extends \Flake\Core\FLObject {
 
     static function humanName() {
         $aRes = explode("\\", get_called_class());
+
         return array_pop($aRes);
     }
 

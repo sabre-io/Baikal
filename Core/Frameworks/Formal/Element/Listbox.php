@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,12 +25,10 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal\Element;
 
 class Listbox extends \Formal\Element {
     function render() {
-
         $disabled = "";
         $inputclass = "";
         $groupclass = "";
@@ -100,6 +99,7 @@ class Listbox extends \Formal\Element {
 		</div>
 	</div>
 HTML;
+
         return $sHtml . $this->renderWitness();
     }
 }

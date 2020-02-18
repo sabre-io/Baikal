@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Controller;
 
 class HtmlBlock extends \Flake\Core\Controller {
-
     /**
      * @var string
      */
@@ -39,7 +38,6 @@ class HtmlBlock extends \Flake\Core\Controller {
     }
 
     function execute() {
-
     }
 
     function render() {

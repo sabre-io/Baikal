@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,14 +25,13 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Core;
 
 use PDO;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * The Baikal Server
+ * The Baikal Server.
  *
  * This class sets up the underlying Sabre\DAV\Server object.
  *
@@ -40,7 +40,6 @@ use Symfony\Component\Yaml\Yaml;
  * @license http://sabre.io/license/ GPLv2
  */
 class Server {
-
     /**
      * Is CalDAV enabled?
      *
@@ -56,40 +55,39 @@ class Server {
     protected $enableCardDAV;
 
     /**
-     * "Basic" or "Digest"
+     * "Basic" or "Digest".
      *
      * @var string
      */
     protected $authType;
 
     /**
-     * HTTP authentication realm
+     * HTTP authentication realm.
      *
      * @var string
      */
     protected $authRealm;
 
     /**
-     * Reference to Database object
+     * Reference to Database object.
      *
      * @var PDO
      */
     protected $pdo;
 
     /**
-     * baseUri for the sabre/dav server
+     * baseUri for the sabre/dav server.
      *
      * @var string
      */
     protected $baseUri;
 
     /**
-     * The sabre/dav Server object
+     * The sabre/dav Server object.
      *
      * @var \Sabre\DAV\Server
      */
     protected $server;
-
 
     /**
      * Creates the server object.
@@ -102,7 +100,6 @@ class Server {
      * @param string $baseUri
      */
     function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
-
         $this->enableCalDAV = $enableCalDAV;
         $this->enableCardDAV = $enableCardDAV;
         $this->authType = $authType;
@@ -111,27 +108,23 @@ class Server {
         $this->baseUri = $baseUri;
 
         $this->initServer();
-
     }
 
     /**
-     * Starts processing
+     * Starts processing.
      *
      * @return void
      */
     function start() {
-
         $this->server->exec();
-
     }
 
     /**
-     * Initializes the server object
+     * Initializes the server object.
      *
      * @return void
      */
     protected function initServer() {
-
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
@@ -188,11 +181,10 @@ class Server {
         }
 
         $this->server->on('exception', [$this, 'exception']);
-
     }
 
     /**
-     * Log failed accesses, matching the default fail2ban nginx/apache auth rules
+     * Log failed accesses, matching the default fail2ban nginx/apache auth rules.
      *
      * @return void
      */
@@ -211,5 +203,4 @@ class Server {
             error_log($e);
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,18 +25,15 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller\User;
 
 class Calendars extends \Flake\Core\Controller {
-
     protected $aMessages = [];
     protected $oModel;    # \Baikal\Model\Calendar
     protected $oUser;    # \Baikal\Model\User
     protected $oForm;    # \Formal\Form
 
     function execute() {
-
         if (($iUser = $this->currentUserId()) === false) {
             throw new \Exception("BaikalAdmin\Controller\User\Calendars::render(): User get-parameter not found.");
         }
@@ -52,7 +50,6 @@ class Calendars extends \Flake\Core\Controller {
     }
 
     function render() {
-
         $oView = new \BaikalAdmin\View\User\Calendars();
 
         # User
@@ -134,7 +131,6 @@ class Calendars extends \Flake\Core\Controller {
     }
 
     protected function actionNew() {
-
         # Building floating model object
         $this->oModel = new \Baikal\Model\Calendar();
         $this->oModel->set(
@@ -237,14 +233,12 @@ class Calendars extends \Flake\Core\Controller {
     }
 
     protected function actionDelete() {
-
         $aParams = $this->getParams();
         $iCalendar = intval($aParams["delete"]);
 
         if ($this->actionDeleteConfirmed() !== false) {
-
             # catching Exception thrown when model already destroyed
-                # happens when user refreshes page on delete-URL, for instance
+            # happens when user refreshes page on delete-URL, for instance
 
             try {
                 $oModel = new \Baikal\Model\Calendar($iCalendar);
@@ -256,7 +250,6 @@ class Calendars extends \Flake\Core\Controller {
             # Redirecting to admin home
             \Flake\Util\Tools::redirectUsingMeta($this->linkHome());
         } else {
-
             $oModel = new \Baikal\Model\Calendar($iCalendar);
             $this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
                 "Check twice, you're about to delete " . $oModel->label() . "</strong> from the database !",

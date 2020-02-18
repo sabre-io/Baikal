@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Render;
 
 abstract class Container extends \Flake\Core\Controller {
-
     public $aSequence = [];
     public $aBlocks = [];
     public $aRendu = [];
@@ -39,8 +38,8 @@ abstract class Container extends \Flake\Core\Controller {
             "block" => &$oBlock,
             "rendu" => "",
         ];
-        $this->aSequence[] = & $aTemp;
-        $this->aBlocks[$sZone][] = & $aTemp["rendu"];
+        $this->aSequence[] = &$aTemp;
+        $this->aBlocks[$sZone][] = &$aTemp["rendu"];
     }
 
     function &zone($sZone) {
@@ -54,6 +53,7 @@ abstract class Container extends \Flake\Core\Controller {
     function render() {
         $this->execute();
         $aRenderedBlocks = $this->renderBlocks();
+
         return implode("", $aRenderedBlocks);
     }
 
@@ -75,6 +75,7 @@ abstract class Container extends \Flake\Core\Controller {
         }
 
         reset($aHtml);
+
         return $aHtml;
     }
 }

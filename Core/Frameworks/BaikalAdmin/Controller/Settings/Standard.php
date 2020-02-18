@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller\Settings;
 
 class Standard extends \Flake\Core\Controller {
-
     /**
      * @var \Baikal\Model\Config\Standard
      */
@@ -57,7 +56,6 @@ class Standard extends \Flake\Core\Controller {
     }
 
     function render() {
-
         $oView = new \BaikalAdmin\View\Settings\Standard();
         $oView->setData("form", $this->oForm->render());
 
