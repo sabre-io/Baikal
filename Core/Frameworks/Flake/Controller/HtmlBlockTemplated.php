@@ -29,6 +29,16 @@ namespace Flake\Controller;
 
 class HtmlBlockTemplated extends \Flake\Core\Controller {
 
+    /**
+     * @var string
+     */
+    private $sTemplatePath;
+
+    /**
+     * @var array
+     */
+    private $aMarkers;
+
     function __construct($sTemplatePath, $aMarkers = []) {
         $this->sTemplatePath = $sTemplatePath;
         $this->aMarkers = $aMarkers;
@@ -41,5 +51,10 @@ class HtmlBlockTemplated extends \Flake\Core\Controller {
         );
 
         return $sHtml;
+    }
+
+    function execute()
+    {
+        // TODO: Implement execute() method.
     }
 }

@@ -29,6 +29,11 @@ namespace Flake\Core;
 
 abstract class PostConnectionService extends \Flake\Core\FLObject {
 
+    /**
+     * @var array
+     */
+    private $aParams;
+
     function __construct($aParams = []) {
         $this->aParams = $aParams;
     }
