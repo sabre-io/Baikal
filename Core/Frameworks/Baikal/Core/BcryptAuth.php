@@ -66,15 +66,15 @@ class BcryptAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
         $result = $stmt->fetchAll();
         if (!count($result)) return false;
 
-	if (substr($result[0]['digesta1'],0,4) == '$2y$') {
-		$check = password_verify($password, $result[0]['digesta1']);
-	} else {
-	        $hash = md5($username . ':' . $this->authRealm . ':' . $password);
-        	if ($result[0]['digesta1'] === $hash) {
-			$check = true;
-		}
-	}
-	if ($check == true) {
+        if (substr($result[0]['digesta1'],0,4) == '$2y$') {
+                $check = password_verify($password, $result[0]['digesta1']);
+        } else {
+                $hash = md5($username . ':' . $this->authRealm . ':' . $password);
+                if ($result[0]['digesta1'] === $hash) {
+                        $check = true;
+                }
+        }
+        if ($check == true) {
             $this->currentUser = $username;
             return true;
         }

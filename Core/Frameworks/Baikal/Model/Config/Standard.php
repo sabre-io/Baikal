@@ -67,7 +67,7 @@ class Standard extends \Baikal\Model\Config {
         "BAIKAL_CAL_ENABLED"        => true,
         "BAIKAL_INVITE_FROM"        => "",
         "BAIKAL_DAV_AUTH_TYPE"      => "Basic",
-	"BAIKAL_USER_AUTH_TYPE"     => "Bcrypt",
+        "BAIKAL_USER_AUTH_TYPE"     => "Bcrypt",
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
 
@@ -104,12 +104,12 @@ class Standard extends \Baikal\Model\Config {
             "options" => ["Basic","Digest"]
         ]));
 
-	$oMorpho->add(new \Formal\Element\Listbox([
-	    "prop"    => "BAIKAL_USER_AUTH_TYPE",
-	    "label"   => "Password Storage Hash Type",
-	    "options" => ["Bcrypt","MD5"],
-	    "help"    => "If set to BCrypt, WebDAV must be set to BASIC."
-	]));
+        $oMorpho->add(new \Formal\Element\Listbox([
+            "prop"    => "BAIKAL_USER_AUTH_TYPE",
+            "label"   => "Password Storage Hash Type",
+            "options" => ["Bcrypt","MD5"],
+            "help"    => "If set to BCrypt, WebDAV must be set to BASIC."
+        ]));
 
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "BAIKAL_ADMIN_PASSWORDHASH",
@@ -144,13 +144,13 @@ class Standard extends \Baikal\Model\Config {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
-	                parent::set(
-        	            "BAIKAL_ADMIN_PASSWORDHASH",
-			    password_hash($sValue,PASSWORD_BCRYPT)
-	                );
-		  }
-	    return $this;
-	  }
+                        parent::set(
+                            "BAIKAL_ADMIN_PASSWORDHASH",
+                            password_hash($sValue,PASSWORD_BCRYPT)
+                        );
+                  }
+            return $this;
+          }
 
         parent::set($sProp, $sValue);
     }
