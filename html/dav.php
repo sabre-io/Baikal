@@ -53,16 +53,16 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 \Baikal\Framework::bootstrap();
 
 try {
-    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 } catch (\Exception $e) {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
 }
 
 $server = new \Baikal\Core\Server(
-    $config['parameters']["baikal_cal_enabled"],
-    $config['parameters']["baikal_card_enabled"],
-    $config['parameters']["baikal_dav_auth_type"],
-    $config['parameters']["baikal_auth_realm"],
+    $config['system']["cal_enabled"],
+    $config['system']["card_enabled"],
+    $config['system']["dav_auth_type"],
+    $config['system']["auth_realm"],
     $GLOBALS['DB']->getPDO(),
     PROJECT_BASEURI . 'dav.php/'
 );

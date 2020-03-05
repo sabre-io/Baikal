@@ -1,0 +1,17 @@
+system:
+    configured_version: 0.7.0
+    timezone: Europe/Paris
+    card_enabled: true
+    cal_enabled: true
+    invite_from: noreply@localhost
+    dav_auth_type: Digest
+    admin_passwordhash: fe46dc8ebc01d600783bf9776afcde8085c6da2003c7934bb25b07ba6478d6c9
+    auth_realm: BaikalDAV
+database:
+    encryption_key: 6a87cf45447abaa84517d227cba951a8
+    sqlite_file: /mnt/DATEN/Entwicklung/htdocs/baikal/Specific/db/db.sqlite
+    mysql: false
+    mysql_host: ''
+    mysql_dbname: ''
+    mysql_username: ''
+    mysql_password: ''

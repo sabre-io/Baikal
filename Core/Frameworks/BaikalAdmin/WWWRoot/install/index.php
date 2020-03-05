@@ -68,27 +68,21 @@ $oPage->setBaseUrl(PROJECT_URI);
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
 try {
-    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+    $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 } catch (\Exception $e) {
     $config = null;
-    error_log('Error reading config.yaml file : ' . $e->getMessage());
-}
-try {
-    $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-} catch (\Exception $e) {
-    $configSystem = null;
-    error_log('Error reading system.yaml file : ' . $e->getMessage());
+    error_log('Error reading baikal.yaml file : ' . $e->getMessage());
 }
 
-if (!$configSystem || !isset($configSystem['parameters']["baikal_configured_version"])) {
+if (!$config || !isset($config['system']["configured_version"])) {
     # we have to upgrade Baïkal (existing installation)
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 
-} elseif (!$config || !isset($config['parameters']["baikal_admin_passwordhash"])) {
+} elseif (!isset($config['system']["admin_passwordhash"])) {
     # we have to set an admin password
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
-    if ($configSystem['parameters']["baikal_configured_version"] !== BAIKAL_VERSION) {
+    if ($config['system']["configured_version"] !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
         if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());

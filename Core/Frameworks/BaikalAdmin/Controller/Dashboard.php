@@ -36,14 +36,14 @@ class Dashboard extends \Flake\Core\Controller {
 
     function render() {
 
-        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 
         $oView = new \BaikalAdmin\View\Dashboard();
         $oView->setData("BAIKAL_VERSION", BAIKAL_VERSION);
 
         # Services status
-        $oView->setData("baikal_cal_enabled", $config['parameters']['baikal_cal_enabled']);
-        $oView->setData("baikal_card_enabled", $config['parameters']['baikal_card_enabled']);
+        $oView->setData("baikal_cal_enabled", $config['system']['cal_enabled']);
+        $oView->setData("baikal_card_enabled", $config['system']['card_enabled']);
 
         # Statistics: Users
         $iNbUsers = \Baikal\Model\User::getBaseRequester()->count();

@@ -1,8 +1,0 @@
-parameters:
-    project_timezone: 'Europe/Paris'
-    baikal_card_enabled: true
-    baikal_cal_enabled: true
-    baikal_invite_from: 'noreply@localhost'
-    baikal_dav_auth_type: 'Digest'
-    baikal_admin_passwordhash: 5fe794627e1f841f8debba065e2c807a
-    baikal_auth_realm: BaikalDAV

@@ -32,9 +32,9 @@ use Symfony\Component\Yaml\Yaml;
 class Auth {
     static function isAuthenticated() {
 
-        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 
-        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['parameters']['baikal_admin_passwordhash'])) {
+        if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['system']['admin_passwordhash'])) {
             return true;
         }
 
@@ -52,12 +52,12 @@ class Auth {
 
         $sPassHash = self::hashAdminPassword($sPass);
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading config.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
-        if ($sUser === "admin" && $sPassHash === $config['parameters']['baikal_admin_passwordhash']) {
-            $_SESSION["baikaladminauth"] = md5($config['parameters']['baikal_admin_passwordhash']);
+        if ($sUser === "admin" && $sPassHash === $config['system']['admin_passwordhash']) {
+            $_SESSION["baikaladminauth"] = md5($config['system']['admin_passwordhash']);
             return true;
         }
 
@@ -72,13 +72,13 @@ class Auth {
     static function hashAdminPassword($sPassword) {
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading config.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
         # Fallback to default value; useful when initializing App, as all constants are not set yet
-        $sAuthRealm = $config['parameters']['baikal_auth_realm'] ?? "BaikalDAV";
+        $sAuthRealm = $config['system']['auth_realm'] ?? "BaikalDAV";
 
         return hash('sha256', 'admin:' . $sAuthRealm . ':' . $sPassword);
     }
