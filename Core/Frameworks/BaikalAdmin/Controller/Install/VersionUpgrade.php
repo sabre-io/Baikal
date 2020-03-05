@@ -44,16 +44,16 @@ class VersionUpgrade extends \Flake\Core\Controller {
     function render() {
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading system.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
         $sBigIcon = "glyph2x-magic";
         $sBaikalVersion = BAIKAL_VERSION;
-        $sBaikalConfiguredVersion = $config['parameters']['baikal_configured_version'];
+        $sBaikalConfiguredVersion = $config['system']['configured_version'];
 
-        if ($config['parameters']['baikal_configured_version'] === BAIKAL_VERSION) {
+        if ($config['system']['configured_version'] === BAIKAL_VERSION) {
             $sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
@@ -67,7 +67,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 HTML;
 
         try {
-            $bSuccess = $this->upgrade($config['parameters']['baikal_configured_version'], BAIKAL_VERSION);
+            $bSuccess = $this->upgrade($config['system']['configured_version'], BAIKAL_VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
@@ -532,11 +532,11 @@ SQL
     protected function updateConfiguredVersion($sVersionTo) {
 
         # Create new settings
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
+        $oConfig = new \Baikal\Model\Config\Standard("config");
         $oConfig->persist();
 
         # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
+        $oConfig = new \Baikal\Model\Config\System("system");
         $oConfig->set("baikal_configured_version", $sVersionTo);
         $oConfig->persist();
     }

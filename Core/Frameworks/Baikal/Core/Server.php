@@ -133,9 +133,9 @@ class Server {
     protected function initServer() {
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading config.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
         if ($this->authType === 'Basic') {
@@ -178,8 +178,8 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
-            if (isset($config['parameters']["baikal_invite_from"]) && $config['parameters']["baikal_invite_from"] !== "") {
-                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['parameters']["baikal_invite_from"]));
+            if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
+                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['system']["invite_from"]));
             }
         }
         if ($this->enableCardDAV) {

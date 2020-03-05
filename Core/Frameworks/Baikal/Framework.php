@@ -52,31 +52,24 @@ class Framework extends \Flake\Core\Framework {
         \Baikal\Core\Tools::configureEnvironment();
 
         # Check that a config file exists
-        if (
-            !file_exists(PROJECT_PATH_CONFIG . "config.yaml") ||
-            !file_exists(PROJECT_PATH_CONFIG . "system.yaml")
-        ) {
+        if (!file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
             self::installTool();
         } else {
-
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
-            $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
-            date_default_timezone_set($config['parameters']['project_timezone']);
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            date_default_timezone_set($config['system']['timezone']);
 
             # Check that Baïkal is already configured
-            if (!isset($configSystem['parameters']['baikal_configured_version'])) {
+            if (!isset($config['system']['configured_version'])) {
                 self::installTool();
-
             } else {
 
                 # Check that running version matches configured version
-                if (version_compare(BAIKAL_VERSION, $configSystem['parameters']['baikal_configured_version']) > 0) {
+                if (version_compare(BAIKAL_VERSION, $config['system']['configured_version']) > 0) {
                     self::installTool();
-
                 } else {
 
                     # Check that admin password is set
-                    if (!$config['parameters']['baikal_admin_passwordhash']) {
+                    if (!$config['system']['admin_passwordhash']) {
                         self::installTool();
                     }
 

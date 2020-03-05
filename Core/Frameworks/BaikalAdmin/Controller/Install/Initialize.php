@@ -50,11 +50,11 @@ class Initialize extends \Flake\Core\Controller {
         // If we come from pre-0.7.0, we need to get the values from the config.php and config.system.php files 
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
             require_once(PROJECT_PATH_SPECIFIC . "config.php");
-            $this->oModel->set('project_timezone', PROJECT_TIMEZONE);
-            $this->oModel->set('baikal_card_enabled', BAIKAL_CARD_ENABLED);
-            $this->oModel->set('baikal_cal_enabled', BAIKAL_CAL_ENABLED);
-            $this->oModel->set('baikal_invite_from', BAIKAL_INVITE_FROM);
-            $this->oModel->set('baikal_dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
+            $this->oModel->set('timezone', PROJECT_TIMEZONE);
+            $this->oModel->set('card_enabled', BAIKAL_CARD_ENABLED);
+            $this->oModel->set('cal_enabled', BAIKAL_CAL_ENABLED);
+            $this->oModel->set('invite_from', BAIKAL_INVITE_FROM);
+            $this->oModel->set('dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
@@ -75,13 +75,13 @@ class Initialize extends \Flake\Core\Controller {
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
-                $oSystemConfig->set("baikal_encryption_key",  md5(microtime() . rand()));
+                $oSystemConfig = new \Baikal\Model\Config\System("system");
+                $oSystemConfig->set("encryption_key",  md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?
                 $aPDODrivers = \PDO::getAvailableDrivers();
                 if (!in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
-                    $oSystemConfig->set("project_db_mysql",  true);
+                    $oSystemConfig->set("mysql",  true);
                 }
 
                 $oSystemConfig->persist();

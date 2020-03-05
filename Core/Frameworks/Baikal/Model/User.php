@@ -283,11 +283,11 @@ class User extends \Flake\Core\Model\Db {
     function getPasswordHashForPassword($sPassword) {
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading config.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
-        return md5($this->get("username") . ':' . $config['parameters']['baikal_auth_realm'] . ':' . $sPassword);
+        return md5($this->get("username") . ':' . $config['system']['auth_realm'] . ':' . $sPassword);
     }
 }

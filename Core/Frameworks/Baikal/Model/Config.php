@@ -31,19 +31,18 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class Config extends \Flake\Core\Model\NoDb {
 
-    protected $sConfigFilePath = "";
+    protected $sConfigFileSection = "";
     protected $aData = [];
 
-    function __construct($sConfigFilePath) {
-
+    function __construct($sConfigFileSection) {
         # Note: no call to parent::__construct() to avoid erasing $this->aData
-        $this->sConfigFilePath = $sConfigFilePath;
+        $this->sConfigFileSection = $sConfigFileSection;
 
         try {
-            $config = Yaml::parseFile($this->sConfigFilePath);
-            $aConfig = $config['parameters'];
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            $aConfig = $config[$sConfigFileSection];
         } catch (\Exception $e) {
-            error_log('Error reading "' . $this->sConfigFilePath . '" file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
             $aConfig = static::getDefaultConfig();
         }
 
@@ -56,8 +55,8 @@ abstract class Config extends \Flake\Core\Model\NoDb {
     }
 
     protected function getConfigAsString() {
-        if (file_exists($this->sConfigFilePath)) {
-            return Yaml::parseFile($this->sConfigFilePath);
+        if (file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
+            return Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml")[$this->sConfigFileSection];
         } else {
             return static::getDefaultConfig();
         }
@@ -65,9 +64,9 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
     function writable() {
         return (
-            @file_exists($this->sConfigFilePath) &&
-            @is_file($this->sConfigFilePath) &&
-            @is_writable($this->sConfigFilePath)
+            @file_exists(PROJECT_PATH_CONFIG . "baikal.yaml") &&
+            @is_file(PROJECT_PATH_CONFIG . "baikal.yaml") &&
+            @is_writable(PROJECT_PATH_CONFIG . "baikal.yaml")
         );
     }
 
@@ -88,10 +87,10 @@ abstract class Config extends \Flake\Core\Model\NoDb {
     }
 
     function persist() {
-        $yaml = Yaml::dump([
-            'parameters' => $this->aData
-        ]);
-        file_put_contents($this->sConfigFilePath, $yaml);
+        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        $config[$this->sConfigFileSection] = $this->aData;
+        $yaml = Yaml::dump($config);
+        file_put_contents(PROJECT_PATH_CONFIG . "baikal.yaml", $yaml);
     }
 
     function destroy() {

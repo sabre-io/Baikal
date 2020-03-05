@@ -215,16 +215,16 @@ class Framework extends \Flake\Core\Framework {
     protected static function initDb() {
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "system.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading system.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
             return true;
         }
         # Dont init db on install, but in normal mode and when upgrading
-        if (defined("BAIKAL_CONTEXT_INSTALL") && (!isset($config['parameters']['baikal_configured_version']) || $config['parameters']['baikal_configured_version'] === BAIKAL_VERSION)) {
+        if (defined("BAIKAL_CONTEXT_INSTALL") && (!isset($config['system']['configured_version']) || $config['system']['configured_version'] === BAIKAL_VERSION)) {
             return true;
         }
-        if ($config['parameters']['project_db_mysql'] === true) {
+        if ($config['database']['mysql'] === true) {
             self::initDbMysql($config);
         } else {
             self::initDbSqlite($config);
@@ -233,22 +233,22 @@ class Framework extends \Flake\Core\Framework {
 
     protected static function initDbSqlite(array $config) {
         # Asserting DB filepath is set
-        if (!$config['parameters']['project_sqlite_file']) {
+        if (!$config['database']['sqlite_file']) {
             return false;
         }
 
         # Asserting DB file is writable
-        if (file_exists($config['parameters']['project_sqlite_file']) && !is_writable($config['parameters']['project_sqlite_file'])) {
-            die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . $config['parameters']['project_sqlite_file'] . "</span>'</h3>");
+        if (file_exists($config['database']['sqlite_file']) && !is_writable($config['database']['sqlite_file'])) {
+            die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . $config['database']['sqlite_file'] . "</span>'</h3>");
         }
 
         # Asserting DB directory is writable
-        if (!is_writable(dirname($config['parameters']['project_sqlite_file']))) {
-            die("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname($config['parameters']['project_sqlite_file']) . "</span>'</h3>");
+        if (!is_writable(dirname($config['database']['sqlite_file']))) {
+            die("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname($config['database']['sqlite_file']) . "</span>'</h3>");
         }
 
-        if (file_exists($config['parameters']['project_sqlite_file']) && is_readable($config['parameters']['project_sqlite_file']) && !isset($GLOBALS["DB"])) {
-            $GLOBALS["DB"] = new \Flake\Core\Database\Sqlite($config['parameters']['project_sqlite_file']);
+        if (file_exists($config['database']['sqlite_file']) && is_readable($config['database']['sqlite_file']) && !isset($GLOBALS["DB"])) {
+            $GLOBALS["DB"] = new \Flake\Core\Database\Sqlite($config['database']['sqlite_file']);
             return true;
         }
 
@@ -257,28 +257,28 @@ class Framework extends \Flake\Core\Framework {
 
     protected static function initDbMysql(array $config) {
 
-        if (!$config['parameters']['project_db_mysql_host']) {
+        if (!$config['database']['mysql_host']) {
             die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
-        if (!$config['parameters']['project_db_mysql_dbname']) {
+        if (!$config['database']['mysql_dbname']) {
             die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
-        if (!$config['parameters']['project_db_mysql_username']) {
+        if (!$config['database']['mysql_username']) {
             die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
-        if (!$config['parameters']['project_db_mysql_password']) {
+        if (!$config['database']['mysql_password']) {
             die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/system.yaml</h3>");
         }
 
         try {
             $GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
-                $config['parameters']['project_db_mysql_host'],
-                $config['parameters']['project_db_mysql_dbname'],
-                $config['parameters']['project_db_mysql_username'],
-                $config['parameters']['project_db_mysql_password']
+                $config['database']['mysql_host'],
+                $config['database']['mysql_dbname'],
+                $config['database']['mysql_username'],
+                $config['database']['mysql_password']
             );
 
             # We now setup t6he connexion to use UTF8

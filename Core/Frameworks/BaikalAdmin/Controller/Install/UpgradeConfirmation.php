@@ -38,13 +38,13 @@ class UpgradeConfirmation extends \Flake\Core\Controller {
         $oView = new \BaikalAdmin\View\Install\UpgradeConfirmation();
 
         try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "config.yaml");
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
-            error_log('Error reading config.yaml file : ' . $e->getMessage());
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
-        if (isset($config['parameters']['baikal_configured_version']) && $config['parameters']['baikal_configured_version'] === BAIKAL_VERSION) {
-            $sMessage = "Your system is configured to use version <strong>" . $config['parameters']['baikal_configured_version'] . "</strong>.<br />There's no upgrade to be done.";
+        if (isset($config['system']['configured_version']) && $config['system']['configured_version'] === BAIKAL_VERSION) {
+            $sMessage = "Your system is configured to use version <strong>" . $config['system']['configured_version'] . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . "Unknown" . "</strong> to version <strong>" . BAIKAL_VERSION . "</strong>";
         }

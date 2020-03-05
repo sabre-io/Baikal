@@ -2,8 +2,7 @@
 logs
 
 # Specific
-config/config.yaml
-config/system.yaml
+config/baikal.yaml
 Specific/INSTALL_DISABLED
 
 # Composer stuff
