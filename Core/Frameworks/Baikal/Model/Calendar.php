@@ -39,7 +39,7 @@ class Calendar extends \Flake\Core\Model\Db {
         "description"   => "",
         "calendarorder" => 0,
         "calendarcolor" => "",
-        "timezone"      => "",
+        "timezone"      => PROJECT_TIMEZONE,
         "calendarid"    => 0
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar

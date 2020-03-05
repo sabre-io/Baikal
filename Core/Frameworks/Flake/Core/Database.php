@@ -29,6 +29,11 @@ namespace Flake\Core;
 
 abstract class Database extends \Flake\Core\FLObject {
 
+    private $debugOutput;
+    private $debug_lastBuiltQuery;
+    private $store_lastBuiltQuery;
+    private $oDb;
+
     /* common stuff */
 
     protected function messageAndDie($sMessage) {

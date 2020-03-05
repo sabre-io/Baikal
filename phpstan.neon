@@ -1,0 +1,22 @@
+parameters:
+  level: 0
+  excludes_analyse:
+    - Core/Frameworks/BaikalAdmin/Resources/GlyphiconsPro/generate-sprite.php
+    - Core/Resources/Web/BaikalAdmin/GlyphiconsPro/generate-sprite.php
+    - html/res/core/BaikalAdmin/GlyphiconsPro/generate-sprite.php
+  ignoreErrors:
+    -
+      message: '#Instantiated class Flake\\Core\\Exception not found.#'
+      path: Core/Frameworks/Flake/Util/Frameworks.php
+    -
+      message: '#Call to an undefined method Baikal\\Model\\Config\\Standard::getDefaultSystemConfig\(\).#'
+      path: Core/Frameworks/Baikal/Model/Config/Standard.php
+    -
+      message: '#Call to static method compileCss\(\) on an unknown class Frameworks\\LessPHP\\Delegate.#'
+      path: Core/Frameworks/Flake/Controller/Page.php
+    -
+      message: '#Access to undefined constant Flake\\Core\\Model::LABELFIELD.#'
+      path: Core/Frameworks/Flake/Core/Model.php
+    -
+      message: '#Declaration of Flake\\Core\\Datastructure\\Chain::push\(Flake\\Core\\Datastructure\\Chainable \$value\) should be compatible with SplDoublyLinkedList::push\(\$value\)#'
+      path: Core/Frameworks/Flake/Core/Datastructure/Chain.php

@@ -192,7 +192,7 @@ class Server {
     }
 
     /**
-     * Log failed accesses, for further processing by other tools (fail2ban)
+     * Log failed accesses, matching the default fail2ban nginx/apache auth rules
      *
      * @return void
      */
@@ -200,9 +200,12 @@ class Server {
         if ($e instanceof \Sabre\DAV\Exception\NotAuthenticated) {
             // Applications may make their first call without auth so don't log these attempts
             // Pattern from sabre/dav/lib/DAV/Auth/Backend/AbstractDigest.php
-            if (strpos($e->getMessage(), "No 'Authorization: Digest' header found.") === false
-                && strpos($e->getMessage(), "No 'Authorization: Basic' header found.") === false) {
-                error_log('user not authorized: Baikal DAV: ' . $e->getMessage());
+            if (!preg_match("/No 'Authorization: (Basic|Digest)' header found./", $e->getMessage())) {
+                if (isset($_SERVER['SERVER_SOFTWARE']) && preg_match('/nginx/i', $_SERVER['SERVER_SOFTWARE'])) {
+                    error_log('user "(name stripped-out)" was not found in "Baikal DAV"', 4);
+                } else {
+                    error_log('user "(name stripped-out)" authentication failure for "Baikal DAV"', 4);
+                }
             }
         } else {
             error_log($e);

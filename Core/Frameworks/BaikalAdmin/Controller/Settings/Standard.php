@@ -29,6 +29,16 @@ namespace BaikalAdmin\Controller\Settings;
 
 class Standard extends \Flake\Core\Controller {
 
+    /**
+     * @var \Baikal\Model\Config\Standard
+     */
+    private $oModel;
+
+    /**
+     * @var \Formal\Form
+     */
+    private $oForm;
+
     function execute() {
         $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
 

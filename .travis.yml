@@ -1,18 +1,32 @@
 language: php
 dist: trusty
 php:
-  - 7
+  - 7.0
   - 7.1
   - 7.2
   - 7.3
+  - 7.4
 
 matrix:
   fast_finish: true
 
 env:
+  global:
+    - RUN_PHPSTAN="FALSE"
   matrix:
-    - LOWEST_DEPS=""
-    - LOWEST_DEPS="--prefer-lowest"
+    - PREFER_LOWEST=""
+    - PREFER_LOWEST="--prefer-lowest"
+
+install:
+  - if [ $RUN_PHPSTAN == "TRUE" ]; then composer require --dev phpstan/phpstan:^0.12; fi
+
+matrix:
+  include:
+    - name: 'PHPStan'
+      php: 7.4
+      env:
+        - RUN_PHPSTAN="TRUE"
+  fast_finish: true
 
 services:
   - mysql
@@ -23,11 +37,12 @@ before_script:
   # - mysql -e 'create database sabredav'
   - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
   # - composer self-update
-  - composer update --prefer-source $LOWEST_DEPS
+  - composer update $PREFER_LOWEST
 
 script:
-    - find Core -name "*.php" | xargs -n1 php -l 
-    - ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff
+  - if [ $RUN_PHPSTAN == "FALSE" ]; then find Core -name "*.php" | xargs -n1 php -l; fi
+  - if [ $RUN_PHPSTAN == "FALSE" ]; then ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff; fi
+  - if [ $RUN_PHPSTAN == "TRUE" ]; then php vendor/bin/phpstan.phar analyse Core html; fi
 
 cache:
   directories:

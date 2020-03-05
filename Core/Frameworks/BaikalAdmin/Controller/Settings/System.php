@@ -31,6 +31,16 @@ use Symfony\Component\Yaml\Yaml;
 
 class System extends \Flake\Core\Controller {
 
+    /**
+     * @var \Baikal\Model\Config\System
+     */
+    private $oModel;
+
+    /**
+     * @var \Formal\Form
+     */
+    private $oForm;
+
     function execute() {
         $this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
 
