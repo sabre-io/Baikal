@@ -29,10 +29,6 @@ namespace Flake\Core\Database;
 
 class Mysql extends \Flake\Core\Database {
 
-    protected $oDb = false;    // current DB link
-    protected $debugOutput = false;
-    protected $store_lastBuiltQuery = true;
-    protected $debug_lastBuiltQuery = "";
     protected $sHost = "";
     protected $sDbName = "";
     protected $sUsername = "";
