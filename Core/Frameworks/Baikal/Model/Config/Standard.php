@@ -48,7 +48,11 @@ class Standard extends \Baikal\Model\Config {
         ],
         "BAIKAL_DAV_AUTH_TYPE" => [
             "type"    => "string",
-            "comment" => "HTTP authentication type for WebDAV; default Digest"
+            "comment" => "HTTP authentication type for WebDAV; default Basic"
+        ],
+        "BAIKAL_USER_AUTH_TYPE" => [
+        "type"    => "string",
+        "comment" => "Authentication mechanism for user accounts"
         ],
         "BAIKAL_ADMIN_PASSWORDHASH" => [
             "type"    => "string",
@@ -62,7 +66,8 @@ class Standard extends \Baikal\Model\Config {
         "BAIKAL_CARD_ENABLED"       => true,
         "BAIKAL_CAL_ENABLED"        => true,
         "BAIKAL_INVITE_FROM"        => "",
-        "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
+        "BAIKAL_DAV_AUTH_TYPE"      => "Basic",
+        "BAIKAL_USER_AUTH_TYPE"     => "Bcrypt",
         "BAIKAL_ADMIN_PASSWORDHASH" => ""
     ];
 
@@ -96,7 +101,14 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "BAIKAL_DAV_AUTH_TYPE",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic"]
+            "options" => ["Basic", "Digest"]
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Listbox([
+            "prop"    => "BAIKAL_USER_AUTH_TYPE",
+            "label"   => "Password Storage Hash Type",
+            "options" => ["Bcrypt", "MD5"],
+            "help"    => "If set to BCrypt, WebDAV must be set to BASIC."
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
@@ -132,14 +144,13 @@ class Standard extends \Baikal\Model\Config {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
-                parent::set(
-                    "BAIKAL_ADMIN_PASSWORDHASH",
-                    \BaikalAdmin\Core\Auth::hashAdminPassword($sValue)
-                );
-            }
-
+                        parent::set(
+                            "BAIKAL_ADMIN_PASSWORDHASH",
+                            password_hash($sValue, PASSWORD_BCRYPT)
+                        );
+                  }
             return $this;
-        }
+          }
 
         parent::set($sProp, $sValue);
     }
@@ -191,8 +202,12 @@ define("BAIKAL_CAL_ENABLED", TRUE);
 # CalDAV invite From: mail address (comment or leave blank to disable notifications)
 define("BAIKAL_INVITE_FROM", "noreply@$_SERVER[SERVER_NAME]");
 
-# WebDAV authentication type; default Digest
-define("BAIKAL_DAV_AUTH_TYPE", "Digest");
+# WebDAV authentication type; default Basic
+define("BAIKAL_DAV_AUTH_TYPE", "Basic");
+
+
+# Baikal user password hash method; default bcrypt
+define("BAIKAL_USER_AUTH_TYPE", "Bcrypt");
 
 # Baïkal Web admin password hash; Set via Baïkal Web Admin
 define("BAIKAL_ADMIN_PASSWORDHASH", "");

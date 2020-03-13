@@ -132,10 +132,10 @@ class Server {
     protected function initServer() {
 
         if ($this->authType === 'Basic') {
-            $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
+                $authBackend = new \Baikal\Core\BcryptAuth($this->pdo, $this->authRealm);
         } else {
-            $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
-            $authBackend->setRealm($this->authRealm);
+                $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
+                $authBackend->setRealm($this->authRealm);
         }
         $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($this->pdo);
 
