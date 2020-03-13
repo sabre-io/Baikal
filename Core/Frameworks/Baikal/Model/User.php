@@ -107,7 +107,7 @@ class User extends \Flake\Core\Model\Db {
                 if (BAIKAL_USER_AUTH_TYPE === "Bcrypt") {
                         parent::set(
                             "digesta1",
-                            password_hash($sPropValue,PASSWORD_BCRYPT)
+                            password_hash($sPropValue, PASSWORD_BCRYPT)
                         );
                 } else {
                         parent::set(

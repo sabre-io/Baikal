@@ -75,7 +75,6 @@ class BcryptAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 }
         }
         if ($check == true) {
-            // $this->currentUser = $username;
             return true;
         }
         return false;

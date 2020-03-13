@@ -101,13 +101,13 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "BAIKAL_DAV_AUTH_TYPE",
             "label"   => "WebDAV authentication type",
-            "options" => ["Basic","Digest"]
+            "options" => ["Basic", "Digest"]
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "BAIKAL_USER_AUTH_TYPE",
             "label"   => "Password Storage Hash Type",
-            "options" => ["Bcrypt","MD5"],
+            "options" => ["Bcrypt", "MD5"],
             "help"    => "If set to BCrypt, WebDAV must be set to BASIC."
         ]));
 
@@ -146,7 +146,7 @@ class Standard extends \Baikal\Model\Config {
             if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
                         parent::set(
                             "BAIKAL_ADMIN_PASSWORDHASH",
-                            password_hash($sValue,PASSWORD_BCRYPT)
+                            password_hash($sValue, PASSWORD_BCRYPT)
                         );
                   }
             return $this;
