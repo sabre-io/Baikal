@@ -66,7 +66,7 @@ class System extends \Baikal\Model\Config {
 
     # Default values
     protected $aData = [
-        "sqlite_file"        => "db/db.sqlite",
+        "sqlite_file"        => PROJECT_PATH_SPECIFIC . "db/db.sqlite",
         "mysql"              => false,
         "mysql_host"         => "",
         "mysql_dbname"       => "",
@@ -124,18 +124,5 @@ class System extends \Baikal\Model\Config {
 
     function label() {
         return "Baïkal Settings";
-    }
-
-    protected static function getDefaultConfig() {
-
-        return [
-            "sqlite_file"    => "db/db.sqlite",
-            "mysql"          => false,
-            "mysql_host"     => "",
-            "mysql_dbname"   => "",
-            "mysql_username" => "",
-            "mysql_password" => "",
-            "encryption_key" => ""
-        ];
     }
 }

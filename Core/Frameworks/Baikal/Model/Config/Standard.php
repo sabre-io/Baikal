@@ -64,13 +64,13 @@ class Standard extends \Baikal\Model\Config {
         "timezone"           => "Europe/Paris",
         "card_enabled"       => true,
         "cal_enabled"        => true,
-        "invite_from"        => "",
         "dav_auth_type"      => "Digest",
         "admin_passwordhash" => "",
         "auth_realm"         => "BaikalDAV"
-    ];
+];
 
     function __construct() {
+        $this->aData["invite_from"] = "noreply@" . $_SERVER['SERVER_NAME']; // Default value
         parent::__construct("system");
     }
 
@@ -164,19 +164,5 @@ class Standard extends \Baikal\Model\Config {
         }
 
         return parent::get($sProp);
-    }
-
-    protected static function getDefaultConfig() {
-
-        return [
-            "timezone"           => "Europe/Paris",
-            "card_enabled"       => true,
-            "cal_enabled"        => true,
-            "invite_from"        => "noreply@" . $_SERVER['SERVER_NAME'],
-            "dav_auth_type"      => "Digest",
-            "admin_passwordhash" => "",
-            "auth_realm"         => "BaikalDAV",
-            "configured_version" => BAIKAL_VERSION
-        ];
     }
 }

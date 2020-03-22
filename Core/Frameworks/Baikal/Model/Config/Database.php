@@ -115,8 +115,4 @@ class Database extends \Baikal\Model\Config {
     function label() {
         return "Baïkal Database Settings";
     }
-
-    protected static function getDefaultConfig() {
-        throw new \Exception("Should never reach getDefaultConfig() on \Baikal\Model\Config\Database");
-    }
 }

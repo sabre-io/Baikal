@@ -41,16 +41,14 @@ abstract class Config extends \Flake\Core\Model\NoDb {
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
             $aConfig = $config[$sConfigFileSection];
+            foreach (array_keys($this->aData) as $sProp) {
+                if (array_key_exists($sProp, $aConfig)) {
+                    $this->aData[$sProp] = $aConfig[$sProp];
+                }
+            }
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
-            $aConfig = static::getDefaultConfig();
-        }
-
-
-        foreach (array_keys($this->aData) as $sProp) {
-            if (array_key_exists($sProp, $aConfig)) {
-                $this->aData[$sProp] = $aConfig[$sProp];
-            }
+            // Keep default values in $aData
         }
     }
 
@@ -58,7 +56,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
         if (file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
             return Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml")[$this->sConfigFileSection];
         } else {
-            return static::getDefaultConfig();
+            return $this->aData;
         }
     }
 
@@ -87,7 +85,12 @@ abstract class Config extends \Flake\Core\Model\NoDb {
     }
 
     function persist() {
-        $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        if (file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } else {
+            $config = [];
+                    
+        }
         $config[$this->sConfigFileSection] = $this->aData;
         $yaml = Yaml::dump($config);
         file_put_contents(PROJECT_PATH_CONFIG . "baikal.yaml", $yaml);
@@ -95,8 +98,5 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
     function destroy() {
 
-    }
-
-    protected static function getDefaultConfig() {
     }
 }
