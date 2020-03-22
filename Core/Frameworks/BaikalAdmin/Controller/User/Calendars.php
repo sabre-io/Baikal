@@ -68,6 +68,7 @@ class Calendars extends \Flake\Core\Controller {
                 "linkdelete"  => $this->linkDelete($calendar),
                 "icon"        => $calendar->icon(),
                 "label"       => $calendar->label(),
+                "events"      => $calendar->getEventsBaseRequester()->count(),
                 "description" => $calendar->get("description"),
             ];
         }

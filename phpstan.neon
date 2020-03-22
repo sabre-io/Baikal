@@ -17,6 +17,3 @@ parameters:
     -
       message: '#Access to undefined constant Flake\\Core\\Model::LABELFIELD.#'
       path: Core/Frameworks/Flake/Core/Model.php
-    -
-      message: '#Declaration of Flake\\Core\\Datastructure\\Chain::push\(Flake\\Core\\Datastructure\\Chainable \$value\) should be compatible with SplDoublyLinkedList::push\(\$value\)#'
-      path: Core/Frameworks/Flake/Core/Datastructure/Chain.php
