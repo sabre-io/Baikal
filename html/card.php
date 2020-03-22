@@ -60,7 +60,7 @@ try {
     die('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
 }
 
-if (!isset($config['system']["card_enabled"]) || $config['parameters']["card_enabled"] !== true) {
+if (!isset($config['system']["card_enabled"]) || $config['system']["card_enabled"] !== true) {
     throw new ErrorException("Baikal CardDAV is disabled.", 0, 255, __FILE__, __LINE__);
 }
 

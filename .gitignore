@@ -17,3 +17,6 @@ vendor
 
 # Others
 .DS_Store
+
+# IDE
+nbproject

@@ -124,7 +124,7 @@ class Standard extends \Baikal\Model\Config {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
-        if (!isset($config['parameters']["admin_passwordhash"]) || trim($config['system']["admin_passwordhash"]) === "") {
+        if (!isset($config['system']["admin_passwordhash"]) || trim($config['system']["admin_passwordhash"]) === "") {
 
             # No password set (Form is used in install tool), so password is required as it has to be defined
             $oMorpho->element("admin_passwordhash")->setOption("validation", "required");

@@ -27,6 +27,8 @@
 
 namespace Baikal\Model;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Calendar extends \Flake\Core\Model\Db {
     const DATATABLE = "calendarinstances";
     const PRIMARYKEY = "id";
@@ -39,10 +41,20 @@ class Calendar extends \Flake\Core\Model\Db {
         "description"   => "",
         "calendarorder" => 0,
         "calendarcolor" => "",
-        "timezone"      => PROJECT_TIMEZONE,
+        "timezone"      => null,
         "calendarid"    => 0
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
+
+    function __construct($sPrimary = false) {
+        parent::__construct($sPrimary);
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            $this->set("timezone", $config['system']["timezone"]);
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+        }
+    }
 
     protected function initFloating() {
         parent::initFloating();
