@@ -13,8 +13,8 @@
         }
     ],
     "require": {
-        "php"           : "^7.0",
-        "sabre/dav"     : "~4.0.2",
+        "php"           : "^7.1",
+        "sabre/dav"     : "~4.1.0",
         "twig/twig"     : "~1.8.0"
     },
     "require-dev" : {
