@@ -36,7 +36,7 @@ class Database extends \Flake\Core\Controller {
     protected $oForm;    # \Formal\Form
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
+        $this->oModel = new \Baikal\Model\Config\System();
 
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
             require_once(PROJECT_PATH_SPECIFIC . "config.system.php");

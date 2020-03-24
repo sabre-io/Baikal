@@ -530,26 +530,17 @@ SQL
     }
 
     protected function updateConfiguredVersion($sVersionTo) {
-
-        # Create new settings
-        $oConfig = new \Baikal\Model\Config\Standard("config");
-        $oConfig->persist();
-
         # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System("system");
+        $oConfig = new \Baikal\Model\Config\System();
         $oConfig->set("baikal_configured_version", $sVersionTo);
         $oConfig->persist();
     }
 
     protected function assertConfigWritable() {
         # Parsing the config also makes sure that it is not malformed
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
+        $oConfig = new \Baikal\Model\Config\System();
         if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_CONFIG . "config.yaml is not writable");
-        }
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_CONFIG . "system.yaml");
-        if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_CONFIG . "system.yaml is not writable");
+            throw new \Exception(PROJECT_PATH_CONFIG . "baikal.yaml is not writable");
         }
     }
 }

@@ -45,9 +45,9 @@ class Initialize extends \Flake\Core\Controller {
 
         $this->createHtaccessFilesIfNeeded();
 
-        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_CONFIG . "config.yaml");
+        $this->oModel = new \Baikal\Model\Config\Standard();
 
-        // If we come from pre-0.7.0, we need to get the values from the config.php and config.system.php files 
+        // If we come from pre-0.7.0, we need to get the values from the config.php and config.system.php files
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
             require_once(PROJECT_PATH_SPECIFIC . "config.php");
             $this->oModel->set('timezone', PROJECT_TIMEZONE);

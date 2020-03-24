@@ -258,19 +258,19 @@ class Framework extends \Flake\Core\Framework {
     protected static function initDbMysql(array $config) {
 
         if (!$config['database']['mysql_host']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/system.yaml</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_dbname']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/system.yaml</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_username']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/system.yaml</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_password']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/system.yaml</h3>");
+            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         try {
@@ -284,7 +284,7 @@ class Framework extends \Flake\Core\Framework {
             # We now setup t6he connexion to use UTF8
             $GLOBALS["DB"]->query("SET NAMES UTF8");
         } catch (\Exception $e) {
-            die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in config/system.yaml).</h3>");
+            die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
         }
 
         return true;
