@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Model\Calendar;
 
 class Calendar extends \Flake\Core\Model\Db {
@@ -47,6 +47,7 @@ class Calendar extends \Flake\Core\Model\Db {
             return false;
         } else {
             reset($aRs);
+
             return true;
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Database;
 
 class Sqlite extends \Flake\Core\Database {
-
     protected $sDbPath = "";
 
     function __construct($sDbPath) {
@@ -53,6 +52,7 @@ class Sqlite extends \Flake\Core\Database {
         }
 
         reset($aTables);
+
         return $aTables;
     }
 }

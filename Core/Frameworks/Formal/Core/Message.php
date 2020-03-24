@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal\Core;
 
 class Message {
@@ -42,6 +42,7 @@ class Message {
 	{$sMessage}
 </div>
 HTML;
+
         return $sHtml;
     }
 
@@ -63,6 +64,7 @@ HTML;
 	{$sMessage}
 </div>
 HTML;
+
         return $sHtml;
     }
 
@@ -77,6 +79,7 @@ HTML;
 	</p>
 </div>
 HTML;
+
         return $sHtml;
     }
 }

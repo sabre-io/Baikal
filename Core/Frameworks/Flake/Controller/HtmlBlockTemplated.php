@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Controller;
 
 class HtmlBlockTemplated extends \Flake\Core\Controller {
-
     /**
      * @var string
      */
@@ -53,8 +52,7 @@ class HtmlBlockTemplated extends \Flake\Core\Controller {
         return $sHtml;
     }
 
-    function execute()
-    {
+    function execute() {
         // TODO: Implement execute() method.
     }
 }

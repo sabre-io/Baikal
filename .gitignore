@@ -20,3 +20,6 @@ vendor
 
 # IDE
 nbproject
+
+# Tests
+.php_cs.cache

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller;
 
 class Login extends \Flake\Core\Controller {
-
     function execute() {
     }
 
@@ -80,6 +79,7 @@ class Login extends \Flake\Core\Controller {
 
     protected static function justLoggedOut() {
         $aParams = $GLOBALS["ROUTER"]::getURLParams();
+
         return (!empty($aParams) && $aParams[0] === "loggedout");
     }
 }

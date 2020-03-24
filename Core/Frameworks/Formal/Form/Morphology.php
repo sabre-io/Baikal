@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal\Form;
 
 class Morphology {
-
     protected $oElements = null;
 
     function __construct() {
@@ -59,6 +58,7 @@ class Morphology {
         }
 
         $oElement = $this->oElements->getForKey($sKey);
+
         return $oElement;
     }
 

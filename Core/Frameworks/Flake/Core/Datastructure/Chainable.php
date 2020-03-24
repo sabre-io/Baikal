@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,15 +25,14 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Datastructure;
 
 interface Chainable extends \ArrayAccess, \Iterator, \Countable {
-
-#	public function &next();	# This is already specified by interface Iterator
+    #	public function &next();	# This is already specified by interface Iterator
     function &prev();
 
     function &first();
+
     function &last();
 
     function chain(\Flake\Core\Datastructure\Chain $chain, $key);

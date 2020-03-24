@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Baikal\Model;
 
@@ -79,7 +79,6 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function get($sPropName) {
-
         if ($sPropName === "password" || $sPropName === "passwordconfirm") {
             # Special handling for password and passwordconfirm
             return "";
@@ -101,7 +100,6 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function set($sPropName, $sPropValue) {
-
         if ($sPropName === "password" || $sPropName === "passwordconfirm") {
             # Special handling for password and passwordconfirm
 
@@ -129,7 +127,6 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function persist() {
-
         $bFloating = $this->floating();
 
         # Persisted first, as Model users loads this data
@@ -139,7 +136,6 @@ class User extends \Flake\Core\Model\Db {
         parent::persist();
 
         if ($bFloating) {
-
             # Creating default calendar for user
             $oDefaultCalendar = new \Baikal\Model\Calendar();
             $oDefaultCalendar->set(
@@ -281,7 +277,6 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function getPasswordHashForPassword($sPassword) {
-
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {

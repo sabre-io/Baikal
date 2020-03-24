@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Util;
 
 abstract class Router extends \Flake\Core\FLObject {
-
     static $sURIPath = "";
 
     /* ----------------------- COMMON METHODS ------------------------------*/
@@ -39,6 +38,7 @@ abstract class Router extends \Flake\Core\FLObject {
 
     static function getRoutes() {
         reset($GLOBALS["ROUTES"]);
+
         return $GLOBALS["ROUTES"];
     }
 
@@ -48,11 +48,11 @@ abstract class Router extends \Flake\Core\FLObject {
 
     static function getRouteClassForRoute($sRoute) {
         $aRoutes = $GLOBALS["ROUTER"]::getRoutes();
+
         return $aRoutes[$sRoute];
     }
 
     static function getRouteForController($sController) {
-
         if ($sController[0] !== "\\") {
             $sController = "\\" . $sController;
         }
@@ -77,7 +77,6 @@ abstract class Router extends \Flake\Core\FLObject {
     }
 
     static function buildRouteForController($sController, $aParams = []) {
-
         #$aParams = func_get_args();
         #array_shift($aParams);	# stripping $sController
         if (($sRouteForController = $GLOBALS["ROUTER"]::getRouteForController($sController)) === false) {
@@ -129,16 +128,13 @@ abstract class Router extends \Flake\Core\FLObject {
     # this method is likely to change with every Router implementation
     # should be abstract, but is not, because of PHP's strict standards
     static function buildRoute($sRoute, $aParams/* [, $sParam, $sParam2, ...] */) {
-
     }
 
     # should be abstract, but is not, because of PHP's strict standards
     static function getCurrentRoute() {
-
     }
 
     # should be abstract, but is not, because of PHP's strict standards
     static function getURLParams() {
-
     }
 }

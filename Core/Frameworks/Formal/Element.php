@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Formal;
 
 abstract class Element {
-
     protected $aOptions = [
         "class"           => "",
         "inputclass"      => "input-xlarge",
@@ -64,6 +63,7 @@ abstract class Element {
         }
 
         reset($aOptions);
+
         return $aOptions;
     }
 
@@ -91,6 +91,7 @@ abstract class Element {
         $aPost = \Flake\Util\Tools::POST("witness");
         if (is_array($aPost)) {
             $sProp = $this->option("prop");
+
             return (array_key_exists($sProp, $aPost)) && (intval($aPost[$sProp]) === 1);
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Render;
 
 class Zone extends \Flake\Core\FLObject {
@@ -32,7 +32,7 @@ class Zone extends \Flake\Core\FLObject {
     private $sZone;
 
     function __construct(&$oZonableObject, $sZone) {
-        $this->oZonableObject = & $oZonableObject;
+        $this->oZonableObject = &$oZonableObject;
         $this->sZone = $sZone;
     }
 

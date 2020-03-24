@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,14 +25,12 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Core;
 
 use Symfony\Component\Yaml\Yaml;
 
 class Auth {
     static function isAuthenticated() {
-
         $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 
         if (isset($_SESSION["baikaladminauth"]) && $_SESSION["baikaladminauth"] === md5($config['system']['admin_passwordhash'])) {
@@ -42,7 +41,6 @@ class Auth {
     }
 
     static function authenticate() {
-
         if (intval(\Flake\Util\Tools::POST("auth")) !== 1) {
             return false;
         }
@@ -58,11 +56,11 @@ class Auth {
         }
         if ($sUser === "admin" && $sPassHash === $config['system']['admin_passwordhash']) {
             $_SESSION["baikaladminauth"] = md5($config['system']['admin_passwordhash']);
+
             return true;
         }
 
         return false;
-
     }
 
     static function unAuthenticate() {
@@ -70,7 +68,6 @@ class Auth {
     }
 
     static function hashAdminPassword($sPassword) {
-
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
@@ -82,5 +79,4 @@ class Auth {
 
         return hash('sha256', 'admin:' . $sAuthRealm . ':' . $sPassword);
     }
-
 }

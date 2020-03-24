@@ -40,7 +40,7 @@ before_script:
 
 script:
   - if [ $RUN_PHPSTAN == "FALSE" ]; then find Core -name "*.php" | xargs -n1 php -l; fi
-  - if [ $RUN_PHPSTAN == "FALSE" ]; then ./vendor/bin/sabre-cs-fixer fix . --dry-run --diff; fi
+  - if [ $RUN_PHPSTAN == "FALSE" ]; then php vendor/bin/php-cs-fixer fix --dry-run --diff; fi
   - if [ $RUN_PHPSTAN == "TRUE" ]; then php vendor/bin/phpstan.phar analyse Core html; fi
 
 cache:

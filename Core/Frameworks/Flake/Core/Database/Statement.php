@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Flake\Core\Database;
 

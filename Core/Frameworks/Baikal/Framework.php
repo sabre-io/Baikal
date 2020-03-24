@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal;
 
 use Symfony\Component\Yaml\Yaml;
 
 class Framework extends \Flake\Core\Framework {
-
     static function installTool() {
         if (defined("BAIKAL_CONTEXT_INSTALL") && BAIKAL_CONTEXT_INSTALL === true) {
             # Install tool has been launched and we're already on the install page
@@ -44,7 +43,6 @@ class Framework extends \Flake\Core\Framework {
     }
 
     static function bootstrap() {
-
         # Registering Baikal classloader
         define("BAIKAL_PATH_FRAMEWORKROOT", dirname(__FILE__) . "/");
 
@@ -62,12 +60,10 @@ class Framework extends \Flake\Core\Framework {
             if (!isset($config['system']['configured_version'])) {
                 self::installTool();
             } else {
-
                 # Check that running version matches configured version
                 if (version_compare(BAIKAL_VERSION, $config['system']['configured_version']) > 0) {
                     self::installTool();
                 } else {
-
                     # Check that admin password is set
                     if (!$config['system']['admin_passwordhash']) {
                         self::installTool();
@@ -76,11 +72,9 @@ class Framework extends \Flake\Core\Framework {
                     \Baikal\Core\Tools::assertBaikalIsOk();
 
                     set_error_handler("\Baikal\Framework::exception_error_handler");
-
                 }
             }
         }
-
     }
 
     # Mapping PHP errors to exceptions; needed by SabreDAV

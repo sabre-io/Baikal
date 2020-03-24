@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core;
 
 class CollectionTyped extends \Flake\Core\Collection {
-
     protected $sTypeClassOrProtocol;
 
     function __construct($sTypeClassOrProtocol) {
@@ -47,6 +46,7 @@ class CollectionTyped extends \Flake\Core\Collection {
     # Create a new collection like this one
     function newCollectionLikeThisOne() {
         $oCollection = new \Flake\Core\CollectionTyped($this->sTypeClassOrProtocol);
+
         return $oCollection;
     }
 }

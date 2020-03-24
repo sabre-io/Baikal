@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Baikal\Core;
 
@@ -60,7 +60,6 @@ class Tools {
     }
 
     static function assertBaikalIsOk() {
-
         # DB connexion has not been asserted earlier by Flake, to give us a chance to trigger the install tool
         # We assert it right now
         if (!\Flake\Framework::isDBInitialized() && (!defined("BAIKAL_CONTEXT_INSTALL") || BAIKAL_CONTEXT_INSTALL === false)) {
@@ -102,7 +101,6 @@ class Tools {
     }
 
     static function isDBStructurallyComplete(\Flake\Core\Database $oDB) {
-
         $aRequiredTables = self::getRequiredTablesList();
         $aPresentTables = $oDB->tables();
 
@@ -119,6 +117,7 @@ class Tools {
         @flush();
         @ob_flush();
         $confirmation = @trim(fgets(STDIN));
+
         return $confirmation;
     }
 
@@ -127,6 +126,7 @@ class Tools {
 
         if (rtrim(shell_exec($command)) !== 'OK') {
             trigger_error("Can't invoke bash");
+
             return;
         }
 
@@ -136,11 +136,11 @@ class Tools {
 
         $password = rtrim(shell_exec($command));
         echo "\n";
+
         return $password;
     }
 
     static function getCopyrightNotice($sLinePrefixChar = "#", $sLineSuffixChar = "", $sOpening = false, $sClosing = false) {
-
         if ($sOpening === false) {
             $sOpening = str_repeat("#", 78);
         }
@@ -196,6 +196,7 @@ CODE;
         $aZones = \DateTimeZone::listIdentifiers();
 
         reset($aZones);
+
         return $aZones;
     }
 }

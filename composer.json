@@ -19,7 +19,7 @@
         "symfony/yaml"  : "^3.4"
     },
     "require-dev" : {
-        "sabre/cs"      : "~0.0.6"
+        "friendsofphp/php-cs-fixer": "~2.16.1"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"
@@ -33,5 +33,13 @@
     },
     "support" : {
         "source" : "https://github.com/sabre-io/Baikal"
+    },
+    "scripts": {
+        "cs-fixer": [
+            "php-cs-fixer fix"
+        ],
+        "test": [
+            "composer cs-fixer"
+        ]
     }
 }

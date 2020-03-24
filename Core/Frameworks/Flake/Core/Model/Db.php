@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Model;
 
 abstract class Db extends \Flake\Core\Model {
-
     protected $bFloating = true;
 
     function __construct($sPrimary = false) {
@@ -56,11 +55,13 @@ abstract class Db extends \Flake\Core\Model {
 
     static function getDataTable() {
         $sClass = get_called_class();
+
         return $sClass::DATATABLE;
     }
 
     static function getPrimaryKey() {
         $sClass = get_called_class();
+
         return $sClass::PRIMARYKEY;
     }
 
@@ -69,7 +70,6 @@ abstract class Db extends \Flake\Core\Model {
     }
 
     protected function initByPrimary($sPrimary) {
-
         $rSql = $GLOBALS["DB"]->exec_SELECTquery(
             "*",
             self::getDataTable(),

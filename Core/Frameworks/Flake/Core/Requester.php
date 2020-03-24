@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core;
 
 abstract class Requester extends \Flake\Core\FLObject {
@@ -40,6 +40,7 @@ abstract class Requester extends \Flake\Core\FLObject {
 
     protected function addClause($sField, $sValue) {
         $this->addClauseEquals($sField, $sValue);
+
         return $this;
     }
 
@@ -54,20 +55,25 @@ abstract class Requester extends \Flake\Core\FLObject {
     function orderBy($sOrderField, $sOrderDirection = "ASC") {
         $this->sOrderField = $sOrderField;
         $this->sOrderDirection = $sOrderDirection;
+
         return $this;
     }
 
     function setLimitStart($iLimitStart) {
         $this->iLimitStart = $iLimitStart;
+
         return $this;
     }
 
     function setLimitNumber($iLimitNumber) {
         $this->iLimitNumber = $iLimitNumber;
+
         return $this;
     }
 
     abstract function addClauseEquals($sField, $sValue);
+
     abstract function execute();
+
     abstract function count();
 }

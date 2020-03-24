@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Model;
 
 abstract class NoDb extends \Flake\Core\Model {
-
     function __construct($aData = false) {
         if ($aData !== false) {
             $this->aData = $aData;

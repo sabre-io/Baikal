@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,15 +25,13 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core;
 
 abstract class Route extends \Flake\Core\FLObject {
-
     # should be abstract, but is not, due to PHP strict standard
     static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-
     }
+
     static function parametersMap() {
         return [];
     }
@@ -59,6 +58,7 @@ abstract class Route extends \Flake\Core\FLObject {
         }
 
         reset($aRouteParams);
+
         return $aRouteParams;
     }
 }

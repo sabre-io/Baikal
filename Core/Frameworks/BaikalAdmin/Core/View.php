@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,13 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Core;
 
 class View extends \Flake\Core\View {
     function templatesPath() {
         $sViewName = get_class($this);
         $sTemplate = str_replace("\\", "/", substr($sViewName, strlen("BaikalAdmin\\View\\"))) . ".html";
+
         return BAIKALADMIN_PATH_TEMPLATES . $sTemplate;
     }
 }

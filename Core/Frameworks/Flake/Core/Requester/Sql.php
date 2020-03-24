@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Core\Requester;
 
 class Sql extends \Flake\Core\Requester {
-
     protected $sDataTable = "";
     protected $aClauses = [];
     protected $sModelClass = "";
@@ -40,66 +39,77 @@ class Sql extends \Flake\Core\Requester {
 
     function setDataTable($sDataTable) {
         $this->sDataTable = $sDataTable;
+
         return $this;
     }
 
     function addClauseEquals($sField, $sValue) {
         $sWrap = "{field}='{value}'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseNotEquals($sField, $sValue) {
         $sWrap = "{field}!='{value}'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseLike($sField, $sValue) {
         $sWrap = "{field} LIKE '%{value}%'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseLikeBeginning($sField, $sValue) {
         $sWrap = "{field} LIKE '{value}%'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseLikeEnd($sField, $sValue) {
         $sWrap = "{field} LIKE '%{value}'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseNotLike($sField, $sValue) {
         $sWrap = "{field} NOT LIKE '%{value}%'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseNotLikeBeginning($sField, $sValue) {
         $sWrap = "{field} NOT LIKE '{value}%'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseNotLikeEnd($sField, $sValue) {
         $sWrap = "{field} NOT LIKE '%{value}'";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseIn($sField, $sValue) {
         $sWrap = "{field} IN ({value})";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
     function addClauseNotIn($sField, $sValue) {
         $sWrap = "{field} NOT IN ({value})";
         $this->addClauseWrapped($sField, $sValue, $sWrap);
+
         return $this;
     }
 
@@ -118,11 +128,13 @@ class Sql extends \Flake\Core\Requester {
         );
 
         $this->addClauseLiteral($sClause);
+
         return $this;
     }
 
     function addClauseLiteral($sClause) {
         $this->aClauses[] = $sClause;
+
         return $this;
     }
 
@@ -136,6 +148,7 @@ class Sql extends \Flake\Core\Requester {
     protected function &reify($aData) {
         $sTemp = $this->sModelClass;
         $res = new $sTemp($aData[$sTemp::getPrimaryKey()]);
+
         return $res;    # To address 'Notice: Only variable references should be returned by reference'
     }
 

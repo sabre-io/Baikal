@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,13 +25,11 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Baikal\Model;
 
 use Symfony\Component\Yaml\Yaml;
 
 abstract class Config extends \Flake\Core\Model\NoDb {
-
     protected $sConfigFileSection = "";
     protected $aData = [];
 
@@ -89,7 +88,6 @@ abstract class Config extends \Flake\Core\Model\NoDb {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } else {
             $config = [];
-                    
         }
         $config[$this->sConfigFileSection] = $this->aData;
         $yaml = Yaml::dump($config);
@@ -97,6 +95,5 @@ abstract class Config extends \Flake\Core\Model\NoDb {
     }
 
     function destroy() {
-
     }
 }

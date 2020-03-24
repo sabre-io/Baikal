@@ -1,0 +1,23 @@
+<?php
+
+$config = PhpCsFixer\Config::create();
+$config->getFinder()
+    ->exclude('vendor')
+    ->in(__DIR__);
+$config->setRules([
+    '@PSR2' => true,
+    '@Symfony' => true,
+    'binary_operator_spaces' => ['align_double_arrow' => true],
+    'braces' => ['position_after_functions_and_oop_constructs' => 'same'],
+    'concat_space' => ['spacing' => 'one'],
+    'no_superfluous_phpdoc_tags' => false,
+    'no_unneeded_control_parentheses' => false,
+    'phpdoc_align' => false,
+    'single_line_comment_style' => false,
+    'single_quote' => false,
+    'trailing_comma_in_multiline_array' => false,
+    'visibility_required' => false,
+    'yoda_style' => false
+]);
+
+return $config;

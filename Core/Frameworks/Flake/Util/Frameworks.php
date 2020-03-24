@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,7 +25,6 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Util;
 
 class Frameworks extends \Flake\Core\FLObject {
@@ -38,6 +38,7 @@ class Frameworks extends \Flake\Core\FLObject {
         }
 
         $sFrameworkPath = PROJECT_PATH_FRAMEWORKS . $sName;
+
         return file_exists($sFrameworkPath) && is_dir($sFrameworkPath);
     }
 

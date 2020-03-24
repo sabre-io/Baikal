@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,18 +25,15 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller;
 
 use Symfony\Component\Yaml\Yaml;
 
 class Dashboard extends \Flake\Core\Controller {
-
     function execute() {
     }
 
     function render() {
-
         $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 
         $oView = new \BaikalAdmin\View\Dashboard();

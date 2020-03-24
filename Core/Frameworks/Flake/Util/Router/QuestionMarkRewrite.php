@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,22 +25,17 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Util\Router;
 
 class QuestionMarkRewrite extends \Flake\Util\Router {
-
     static function getCurrentRoute() {
-
         $aMatches = [];
         $sRouteTokens = implode("/", self::getRouteTokens());
 
         $aRoutes = self::getRoutes();
         reset($aRoutes);
         foreach ($aRoutes as $sDefinedRoute => $sDefinedController) {
-
             if (strpos($sRouteTokens, $sDefinedRoute) === 0) {
-
                 # found a match
                 $iSlashCount = substr_count($sDefinedRoute, "/");
                 if (!array_key_exists($iSlashCount, $aMatches)) {
@@ -59,10 +55,10 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
     }
 
     static function buildRoute($sRoute, $aParams = []/* [, $sParam, $sParam2, ...] */) {
-#		$aParams = func_get_args();
-#		array_shift($aParams);	# Stripping $sRoute
+        #		$aParams = func_get_args();
+        #		array_shift($aParams);	# Stripping $sRoute
 
-#		$sParams = implode("/", $aParams);
+        #		$sParams = implode("/", $aParams);
 
         $aParamsSegments = [];
         reset($aParams);
@@ -126,7 +122,6 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
 
         # stripping route
         if (!empty($aTokens)) {
-
             $sRouteUrl = implode("/", $aTokens);
             $sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
 

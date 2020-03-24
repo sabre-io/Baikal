@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace Flake\Model\User;
 
 class Admin extends \Flake\Core\Model\NoDb {
-
     function isAdmin() {
         return true;
     }
@@ -38,10 +37,8 @@ class Admin extends \Flake\Core\Model\NoDb {
     }
 
     function persist() {
-
     }
 
     function destroy() {
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -24,11 +25,9 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-
 namespace BaikalAdmin\Controller;
 
 class Logout extends \Flake\Core\Controller {
-
     function execute() {
         \BaikalAdmin\Core\Auth::unAuthenticate();
 

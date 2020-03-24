@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -23,7 +24,6 @@
 #
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
-
 
 namespace Flake\Core\Datastructure;
 
@@ -66,6 +66,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         }
 
         $oRes = $this->__container->offsetGet($offset);
+
         return $oRes;
     }
 
@@ -83,11 +84,13 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
 
     function &next() {
         $oRes = $this->__container->next();
+
         return $oRes;
     }
 
     function &prev() {
         $oPrev = $this->__container->prev();
+
         return $oPrev;
     }
 
@@ -101,11 +104,13 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
 
     function &first() {
         $oRes = $this->__container->first();
+
         return $oRes;
     }
 
     function &last() {
         $oRes = $this->__container->last();
+
         return $oRes;
     }
 }
