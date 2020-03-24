@@ -70,6 +70,7 @@ class AddressBooks extends \Flake\Core\Controller {
                 "linkdelete"  => $this->linkDelete($addressbook),
                 "icon"        => $addressbook->icon(),
                 "label"       => $addressbook->label(),
+                "contacts"    => $addressbook->getContactsBaseRequester()->count(),
                 "description" => $addressbook->get("description"),
             ];
         }

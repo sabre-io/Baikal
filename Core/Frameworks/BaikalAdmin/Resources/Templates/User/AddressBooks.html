@@ -10,6 +10,7 @@
 	<thead>
 		<tr>
 			<th>Display name</th>
+			<th>Contacts</th>
 			<th>Description</th>
 			<th class="no-border-left"></th>
 		</tr>
@@ -18,6 +19,7 @@
 		{% for addressbook in addressbooks %}
 		<tr>
 			<td class="col-displayname"><i class="{{ addressbook.icon }}"></i>{{ addressbook.label|escape }}</td>
+			<td class="col-contacts">{{ addressbook.contacts|escape }}</td>
 			<td class="col-description">{{ addressbook.description|escape }}</td>
 			<td class="col-actions no-border-left">
 				<p class="pull-right">
