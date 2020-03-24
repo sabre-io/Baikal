@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\Install;
 
+use Symfony\Component\Yaml\Yaml;
+
 class VersionUpgrade extends \Flake\Core\Controller {
 
     protected $aMessages = [];
@@ -40,11 +42,18 @@ class VersionUpgrade extends \Flake\Core\Controller {
     }
 
     function render() {
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+        }
+
         $sBigIcon = "glyph2x-magic";
         $sBaikalVersion = BAIKAL_VERSION;
-        $sBaikalConfiguredVersion = BAIKAL_CONFIGURED_VERSION;
+        $sBaikalConfiguredVersion = $config['system']['configured_version'];
 
-        if (BAIKAL_CONFIGURED_VERSION === BAIKAL_VERSION) {
+        if ($config['system']['configured_version'] === BAIKAL_VERSION) {
             $sMessage = "Your system is configured to use version <strong>" . $sBaikalConfiguredVersion . "</strong>.<br />There's no upgrade to be done.";
         } else {
             $sMessage = "Upgrading Baïkal from version <strong>" . $sBaikalConfiguredVersion . "</strong> to version <strong>" . $sBaikalVersion . "</strong>";
@@ -58,7 +67,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 HTML;
 
         try {
-            $bSuccess = $this->upgrade(BAIKAL_CONFIGURED_VERSION, BAIKAL_VERSION);
+            $bSuccess = $this->upgrade($config['system']['configured_version'], BAIKAL_VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string)$e;
@@ -521,26 +530,17 @@ SQL
     }
 
     protected function updateConfiguredVersion($sVersionTo) {
-
-        # Create new settings
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
-        $oConfig->persist();
-
         # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
-        $oConfig->set("BAIKAL_CONFIGURED_VERSION", $sVersionTo);
+        $oConfig = new \Baikal\Model\Config\System();
+        $oConfig->set("baikal_configured_version", $sVersionTo);
         $oConfig->persist();
     }
 
     protected function assertConfigWritable() {
         # Parsing the config also makes sure that it is not malformed
-        $oConfig = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $oConfig = new \Baikal\Model\Config\System();
         if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.php is not writable");
-        }
-        $oConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
-        if ($oConfig->writable() === false) {
-            throw new \Exception(PROJECT_PATH_SPECIFIC . "config.system.php is not writable");
+            throw new \Exception(PROJECT_PATH_CONFIG . "baikal.yaml is not writable");
         }
     }
 }

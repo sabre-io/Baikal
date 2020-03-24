@@ -40,7 +40,7 @@ class Standard extends \Flake\Core\Controller {
     private $oForm;
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $this->oModel = new \Baikal\Model\Config\Standard();
 
         # Assert that config file is writable
         if (!$this->oModel->writable()) {

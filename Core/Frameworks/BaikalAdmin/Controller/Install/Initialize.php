@@ -36,16 +36,26 @@ class Initialize extends \Flake\Core\Controller {
     function execute() {
         # Assert that /Specific is writable
 
-        if (!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC)) {
-            $message = "<h1>Error - Insufficient  permissions on the <span style='background-color: yellow;'>Specific/</span> folder</h1><p>";
-            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> folder.</p>";
+        if (!file_exists(PROJECT_PATH_SPECIFIC) || !is_dir(PROJECT_PATH_SPECIFIC) || !is_writable(PROJECT_PATH_SPECIFIC) || !file_exists(PROJECT_PATH_CONFIG) || !is_dir(PROJECT_PATH_CONFIG) || !is_writable(PROJECT_PATH_CONFIG)) {
+            $message = "<h1>Error - Insufficient  permissions on the configuration folders</h1><p>";
+            $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> and <strong>config/</strong> folder.</p>";
 
             die($message);
         }
 
         $this->createHtaccessFilesIfNeeded();
 
-        $this->oModel = new \Baikal\Model\Config\Standard(PROJECT_PATH_SPECIFIC . "config.php");
+        $this->oModel = new \Baikal\Model\Config\Standard();
+
+        // If we come from pre-0.7.0, we need to get the values from the config.php and config.system.php files
+        if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+            require_once(PROJECT_PATH_SPECIFIC . "config.php");
+            $this->oModel->set('timezone', PROJECT_TIMEZONE);
+            $this->oModel->set('card_enabled', BAIKAL_CARD_ENABLED);
+            $this->oModel->set('cal_enabled', BAIKAL_CAL_ENABLED);
+            $this->oModel->set('invite_from', BAIKAL_INVITE_FROM);
+            $this->oModel->set('dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
+        }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close" => false
@@ -56,14 +66,22 @@ class Initialize extends \Flake\Core\Controller {
 
             if ($this->oForm->persisted()) {
 
+                // If we come from pre-0.7.0, we need to remove the INSTALL_DISABLED file so we go to the next step
+                if (file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+                    @unlink(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+                }
+                if (file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
+                    @unlink(PROJECT_PATH_SPECIFIC . "config.php");
+                }
+
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System(PROJECT_PATH_SPECIFIC . "config.system.php");
-                $oSystemConfig->set("BAIKAL_ENCRYPTION_KEY",  md5(microtime() . rand()));
+                $oSystemConfig = new \Baikal\Model\Config\System("system");
+                $oSystemConfig->set("encryption_key",  md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?
                 $aPDODrivers = \PDO::getAvailableDrivers();
                 if (!in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
-                    $oSystemConfig->set("PROJECT_DB_MYSQL",  true);
+                    $oSystemConfig->set("mysql",  true);
                 }
 
                 $oSystemConfig->persist();
@@ -78,6 +96,11 @@ class Initialize extends \Flake\Core\Controller {
 
         $oView = new \BaikalAdmin\View\Install\Initialize();
         $oView->setData("baikalversion", BAIKAL_VERSION);
+
+        // If we come from pre-0.7.0 (old config files are still present),
+        // we need to tell the installer page to show a warning message.
+        $oView->setData("oldConfigSystem", file_exists(PROJECT_PATH_SPECIFIC . "config.system.php"));
+
 
         if ($this->oForm->persisted()) {
             $sLink = PROJECT_URI . "admin/install/?/database";

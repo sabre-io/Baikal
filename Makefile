@@ -9,8 +9,9 @@ VERSION=$(shell php -r "include 'Core/Distrib.php'; echo BAIKAL_VERSION;")
 dist: vendor/autoload.php
 	# Building Baikal $(VERSION)
 	rm -r $(BUILD_DIR); true
-	mkdir -p $(BUILD_DIR) $(BUILD_DIR)/Specific $(BUILD_DIR)/Specific/db
+	mkdir -p $(BUILD_DIR) $(BUILD_DIR)/Specific $(BUILD_DIR)/Specific/db $(BUILD_DIR)/config
 	touch $(BUILD_DIR)/Specific/db/.empty
+	touch $(BUILD_DIR)/config/.empty
 	rsync -av \
 		$(BUILD_FILES) \
 		--exclude="*.swp" \
@@ -31,4 +32,4 @@ composer.lock: composer.json
 
 clean:
 	# Wipe out all local data, and go back to a clean install
-	rm Specific/config.php Specific/config.system.php Specific/db/db.sqlite; true
+	rm config/baikal.yaml Specific/db/db.sqlite; true

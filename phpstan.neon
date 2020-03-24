@@ -9,9 +9,6 @@ parameters:
       message: '#Instantiated class Flake\\Core\\Exception not found.#'
       path: Core/Frameworks/Flake/Util/Frameworks.php
     -
-      message: '#Call to an undefined method Baikal\\Model\\Config\\Standard::getDefaultSystemConfig\(\).#'
-      path: Core/Frameworks/Baikal/Model/Config/Standard.php
-    -
       message: '#Call to static method compileCss\(\) on an unknown class Frameworks\\LessPHP\\Delegate.#'
       path: Core/Frameworks/Flake/Controller/Page.php
     -

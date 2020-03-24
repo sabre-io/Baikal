@@ -27,30 +27,32 @@
 
 namespace Baikal\Model\Config;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Standard extends \Baikal\Model\Config {
 
     protected $aConstants = [
-        "PROJECT_TIMEZONE" => [
+        "timezone" => [
             "type"    => "string",
             "comment" => "Timezone of the server; if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
         ],
-        "BAIKAL_CARD_ENABLED" => [
+        "card_enabled" => [
             "type"    => "boolean",
             "comment" => "CardDAV ON/OFF switch; default TRUE",
         ],
-        "BAIKAL_CAL_ENABLED" => [
+        "cal_enabled" => [
             "type"    => "boolean",
             "comment" => "CalDAV ON/OFF switch; default TRUE",
         ],
-        "BAIKAL_INVITE_FROM" => [
+        "invite_from" => [
             "type"    => "string",
             "comment" => "CalDAV invite From: mail address (comment or leave blank to disable notifications)",
         ],
-        "BAIKAL_DAV_AUTH_TYPE" => [
+        "dav_auth_type" => [
             "type"    => "string",
             "comment" => "HTTP authentication type for WebDAV; default Digest"
         ],
-        "BAIKAL_ADMIN_PASSWORDHASH" => [
+        "admin_passwordhash" => [
             "type"    => "string",
             "comment" => "Baïkal Web admin password hash; Set via Baïkal Web Admin",
         ]
@@ -58,19 +60,25 @@ class Standard extends \Baikal\Model\Config {
 
     # Default values
     protected $aData = [
-        "PROJECT_TIMEZONE"          => "Europe/Paris",
-        "BAIKAL_CARD_ENABLED"       => true,
-        "BAIKAL_CAL_ENABLED"        => true,
-        "BAIKAL_INVITE_FROM"        => "",
-        "BAIKAL_DAV_AUTH_TYPE"      => "Digest",
-        "BAIKAL_ADMIN_PASSWORDHASH" => ""
-    ];
+        "configured_version" => BAIKAL_VERSION,
+        "timezone"           => "Europe/Paris",
+        "card_enabled"       => true,
+        "cal_enabled"        => true,
+        "dav_auth_type"      => "Digest",
+        "admin_passwordhash" => "",
+        "auth_realm"         => "BaikalDAV"
+];
+
+    function __construct() {
+        $this->aData["invite_from"] = "noreply@" . $_SERVER['SERVER_NAME']; // Default value
+        parent::__construct("system");
+    }
 
     function formMorphologyForThisModelInstance() {
         $oMorpho = new \Formal\Form\Morphology();
 
         $oMorpho->add(new \Formal\Element\Listbox([
-            "prop"       => "PROJECT_TIMEZONE",
+            "prop"       => "timezone",
             "label"      => "Server Time zone",
             "validation" => "required",
             "options"    => \Baikal\Core\Tools::timezones(),
@@ -78,46 +86,52 @@ class Standard extends \Baikal\Model\Config {
 
 
         $oMorpho->add(new \Formal\Element\Checkbox([
-            "prop"  => "BAIKAL_CARD_ENABLED",
+            "prop"  => "card_enabled",
             "label" => "Enable CardDAV"
         ]));
 
         $oMorpho->add(new \Formal\Element\Checkbox([
-            "prop"  => "BAIKAL_CAL_ENABLED",
+            "prop"  => "cal_enabled",
             "label" => "Enable CalDAV"
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
-            "prop"  => "BAIKAL_INVITE_FROM",
+            "prop"  => "invite_from",
             "label" => "Email invite sender address",
             "help"  => "Leave empty to disable sending invite emails"
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
-            "prop"    => "BAIKAL_DAV_AUTH_TYPE",
+            "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
             "options" => ["Digest", "Basic"]
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
-            "prop"  => "BAIKAL_ADMIN_PASSWORDHASH",
+            "prop"  => "admin_passwordhash",
             "label" => "Admin password",
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
-            "prop"       => "BAIKAL_ADMIN_PASSWORDHASH_CONFIRM",
+            "prop"       => "admin_passwordhash_confirm",
             "label"      => "Admin password, confirmation",
-            "validation" => "sameas:BAIKAL_ADMIN_PASSWORDHASH",
+            "validation" => "sameas:admin_passwordhash",
         ]));
 
-        if (!defined("BAIKAL_ADMIN_PASSWORDHASH") || trim(BAIKAL_ADMIN_PASSWORDHASH) === "") {
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+        }
+
+        if (!isset($config['system']["admin_passwordhash"]) || trim($config['system']["admin_passwordhash"]) === "") {
 
             # No password set (Form is used in install tool), so password is required as it has to be defined
-            $oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("validation", "required");
+            $oMorpho->element("admin_passwordhash")->setOption("validation", "required");
         } else {
             $sNotice = "-- Leave empty to keep current password --";
-            $oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH")->setOption("placeholder", $sNotice);
-            $oMorpho->element("BAIKAL_ADMIN_PASSWORDHASH_CONFIRM")->setOption("placeholder", $sNotice);
+            $oMorpho->element("admin_passwordhash")->setOption("placeholder", $sNotice);
+            $oMorpho->element("admin_passwordhash_confirm")->setOption("placeholder", $sNotice);
         }
 
         return $oMorpho;
@@ -128,12 +142,12 @@ class Standard extends \Baikal\Model\Config {
     }
 
     function set($sProp, $sValue) {
-        if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" || $sProp === "BAIKAL_ADMIN_PASSWORDHASH_CONFIRM") {
+        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm") {
             # Special handling for password and passwordconfirm
 
-            if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" && $sValue !== "") {
+            if ($sProp === "admin_passwordhash" && $sValue !== "") {
                 parent::set(
-                    "BAIKAL_ADMIN_PASSWORDHASH",
+                    "admin_passwordhash",
                     \BaikalAdmin\Core\Auth::hashAdminPassword($sValue)
                 );
             }
@@ -145,59 +159,10 @@ class Standard extends \Baikal\Model\Config {
     }
 
     function get($sProp) {
-        if ($sProp === "BAIKAL_ADMIN_PASSWORDHASH" || $sProp === "BAIKAL_ADMIN_PASSWORDHASH_CONFIRM") {
+        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm") {
             return "";
         }
 
         return parent::get($sProp);
-    }
-
-    protected function createDefaultConfigFilesIfNeeded() {
-
-        # Create empty config.php if needed
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-            @touch(PROJECT_PATH_SPECIFIC . "config.php");
-            $sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-            $sContent .= $this->getDefaultConfig();
-            file_put_contents(PROJECT_PATH_SPECIFIC . "config.php", $sContent);
-        }
-
-        # Create empty config.system.php if needed
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            @touch(PROJECT_PATH_SPECIFIC . "config.system.php");
-            $sContent = "<?php\n" . \Baikal\Core\Tools::getCopyrightNotice() . "\n\n";
-            $sContent .= $this->getDefaultSystemConfig();
-            file_put_contents(PROJECT_PATH_SPECIFIC . "config.system.php", $sContent);
-        }
-    }
-
-    protected static function getDefaultConfig() {
-
-        $sCode = <<<CODE
-##############################################################################
-# Required configuration
-# You *have* to review these settings for Baïkal to run properly
-#
-
-# Timezone of your users, if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-define("PROJECT_TIMEZONE", "Europe/Paris");
-
-# CardDAV ON/OFF switch; default TRUE
-define("BAIKAL_CARD_ENABLED", TRUE);
-
-# CalDAV ON/OFF switch; default TRUE
-define("BAIKAL_CAL_ENABLED", TRUE);
-
-# CalDAV invite From: mail address (comment or leave blank to disable notifications)
-define("BAIKAL_INVITE_FROM", "noreply@$_SERVER[SERVER_NAME]");
-
-# WebDAV authentication type; default Digest
-define("BAIKAL_DAV_AUTH_TYPE", "Digest");
-
-# Baïkal Web admin password hash; Set via Baïkal Web Admin
-define("BAIKAL_ADMIN_PASSWORDHASH", "");
-CODE;
-        $sCode = trim($sCode);
-        return $sCode;
     }
 }

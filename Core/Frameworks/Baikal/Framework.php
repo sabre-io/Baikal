@@ -27,6 +27,8 @@
 
 namespace Baikal;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Framework extends \Flake\Core\Framework {
 
     static function installTool() {
@@ -50,30 +52,24 @@ class Framework extends \Flake\Core\Framework {
         \Baikal\Core\Tools::configureEnvironment();
 
         # Check that a config file exists
-        if (
-            !file_exists(PROJECT_PATH_SPECIFIC . "config.php") ||
-            !file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")
-        ) {
+        if (!file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
             self::installTool();
         } else {
-            require_once(PROJECT_PATH_SPECIFIC . "config.php");
-            require_once(PROJECT_PATH_SPECIFIC . "config.system.php");
-            date_default_timezone_set(PROJECT_TIMEZONE);
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            date_default_timezone_set($config['system']['timezone']);
 
             # Check that Baïkal is already configured
-            if (!defined("BAIKAL_CONFIGURED_VERSION")) {
+            if (!isset($config['system']['configured_version'])) {
                 self::installTool();
-
             } else {
 
                 # Check that running version matches configured version
-                if (version_compare(BAIKAL_VERSION, BAIKAL_CONFIGURED_VERSION) > 0) {
+                if (version_compare(BAIKAL_VERSION, $config['system']['configured_version']) > 0) {
                     self::installTool();
-
                 } else {
 
                     # Check that admin password is set
-                    if (!defined("BAIKAL_ADMIN_PASSWORDHASH")) {
+                    if (!$config['system']['admin_passwordhash']) {
                         self::installTool();
                     }
 

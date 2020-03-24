@@ -2,8 +2,7 @@
 logs
 
 # Specific
-Specific/config.php
-Specific/config.system.php
+config/baikal.yaml
 Specific/INSTALL_DISABLED
 
 # Composer stuff
@@ -15,3 +14,9 @@ vendor
 
 # Vim
 .*.swp
+
+# Others
+.DS_Store
+
+# IDE
+nbproject

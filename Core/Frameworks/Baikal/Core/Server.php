@@ -28,6 +28,7 @@
 namespace Baikal\Core;
 
 use PDO;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * The Baikal Server
@@ -131,6 +132,12 @@ class Server {
      */
     protected function initServer() {
 
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+        }
+
         if ($this->authType === 'Basic') {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
         } else {
@@ -171,8 +178,8 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
-            if (defined("BAIKAL_INVITE_FROM") && BAIKAL_INVITE_FROM !== "") {
-                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin(BAIKAL_INVITE_FROM));
+            if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
+                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['system']["invite_from"]));
             }
         }
         if ($this->enableCardDAV) {

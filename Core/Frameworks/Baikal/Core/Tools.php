@@ -73,33 +73,18 @@ class Tools {
         #}
 
         # Asserting config file exists
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php does not exist. Please use the Install tool to create it.");
+        if (!file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")) {
+            throw new \Exception("config/baikal.yaml does not exist. Please use the Install tool to create it or duplicate baikal.yaml.dist.");
         }
 
         # Asserting config file is readable
-        if (!is_readable(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php is not readable. Please give read permissions to httpd user on file 'Specific/config.php'.");
+        if (!is_readable(PROJECT_PATH_CONFIG . "baikal.yaml")) {
+            throw new \Exception("config/baikal.yaml is not readable. Please give read permissions to httpd user on file 'config/baikal.yaml'.");
         }
 
         # Asserting config file is writable
-        if (!is_writable(PROJECT_PATH_SPECIFIC . "config.php")) {
-            throw new \Exception("Specific/config.php is not writable. Please give write permissions to httpd user on file 'Specific/config.php'.");
-        }
-
-        # Asserting system config file exists
-        if (!file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php does not exist. Please use the Install tool to create it.");
-        }
-
-        # Asserting system config file is readable
-        if (!is_readable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php is not readable. Please give read permissions to httpd user on file 'Specific/config.system.php'.");
-        }
-
-        # Asserting system config file is writable
-        if (!is_writable(PROJECT_PATH_SPECIFIC . "config.system.php")) {
-            throw new \Exception("Specific/config.system.php is not writable. Please give write permissions to httpd user on file 'Specific/config.system.php'.");
+        if (!is_writable(PROJECT_PATH_CONFIG . "baikal.yaml")) {
+            throw new \Exception("config/baikal.yaml is not writable. Please give write permissions to httpd user on file 'config/baikal.yaml'.");
         }
     }
 

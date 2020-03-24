@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+0.7.0 (2019-10-14)
+------------------
+
+* Changed to YAML configuration files
+* Minor configuration improvements
+
 0.6.1 (2019-11-13)
 ------------------
 

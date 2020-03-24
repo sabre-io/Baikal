@@ -38,7 +38,7 @@
 		</div>
 		<div class="span3">
 			<h2>Services</h2>
-			{% if BAIKAL_CAL_ENABLED %}
+			{% if cal_enabled %}
 				{% set caldavclass = 'label-success' %}
 				{% set caldavtext = 'On' %}
 			{% else %}
@@ -46,7 +46,7 @@
 				{% set caldavtext = 'Off' %}
 			{% endif %}
 			
-			{% if BAIKAL_CARD_ENABLED %}
+			{% if card_enabled %}
 				{% set carddavclass = 'label-success' %}
 				{% set carddavtext = 'On' %}
 			{% else %}

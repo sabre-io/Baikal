@@ -2,6 +2,15 @@
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-magic"></i>Baïkal initialization wizard</h1>
 	<p class="lead">Configure your new Baïkal <strong>{{ baikalversion }}</strong> installation.</p>
+
+  {% if oldConfigSystem %}
+    <div class="alert">
+      <strong>With the 0.7.0 release, our configuration format was updated to use YAML files.</strong><br/>
+      You need to go through this installer again but we pre-filled most values with the ones from your old installation.<br/>
+      As we updated our hashing algorithm for the admin interface password, you need to enter it again.<br/>
+      The database with your contacts and events stays untouched. We still recommend that you make a full backup of your data before proceeding, as a safety measure.
+    </div>
+  {% endif %}
 </header>
 
 <a id="formid"></a>

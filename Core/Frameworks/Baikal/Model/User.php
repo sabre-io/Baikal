@@ -27,6 +27,8 @@
 
 namespace Baikal\Model;
 
+use Symfony\Component\Yaml\Yaml;
+
 class User extends \Flake\Core\Model\Db {
     const DATATABLE = "users";
     const PRIMARYKEY = "id";
@@ -279,6 +281,13 @@ class User extends \Flake\Core\Model\Db {
     }
 
     function getPasswordHashForPassword($sPassword) {
-        return md5($this->get("username") . ':' . BAIKAL_AUTH_REALM . ':' . $sPassword);
+
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+        }
+
+        return md5($this->get("username") . ':' . $config['system']['auth_realm'] . ':' . $sPassword);
     }
 }
