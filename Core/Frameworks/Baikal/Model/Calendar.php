@@ -88,7 +88,7 @@ class Calendar extends \Flake\Core\Model\Db {
         $oBaseRequester = \Baikal\Model\Calendar\Event::getBaseRequester();
         $oBaseRequester->addClauseEquals(
             "calendarid",
-            $this->get("id")
+            $this->get("calendarid")
         );
 
         return $oBaseRequester;
@@ -240,10 +240,28 @@ class Calendar extends \Flake\Core\Model\Db {
         return $this->get("uri") === "default";
     }
 
+    function hasInstances() {
+        $rSql = $GLOBALS["DB"]->exec_SELECTquery(
+            "count(*)",
+            "calendarinstances",
+            "calendarid" . "='" . $this->aData["calendarid"] . "'"
+        );
+
+        if (($aRs = $rSql->fetch()) === false) {
+            return false;
+        } else {
+            reset($aRs);
+
+            return $aRs["count(*)"] > 1;
+        }
+    }
+
     function destroy() {
-        $oEvents = $this->getEventsBaseRequester()->execute();
-        foreach ($oEvents as $event) {
-            $event->destroy();
+        if (!$this->hasInstances()) {
+            $oEvents = $this->getEventsBaseRequester()->execute();
+            foreach ($oEvents as $event) {
+                $event->destroy();
+            }
         }
 
         parent::destroy();

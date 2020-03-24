@@ -18,7 +18,7 @@
 	<tbody>
 		{% for calendar in calendars %}
 		<tr>
-			<td class="col-displayname"><i class="{{ calendar.icon }}"></i>{{ calendar.label|escape }}</td>
+			<td class="col-displayname"><i class="{{ calendar.icon }}"></i>{{ calendar.label|escape }}{%if calendar.instanced%} <span class="label label-info label-intext">Has instances</span>{% endif %}</td>
 			<td class="col-events">{{ calendar.events|escape }}</td>
 			<td class="col-description">{{ calendar.description|escape }}</td>
 			<td class="col-actions no-border-left">
