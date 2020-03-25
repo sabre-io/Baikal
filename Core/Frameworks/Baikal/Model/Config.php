@@ -39,7 +39,14 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            $aConfig = $config[$sConfigFileSection];
+            if (isset($config[$sConfigFileSection])) {
+                $aConfig = $config[$sConfigFileSection];
+            } else {
+                error_log('Section ' . $sConfigFileSection
+                        . ' not found in config file. Using default values.');
+                $aConfig = array();
+            }
+
             foreach (array_keys($this->aData) as $sProp) {
                 if (array_key_exists($sProp, $aConfig)) {
                     $this->aData[$sProp] = $aConfig[$sProp];
