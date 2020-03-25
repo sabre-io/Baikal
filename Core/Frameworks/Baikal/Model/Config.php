@@ -44,7 +44,7 @@ abstract class Config extends \Flake\Core\Model\NoDb {
             } else {
                 error_log('Section ' . $sConfigFileSection
                         . ' not found in config file. Using default values.');
-                $aConfig = array();
+                $aConfig = [];
             }
 
             foreach (array_keys($this->aData) as $sProp) {
