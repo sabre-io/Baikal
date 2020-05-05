@@ -3,6 +3,7 @@ logs
 
 # Specific
 config/baikal.yaml
+config/.htaccess
 Specific/INSTALL_DISABLED
 
 # Composer stuff
