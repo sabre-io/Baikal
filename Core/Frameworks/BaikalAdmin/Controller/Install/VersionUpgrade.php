@@ -507,14 +507,14 @@ SQL
 
     protected function updateConfiguredVersion($sVersionTo) {
         # Update BAIKAL_CONFIGURED_VERSION
-        $oConfig = new \Baikal\Model\Config\System();
-        $oConfig->set("baikal_configured_version", $sVersionTo);
+        $oConfig = new \Baikal\Model\Config\Standard();
+        $oConfig->set("configured_version", $sVersionTo);
         $oConfig->persist();
     }
 
     protected function assertConfigWritable() {
         # Parsing the config also makes sure that it is not malformed
-        $oConfig = new \Baikal\Model\Config\System();
+        $oConfig = new \Baikal\Model\Config\Standard();
         if ($oConfig->writable() === false) {
             throw new \Exception(PROJECT_PATH_CONFIG . "baikal.yaml is not writable");
         }
