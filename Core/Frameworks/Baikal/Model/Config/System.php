@@ -53,11 +53,11 @@ class System extends \Baikal\Model\Config {
             "type"    => "string",
             "comment" => "MySQL > Password",
         ],
-        "baikal_encryption_key" => [
+        "encryption_key" => [
             "type"    => "string",
             "comment" => "A random 32 bytes key that will be used to encrypt data",
         ],
-        "baikal_configured_version" => [
+        "configured_version" => [
             "type"    => "string",
             "comment" => "The currently configured Baïkal version",
         ],

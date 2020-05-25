@@ -45,7 +45,11 @@ class UpgradeConfirmation extends \Flake\Core\Controller {
         if (isset($config['system']['configured_version']) && $config['system']['configured_version'] === BAIKAL_VERSION) {
             $sMessage = "Your system is configured to use version <strong>" . $config['system']['configured_version'] . "</strong>.<br />There's no upgrade to be done.";
         } else {
-            $sMessage = "Upgrading Baïkal from version <strong>" . "Unknown" . "</strong> to version <strong>" . BAIKAL_VERSION . "</strong>";
+            $oldVersion = "Unknown";
+            if (isset($config['system']['configured_version'])) {
+                $oldVersion = $config['system']['configured_version'];
+            }
+            $sMessage = "Upgrading Baïkal from version <strong>$oldVersion</strong> to version <strong>" . BAIKAL_VERSION . "</strong>";
         }
 
         $oView->setData("message", $sMessage);
