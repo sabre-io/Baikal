@@ -117,20 +117,18 @@ class Initialize extends \Flake\Core\Controller {
     }
 
     protected function createHtaccessFilesIfNeeded() {
-        if (!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
-            @copy(PROJECT_PATH_CORERESOURCES . "System/htaccess-documentroot", PROJECT_PATH_DOCUMENTROOT . ".htaccess");
+        $this->copyResourceFile("System/htaccess-documentroot", PROJECT_PATH_DOCUMENTROOT . ".htaccess");
+        $this->copyResourceFile("System/htaccess-deny-all", PROJECT_PATH_SPECIFIC . ".htaccess");
+        $this->copyResourceFile("System/htaccess-deny-all", PROJECT_PATH_CONFIG . ".htaccess");
+    }
+
+    private function copyResourceFile($template, $destination) {
+        if (!file_exists($destination)) {
+            @copy(PROJECT_PATH_CORERESOURCES . $template, $destination);
         }
 
-        if (!file_exists(PROJECT_PATH_DOCUMENTROOT . ".htaccess")) {
-            throw new \Exception("Unable to create " . PROJECT_PATH_DOCUMENTROOT . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "System/htaccess-documentroot");
-        }
-
-        if (!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
-            @copy(PROJECT_PATH_CORERESOURCES . "System/htaccess-specific", PROJECT_PATH_SPECIFIC . ".htaccess");
-        }
-
-        if (!file_exists(PROJECT_PATH_SPECIFIC . ".htaccess")) {
-            throw new \Exception("Unable to create " . PROJECT_PATH_SPECIFIC . ".htaccess; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . "System/htaccess-specific");
+        if (!file_exists($destination)) {
+            throw new \Exception("Unable to create " . $destination . "; you may try to create it manually by copying " . PROJECT_PATH_CORERESOURCES . $template);
         }
     }
 }
