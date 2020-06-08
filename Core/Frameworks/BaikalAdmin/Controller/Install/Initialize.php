@@ -52,7 +52,7 @@ class Initialize extends \Flake\Core\Controller {
             $this->oModel->set('timezone', PROJECT_TIMEZONE);
             $this->oModel->set('card_enabled', BAIKAL_CARD_ENABLED);
             $this->oModel->set('cal_enabled', BAIKAL_CAL_ENABLED);
-            $this->oModel->set('invite_from', BAIKAL_INVITE_FROM);
+            $this->oModel->set('invite_from', defined("BAIKAL_INVITE_FROM") ? BAIKAL_INVITE_FROM : "");
             $this->oModel->set('dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
         }
 
@@ -73,7 +73,7 @@ class Initialize extends \Flake\Core\Controller {
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System("system");
+                $oSystemConfig = new \Baikal\Model\Config\System();
                 $oSystemConfig->set("encryption_key", md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?
