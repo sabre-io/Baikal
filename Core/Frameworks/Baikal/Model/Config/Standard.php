@@ -65,8 +65,9 @@ class Standard extends \Baikal\Model\Config {
         "cal_enabled"        => true,
         "dav_auth_type"      => "Digest",
         "admin_passwordhash" => "",
-        "auth_realm"         => "BaikalDAV"
-];
+        "auth_realm"         => "BaikalDAV",
+        "base_uri"           => ""
+    ];
 
     function __construct() {
         $this->aData["invite_from"] = "noreply@" . $_SERVER['SERVER_NAME']; // Default value

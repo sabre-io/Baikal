@@ -204,22 +204,19 @@ class Framework extends \Flake\Core\Framework {
     }
 
     protected static function defineBaseUri() {
-        $usedBaseUriFromConfig = false;
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
             if (isset($config["system"]["base_uri"]) && $config["system"]["base_uri"] !== "") {
                 // SabreDAV needs a "/" at the beginning of BASEURL
-                define("PROJECT_BASEURI", self::prependSlash($config["system"]["base_uri"]));
+                define("PROJECT_BASEURI",
+                        self::prependSlash(self::appendSlash($config["system"]["base_uri"])));
                 define("PROJECT_URI", \Flake\Util\Tools::getCurrentProtocol() . "://"
                     . $_SERVER["HTTP_HOST"] . PROJECT_BASEURI);
-                $usedBaseUriFromConfig = true;
+
+                return;
             }
         } catch (\Exception $e) {
             error_log($e);
-        }
-
-        if ($usedBaseUriFromConfig) {
-            return;
         }
 
         $sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
