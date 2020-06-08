@@ -172,31 +172,7 @@ class Framework extends \Flake\Core\Framework {
 
         define("PROJECT_PATH_DOCUMENTROOT", PROJECT_PATH_ROOT . "html/");
 
-        # Determine PROJECT_BASEURI
-        $sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
-        $sDirName = str_replace("\\", "/", dirname($sScript));    # fix windows backslashes
-
-        if ($sDirName !== ".") {
-            $sDirName = self::appendSlash($sDirName);
-        } else {
-            $sDirName = "/";
-        }
-
-        $sBaseUrl = self::rmBeginSlash(self::rmProjectContext($sDirName));
-        define("PROJECT_BASEURI", self::prependSlash($sBaseUrl));    # SabreDAV needs a "/" at the beginning of BASEURL
-
-        # Determine PROJECT_URI
-        $sProtocol = \Flake\Util\Tools::getCurrentProtocol();
-        $sHttpBaseUrl = strtolower($_SERVER["REQUEST_URI"]);
-        $sHttpBaseUrl = self::rmQuery($sHttpBaseUrl);
-        $sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
-        $sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);
-        define("PROJECT_URI", $sProtocol . "://" . $_SERVER["HTTP_HOST"] . $sHttpBaseUrl);
-        unset($sScript);
-        unset($sDirName);
-        unset($sBaseUrl);
-        unset($sProtocol);
-        unset($sHttpBaseUrl);
+        self::defineBaseUri();
 
         #################################################################################################
 
@@ -225,6 +201,51 @@ class Framework extends \Flake\Core\Framework {
         unset($aUrlInfo);
 
         self::initDb();
+    }
+
+    protected static function defineBaseUri() {
+        $usedBaseUriFromConfig = false;
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            if (isset($config["system"]["base_uri"]) && $config["system"]["base_uri"] !== "") {
+                // SabreDAV needs a "/" at the beginning of BASEURL
+                define("PROJECT_BASEURI", self::prependSlash($config["system"]["base_uri"]));
+                define("PROJECT_URI", \Flake\Util\Tools::getCurrentProtocol() . "://"
+                    . $_SERVER["HTTP_HOST"] . PROJECT_BASEURI);
+                $usedBaseUriFromConfig = true;
+            }
+        } catch (\Exception $e) {
+            error_log($e);
+        }
+
+        if ($usedBaseUriFromConfig) {
+            return;
+        }
+
+        $sScript = substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]));
+        $sDirName = str_replace("\\", "/", dirname($sScript));    // fix windows backslashes
+
+        if ($sDirName !== ".") {
+            $sDirName = self::appendSlash($sDirName);
+        } else {
+            $sDirName = "/";
+        }
+
+        $sBaseUrl = self::rmBeginSlash(self::rmProjectContext($sDirName));
+        define("PROJECT_BASEURI", self::prependSlash($sBaseUrl));    // SabreDAV needs a "/" at the beginning of BASEURL
+
+        # Determine PROJECT_URI
+        $sProtocol = \Flake\Util\Tools::getCurrentProtocol();
+        $sHttpBaseUrl = strtolower($_SERVER["REQUEST_URI"]);
+        $sHttpBaseUrl = self::rmQuery($sHttpBaseUrl);
+        $sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
+        $sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);
+        define("PROJECT_URI", $sProtocol . "://" . $_SERVER["HTTP_HOST"] . $sHttpBaseUrl);
+        unset($sScript);
+        unset($sDirName);
+        unset($sBaseUrl);
+        unset($sProtocol);
+        unset($sHttpBaseUrl);
     }
 
     protected static function initDb() {
