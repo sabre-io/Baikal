@@ -27,8 +27,11 @@
 
 namespace Flake\Core\Datastructure;
 
+/**
+ * @extends \SplDoublyLinkedList<\Flake\Core\Datastructure\Chainable>
+ */
 class Chain extends \SplDoublyLinkedList {
-    function push(\Flake\Core\Datastructure\Chainable $value) {
+    function push($value) {
         $value->chain($this, $this->count());
         parent::push($value);
     }
