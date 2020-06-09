@@ -165,6 +165,7 @@ class Users extends \Flake\Core\Controller {
                 $oUser->destroy();
             } catch (\Exception $e) {
                 # user is already deleted; silently discarding
+                error_log($e);
             }
 
             # Redirecting to admin home

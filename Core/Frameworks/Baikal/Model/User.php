@@ -181,7 +181,9 @@ class User extends \Flake\Core\Model\Db {
         # TODO: delete all related resources (principals, calendars, calendar events, contact books and contacts)
 
         # Destroying identity principal
-        $this->oIdentityPrincipal->destroy();
+        if ($this->oIdentityPrincipal != null) {
+            $this->oIdentityPrincipal->destroy();
+        }
 
         $oCalendars = $this->getCalendarsBaseRequester()->execute();
         foreach ($oCalendars as $calendar) {
