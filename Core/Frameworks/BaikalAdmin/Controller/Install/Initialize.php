@@ -73,7 +73,7 @@ class Initialize extends \Flake\Core\Controller {
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System("system");
+                $oSystemConfig = new \Baikal\Model\Config\Database();
                 $oSystemConfig->set("encryption_key", md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?

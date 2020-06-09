@@ -53,6 +53,10 @@ class Database extends \Baikal\Model\Config {
             "type"    => "string",
             "comment" => "MySQL > Password",
         ],
+        "encryption_key" => [
+            "type"    => "string",
+            "comment" => "A random 32 bytes key that will be used to encrypt data",
+        ],
     ];
 
     # Default values
@@ -63,6 +67,7 @@ class Database extends \Baikal\Model\Config {
         "mysql_dbname"   => "",
         "mysql_username" => "",
         "mysql_password" => "",
+        "encryption_key" => "",
     ];
 
     function __construct() {
@@ -90,7 +95,7 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "mysql_host",
             "label" => "MySQL host",
-            "help"  => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (3306)"
+            "help"  => "Host ip or name, including ':portnumber' if port is not the default one (3306)"
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
