@@ -28,6 +28,13 @@
 namespace Flake\Core\Datastructure;
 
 class Chain extends \SplDoublyLinkedList {
+    /*
+     * Note: SplDoublyLinkedList::push expects mixed $value
+     * https://www.php.net/manual/en/spldoublylinkedlist.push.php
+     * In this implementation it has been restricted to Chainable.
+     * phpstan complains about that. So analaysis of this file has been
+     * disabled in the excludes_analyse section of phpstan.neon
+     */
     function push(\Flake\Core\Datastructure\Chainable $value) {
         $value->chain($this, $this->count());
         parent::push($value);
