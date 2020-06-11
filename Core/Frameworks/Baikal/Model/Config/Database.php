@@ -28,37 +28,6 @@
 namespace Baikal\Model\Config;
 
 class Database extends \Baikal\Model\Config {
-    protected $aConstants = [
-        "sqlite_file" => [
-            "type"    => "litteral",
-            "comment" => "Define path to Baïkal Database SQLite file",
-        ],
-        "mysql" => [
-            "type"    => "boolean",
-            "comment" => "MySQL > Use MySQL instead of SQLite ?",
-        ],
-        "mysql_host" => [
-            "type"    => "string",
-            "comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)",
-        ],
-        "mysql_dbname" => [
-            "type"    => "string",
-            "comment" => "MySQL > Database name",
-        ],
-        "mysql_username" => [
-            "type"    => "string",
-            "comment" => "MySQL > Username",
-        ],
-        "mysql_password" => [
-            "type"    => "string",
-            "comment" => "MySQL > Password",
-        ],
-        "encryption_key" => [
-            "type"    => "string",
-            "comment" => "A random 32 bytes key that will be used to encrypt data",
-        ],
-    ];
-
     # Default values
     protected $aData = [
         "sqlite_file"    => PROJECT_PATH_SPECIFIC . "db/db.sqlite",

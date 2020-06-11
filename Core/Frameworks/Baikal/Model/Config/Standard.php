@@ -30,33 +30,6 @@ namespace Baikal\Model\Config;
 use Symfony\Component\Yaml\Yaml;
 
 class Standard extends \Baikal\Model\Config {
-    protected $aConstants = [
-        "timezone" => [
-            "type"    => "string",
-            "comment" => "Timezone of the server; if unsure, check http://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-        ],
-        "card_enabled" => [
-            "type"    => "boolean",
-            "comment" => "CardDAV ON/OFF switch; default TRUE",
-        ],
-        "cal_enabled" => [
-            "type"    => "boolean",
-            "comment" => "CalDAV ON/OFF switch; default TRUE",
-        ],
-        "invite_from" => [
-            "type"    => "string",
-            "comment" => "CalDAV invite From: mail address (comment or leave blank to disable notifications)",
-        ],
-        "dav_auth_type" => [
-            "type"    => "string",
-            "comment" => "HTTP authentication type for WebDAV; default Digest"
-        ],
-        "admin_passwordhash" => [
-            "type"    => "string",
-            "comment" => "Baïkal Web admin password hash; Set via Baïkal Web Admin",
-        ]
-    ];
-
     # Default values
     protected $aData = [
         "configured_version" => BAIKAL_VERSION,
