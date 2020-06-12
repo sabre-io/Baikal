@@ -46,6 +46,12 @@ class Database extends \Flake\Core\Controller {
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
             $this->oModel->set('encryption_key', BAIKAL_ENCRYPTION_KEY);
+
+            if (defined("BAIKAL_CONFIGURED_VERSION")) {
+                $oStandardConfig = new \Baikal\Model\Config\Standard();
+                $oStandardConfig->set("configured_version", BAIKAL_CONFIGURED_VERSION);
+                $oStandardConfig->persist();
+            }
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
