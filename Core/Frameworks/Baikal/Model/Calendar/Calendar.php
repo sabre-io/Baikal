@@ -40,7 +40,7 @@ class Calendar extends \Flake\Core\Model\Db {
         $rSql = $GLOBALS["DB"]->exec_SELECTquery(
             "count(*)",
             "calendarinstances",
-            "calendarid" . "='" . $this->aData["calendarid"] . "'"
+            "calendarid" . "='" . $this->aData["id"] . "'"
         );
 
         if (($aRs = $rSql->fetch()) === false) {
@@ -53,8 +53,9 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function destroy() {
-        if (!$this->hasInstances()) {
-            parent::destroy();
+        if ($this->hasInstances()) {
+            throw new \Exception("Trying to destroy a calendar with instances");
         }
+        parent::destroy();
     }
 }

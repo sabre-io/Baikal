@@ -257,7 +257,8 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function destroy() {
-        if (!$this->hasInstances()) {
+        $hasInstances = $this->hasInstances();
+        if (!$hasInstances) {
             $oEvents = $this->getEventsBaseRequester()->execute();
             foreach ($oEvents as $event) {
                 $event->destroy();
@@ -265,6 +266,8 @@ class Calendar extends \Flake\Core\Model\Db {
         }
 
         parent::destroy();
-        $this->oCalendar->destroy();
+        if (!$hasInstances) {
+            $this->oCalendar->destroy();
+        }
     }
 }
