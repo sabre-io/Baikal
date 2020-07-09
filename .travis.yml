@@ -6,9 +6,6 @@ php:
   - 7.3
   - 7.4
 
-matrix:
-  fast_finish: true
-
 env:
   global:
     - RUN_PHPSTAN="FALSE"
@@ -34,7 +31,7 @@ sudo: false
 
 before_script:
   # - mysql -e 'create database sabredav'
-  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini  
+  - rm -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
   # - composer self-update
   - composer update $PREFER_LOWEST
 
