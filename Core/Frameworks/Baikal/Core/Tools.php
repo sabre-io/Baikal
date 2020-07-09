@@ -45,8 +45,13 @@ class Tools {
 
         # Asserting PDO::SQLite or PDO::MySQL
         $aPDODrivers = \PDO::getAvailableDrivers();
-        if (!in_array('sqlite', $aPDODrivers) && !in_array('mysql', $aPDODrivers)) {
+        if (!in_array('sqlite', $aPDODrivers, true) && !in_array('mysql', $aPDODrivers, true)) {
             die('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
+        }
+
+        # Assert that the temp folder is writable
+        if (!\is_writable(\sys_get_temp_dir())) {
+            die('<strong>Baikal Fatal Error</strong>: The system temp directory is not writable.');
         }
     }
 
@@ -116,9 +121,7 @@ class Tools {
         echo $prompt;
         @flush();
         @ob_flush();
-        $confirmation = @trim(fgets(STDIN));
-
-        return $confirmation;
+        return @trim(fgets(STDIN));
     }
 
     static function bashPromptSilent($prompt = "Enter Password:") {
