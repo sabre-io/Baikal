@@ -121,6 +121,7 @@ class Tools {
         echo $prompt;
         @flush();
         @ob_flush();
+
         return @trim(fgets(STDIN));
     }
 
