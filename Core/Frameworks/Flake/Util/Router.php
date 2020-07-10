@@ -112,6 +112,7 @@ abstract class Router extends \Flake\Core\FLObject {
         $sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
 
         array_unshift($aParams, $sCurrentRoute);    # Injecting route as first param
+
         return call_user_func_array($GLOBALS["ROUTER"] . "::buildRoute", $aParams);
     }
 

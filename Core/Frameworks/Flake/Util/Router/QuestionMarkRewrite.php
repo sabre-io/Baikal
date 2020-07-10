@@ -51,6 +51,7 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
         }
 
         $aBestMatches = array_pop($aMatches);    // obtains the deepest matching route (higher number of slashes)
+
         return array_shift($aBestMatches);        // first route amongst best matches
     }
 
