@@ -115,6 +115,7 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
         }
 
         $var = null;    # two lines instead of one
+
         return $var;    # as PHP needs a variable to return by ref
     }
 
@@ -148,6 +149,7 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
     # This abstraction is useful because of CollectionTyped
     protected function newCollectionLikeThisOne() {
         $oCollection = new \Flake\Core\Collection();    # two lines instead of one
+
         return $oCollection;                            # as PHP needs a variable to return by ref
     }
 
