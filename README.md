@@ -7,6 +7,8 @@ This is the source repository for the Baïkal CalDAV and CardDAV server.
 
 Head to [sabre.io/baikal][2] for information about installation, upgrading and troubleshooting.
 
+A German Tutorial about installation of Baïkal, using it together with Thunderbird, Android and DavX5, using calendars together/calendar sharing and such as database maintanance and security can be found [here][6].  
+
 Upgrading
 ---------
 
@@ -22,3 +24,4 @@ Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality o
 [3]: http://netgusto.com/
 [4]: https://fruux.com/
 [5]: http://sabre.io/baikal/upgrade/
+[6]: https://github.com/JsBergbau/BaikalAnleitung
