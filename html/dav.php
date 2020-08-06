@@ -64,6 +64,7 @@ $server = new \Baikal\Core\Server(
     $config['system']["dav_auth_type"],
     $config['system']["auth_realm"],
     $GLOBALS['DB']->getPDO(),
-    PROJECT_BASEURI . 'dav.php/'
+    PROJECT_BASEURI . 'dav.php/',
+    $config['system']["mailbox"]
 );
 $server->start();

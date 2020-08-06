@@ -42,7 +42,8 @@ class Standard extends \Baikal\Model\Config {
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
         "auth_realm"            => "BaikalDAV",
-        "base_uri"              => ""
+        "base_uri"              => "",
+        "mailbox"               => ""
     ];
 
     function __construct() {
@@ -79,7 +80,7 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic", "Apache"]
+            "options" => ["Digest", "Basic", "Apache", "IMAP"]
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
@@ -91,6 +92,12 @@ class Standard extends \Baikal\Model\Config {
             "prop"       => "admin_passwordhash_confirm",
             "label"      => "Admin password, confirmation",
             "validation" => "sameas:admin_passwordhash",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "mailbox",
+            "label" => "IMAP mailbox",
+            "help"  => "IMAP server in the form {host[:port][/flag1/flag2...]}"
         ]));
 
         try {
