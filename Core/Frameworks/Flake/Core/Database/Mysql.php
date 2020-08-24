@@ -38,6 +38,8 @@ class Mysql extends \Flake\Core\Database {
         $this->sDbName = $sDbName;
         $this->sUsername = $sUsername;
         $this->sPassword = $sPassword;
+        
+		define('PROJECT_DB_MYSQL', true);
 
         $this->oDb = new \PDO(
             'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
