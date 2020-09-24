@@ -46,12 +46,6 @@ class Database extends \Flake\Core\Controller {
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
             $this->oModel->set('encryption_key', BAIKAL_ENCRYPTION_KEY);
-
-            if (defined("BAIKAL_CONFIGURED_VERSION")) {
-                $oStandardConfig = new \Baikal\Model\Config\Standard();
-                $oStandardConfig->set("configured_version", BAIKAL_CONFIGURED_VERSION);
-                $oStandardConfig->persist();
-            }
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
@@ -68,6 +62,18 @@ class Database extends \Flake\Core\Controller {
                     @unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
                 }
                 touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+
+                if (defined("BAIKAL_CONFIGURED_VERSION")) {
+                    $oStandardConfig = new \Baikal\Model\Config\Standard();
+                    $oStandardConfig->set("configured_version", BAIKAL_CONFIGURED_VERSION);
+                    $oStandardConfig->persist();
+
+                    # We've just rolled back the configured version, so reload so that we get to the
+                    # version upgrade page rather than the database is configured message in render below
+                    $sLink = PROJECT_URI . "admin/install/?/database";
+                    \Flake\Util\Tools::redirect($sLink);
+                    exit(0);
+                }
             }
         }
     }
