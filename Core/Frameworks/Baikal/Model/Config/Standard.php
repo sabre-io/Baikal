@@ -65,6 +65,8 @@ class Standard extends \Baikal\Model\Config {
         "cal_enabled"        => true,
         "dav_auth_type"      => "Digest",
         "admin_passwordhash" => "",
+        // While not editable as will change admin & any existing user passwords,
+        // could be set to different value when migrating from legacy config
         "auth_realm"         => "BaikalDAV",
         "base_uri"           => ""
     ];
@@ -146,7 +148,7 @@ class Standard extends \Baikal\Model\Config {
             if ($sProp === "admin_passwordhash" && $sValue !== "") {
                 parent::set(
                     "admin_passwordhash",
-                    \BaikalAdmin\Core\Auth::hashAdminPassword($sValue)
+                    \BaikalAdmin\Core\Auth::hashAdminPassword($sValue, $this->aData["auth_realm"])
                 );
             }
 
