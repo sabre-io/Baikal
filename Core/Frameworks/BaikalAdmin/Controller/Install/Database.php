@@ -215,12 +215,8 @@ class Database extends \Flake\Core\Controller {
         if ($oForm->submitted()) {
             $bMySQL = (intval($oForm->postValue("mysql")) === 1);
         } else {
-            try {
-                $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            } catch (\Exception $e) {
-                error_log('Error reading baikal.yaml file : ' . $e->getMessage());
-            }
-            $bMySQL = $configSystem['database']['mysql'] ?? true;
+            // oMorpho won't have the values from the model set on it yet
+            $bMySQL = $this->oModel->get("mysql");
         }
 
         if ($bMySQL === true) {
