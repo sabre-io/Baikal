@@ -52,6 +52,7 @@ class Auth {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+
             return false;
         }
         $sPassHash = self::hashAdminPassword($sPass, $config['system']['auth_realm']);
