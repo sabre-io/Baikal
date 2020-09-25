@@ -27,8 +27,6 @@
 
 namespace BaikalAdmin\Controller\Install;
 
-use Symfony\Component\Yaml\Yaml;
-
 class Database extends \Flake\Core\Controller {
     protected $aMessages = [];
     protected $oModel;
