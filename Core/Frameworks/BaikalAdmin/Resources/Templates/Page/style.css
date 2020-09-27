@@ -75,8 +75,8 @@ table.addressbooks .col-actions { width: 25%;}
 
 /* Calendars */
 table.calendars .col-displayname { width: 20%;}
-table.calendars .col-description { width: 55%;}
-table.calendars .col-actions { width: 25%;}
+table.calendars .col-description { width: 40%;}
+table.calendars .col-actions { width: 40%;}
 
 /* Users */
 table.users .col-id { width: 2%;}

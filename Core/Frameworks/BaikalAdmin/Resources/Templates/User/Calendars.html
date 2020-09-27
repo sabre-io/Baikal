@@ -23,6 +23,7 @@
 			<td class="col-description">{{ calendar.description|escape }}</td>
 			<td class="col-actions no-border-left">
 				<p class="pull-right">
+					<nobr><a class="btn" href="{{ calendar.davuri }}"><i class="{{ calendaricon }}"></i> Calendar URI</a></nobr>
 					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
 				</p>
