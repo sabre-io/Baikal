@@ -63,6 +63,7 @@ class Calendars extends \Flake\Core\Controller {
             $aCalendars[] = [
                 "linkedit"    => $this->linkEdit($calendar),
                 "linkdelete"  => $this->linkDelete($calendar),
+                "davuri"      => $this->getDavUri($calendar),
                 "icon"        => $calendar->icon(),
                 "label"       => $calendar->label(),
                 "instanced"   => $calendar->hasInstances(),
@@ -268,5 +269,16 @@ class Calendars extends \Flake\Core\Controller {
         return self::buildRoute([
             "user" => $this->currentUserId(),
         ]);
+    }
+
+    /**
+     * Generate a link to the CalDAV/CardDAV URI of the calendar.
+     *
+     * @param \Baikal\Model\Calendar $calendar
+     *
+     * @return string Calender DAV URI
+     */
+    protected function getDavUri(\Baikal\Model\Calendar $calendar) {
+        return PROJECT_BASEURI . 'dav.php/calendars/' . $this->oUser->get('username') . '/' . $calendar->get('uri') . '/';
     }
 }
