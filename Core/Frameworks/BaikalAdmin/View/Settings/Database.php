@@ -25,10 +25,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-namespace BaikalAdmin\Route\Settings;
+namespace BaikalAdmin\View\Settings;
 
-class System extends \Flake\Core\Route {
-    static function layout(\Flake\Core\Render\Container &$oRenderContainer) {
-        $oRenderContainer->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Settings\System());
-    }
+class Database extends \BaikalAdmin\Core\View {
 }

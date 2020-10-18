@@ -28,33 +28,6 @@
 namespace Baikal\Model\Config;
 
 class Database extends \Baikal\Model\Config {
-    protected $aConstants = [
-        "sqlite_file" => [
-            "type"    => "litteral",
-            "comment" => "Define path to Baïkal Database SQLite file",
-        ],
-        "mysql" => [
-            "type"    => "boolean",
-            "comment" => "MySQL > Use MySQL instead of SQLite ?",
-        ],
-        "mysql_host" => [
-            "type"    => "string",
-            "comment" => "MySQL > Host, including ':portnumber' if port is not the default one (3306)",
-        ],
-        "mysql_dbname" => [
-            "type"    => "string",
-            "comment" => "MySQL > Database name",
-        ],
-        "mysql_username" => [
-            "type"    => "string",
-            "comment" => "MySQL > Username",
-        ],
-        "mysql_password" => [
-            "type"    => "string",
-            "comment" => "MySQL > Password",
-        ],
-    ];
-
     # Default values
     protected $aData = [
         "sqlite_file"    => PROJECT_PATH_SPECIFIC . "db/db.sqlite",
@@ -63,6 +36,7 @@ class Database extends \Baikal\Model\Config {
         "mysql_dbname"   => "",
         "mysql_username" => "",
         "mysql_password" => "",
+        "encryption_key" => "",
     ];
 
     function __construct() {
@@ -90,7 +64,7 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "mysql_host",
             "label" => "MySQL host",
-            "help"  => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (3306)"
+            "help"  => "Host ip or name, including ':portnumber' if port is not the default one (3306)"
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([

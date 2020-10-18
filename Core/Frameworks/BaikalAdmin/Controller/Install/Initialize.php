@@ -73,16 +73,16 @@ class Initialize extends \Flake\Core\Controller {
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\System();
-                $oSystemConfig->set("encryption_key", md5(microtime() . rand()));
+                $oDatabaseConfig = new \Baikal\Model\Config\Database();
+                $oDatabaseConfig->set("encryption_key", md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?
                 $aPDODrivers = \PDO::getAvailableDrivers();
                 if (!in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
-                    $oSystemConfig->set("mysql", true);
+                    $oDatabaseConfig->set("mysql", true);
                 }
 
-                $oSystemConfig->persist();
+                $oDatabaseConfig->persist();
             }
         }
     }

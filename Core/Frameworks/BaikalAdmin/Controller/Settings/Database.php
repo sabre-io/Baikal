@@ -29,9 +29,9 @@ namespace BaikalAdmin\Controller\Settings;
 
 use Symfony\Component\Yaml\Yaml;
 
-class System extends \Flake\Core\Controller {
+class Database extends \Flake\Core\Controller {
     /**
-     * @var \Baikal\Model\Config\System
+     * @var \Baikal\Model\Config\Database
      */
     private $oModel;
 
@@ -41,7 +41,7 @@ class System extends \Flake\Core\Controller {
     private $oForm;
 
     function execute() {
-        $this->oModel = new \Baikal\Model\Config\System();
+        $this->oModel = new \Baikal\Model\Config\Database();
 
         # Assert that config file is writable
         if (!$this->oModel->writable()) {
@@ -60,7 +60,7 @@ class System extends \Flake\Core\Controller {
     }
 
     function render() {
-        $oView = new \BaikalAdmin\View\Settings\System();
+        $oView = new \BaikalAdmin\View\Settings\Database();
         $oView->setData("message", \Formal\Core\Message::notice(
             "Do not change anything on this page unless you really know what you are doing.<br />You might break Baïkal if you misconfigure something here.",
             "Warning !",
