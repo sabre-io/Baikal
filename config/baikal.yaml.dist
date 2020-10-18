@@ -7,6 +7,7 @@ system:
     dav_auth_type: 'Digest'
     admin_passwordhash: 5fe794627e1f841f8debba065e2c807a
     auth_realm: BaikalDAV
+    base_uri: ''
 database:
     encryption_key: 5d3f0fa0192e3058ea70f1bb20924add
     sqlite_file: "absolute/path/to/Specific/db/db.sqlite"

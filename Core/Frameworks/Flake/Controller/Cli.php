@@ -48,8 +48,6 @@ class Cli extends \Flake\Core\Render\Container {
         }
     }
 
-    /**************************************************************************/
-
     public $sLog = "";
 
     function sys_init() {

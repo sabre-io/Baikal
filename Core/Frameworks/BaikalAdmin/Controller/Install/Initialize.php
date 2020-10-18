@@ -52,7 +52,7 @@ class Initialize extends \Flake\Core\Controller {
             $this->oModel->set('timezone', PROJECT_TIMEZONE);
             $this->oModel->set('card_enabled', BAIKAL_CARD_ENABLED);
             $this->oModel->set('cal_enabled', BAIKAL_CAL_ENABLED);
-            $this->oModel->set('invite_from', BAIKAL_INVITE_FROM);
+            $this->oModel->set('invite_from', defined("BAIKAL_INVITE_FROM") ? BAIKAL_INVITE_FROM : "");
             $this->oModel->set('dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
         }
 
@@ -73,16 +73,16 @@ class Initialize extends \Flake\Core\Controller {
                 }
 
                 # Creating system config, and initializing BAIKAL_ENCRYPTION_KEY
-                $oSystemConfig = new \Baikal\Model\Config\Database();
-                $oSystemConfig->set("encryption_key", md5(microtime() . rand()));
+                $oDatabaseConfig = new \Baikal\Model\Config\Database();
+                $oDatabaseConfig->set("encryption_key", md5(microtime() . rand()));
 
                 # Default: PDO::SQLite or PDO::MySQL ?
                 $aPDODrivers = \PDO::getAvailableDrivers();
                 if (!in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
-                    $oSystemConfig->set("mysql", true);
+                    $oDatabaseConfig->set("mysql", true);
                 }
 
-                $oSystemConfig->persist();
+                $oDatabaseConfig->persist();
             }
         }
     }

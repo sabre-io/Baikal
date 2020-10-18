@@ -201,8 +201,8 @@ class Calendar extends \Flake\Core\Model\Db {
             "validation" => "color",
             "popover"    => [
                     "title"   => "Calendar color",
-                    "content" => "This is the color that will be displayed in your CalDAV client.</br>" .
-                    "Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.</br>" .
+                    "content" => "This is the color that will be displayed in your CalDAV client.<br/>" .
+                    "Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.<br/>" .
                     "This value is optional.",
             ]
         ]));
@@ -257,7 +257,8 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     function destroy() {
-        if (!$this->hasInstances()) {
+        $hasInstances = $this->hasInstances();
+        if (!$hasInstances) {
             $oEvents = $this->getEventsBaseRequester()->execute();
             foreach ($oEvents as $event) {
                 $event->destroy();
@@ -265,6 +266,8 @@ class Calendar extends \Flake\Core\Model\Db {
         }
 
         parent::destroy();
-        $this->oCalendar->destroy();
+        if (!$hasInstances) {
+            $this->oCalendar->destroy();
+        }
     }
 }
