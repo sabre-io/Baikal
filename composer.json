@@ -14,7 +14,7 @@
     ],
     "require": {
         "php"           : "^7.1",
-        "sabre/dav"     : "~4.1.0",
+        "sabre/dav"     : "~4.1.2",
         "twig/twig"     : "~2.12.5",
         "symfony/yaml"  : "^3.4"
     },
