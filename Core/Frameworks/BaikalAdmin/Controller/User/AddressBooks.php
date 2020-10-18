@@ -68,6 +68,7 @@ class AddressBooks extends \Flake\Core\Controller {
             $aAddressBooks[] = [
                 "linkedit"    => $this->linkEdit($addressbook),
                 "linkdelete"  => $this->linkDelete($addressbook),
+                "davuri"      => $this->getDavUri($addressbook),
                 "icon"        => $addressbook->icon(),
                 "label"       => $addressbook->label(),
                 "contacts"    => $addressbook->getContactsBaseRequester()->count(),
@@ -264,5 +265,16 @@ class AddressBooks extends \Flake\Core\Controller {
         return self::buildRoute([
             "user" => $this->currentUserId(),
         ]);
+    }
+
+    /**
+     * Generate a link to the CalDAV/CardDAV URI of the addressbook.
+     *
+     * @param \Baikal\Model\AddressBook $addressbook
+     *
+     * @return string AddressBook DAV URI
+     */
+    protected function getDavUri(\Baikal\Model\AddressBook $addressbook) {
+        return PROJECT_BASEURI . 'dav.php/addressbooks/' . $this->oUser->get('username') . '/' . $addressbook->get('uri') . '/';
     }
 }
