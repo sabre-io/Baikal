@@ -65,7 +65,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
 HTML;
 
         try {
-            $bSuccess = $this->upgrade($config['system']['configured_version'], BAIKAL_VERSION);
+            $bSuccess = $this->upgrade($config['database'], $config['system']['configured_version'], BAIKAL_VERSION);
         } catch (\Exception $e) {
             $bSuccess = false;
             $this->aErrors[] = 'Uncaught exception during upgrade: ' . (string) $e;
@@ -88,7 +88,7 @@ HTML;
         return $sHtml;
     }
 
-    protected function upgrade($sVersionFrom, $sVersionTo) {
+    protected function upgrade($databaseConfig, $sVersionFrom, $sVersionTo) {
         if (version_compare($sVersionFrom, '0.2.3', '<=')) {
             throw new \Exception('This version of Baikal does not support upgrading from version 0.2.3 and older. Please request help on Github if this is a problem.');
         }
@@ -99,7 +99,7 @@ HTML;
         if (version_compare($sVersionFrom, '0.3.0', '<')) {
             // Upgrading from sabre/dav 1.8 schema to 3.1 schema.
 
-            if (defined("PROJECT_DB_MYSQL") && PROJECT_DB_MYSQL === true) {
+            if ($databaseConfig['mysql'] === true) {
                 // MySQL upgrade
 
                 // sabre/dav 2.0 changes
@@ -313,7 +313,7 @@ HTML;
             // The sqlite schema had issues with both the calendar and
             // addressbooks tables. The tables didn't have a DEFAULT '1' for
             // the synctoken column. So we're adding it now.
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+            if ($databaseConfig['mysql'] === false) {
                 $pdo->exec('UPDATE calendars SET synctoken = 1 WHERE synctoken IS NULL');
 
                 $tmpTable = '_' . time();
@@ -343,7 +343,7 @@ CREATE TABLE calendars (
             // Similar to upgrading from older than 0.4.5, there were still
             // issues with a missing DEFAULT 1 for sthe synctoken field in the
             // addressbook.
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+            if ($databaseConfig['mysql'] === false) {
                 $pdo->exec('UPDATE addressbooks SET synctoken = 1 WHERE synctoken IS NULL');
 
                 $tmpTable = '_' . time();
@@ -365,7 +365,7 @@ CREATE TABLE addressbooks (
             }
         }
         if (version_compare($sVersionFrom, '0.5.1', '<')) {
-            if (!defined("PROJECT_DB_MYSQL") || PROJECT_DB_MYSQL === false) {
+            if ($databaseConfig['mysql'] === false) {
                 $pdo->exec(<<<SQL
 CREATE TABLE calendarinstances (
     id integer primary key asc NOT NULL,

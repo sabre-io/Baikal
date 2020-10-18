@@ -48,12 +48,14 @@ class Auth {
         $sUser = \Flake\Util\Tools::POST("login");
         $sPass = \Flake\Util\Tools::POST("password");
 
-        $sPassHash = self::hashAdminPassword($sPass);
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+
+            return false;
         }
+        $sPassHash = self::hashAdminPassword($sPass, $config['system']['auth_realm']);
         if ($sUser === "admin" && $sPassHash === $config['system']['admin_passwordhash']) {
             $_SESSION["baikaladminauth"] = md5($config['system']['admin_passwordhash']);
 
@@ -67,16 +69,7 @@ class Auth {
         unset($_SESSION["baikaladminauth"]);
     }
 
-    static function hashAdminPassword($sPassword) {
-        try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-        } catch (\Exception $e) {
-            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
-        }
-
-        # Fallback to default value; useful when initializing App, as all constants are not set yet
-        $sAuthRealm = $config['system']['auth_realm'] ?? "BaikalDAV";
-
+    static function hashAdminPassword($sPassword, $sAuthRealm) {
         return hash('sha256', 'admin:' . $sAuthRealm . ':' . $sPassword);
     }
 }

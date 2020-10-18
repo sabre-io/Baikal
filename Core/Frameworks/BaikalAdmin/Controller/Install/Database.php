@@ -27,8 +27,6 @@
 
 namespace BaikalAdmin\Controller\Install;
 
-use Symfony\Component\Yaml\Yaml;
-
 class Database extends \Flake\Core\Controller {
     protected $aMessages = [];
     protected $oModel;
@@ -46,12 +44,6 @@ class Database extends \Flake\Core\Controller {
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
             $this->oModel->set('encryption_key', BAIKAL_ENCRYPTION_KEY);
-
-            if (defined("BAIKAL_CONFIGURED_VERSION")) {
-                $oStandardConfig = new \Baikal\Model\Config\Standard();
-                $oStandardConfig->set("configured_version", BAIKAL_CONFIGURED_VERSION);
-                $oStandardConfig->persist();
-            }
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
@@ -68,6 +60,18 @@ class Database extends \Flake\Core\Controller {
                     @unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
                 }
                 touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+
+                if (defined("BAIKAL_CONFIGURED_VERSION")) {
+                    $oStandardConfig = new \Baikal\Model\Config\Standard();
+                    $oStandardConfig->set("configured_version", BAIKAL_CONFIGURED_VERSION);
+                    $oStandardConfig->persist();
+
+                    # We've just rolled back the configured version, so reload so that we get to the
+                    # version upgrade page rather than the database is configured message in render below
+                    $sLink = PROJECT_URI . "admin/install/?/database";
+                    \Flake\Util\Tools::redirect($sLink);
+                    exit(0);
+                }
             }
         }
     }
@@ -209,12 +213,8 @@ class Database extends \Flake\Core\Controller {
         if ($oForm->submitted()) {
             $bMySQL = (intval($oForm->postValue("mysql")) === 1);
         } else {
-            try {
-                $configSystem = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            } catch (\Exception $e) {
-                error_log('Error reading baikal.yaml file : ' . $e->getMessage());
-            }
-            $bMySQL = $configSystem['database']['mysql'] ?? true;
+            // oMorpho won't have the values from the model set on it yet
+            $bMySQL = $this->oModel->get("mysql");
         }
 
         if ($bMySQL === true) {

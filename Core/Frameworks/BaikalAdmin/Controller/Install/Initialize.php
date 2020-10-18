@@ -55,6 +55,10 @@ class Initialize extends \Flake\Core\Controller {
             $this->oModel->set('invite_from', defined("BAIKAL_INVITE_FROM") ? BAIKAL_INVITE_FROM : "");
             $this->oModel->set('dav_auth_type', BAIKAL_DAV_AUTH_TYPE);
         }
+        if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
+            require_once PROJECT_PATH_SPECIFIC . "config.system.php";
+            $this->oModel->set('auth_realm', BAIKAL_AUTH_REALM);
+        }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close" => false
