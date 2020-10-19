@@ -6,6 +6,7 @@ system:
     invite_from: 'noreply@localhost'
     dav_auth_type: 'Digest'
     admin_passwordhash: 5fe794627e1f841f8debba065e2c807a
+    failed_access_message: 'user %u authentication failure for Baikal'
     auth_realm: BaikalDAV
     base_uri: ''
 database:
