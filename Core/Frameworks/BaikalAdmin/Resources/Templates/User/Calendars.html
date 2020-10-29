@@ -6,6 +6,30 @@
 	<p class="pull-right"><a class="btn btn btn-inverse" href="{{ linknew }}"><i class="icon-white {{ calendaricon }}"></i> + Add calendar</a></p>
 </header>
 
+<script type="text/javascript">
+	function copyToClipboard(davuri) {
+		const elem = document.createElement('textarea');
+		elem.value = window.location.origin + davuri;
+		document.body.appendChild(elem);
+		elem.select();
+		document.execCommand('copy');
+		document.body.removeChild(elem);
+
+		var textClicked = document.getElementById("calUriBtn");
+  		textClicked.innerHTML = "<i class=\"{{ calendaricon }}\"></i> Copied: " + elem.value;
+	}
+
+	function outFunc() {
+		var textOut = document.getElementById("calUriBtn");
+		textOut.innerHTML = "<i class=\"{{ calendaricon }}\"></i> Calendar URI";
+	}
+
+	function overFunc() {
+		var textOver = document.getElementById("calUriBtn");
+		textOver.innerHTML = "<i class=\"{{ calendaricon }}\"></i> Copy Calendar URL";
+	}
+</script>
+
 <table class="table table-bordered table-striped calendars">
 	<thead>
 		<tr>
@@ -25,7 +49,7 @@
 				<p class="pull-right">
 					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-					<nobr><a class="btn" href="{{ calendar.davuri }}"><i class="{{ calendaricon }}"></i> Calendar URI</a></nobr>
+					<nobr><a class="btn" onclick="copyToClipboard('{{ calendar.davuri }}');" onmouseout="outFunc()" onmouseover="overFunc()" id="calUriBtn"><i class="{{ calendaricon }}"></i> Calendar URI</a></nobr>
 				</p>
 			</td>
 		</tr>

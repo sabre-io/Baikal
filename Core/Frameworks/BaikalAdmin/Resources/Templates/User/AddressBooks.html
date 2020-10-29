@@ -6,6 +6,30 @@
 	<p class="pull-right"><a class="btn btn btn-inverse" href="{{ linknew }}"><i class="icon-white {{ addressbookicon }}"></i> + Add address book</a></p>
 </header>
 
+<script type="text/javascript">
+	function copyToClipboard(davuri) {
+		const elem = document.createElement('textarea');
+		elem.value = window.location.origin + davuri;
+		document.body.appendChild(elem);
+		elem.select();
+		document.execCommand('copy');
+		document.body.removeChild(elem);
+
+		var textClicked = document.getElementById("cardUriBtn");
+  		textClicked.innerHTML = "<i class=\"{{ addressbookicon }}\"></i> Copied: " + elem.value;
+	}
+
+	function outFunc() {
+		var textOut = document.getElementById("cardUriBtn");
+		textOut.innerHTML = "<i class=\"{{ addressbookicon }}\"></i> AddressBook URI";
+	}
+
+	function overFunc() {
+		var textOver = document.getElementById("cardUriBtn");
+		textOver.innerHTML = "<i class=\"{{ addressbookicon }}\"></i> Copy Addressbook URL";
+	}
+</script>
+
 <table class="table table-bordered table-striped addressbooks">
 	<thead>
 		<tr>
@@ -25,7 +49,7 @@
 				<p class="pull-right">
 					<nobr><a class="btn btn-primary" href="{{ addressbook.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ addressbook.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-					<nobr><a class="btn" href="{{ addressbook.davuri }}"><i class="{{ addressbookicon }}"></i> AddressBook URI</a></nobr>
+					<nobr><a class="btn" onclick="copyToClipboard('{{ addressbook.davuri }}');" onmouseout="outFunc()" onmouseover="overFunc()" id="cardUriBtn"><i class="{{ addressbookicon }}"></i> AddressBook URI</a></nobr>
 				</p>
 			</td>
 		</tr>
