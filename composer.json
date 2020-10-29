@@ -14,12 +14,12 @@
     ],
     "require": {
         "php"           : "^7.1",
-        "sabre/dav"     : "~4.1.2",
-        "twig/twig"     : "~2.12.5",
-        "symfony/yaml"  : "^3.4"
+        "sabre/dav"     : "4.1.2",
+        "twig/twig"     : "2.12.5",
+        "symfony/yaml"  : "3.4.46"
     },
     "require-dev" : {
-        "friendsofphp/php-cs-fixer": "~2.16.1"
+        "friendsofphp/php-cs-fixer": "2.16.1"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"
