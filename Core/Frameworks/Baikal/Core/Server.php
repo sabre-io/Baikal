@@ -135,6 +135,10 @@ class Server {
             $authBackend = new \Baikal\Core\PDOBasicAuth($this->pdo, $this->authRealm);
         } elseif ($this->authType === 'Apache') {
             $authBackend = new \Sabre\DAV\Auth\Backend\Apache();
+        } elseif ($this->authType === 'Callback') {
+            $authBackend = new \Sabre\DAV\Auth\Backend\BasicCallBack(function ($username, $password) use (&$config) {
+                return call_user_func($config['system']['dav_auth_callback'], $username, $password);
+            });
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
             $authBackend->setRealm($this->authRealm);

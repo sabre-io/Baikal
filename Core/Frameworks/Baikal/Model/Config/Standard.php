@@ -41,7 +41,8 @@ class Standard extends \Baikal\Model\Config {
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
         "auth_realm"         => "BaikalDAV",
-        "base_uri"           => ""
+        "base_uri"           => "",
+        "dav_auth_callback"  => ""
     ];
 
     function __construct() {
@@ -78,7 +79,7 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic", "Apache"]
+            "options" => ["Digest", "Basic", "Apache", "Callback"]
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
