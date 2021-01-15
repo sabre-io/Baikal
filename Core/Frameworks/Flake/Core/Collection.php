@@ -64,12 +64,6 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
         return $oRes;
     }
 
-    function &each() {
-        list($key, $val) = each($this->aCollection);
-
-        return $val;
-    }
-
     function reset() {
         reset($this->aCollection);
     }
