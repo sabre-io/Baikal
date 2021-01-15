@@ -186,7 +186,7 @@ class Server {
     }
 
     /**
-     * Log failed accesses, matching the default fail2ban nginx/apache auth rules.
+     * Log failed accesses, for further processing by tools like Fail2Ban.
      *
      * @return void
      */
@@ -195,10 +195,10 @@ class Server {
             // Applications may make their first call without auth so don't log these attempts
             // Pattern from sabre/dav/lib/DAV/Auth/Backend/AbstractDigest.php
             if (!preg_match("/No 'Authorization: (Basic|Digest)' header found./", $e->getMessage())) {
-                if (isset($_SERVER['SERVER_SOFTWARE']) && preg_match('/nginx/i', $_SERVER['SERVER_SOFTWARE'])) {
-                    error_log('user "(name stripped-out)" was not found in "Baikal DAV"', 4);
-                } else {
-                    error_log('user "(name stripped-out)" authentication failure for "Baikal DAV"', 4);
+                $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+                if (isset($config['system']["failed_access_message"]) && $config['system']["failed_access_message"] !== "") {
+                    $log_msg = str_replace("%u", "(name stripped-out)", $config['system']["failed_access_message"]);
+                    error_log($log_msg, 4);
                 }
             }
         } else {

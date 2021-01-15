@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Login extends \Flake\Core\Controller {
     function execute() {
     }
@@ -39,11 +41,11 @@ class Login extends \Flake\Core\Controller {
         $sLogin = htmlspecialchars(\Flake\Util\Tools::POST("login"));
 
         if (self::isSubmitted() && !\BaikalAdmin\Core\Auth::isAuthenticated()) {
-            // Log failed accesses, matching the default fail2ban nginx/apache auth rules
-            if (isset($_SERVER['SERVER_SOFTWARE']) && preg_match('/nginx/i', $_SERVER['SERVER_SOFTWARE'])) {
-                error_log('user "' . $sLogin . '" was not found in "Baikal GUI"', 4);
-            } else {
-                error_log('user "' . $sLogin . '" authentication failure for "Baikal GUI"', 4);
+            // Log failed accesses, for further processing by tools like Fail2Ban
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            if (isset($config['system']["failed_access_message"]) && $config['system']["failed_access_message"] !== "") {
+                $log_msg = str_replace("%u", $sLogin, $config['system']["failed_access_message"]);
+                error_log($log_msg, 4);
             }
             $sMessage = \Formal\Core\Message::error(
                 "The login/password you provided is invalid. Please retry.",

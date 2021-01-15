@@ -32,16 +32,17 @@ use Symfony\Component\Yaml\Yaml;
 class Standard extends \Baikal\Model\Config {
     # Default values
     protected $aData = [
-        "configured_version" => BAIKAL_VERSION,
-        "timezone"           => "Europe/Paris",
-        "card_enabled"       => true,
-        "cal_enabled"        => true,
-        "dav_auth_type"      => "Digest",
-        "admin_passwordhash" => "",
+        "configured_version"    => BAIKAL_VERSION,
+        "timezone"              => "Europe/Paris",
+        "card_enabled"          => true,
+        "cal_enabled"           => true,
+        "dav_auth_type"         => "Digest",
+        "admin_passwordhash"    => "",
+        "failed_access_message" => "user %u authentication failure for Baikal",
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
-        "auth_realm"         => "BaikalDAV",
-        "base_uri"           => ""
+        "auth_realm"            => "BaikalDAV",
+        "base_uri"              => ""
     ];
 
     function __construct() {
