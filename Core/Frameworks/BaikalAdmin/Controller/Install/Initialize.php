@@ -39,7 +39,7 @@ class Initialize extends \Flake\Core\Controller {
             $message = "<h1>Error - Insufficient  permissions on the configuration folders</h1><p>";
             $message .= "<p>In order to work properly, Baïkal needs to have write permissions in the <strong>Specific/</strong> and <strong>config/</strong> folder.</p>";
 
-            die($message);
+            exit($message);
         }
 
         $this->createHtaccessFilesIfNeeded();

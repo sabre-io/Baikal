@@ -95,7 +95,7 @@ class Framework extends \Flake\Core\Framework {
     static function bootstrap() {
         # Asserting PHP 5.5.0+
         if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-            die('Flake Fatal Error: Flake requires PHP 5.5.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
+            exit('Flake Fatal Error: Flake requires PHP 5.5.0+ to run properly. Your version is: ' . PHP_VERSION . '.');
         }
 
         # Define safehash salt
@@ -272,12 +272,12 @@ class Framework extends \Flake\Core\Framework {
 
         # Asserting DB file is writable
         if (file_exists($config['database']['sqlite_file']) && !is_writable($config['database']['sqlite_file'])) {
-            die("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . $config['database']['sqlite_file'] . "</span>'</h3>");
+            exit("<h3>DB file is not writable. Please give write permissions on file '<span style='font-family: monospace; background: yellow;'>" . $config['database']['sqlite_file'] . "</span>'</h3>");
         }
 
         # Asserting DB directory is writable
         if (!is_writable(dirname($config['database']['sqlite_file']))) {
-            die("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname($config['database']['sqlite_file']) . "</span>'</h3>");
+            exit("<h3>The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder '<span style='font-family: monospace; background: yellow;'>" . dirname($config['database']['sqlite_file']) . "</span>'</h3>");
         }
 
         if (file_exists($config['database']['sqlite_file']) && is_readable($config['database']['sqlite_file']) && !isset($GLOBALS["DB"])) {
@@ -291,19 +291,19 @@ class Framework extends \Flake\Core\Framework {
 
     protected static function initDbMysql(array $config) {
         if (!$config['database']['mysql_host']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/baikal.yaml</h3>");
+            exit("<h3>The constant PROJECT_DB_MYSQL_HOST, containing the MySQL host name, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_dbname']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/baikal.yaml</h3>");
+            exit("<h3>The constant PROJECT_DB_MYSQL_DBNAME, containing the MySQL database name, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_username']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/baikal.yaml</h3>");
+            exit("<h3>The constant PROJECT_DB_MYSQL_USERNAME, containing the MySQL database username, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         if (!$config['database']['mysql_password']) {
-            die("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/baikal.yaml</h3>");
+            exit("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
         try {
@@ -317,7 +317,7 @@ class Framework extends \Flake\Core\Framework {
             # We now setup t6he connexion to use UTF8
             $GLOBALS["DB"]->query("SET NAMES UTF8");
         } catch (\Exception $e) {
-            die("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
+            exit("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
         }
 
         return true;

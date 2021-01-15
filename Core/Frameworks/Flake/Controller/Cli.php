@@ -81,7 +81,7 @@ class Cli extends \Flake\Core\Render\Container {
 
     function syntaxError() {
         $sStr = $this->rawLine("Syntax error.\nUsage: " . $this->getSyntax());
-        die("\n\n" . $sStr . "\n\n");
+        exit("\n\n" . $sStr . "\n\n");
     }
 
     function log($sStr) {

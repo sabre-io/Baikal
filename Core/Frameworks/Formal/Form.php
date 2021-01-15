@@ -27,6 +27,8 @@
 
 namespace Formal;
 
+use Formal\Form\Morphology;
+
 class Form {
     protected $sModelClass = "";
     protected $aOptions = [
@@ -233,7 +235,7 @@ class Form {
     }
 
     # public, as it may be called from a hook
-    function declareError(\Formal\Element $oElement, $sMessage = "") {
+    function declareError(Element $oElement, $sMessage = "") {
         $this->aErrors[] = [
             "element" => $oElement,
             "message" => $sMessage,
@@ -254,7 +256,7 @@ class Form {
         return false;
     }
 
-    function validateRequired($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    function validateRequired($sValue, Morphology $oMorpho, Element $oElement) {
         if (trim($sValue) !== "") {
             return true;
         }
@@ -262,7 +264,7 @@ class Form {
         return "<strong>" . $oElement->option("label") . "</strong> is required.";
     }
 
-    function validateEmail($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    function validateEmail($sValue, Morphology $oMorpho, Element $oElement) {
         if (\Flake\Util\Tools::validEmail($sValue)) {
             return true;
         }
@@ -270,7 +272,7 @@ class Form {
         return "<strong>" . $oElement->option("label") . "</strong> should be an email.";
     }
 
-    function validateSameas($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement, $sReferencePropName) {
+    function validateSameas($sValue, Morphology $oMorpho, Element $oElement, $sReferencePropName) {
         $sReferenceValue = $oMorpho->element($sReferencePropName)->value();
         if ($sValue === $sReferenceValue) {
             return true;
@@ -279,7 +281,7 @@ class Form {
         return "<strong>" . $oElement->option("label") . "</strong> does not match " . $oMorpho->element($sReferencePropName)->option("label") . ".";
     }
 
-    function validateUnique($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    function validateUnique($sValue, Morphology $oMorpho, Element $oElement) {
         $oModelInstance = $this->modelInstance();
 
         $oRequest = $oModelInstance->getBaseRequester()->addClauseEquals(
@@ -306,7 +308,7 @@ class Form {
         return true;
     }
 
-    function validateTokenid($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    function validateTokenid($sValue, Morphology $oMorpho, Element $oElement) {
         if (!preg_match("/^[a-z0-9\-_]+$/", $sValue)) {
             return "<strong>" . $oElement->option("label") . "</strong> is not valid. Allowed characters are digits, lowercase letters, the dash and underscore symbol.";
         }
@@ -314,7 +316,7 @@ class Form {
         return true;
     }
 
-    function validateColor($sValue, \Formal\Form\Morphology $oMorpho, \Formal\Element $oElement) {
+    function validateColor($sValue, Morphology $oMorpho, Element $oElement) {
         if (!empty($sValue) && !preg_match("/^#[a-fA-F0-9]{6}([a-fA-F0-9]{2})?$/", $sValue)) {
             return "<strong>" . $oElement->option("label") . "</strong> is not a valid color with format '#RRGGBB' or '#RRGGBBAA' in hexadecimal values.";
         }

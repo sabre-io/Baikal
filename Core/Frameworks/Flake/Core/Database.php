@@ -37,7 +37,7 @@ abstract class Database extends \Flake\Core\FLObject {
 
     protected function messageAndDie($sMessage) {
         $sError = "<h2>" . get_class($this) . ": " . $sMessage . "</h2>";
-        die($sError);
+        exit($sError);
     }
 
     function exec_INSERTquery($table, $fields_values, $no_quote_fields = false) {
@@ -102,7 +102,7 @@ abstract class Database extends \Flake\Core\FLObject {
                 return $query;
             }
         } else {
-            die('<strong>Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
+            exit('<strong>Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
         }
     }
 
@@ -124,7 +124,7 @@ abstract class Database extends \Flake\Core\FLObject {
 
             return $query;
         } else {
-            die('<strong>Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
+            exit('<strong>Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
         }
     }
 
