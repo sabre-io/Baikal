@@ -35,23 +35,23 @@ class Tools {
     static function assertEnvironmentIsOk() {
         # Asserting Baikal Context
         if (!defined("BAIKAL_CONTEXT") || BAIKAL_CONTEXT !== true) {
-            die("Bootstrap.php may not be included outside the Baikal context");
+            exit("Bootstrap.php may not be included outside the Baikal context");
         }
 
         # Asserting PDO
         if (!defined('PDO::ATTR_DRIVER_NAME')) {
-            die('Baikal Fatal Error: PDO is unavailable. It\'s required by Baikal.');
+            exit('Baikal Fatal Error: PDO is unavailable. It\'s required by Baikal.');
         }
 
         # Asserting PDO::SQLite or PDO::MySQL
         $aPDODrivers = \PDO::getAvailableDrivers();
         if (!in_array('sqlite', $aPDODrivers, true) && !in_array('mysql', $aPDODrivers, true)) {
-            die('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
+            exit('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
         }
 
         # Assert that the temp folder is writable
         if (!\is_writable(\sys_get_temp_dir())) {
-            die('<strong>Baikal Fatal Error</strong>: The system temp directory is not writable.');
+            exit('<strong>Baikal Fatal Error</strong>: The system temp directory is not writable.');
         }
     }
 

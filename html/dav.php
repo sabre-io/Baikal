@@ -42,7 +42,7 @@ if (file_exists(getcwd() . "/Core")) {
 }
 
 if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
-    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. If you are a regular user, this means that you probably downloaded the wrong zip file.</p><p>To install the dependencies manually, execute "<strong>composer install</strong>" in the Ba&iuml;kal root folder.</p>');
+    exit('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. If you are a regular user, this means that you probably downloaded the wrong zip file.</p><p>To install the dependencies manually, execute "<strong>composer install</strong>" in the Ba&iuml;kal root folder.</p>');
 }
 require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 
@@ -55,7 +55,7 @@ require PROJECT_PATH_ROOT . 'vendor/autoload.php';
 try {
     $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 } catch (\Exception $e) {
-    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
+    exit('<h1>Incomplete installation</h1><p>Ba&iuml;kal is missing its configuration file, or its configuration file is unreadable.');
 }
 
 $server = new \Baikal\Core\Server(

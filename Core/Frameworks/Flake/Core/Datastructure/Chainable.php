@@ -35,5 +35,5 @@ interface Chainable extends \ArrayAccess, \Iterator, \Countable {
 
     function &last();
 
-    function chain(\Flake\Core\Datastructure\Chain $chain, $key);
+    function chain(Chain $chain, $key);
 }

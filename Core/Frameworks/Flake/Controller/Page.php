@@ -115,7 +115,7 @@ class Page extends \Flake\Core\Render\Container {
             if (!file_exists($sCompiledPath)) {
                 @mkdir($sCompiledPath);
                 if (!file_exists($sCompiledPath)) {
-                    die("Page: Cannot create " . $sCompiledPath);
+                    exit("Page: Cannot create " . $sCompiledPath);
                 }
             }
 

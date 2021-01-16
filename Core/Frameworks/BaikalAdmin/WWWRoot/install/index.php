@@ -48,7 +48,7 @@ if (file_exists(dirname(dirname(getcwd())) . "/Core")) {
 }
 
 if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
-    die('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. If you are a regular user, this means that you probably downloaded the wrong zip file.</p><p>To install the dependencies manually, execute "<strong>composer install</strong>" in the Ba&iuml;kal root folder.</p>');
+    exit('<h1>Incomplete installation</h1><p>Ba&iuml;kal dependencies have not been installed. If you are a regular user, this means that you probably downloaded the wrong zip file.</p><p>To install the dependencies manually, execute "<strong>composer install</strong>" in the Ba&iuml;kal root folder.</p>');
 }
 
 require PROJECT_PATH_ROOT . "vendor/autoload.php";
@@ -92,7 +92,7 @@ if (!$config || !isset($config['system']["configured_version"])) {
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
     } else {
         echo "Installation was already completed. Please head to the admin interface to modify any settings.\n";
-        die();
+        exit();
     }
 }
 

@@ -397,7 +397,7 @@ TEST;
     static function HTTPStatus($iCode, $sMessage) {
         header("HTTP/1.1 404 Not Found");
         header("Status: 404 Not Found");
-        die("<h1>HTTP Status " . $iCode . " : " . $sMessage . "</h1>");
+        exit("<h1>HTTP Status " . $iCode . " : " . $sMessage . "</h1>");
     }
 
     static function number2Rank($a) {
