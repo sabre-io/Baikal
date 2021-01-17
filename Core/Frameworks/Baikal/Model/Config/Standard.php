@@ -43,7 +43,7 @@ class Standard extends \Baikal\Model\Config {
         // could be set to different value when migrating from legacy config
         "auth_realm"            => "BaikalDAV",
         "base_uri"              => "",
-        "mailbox"               => ""
+        "dav_auth_imap_server"  => ""
     ];
 
     function __construct() {
@@ -95,8 +95,8 @@ class Standard extends \Baikal\Model\Config {
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
-            "prop"  => "mailbox",
-            "label" => "IMAP mailbox",
+            "prop"  => "dav_auth_imap_server",
+            "label" => "IMAP server",
             "help"  => "IMAP server in the form {host[:port][/flag1/flag2...]}"
         ]));
 
