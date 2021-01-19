@@ -14,6 +14,7 @@
 		</td>
 		<td class="col-actions no-border-left">
 			<p class="pull-right">
+				<nobr><span class="btn popover-hover" data-placement="bottom" data-toggle="popover" title="Setup info" data-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ davUri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="icon-info-sign"></i></span></nobr>
 				<nobr><a class="btn" href="{{ user.linkcalendars }}"><i class="{{ calendaricon }}"></i> Calendars</a></nobr>
 				<nobr><a class="btn" href="{{ user.linkaddressbooks }}"><i class="icon-book"></i> Address Books</a></nobr>
 				<nobr><a class="btn btn-primary" href="{{ user.linkedit }}"><i class="icon-edit icon-white"></i>  Edit</a></nobr>

@@ -18,14 +18,14 @@
 	<tbody>
 		{% for calendar in calendars %}
 		<tr>
-			<td class="col-displayname"><i class="{{ calendar.icon }}"></i>{{ calendar.label|escape }}{%if calendar.instanced%} <span class="label label-info label-intext">Has instances</span>{% endif %}</td>
+			<td class="col-displayname"><i class="{{ calendar.icon }}"></i> {{ calendar.label|escape }}{%if calendar.instanced%} <span class="label label-info label-intext">Has instances</span>{% endif %}</td>
 			<td class="col-events">{{ calendar.events|escape }}</td>
 			<td class="col-description">{{ calendar.description|escape }}</td>
 			<td class="col-actions no-border-left">
 				<p class="pull-right">
+					<nobr><span class="btn popover-hover" data-placement="bottom" data-toggle="popover" title="Setup info" data-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ calendar.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="icon-info-sign"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-					<nobr><a class="btn" href="{{ calendar.davuri }}"><i class="{{ calendaricon }}"></i> Calendar URI</a></nobr>
 				</p>
 			</td>
 		</tr>
