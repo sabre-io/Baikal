@@ -275,6 +275,6 @@ class AddressBooks extends \Flake\Core\Controller {
      * @return string AddressBook DAV URI
      */
     protected function getDavUri(\Baikal\Model\AddressBook $addressbook) {
-        return PROJECT_BASEURI . 'dav.php/addressbooks/' . $this->oUser->get('username') . '/' . $addressbook->get('uri') . '/';
+        return PROJECT_URI . 'dav.php/addressbooks/' . $this->oUser->get('username') . '/' . $addressbook->get('uri') . '/';
     }
 }

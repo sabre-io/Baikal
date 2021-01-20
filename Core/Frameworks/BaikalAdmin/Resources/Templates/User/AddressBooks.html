@@ -18,14 +18,14 @@
 	<tbody>
 		{% for addressbook in addressbooks %}
 		<tr>
-			<td class="col-displayname"><i class="{{ addressbook.icon }}"></i>{{ addressbook.label|escape }}</td>
+			<td class="col-displayname"><i class="{{ addressbook.icon }}"></i> {{ addressbook.label|escape }}</td>
 			<td class="col-contacts">{{ addressbook.contacts|escape }}</td>
 			<td class="col-description">{{ addressbook.description|escape }}</td>
 			<td class="col-actions no-border-left">
 				<p class="pull-right">
+					<nobr><span class="btn popover-hover" data-placement="bottom" data-toggle="popover" title="Setup info" data-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ addressbook.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="icon-info-sign"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ addressbook.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ addressbook.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-					<nobr><a class="btn" href="{{ addressbook.davuri }}"><i class="{{ addressbookicon }}"></i> AddressBook URI</a></nobr>
 				</p>
 			</td>
 		</tr>

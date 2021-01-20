@@ -107,3 +107,20 @@ table.users .col-username { width: 45%;}
     transform: rotate(360deg);
   }
 }
+
+.popover {
+  max-width: 100%;
+}
+
+.copy-to-clipboard {
+  cursor: pointer;
+}
+
+.copy-to-clipboard i {
+  margin-left: 5px;
+  opacity: 1;
+}
+
+.copy-to-clipboard:hover i {
+  opacity: 0.5;
+}

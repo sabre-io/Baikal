@@ -78,6 +78,7 @@ class Users extends \Flake\Core\Controller {
         $oView->setData("users", $aUsers);
         $oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
         $oView->setData("usericon", \Baikal\Model\User::icon());
+        $oView->setData("davUri", PROJECT_URI . 'dav.php');
 
         # Messages
         $sMessages = implode("\n", $this->aMessages);

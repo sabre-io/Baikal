@@ -279,6 +279,6 @@ class Calendars extends \Flake\Core\Controller {
      * @return string Calender DAV URI
      */
     protected function getDavUri(\Baikal\Model\Calendar $calendar) {
-        return PROJECT_BASEURI . 'dav.php/calendars/' . $this->oUser->get('username') . '/' . $calendar->get('uri') . '/';
+        return PROJECT_URI . 'dav.php/calendars/' . $this->oUser->get('username') . '/' . $calendar->get('uri') . '/';
     }
 }
