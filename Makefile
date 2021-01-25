@@ -2,7 +2,7 @@
 
 BUILD_DIR="build/baikal"
 
-BUILD_FILES=Core html CHANGELOG.md LICENSE README.md composer.json
+BUILD_FILES=Core html LICENSE README.md composer.json
 
 VERSION=$(shell php -r "include 'Core/Distrib.php'; echo BAIKAL_VERSION;")
 
