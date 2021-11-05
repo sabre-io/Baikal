@@ -184,7 +184,9 @@ class Framework extends \Flake\Core\Framework {
 
         if (!\Flake\Util\Tools::isCliPhp()) {
             ini_set("html_errors", true);
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             if (!isset($_SESSION['CSRF_TOKEN'])) {
                 $_SESSION['CSRF_TOKEN'] = bin2hex(openssl_random_pseudo_bytes(20));
             }
