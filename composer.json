@@ -20,7 +20,7 @@
     },
     "require-dev" : {
         "friendsofphp/php-cs-fixer": "2.18.0",
-        "phpstan/phpstan": "^0.12"
+        "phpstan/phpstan": "^1.2"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"
