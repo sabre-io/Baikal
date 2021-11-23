@@ -61,7 +61,7 @@ class Initialize extends \Flake\Core\Controller {
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
-            "close" => false
+            "close" => false,
         ]);
 
         if ($this->oForm->submitted()) {

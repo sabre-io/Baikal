@@ -107,7 +107,7 @@ abstract class Router extends \Flake\Core\FLObject {
         return $GLOBALS["ROUTER"]::buildRoute($sRouteForController, $aRewrittenParams);
     }
 
-    static function buildCurrentRoute(/*[$sParam, $sParam2, ...]*/ ) {
+    static function buildCurrentRoute(/*[$sParam, $sParam2, ...]*/) {
         $aParams = func_get_args();
         $sCurrentRoute = $GLOBALS["ROUTER"]::getCurrentRoute();
 
@@ -128,7 +128,7 @@ abstract class Router extends \Flake\Core\FLObject {
 
     # this method is likely to change with every Router implementation
     # should be abstract, but is not, because of PHP's strict standards
-    static function buildRoute($sRoute, $aParams/* [, $sParam, $sParam2, ...] */ ) {
+    static function buildRoute($sRoute, $aParams/* [, $sParam, $sParam2, ...] */) {
     }
 
     # should be abstract, but is not, because of PHP's strict standards

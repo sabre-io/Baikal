@@ -212,7 +212,7 @@ class User extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Username",
                 "content" => "The login for this user account. It has to be unique.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -222,13 +222,13 @@ class User extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Display name",
                 "content" => "This is the name that will be displayed in your CalDAV/CardDAV clients.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"       => "email",
             "label"      => "Email",
-            "validation" => "required,email"
+            "validation" => "required,email",
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
@@ -251,12 +251,12 @@ class User extends \Flake\Core\Model\Db {
 
             $oMorpho->element("password")->setOption("popover", [
                 "title"   => "Password",
-                "content" => "Write something here only if you want to change the user password."
+                "content" => "Write something here only if you want to change the user password.",
             ]);
 
             $oMorpho->element("passwordconfirm")->setOption("popover", [
                 "title"   => "Confirm password",
-                "content" => "Write something here only if you want to change the user password."
+                "content" => "Write something here only if you want to change the user password.",
             ]);
 
             $oMorpho->element("password")->setOption("placeholder", $sNotice);

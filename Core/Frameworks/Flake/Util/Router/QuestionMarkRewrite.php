@@ -55,7 +55,7 @@ class QuestionMarkRewrite extends \Flake\Util\Router {
         return array_shift($aBestMatches);        // first route amongst best matches
     }
 
-    static function buildRoute($sRoute, $aParams = []/* [, $sParam, $sParam2, ...] */ ) {
+    static function buildRoute($sRoute, $aParams = []/* [, $sParam, $sParam2, ...] */) {
         #		$aParams = func_get_args();
         #		array_shift($aParams);	# Stripping $sRoute
 

@@ -268,7 +268,7 @@ HTML;
                 $stmt->execute([
                     md5($row['carddata']),
                     strlen($row['carddata']),
-                    $row['id']
+                    $row['id'],
                 ]);
             }
             $this->aSuccess[] = 'etag and size was recalculated for cards';
@@ -304,7 +304,7 @@ HTML;
                 $stmt1->execute([
                     'addressbooks/' . basename($row['uri']),
                     '{http://calendarserver.org/ns/}me-card',
-                    serialize(new \Sabre\DAV\Xml\Property\Href($row['vcardurl']))
+                    serialize(new \Sabre\DAV\Xml\Property\Href($row['vcardurl'])),
                 ]);
             }
             $this->aSuccess[] = 'vcardurl was migrated to the propertystorage system';

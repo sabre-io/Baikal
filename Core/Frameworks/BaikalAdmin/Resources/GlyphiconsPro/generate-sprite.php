@@ -387,7 +387,7 @@ function generateSprite($aSymbols, $iCols, $iRows, $iPngWidth, $iPngHeight, $sCl
             "x"      => round($iX),
             "y"      => round($iY),
             "width"  => ceil($iSymbolWidth),
-            "height" => ceil($iSymbolHeight)
+            "height" => ceil($iSymbolHeight),
         ];
 
         ++$iKey;

@@ -64,7 +64,7 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "mysql_host",
             "label" => "MySQL host",
-            "help"  => "Host ip or name, including ':portnumber' if port is not the default one (3306)"
+            "help"  => "Host ip or name, including ':portnumber' if port is not the default one (3306)",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
