@@ -122,7 +122,7 @@ class Sql extends \Flake\Core\Requester {
             ],
             [
                 $sField,
-                $sValue
+                $sValue,
             ],
             $sWrap
         );

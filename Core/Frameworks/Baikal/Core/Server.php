@@ -142,7 +142,7 @@ class Server {
         $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($this->pdo);
 
         $nodes = [
-            new \Sabre\CalDAV\Principal\Collection($principalBackend)
+            new \Sabre\CalDAV\Principal\Collection($principalBackend),
         ];
         if ($this->enableCalDAV) {
             $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);

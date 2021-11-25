@@ -34,5 +34,5 @@ $GLOBALS["ROUTES"] = [
     "users/addressbooks" => "\BaikalAdmin\Route\User\AddressBooks",
     "settings/standard"  => "\BaikalAdmin\Route\Settings\Standard",
     "settings/database"  => "\BaikalAdmin\Route\Settings\Database",
-    "logout"             => "\BaikalAdmin\Route\Logout"
+    "logout"             => "\BaikalAdmin\Route\Logout",
 ];

@@ -75,7 +75,7 @@ class AddressBook extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Address Book token ID",
                 "content" => "The unique identifier for this address book.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -85,12 +85,12 @@ class AddressBook extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Display name",
                 "content" => "This is the name that will be displayed in your CardDAV client.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "description",
-            "label" => "Description"
+            "label" => "Description",
         ]));
 
         if ($this->floating()) {

@@ -42,7 +42,7 @@ class Standard extends \Baikal\Model\Config {
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
         "auth_realm"            => "BaikalDAV",
-        "base_uri"              => ""
+        "base_uri"              => "",
     ];
 
     function __construct() {
@@ -62,24 +62,24 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "card_enabled",
-            "label" => "Enable CardDAV"
+            "label" => "Enable CardDAV",
         ]));
 
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "cal_enabled",
-            "label" => "Enable CalDAV"
+            "label" => "Enable CalDAV",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "invite_from",
             "label" => "Email invite sender address",
-            "help"  => "Leave empty to disable sending invite emails"
+            "help"  => "Leave empty to disable sending invite emails",
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic", "Apache"]
+            "options" => ["Digest", "Basic", "Apache"],
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([

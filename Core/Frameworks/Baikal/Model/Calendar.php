@@ -42,7 +42,7 @@ class Calendar extends \Flake\Core\Model\Db {
         "calendarorder" => 0,
         "calendarcolor" => "",
         "timezone"      => null,
-        "calendarid"    => 0
+        "calendarid"    => 0,
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
@@ -182,7 +182,7 @@ class Calendar extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Calendar token ID",
                 "content" => "The unique identifier for this calendar.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -192,7 +192,7 @@ class Calendar extends \Flake\Core\Model\Db {
             "popover"    => [
                 "title"   => "Display name",
                 "content" => "This is the name that will be displayed in your CalDAV client.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -204,12 +204,12 @@ class Calendar extends \Flake\Core\Model\Db {
                     "content" => "This is the color that will be displayed in your CalDAV client.<br/>" .
                     "Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.<br/>" .
                     "This value is optional.",
-            ]
+            ],
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "description",
-            "label" => "Description"
+            "label" => "Description",
         ]));
 
         $oMorpho->add(new \Formal\Element\Checkbox([

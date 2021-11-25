@@ -101,7 +101,7 @@ class Users extends \Flake\Core\Controller {
     protected function initForm() {
         if ($this->actionEditRequested() || $this->actionNewRequested()) {
             $aOptions = [
-                "closeurl" => self::link()
+                "closeurl" => self::link(),
             ];
 
             $this->oForm = $this->oModel->formForThisModelInstance($aOptions);
@@ -213,26 +213,26 @@ class Users extends \Flake\Core\Controller {
 
     function linkNew() {
         return self::buildRoute([
-            "new" => 1
+            "new" => 1,
         ]) . "#form";
     }
 
     static function linkEdit(\Baikal\Model\User $user) {
         return self::buildRoute([
-            "edit" => $user->get("id")
+            "edit" => $user->get("id"),
         ]) . "#form";
     }
 
     static function linkDelete(\Baikal\Model\User $user) {
         return self::buildRoute([
-            "delete" => $user->get("id")
+            "delete" => $user->get("id"),
         ]) . "#message";
     }
 
     static function linkDeleteConfirm(\Baikal\Model\User $user) {
         return self::buildRoute([
             "delete"  => $user->get("id"),
-            "confirm" => 1
+            "confirm" => 1,
         ]) . "#message";
     }
 

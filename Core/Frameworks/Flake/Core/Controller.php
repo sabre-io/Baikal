@@ -38,7 +38,7 @@ abstract class Controller extends \Flake\Core\FLObject {
         return $this->aParams;
     }
 
-    static function link(/*[$sParam, $sParam2, ...]*/ ) {
+    static function link(/*[$sParam, $sParam2, ...]*/) {
         return static::buildRoute();
     }
 
