@@ -736,7 +736,7 @@ TEST;
             if ($len - $headerlen - 2 < 8) {
                 return false;    // invalid
             }
-            $calccrc = crc32(substr($data, 0, $headerlen)) & 0xffff;
+            $calccrc = crc32(substr($data, 0, $headerlen)) & 0xFFFF;
             $headercrc = unpack("v", substr($data, $headerlen, 2));
             $headercrc = $headercrc[1];
             if ($headercrc != $calccrc) {

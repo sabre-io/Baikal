@@ -12,7 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
+        cs-fixer: [ true ]
+        include:
+          - php-versions: '7.1'
+            cs-fixer: false
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -38,10 +42,15 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Remove php-cs-fixer dependency when not used
+        if: matrix.cs-fixer == false
+        run: composer remove --dev friendsofphp/php-cs-fixer
+
       - name: Install composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Code Analysis (PHP CS-Fixer)
+        if: matrix.cs-fixer == true
         run: php vendor/bin/php-cs-fixer fix --dry-run --diff
 
       - name: Code Analysis (PHPStan)
