@@ -23,4 +23,5 @@ vendor
 nbproject
 
 # Tests
+.php-cs-fixer.cache
 .php_cs.cache
