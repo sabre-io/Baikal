@@ -31,12 +31,12 @@ namespace Flake\Core\Datastructure;
  * @extends \SplDoublyLinkedList<\Flake\Core\Datastructure\Chainable>
  */
 class Chain extends \SplDoublyLinkedList {
-    function push($value) {
+    function push($value): void {
         $value->chain($this, $this->count());
         parent::push($value);
     }
 
-    function offsetUnset($offset) {
+    function offsetUnset($offset): void {
         throw new \Exception("Cannot delete Chainable in Chain");
     }
 

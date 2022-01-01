@@ -39,15 +39,15 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
         return key($this->aCollection);
     }
 
-    function next() {
-        return next($this->aCollection);
+    function next(): void {
+        next($this->aCollection);
     }
 
-    function rewind() {
+    function rewind(): void {
         $this->reset();
     }
 
-    function valid() {
+    function valid(): bool {
         $key = key($this->aCollection);
 
         return ($key !== null && $key !== false);

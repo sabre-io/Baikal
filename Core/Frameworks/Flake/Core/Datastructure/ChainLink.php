@@ -36,7 +36,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         $this->__key = $key;
     }
 
-    function offsetSet($offset, $value) {
+    function offsetSet($offset, $value): void {
         if (is_null($this->__container)) {
             return;
         }
@@ -44,7 +44,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         $this->__container->offsetSet($offset, $value);
     }
 
-    function offsetExists($offset) {
+    function offsetExists($offset): bool {
         if (is_null($this->__container)) {
             return false;
         }
@@ -52,7 +52,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         return $this->__container->offsetExists($offset);
     }
 
-    function offsetUnset($offset) {
+    function offsetUnset($offset): void {
         if (is_null($this->__container)) {
             return;
         }
@@ -70,7 +70,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         return $oRes;
     }
 
-    function rewind() {
+    function rewind(): void {
         $this->__container->rewind();
     }
 
@@ -82,10 +82,8 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         return $this->__container->key();
     }
 
-    function &next() {
-        $oRes = $this->__container->next();
-
-        return $oRes;
+    function &next(): void {
+        $this->__container->next();
     }
 
     function &prev() {
@@ -94,11 +92,11 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         return $oPrev;
     }
 
-    function valid() {
+    function valid(): bool {
         return $this->__container->valid();
     }
 
-    function count() {
+    function count(): int {
         return $this->__container->count();
     }
 

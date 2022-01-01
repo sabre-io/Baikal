@@ -17,6 +17,8 @@ jobs:
         include:
           - php-versions: '7.1'
             cs-fixer: false
+          - php-versions: '8.1'
+            cs-fixer: false
     steps:
       - name: Checkout
         uses: actions/checkout@v2
