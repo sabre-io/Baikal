@@ -61,7 +61,6 @@ class Users extends \Flake\Core\Controller {
         $aUsers = [];
         $oUsers = \Baikal\Model\User::getBaseRequester()->execute();
 
-        reset($oUsers);
         foreach ($oUsers as $user) {
             $aUsers[] = [
                 "linkcalendars"    => \BaikalAdmin\Controller\Users::linkCalendars($user),

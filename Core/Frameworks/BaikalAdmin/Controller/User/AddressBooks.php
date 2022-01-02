@@ -63,7 +63,6 @@ class AddressBooks extends \Flake\Core\Controller {
         $aAddressBooks = [];
         $oAddressBooks = $this->oUser->getAddressBooksBaseRequester()->execute();
 
-        reset($oAddressBooks);
         foreach ($oAddressBooks as $addressbook) {
             $aAddressBooks[] = [
                 "linkedit"    => $this->linkEdit($addressbook),

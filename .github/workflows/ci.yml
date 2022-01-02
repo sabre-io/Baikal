@@ -15,8 +15,6 @@ jobs:
         php-versions: ['7.2', '7.3', '7.4', '8.0']
         cs-fixer: [ true ]
         include:
-          - php-versions: '7.1'
-            cs-fixer: false
           - php-versions: '8.1'
             cs-fixer: false
     steps:

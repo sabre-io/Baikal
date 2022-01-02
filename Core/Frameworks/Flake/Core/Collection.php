@@ -31,10 +31,12 @@ class Collection extends \Flake\Core\FLObject implements \Iterator {
     protected $aCollection = [];
     protected $aMeta = [];
 
+    #[\ReturnTypeWillChange]
     function current() {
         return current($this->aCollection);
     }
 
+    #[\ReturnTypeWillChange]
     function key() {
         return key($this->aCollection);
     }
