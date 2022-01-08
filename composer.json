@@ -16,7 +16,8 @@
         "php"           : "^7.2 || ^8.0",
         "sabre/dav"     : "~4.3.0",
         "twig/twig"     : "~2.14.8",
-        "symfony/yaml"  : "^3.4"
+        "symfony/yaml"  : "^3.4",
+        "psr/log"       : "^1"
     },
     "require-dev" : {
         "friendsofphp/php-cs-fixer": "3.3.2",
