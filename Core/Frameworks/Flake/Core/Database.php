@@ -178,7 +178,11 @@ abstract class Database extends \Flake\Core\FLObject {
 
         foreach ($arr as $k => $v) {
             if ($noQuote === false || !in_array($k, $noQuote)) {
-                $arr[$k] = $this->fullQuote($v, $table);
+                if ($v === null) {
+                    $arr[$k] = "NULL";
+                } else {
+                    $arr[$k] = $this->fullQuote($v, $table);
+                }
             }
         }
 
