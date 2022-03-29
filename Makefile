@@ -16,7 +16,7 @@ dist: vendor/autoload.php
 		$(BUILD_FILES) \
 		--exclude="*.swp" \
 		$(BUILD_DIR)
-	composer install --no-dev -d $(BUILD_DIR)
+	composer install --no-interaction --no-dev -d $(BUILD_DIR)
 	rm $(BUILD_DIR)/composer.*
 	cd build; zip -r baikal-$(VERSION).zip baikal/
 
@@ -25,10 +25,10 @@ build-assets: vendor/autoload.php
 	cat vendor/sabre/dav/examples/sql/sqlite.*.sql > Core/Resources/Db/SQLite/db.sql
 
 vendor/autoload.php: composer.lock
-	composer install
+	composer install --no-interaction
 
 composer.lock: composer.json
-	composer update
+	composer update --no-interaction
 
 clean:
 	# Wipe out all local data, and go back to a clean install
