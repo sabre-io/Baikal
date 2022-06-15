@@ -66,7 +66,7 @@ class Text extends \Formal\Element {
             $placeholder = " placeholder=\"" . htmlspecialchars($sPlaceHolder) . "\" ";
         }
 
-        $clientvalue = htmlspecialchars($value);
+        $clientvalue = htmlspecialchars($value ?? '');
 
         $sInputType = $this->inputtype();
 
