@@ -89,10 +89,10 @@ class Listbox extends \Formal\Element {
         unset($aRenderedOptions);
 
         $sHtml = <<<HTML
-	<div class="control-group{$groupclass}">
+	<div class="control-group{$groupclass}" id="control-group-{$prop}">
 		<label class="control-label" for="{$prop}">{$label}</label>
 		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}>
+			<select class="{$inputclass}" id="{$prop}" onchange="hideDependsAll()" name="data[{$prop}]"{$disabled}{$popover}>
 				{$sRenderedOptions}
 			</select>
 			{$helpblock}

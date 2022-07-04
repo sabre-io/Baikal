@@ -87,7 +87,7 @@ class Text extends \Formal\Element {
         }
 
         $sHtml = <<<HTML
-<div class="control-group{$groupclass}">
+<div class="control-group{$groupclass}" id="control-group-{$prop}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
 		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>

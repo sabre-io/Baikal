@@ -71,10 +71,10 @@ class Checkbox extends \Formal\Element {
         }
 
         $sHtml = <<<HTML
-<div class="control-group{$groupclass}">
+<div class="control-group{$groupclass}" id="control-group-{$prop}">
 	<label class="control-label" for="{$prop}">{$label}</label>
 	<div class="controls">
-		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="data[{$prop}]" value="1"{$checked}{$disabled}{$popover}{$onchange}/>
+		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="data[{$prop}]" onclick="hideDependsAll();" value="1"{$checked}{$disabled}{$popover}{$onchange}/>
 		{$helpblock}
 	</div>
 </div>
