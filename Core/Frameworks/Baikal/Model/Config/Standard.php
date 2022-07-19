@@ -94,6 +94,7 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "use_smtp",
             "label" => "Use SMTP for sending emails",
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -120,12 +121,14 @@ class Standard extends \Baikal\Model\Config {
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
             "options" => ["Digest", "Basic", "Apache", "LDAP"],
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "ldap_mode",
             "label"   => "LDAP authentication mode",
             "options" => ["DN", "Attribute", "Filter"],
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
