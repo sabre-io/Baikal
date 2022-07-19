@@ -136,7 +136,7 @@ class Server {
         } elseif ($this->authType === 'Apache') {
             $authBackend = new \Sabre\DAV\Auth\Backend\Apache();
         } elseif ($this->authType === 'LDAP') {
-            $authBackend = new \Baikal\Core\LDAP($this->pdo, 'users', $config['system']['ldap_uri'], $config['system']['ldap_dn'], $config['system']['ldap_cn'], $config['system']['ldap_mail']);
+            $authBackend = new \Baikal\Core\LDAP($this->pdo, 'users', $config['system']['ldap_mode'], $config['system']['ldap_uri'], $config['system']['ldap_bind_dn'], $config['system']['ldap_bind_password'], $config['system']['ldap_dn'], $config['system']['ldap_cn'], $config['system']['ldap_mail'], $config['system']['ldap_search_base'], $config['system']['ldap_search_attribute'], $config['system']['ldap_search_filter']);
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
             $authBackend->setRealm($this->authRealm);

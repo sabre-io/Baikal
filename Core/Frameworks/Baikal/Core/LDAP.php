@@ -7,6 +7,7 @@ namespace Baikal\Core;
  *
  * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Aisha Tammy <aisha@bsd.ac>
+ * @author El-Virus <elvirus@ilsrv.com>
  * @license http://sabre.io/license/ Modified BSD License
  */
 class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
@@ -26,6 +27,15 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
     protected $table_name;
 
     /**
+     * LDAP mode.
+     * Defines if LDAP authentication should match
+     * by DN, Attribute, or Filter.
+     * 
+     * @var string
+     */
+    protected $ldap_mode;
+
+    /**
      * LDAP server uri.
      * e.g. ldaps://ldap.example.org
      *
@@ -33,8 +43,25 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      */
     protected $ldap_uri;
 
-    /*
-     * LDAP dn pattern for binding
+    /**
+     * LDAP bind dn.
+     * Defines the bind dn that Baikal is going to use
+     * when looking for an attribute or filtering.
+     * 
+     * @var string
+     */
+    protected $ldap_bind_dn;
+
+    /**
+     * LDAP bind password.
+     * Defines the password used by Baikal for binding.
+     * 
+     * @var string
+     */
+    protected $ldap_bind_password;
+
+     /**
+     * LDAP dn pattern for binding.
      *
      * %u   - gets replaced by full username
      * %U   - gets replaced by user part when the
@@ -49,19 +76,89 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      */
     protected $ldap_dn;
 
-    /*
-     * LDAP attribute to use for name
+    /**
+     * LDAP attribute to use for name.
      *
      * @var string
      */
     protected $ldap_cn;
 
-    /*
-     * LDAP attribute used for mail
+    /**
+     * LDAP attribute used for mail.
      *
      * @var string
      */
     protected $ldap_mail;
+
+    /**
+     * LDAP base path where to search for attributes
+     * and apply filters.
+     * 
+     * @var string
+     */
+    protected $ldap_search_base;
+
+    /**
+     * LDAP attribute to search for.
+     * 
+     * @var string
+     */
+    protected $ldap_search_attribute;
+
+    /**
+     * LDAP filter to apply.
+     * 
+     * @var string
+     */
+    protected $ldap_search_filter;
+
+    /**
+     * Replaces patterns for their assigned value.
+     * 
+     * @param string &$base
+     * @param string $username
+     * 
+     */
+
+    protected function patternReplace(&$base, $username)
+    {
+        $user_split = explode('@', $username, 2);
+        $ldap_user = $user_split[0];
+        $ldap_domain = '';
+        if (count($user_split) > 1)
+            $ldap_domain = $user_split[1];
+        $domain_split = array_reverse(explode('.', $ldap_domain));
+
+        $base = str_replace('%u', $username, $base);
+        $base = str_replace('%U', $ldap_user, $base);
+        $base = str_replace('%d', $ldap_domain, $base);
+        for($i = 1; $i <= count($domain_split) and $i <= 9; $i++)
+            $base = str_replace('%' . $i, $domain_split[$i - 1], $base);
+    }
+
+    /**
+     * Checks if a user can bind with a password.
+     * If an error is produced, it will be logged.
+     * 
+     * @param \LDAP\Connection &$conn
+     * @param string $dn
+     * @param string $password
+     * 
+     * @return bool
+     */
+
+    protected function doesBind(&$conn, $dn, $password)
+    {
+        try {
+            $bind = ldap_bind($conn, $dn, $password);
+            if ($bind)
+                return true;
+        } catch (\ErrorException $e) {
+            error_log($e->getMessage());
+            error_log(ldap_error($conn));
+        }
+        return false;
+    }
 
     /**
      * Creates the backend object.
@@ -72,14 +169,20 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      * @param string $ldap_mail
      *
      */
-    public function __construct(\PDO $pdo, $table_name = 'users', $ldap_uri = 'ldap://127.0.0.1', $ldap_dn = 'mail=%u', $ldap_cn = 'cn', $ldap_mail = 'mail')
+    public function __construct(\PDO $pdo, $table_name = 'users', $ldap_mode = 'DN', $ldap_uri = 'ldap://127.0.0.1', $ldap_bind_dn = 'cn=baikal,ou=apps,dc=example,dc=com', $ldap_bind_password = '', $ldap_dn = 'mail=%u', $ldap_cn = 'cn', $ldap_mail = 'mail', $ldap_search_base = 'ou=users,dc=example,dc=com', $ldap_search_attribute = 'uid=%U', $ldap_search_filter = '(objectClass=*)')
     {
-        $this->pdo        = $pdo;
-        $this->table_name = $table_name;
-        $this->ldap_uri   = $ldap_uri;
-        $this->ldap_dn    = $ldap_dn;
-        $this->ldap_cn    = $ldap_cn;
-        $this->ldap_mail  = $ldap_mail;
+        $this->pdo                   = $pdo;
+        $this->table_name            = $table_name;
+        $this->ldap_mode             = $ldap_mode;
+        $this->ldap_uri              = $ldap_uri;
+        $this->ldap_bind_dn          = $ldap_bind_dn;
+        $this->ldap_bind_password    = $ldap_bind_password;
+        $this->ldap_dn               = $ldap_dn;
+        $this->ldap_cn               = $ldap_cn;
+        $this->ldap_mail             = $ldap_mail;
+        $this->ldap_search_base      = $ldap_search_base;
+        $this->ldap_search_attribute = $ldap_search_attribute;
+        $this->ldap_search_filter    = $ldap_search_filter;
     }
 
     /**
@@ -100,28 +203,49 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
 
         $success = false;
 
-        $user_split = explode('@', $username, 2);
-        $ldap_user = $user_split[0];
-        $ldap_domain = '';
-        if (count($user_split) > 1)
-            $ldap_domain = $user_split[1];
-        $domain_split = array_reverse(explode('.', $ldap_domain));
+        if ($this->ldap_mode == 'DN') {
+            $this->patternReplace($dn, $username);
 
-        $dn = str_replace('%u', $username, $this->ldap_dn);
-        $dn = str_replace('%U', $ldap_user, $dn);
-        $dn = str_replace('%d', $ldap_domain, $dn);
-        for($i = 1; $i <= count($domain_split) and $i <= 9; $i++)
-            $dn = str_replace('%' . $i, $domain_split[$i - 1], $dn);
+            $success = $this->doesBind($conn, $dn, $password);
+        } else if ($this->ldap_mode == 'Attribute') {
+            try {
+                if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
+                    return false;
+                }
 
-        try {
-            $bind = ldap_bind($conn, $dn, $password);
-            if ($bind) {
-                $success = true;
+                $attribute = $this->ldap_search_attribute;
+                $this->patternReplace($attribute, $username);
+
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '('.$attribute.')', [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
+                
+                $dn = $result["dn"];
+                $success = $this->doesBind($conn, $dn, $password);
+            } catch (\ErrorException $e) {
+                error_log($e->getMessage());
+                error_log(ldap_error($conn));
             }
-        } catch (\ErrorException $e) {
-            error_log($e->getMessage());
-            error_log(ldap_error($conn));
+        } else if ($this->ldap_mode == 'Filter') {
+            try {
+                if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
+                    return false;
+                }
+
+                $filter = $this->ldap_search_filter;
+                $this->patternReplace($filter, $username);
+
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
+
+                $dn = $result["dn"];
+                $success = $this->doesBind($conn, $dn, $password);
+            } catch (\ErrorException $e) {
+                error_log($e->getMessage());
+                error_log(ldap_error($conn));
+            }
+        } else {
+            error_log('Unknown LDAP authentication mode');
         }
+
+
 
         if($success){
             $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM ' . $this->table_name . ' WHERE username = ?');

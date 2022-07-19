@@ -36,8 +36,11 @@ function hideDepends(el, dep, val) {
     if(typeof(val) == "boolean"){
         if(el_dep.checked == val)
             visibility = "block";
-    } else {
+    } else if (typeof(val) == string) {
         if(el_dep.value == val)
+            visibility = "block";
+    } else {
+        if(val.includes(el_dep.value))
             visibility = "block";
     }
     el_tohide.style.display = visibility;
@@ -48,10 +51,16 @@ hideDependsArray=[
     ["control-group-smtp_password", "use_smtp", true],
     ["control-group-smtp_host", "use_smtp", true],
     ["control-group-smtp_port", "use_smtp", true],
+    ["control-group-ldap_mode", "dav_auth_type", "LDAP"],
     ["control-group-ldap_uri", "dav_auth_type", "LDAP"],
-    ["control-group-ldap_dn", "dav_auth_type", "LDAP"],
     ["control-group-ldap_cn", "dav_auth_type", "LDAP"],
     ["control-group-ldap_mail", "dav_auth_type", "LDAP"],
+    ["control-group-ldap_dn", "ldap_mode", "DN"],
+    ["control-group-ldap_bind_dn", "ldap_mode", ["Attribute", "Filter"]],
+    ["control-group-ldap_bind_password", "ldap_mode", ["Attribute", "Filter"]],
+    ["control-group-ldap_search_base", "ldap_mode", ["Attribute", "Filter"]],
+    ["control-group-ldap_search_attribute", "ldap_mode", "Attribute"],
+    ["control-group-ldap_search_filter", "ldap_mode", "Filter"],
 ];
 
 function hideDependsAll() {

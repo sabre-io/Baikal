@@ -37,10 +37,16 @@ class Standard extends \Baikal\Model\Config {
         "card_enabled"           => true,
         "cal_enabled"            => true,
         "dav_auth_type"          => "Digest",
+        "ldap_mode"              => "None",
         "ldap_uri"               => "ldap://127.0.0.1",
+        "ldap_bind_dn"           => "cn=baikal,ou=apps,dc=example,dc=com",
+        "ldap_bind_password"     => "",
         "ldap_dn"                => "mail=%u",
         "ldap_cn"                => "cn",
         "ldap_mail"              => "mail",
+        "ldap_search_base"       => "ou=users,dc=example,dc=com",
+        "ldap_search_attribute"  => "uid=%U",
+        "ldap_search_filter"     => "(objectClass=*)",
         "use_smtp"               => false,
         "smtp_username"          => "",
         "smtp_password"          => "",
@@ -116,9 +122,25 @@ class Standard extends \Baikal\Model\Config {
             "options" => ["Digest", "Basic", "Apache", "LDAP"],
         ]));
 
+        $oMorpho->add(new \Formal\Element\Listbox([
+            "prop"    => "ldap_mode",
+            "label"   => "LDAP authentication mode",
+            "options" => ["DN", "Attribute", "Filter"],
+        ]));
+
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_uri",
             "label"   => "URI of the LDAP server; default ldap://127.0.0.1",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_bind_dn",
+            "label"   => "DN which Baikal will use to bind to the LDAP server",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop"    => "ldap_bind_password",
+            "label"   => "The password of the bind DN user",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -134,6 +156,22 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_mail",
             "label"   => "LDAP-attribute for email; default mail",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_search_base",
+            "label"   => "The base of the LDAP search",
+        ]));
+
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_search_attribute",
+            "label"   => "Attribute and match.; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_search_filter",
+            "label"   => "The LDAP filter to be applied to the search.",
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
