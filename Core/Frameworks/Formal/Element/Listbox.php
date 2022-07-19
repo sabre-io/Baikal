@@ -39,6 +39,7 @@ class Listbox extends \Formal\Element {
         $prop = $this->option("prop");
         $helpblock = "";
         $popover = "";
+        $onchange = "";
 
         if ($this->option("readonly") === true) {
             $inputclass .= " disabled";
@@ -62,6 +63,10 @@ class Listbox extends \Formal\Element {
             $inputclass .= " popover-focus ";
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
             $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+        }
+
+        if ($this->option("refreshonchange") === true) {
+            $onchange = " onchange=\"document.getElementsByTagName('form')[0].elements['refreshed'].value=1;document.getElementsByTagName('form')[0].submit();\" ";
         }
 
         $clientvalue = htmlspecialchars($value);
@@ -89,10 +94,10 @@ class Listbox extends \Formal\Element {
         unset($aRenderedOptions);
 
         $sHtml = <<<HTML
-	<div class="control-group{$groupclass}" id="control-group-{$prop}">
+	<div class="control-group{$groupclass}">
 		<label class="control-label" for="{$prop}">{$label}</label>
 		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" onchange="hideDependsAll()" name="data[{$prop}]"{$disabled}{$popover}>
+			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
 				{$sRenderedOptions}
 			</select>
 			{$helpblock}
