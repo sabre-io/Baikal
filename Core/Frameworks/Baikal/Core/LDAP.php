@@ -113,6 +113,13 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
     protected $ldap_search_filter;
 
     /**
+     * LDAP group to check if a user is member of.
+     * 
+     * @var string
+     */
+    protected $ldap_group;
+
+    /**
      * Replaces patterns for their assigned value.
      * 
      * @param string &$base
@@ -169,7 +176,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      * @param string $ldap_mail
      *
      */
-    public function __construct(\PDO $pdo, $table_name = 'users', $ldap_mode = 'DN', $ldap_uri = 'ldap://127.0.0.1', $ldap_bind_dn = 'cn=baikal,ou=apps,dc=example,dc=com', $ldap_bind_password = '', $ldap_dn = 'mail=%u', $ldap_cn = 'cn', $ldap_mail = 'mail', $ldap_search_base = 'ou=users,dc=example,dc=com', $ldap_search_attribute = 'uid=%U', $ldap_search_filter = '(objectClass=*)')
+    public function __construct(\PDO $pdo, $table_name = 'users', $ldap_mode = 'DN', $ldap_uri = 'ldap://127.0.0.1', $ldap_bind_dn = 'cn=baikal,ou=apps,dc=example,dc=com', $ldap_bind_password = '', $ldap_dn = 'mail=%u', $ldap_cn = 'cn', $ldap_mail = 'mail', $ldap_search_base = 'ou=users,dc=example,dc=com', $ldap_search_attribute = 'uid=%U', $ldap_search_filter = '(objectClass=*)', $ldap_group = 'cn=baikal,ou=groups,dc=example,dc=com')
     {
         $this->pdo                   = $pdo;
         $this->table_name            = $table_name;
@@ -183,6 +190,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
         $this->ldap_search_base      = $ldap_search_base;
         $this->ldap_search_attribute = $ldap_search_attribute;
         $this->ldap_search_filter    = $ldap_search_filter;
+        $this->ldap_group            = $ldap_group;
     }
 
     /**
@@ -207,7 +215,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
             $this->patternReplace($dn, $username);
 
             $success = $this->doesBind($conn, $dn, $password);
-        } else if ($this->ldap_mode == 'Attribute') {
+        } elseif ($this->ldap_mode == 'Attribute' || $this->ldap_mode == 'Group') {
             try {
                 if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
                     return false;
@@ -219,12 +227,36 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
                 $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '('.$attribute.')', [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
                 
                 $dn = $result["dn"];
+
+                if ($this->ldap_mode == 'Group') {
+                    $inGroup = FALSE;
+                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)', ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
+                    if (isset($members["member"])) {
+                        foreach ($members["member"] as $member) {
+                            if ($member == $result["dn"]) {
+                                $inGroup = TRUE;
+                                break;
+                            }
+                        }
+                    }
+                    if (isset($members["uniqueMember"])) {
+                        foreach ($members["uniqueMember"] as $member) {
+                            if ($member == $result["dn"]) {
+                                $inGroup = TRUE;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$inGroup)
+                        return false;
+                }
+
                 $success = $this->doesBind($conn, $dn, $password);
             } catch (\ErrorException $e) {
                 error_log($e->getMessage());
                 error_log(ldap_error($conn));
             }
-        } else if ($this->ldap_mode == 'Filter') {
+        } elseif ($this->ldap_mode == 'Filter') {
             try {
                 if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
                     return false;
@@ -244,8 +276,6 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
         } else {
             error_log('Unknown LDAP authentication mode');
         }
-
-
 
         if($success){
             $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM ' . $this->table_name . ' WHERE username = ?');
