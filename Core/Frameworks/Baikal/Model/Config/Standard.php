@@ -47,6 +47,7 @@ class Standard extends \Baikal\Model\Config {
         "ldap_search_base"       => "ou=users,dc=example,dc=com",
         "ldap_search_attribute"  => "uid=%U",
         "ldap_search_filter"     => "(objectClass=*)",
+        "ldap_group"             => "cn=baikal,ou=groups,dc=example,dc=com",
         "admin_passwordhash"     => "",
         "failed_access_message"  => "user %u authentication failure for Baikal",
         // While not editable as will change admin & any existing user passwords,
@@ -95,7 +96,8 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "ldap_mode",
             "label"   => "LDAP authentication mode",
-            "options" => ["DN", "Attribute", "Filter"],
+            "options" => ["DN", "Attribute", "Filter", "Group"],
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -136,12 +138,17 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_attribute",
-            "label"   => "Attribute and match.; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
+            "label"   => "Attribute and match the user with.; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_filter",
             "label"   => "The LDAP filter to be applied to the search.",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_group",
+            "label"   => "The Group DN that contains the member atribute of the user.",
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([

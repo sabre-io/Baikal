@@ -86,12 +86,20 @@ class Standard extends \Flake\Core\Controller {
                 $oMorpho->remove("ldap_search_base");
                 $oMorpho->remove("ldap_search_attribute");
                 $oMorpho->remove("ldap_search_filter");
+                $oMorpho->remove("ldap_group");
             } elseif ($sLDAPm === "Attribute") {
                 $oMorpho->remove("ldap_dn");
                 $oMorpho->remove("ldap_search_filter");
+                $oMorpho->remove("ldap_group");
             } elseif ($sLDAPm === "Filter") {
                 $oMorpho->remove("ldap_dn");
                 $oMorpho->remove("ldap_search_attribute");
+                $oMorpho->remove("ldap_group");
+            } elseif ($sLDAPm === "Group") {
+                $oMorpho->remove("ldap_dn");
+                $oMorpho->remove("ldap_search_filter");
+            } else {
+                error_log('Unknown LDAP mode: '.$sLDAPm);
             }
         } else {
             $oMorpho->remove("ldap_mode");
@@ -103,6 +111,7 @@ class Standard extends \Flake\Core\Controller {
             $oMorpho->remove("ldap_search_base");
             $oMorpho->remove("ldap_search_attribute");
             $oMorpho->remove("ldap_search_filter");
+            $oMorpho->remove("ldap_group");
         }
     }
 }
