@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Baikal\Core;
 
-use \Sabre\DAV;
-use \Sabre\VObject\ITip;
+use Sabre\DAV;
+use Sabre\VObject\ITip;
 
 /**
  * iMIP handler using Pear SMTP.
@@ -21,8 +21,7 @@ use \Sabre\VObject\ITip;
  * @author Aisha Tammy <floss@bsd.ac>
  * @license http://sabre.io/license/ Modified BSD License
  */
-class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
-{
+class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin {
     /**
      * Email address used in From: header.
      *
@@ -31,10 +30,9 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
     protected $senderEmail;
 
     /**
-     * SMTP connection made by PEAR
-     *
+     * SMTP connection made by PEAR.
      */
-     protected $smtp;
+    protected $smtp;
 
     /**
      * ITipMessage.
@@ -51,11 +49,10 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
      *                             generally be some kind of no-reply email
      *                             address you own.
      */
-    public function __construct($senderEmail, $smtp_host = "", $smtp_port = "", $smtp_username = "", $smtp_password = "")
-    {
+    public function __construct($senderEmail, $smtp_host = "", $smtp_port = "", $smtp_username = "", $smtp_password = "") {
         require_once "Mail.php";
         $this->senderEmail = $senderEmail;
-        $this->smtp = \Mail::factory('smtp', array ('host' => $smtp_host, 'port' => $smtp_port, 'auth' => true, 'username' => $smtp_username, 'password' => $smtp_password));
+        $this->smtp = \Mail::factory('smtp', ['host' => $smtp_host, 'port' => $smtp_port, 'auth' => true, 'username' => $smtp_username, 'password' => $smtp_password]);
     }
 
     /*
@@ -69,8 +66,7 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
      * @param DAV\Server $server
      * @return void
      */
-    public function initialize(DAV\Server $server)
-    {
+    public function initialize(DAV\Server $server) {
         $server->on('schedule', [$this, 'schedule'], 120);
     }
 
@@ -82,16 +78,14 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
      *
      * @return string
      */
-    public function getPluginName()
-    {
+    public function getPluginName() {
         return 'imip-smtp';
     }
 
     /**
      * Event handler for the 'schedule' event.
      */
-    public function schedule(ITip\Message $iTipMessage)
-    {
+    public function schedule(ITip\Message $iTipMessage) {
         // Not sending any emails if the system considers the update
         // insignificant.
         if (!$iTipMessage->significantChange) {
@@ -116,33 +110,33 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
         $recipient = substr($iTipMessage->recipient, 7);
 
         if ($iTipMessage->senderName) {
-            $sender = $iTipMessage->senderName.' <'.$sender.'>';
+            $sender = $iTipMessage->senderName . ' <' . $sender . '>';
         }
         if ($iTipMessage->recipientName && $iTipMessage->recipientName != $recipient) {
-            $recipient = $iTipMessage->recipientName.' <'.$recipient.'>';
+            $recipient = $iTipMessage->recipientName . ' <' . $recipient . '>';
         }
 
         $subject = 'SabreDAV iTIP message';
         switch (strtoupper($iTipMessage->method)) {
             case 'REPLY':
-                $subject = 'Re: '.$summary;
+                $subject = 'Re: ' . $summary;
                 break;
             case 'REQUEST':
-                $subject = 'Invitation: '.$summary;
+                $subject = 'Invitation: ' . $summary;
                 break;
             case 'CANCEL':
-                $subject = 'Cancelled: '.$summary;
+                $subject = 'Cancelled: ' . $summary;
                 break;
         }
 
-        $headers = array(
+        $headers = [
             'Reply-To' => $sender,
-            'From' => $iTipMessage->senderName.' <'.$this->senderEmail.'>',
+            'From' => $iTipMessage->senderName . ' <' . $this->senderEmail . '>',
             'To' => $recipient,
             'Subject' => $subject,
             'MIME-Version' => '1.0',
-            'Content-Type' => 'text/calendar; charset=UTF-8; method='.$iTipMessage->method,
-        );
+            'Content-Type' => 'text/calendar; charset=UTF-8; method=' . $iTipMessage->method,
+        ];
         if (DAV\Server::$exposeVersion) {
             $headers += ['X-Sabre-Version' => DAV\Version::VERSION];
         }
@@ -164,13 +158,13 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
      * @param string $body    iCalendar body
      * @param array  $headers List of headers
      */
-    protected function mail($to, array $headers, $body)
-    {
+    protected function mail($to, array $headers, $body) {
         $mail = $this->smtp->send($to, $headers, $body);
-        if (\PEAR::isError($mail))
+        if (\PEAR::isError($mail)) {
             error_log($mail->getMessage());
-        else
+        } else {
             error_log("Email successfully sent!");
+        }
     }
 
     // @codeCoverageIgnoreEnd
@@ -186,8 +180,7 @@ class IMipSMTPPlugin extends \Sabre\DAV\ServerPlugin
      *
      * @return array
      */
-    public function getPluginInfo()
-    {
+    public function getPluginInfo() {
         return [
             'name' => $this->getPluginName(),
             'description' => 'Email delivery (rfc6047) for CalDAV scheduling using Pear SMTP',
