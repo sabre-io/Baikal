@@ -84,6 +84,7 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Checkbox([
             "prop"  => "use_smtp",
             "label" => "Use SMTP for sending emails",
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
