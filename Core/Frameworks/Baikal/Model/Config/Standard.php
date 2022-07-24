@@ -32,17 +32,21 @@ use Symfony\Component\Yaml\Yaml;
 class Standard extends \Baikal\Model\Config {
     # Default values
     protected $aData = [
-        "configured_version"    => BAIKAL_VERSION,
-        "timezone"              => "Europe/Paris",
-        "card_enabled"          => true,
-        "cal_enabled"           => true,
-        "dav_auth_type"         => "Digest",
-        "admin_passwordhash"    => "",
-        "failed_access_message" => "user %u authentication failure for Baikal",
+        "configured_version"     => BAIKAL_VERSION,
+        "timezone"               => "Europe/Paris",
+        "card_enabled"           => true,
+        "cal_enabled"            => true,
+        "dav_auth_type"          => "Digest",
+        "ldap_uri"               => "ldap://127.0.0.1",
+        "ldap_dn"                => "mail=%u",
+        "ldap_cn"                => "cn",
+        "ldap_mail"              => "mail",
+        "admin_passwordhash"     => "",
+        "failed_access_message"  => "user %u authentication failure for Baikal",
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
-        "auth_realm"            => "BaikalDAV",
-        "base_uri"              => "",
+        "auth_realm"             => "BaikalDAV",
+        "base_uri"               => "",
     ];
 
     function __construct() {
@@ -79,7 +83,27 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic", "Apache"],
+            "options" => ["Digest", "Basic", "Apache", "LDAP"],
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_uri",
+            "label"   => "URI of the LDAP server; default ldap://127.0.0.1",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_dn",
+            "label"   => "User DN for bind; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_cn",
+            "label"   => "LDAP-attribute for displayname; default cn",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_mail",
+            "label"   => "LDAP-attribute for email; default mail",
         ]));
 
         $oMorpho->add(new \Formal\Element\Password([
