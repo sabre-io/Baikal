@@ -91,6 +91,7 @@ class Standard extends \Baikal\Model\Config {
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
             "options" => ["Digest", "Basic", "Apache", "LDAP"],
+            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
