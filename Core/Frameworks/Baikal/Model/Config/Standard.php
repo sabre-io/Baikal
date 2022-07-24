@@ -32,17 +32,22 @@ use Symfony\Component\Yaml\Yaml;
 class Standard extends \Baikal\Model\Config {
     # Default values
     protected $aData = [
-        "configured_version"    => BAIKAL_VERSION,
-        "timezone"              => "Europe/Paris",
-        "card_enabled"          => true,
-        "cal_enabled"           => true,
-        "dav_auth_type"         => "Digest",
-        "admin_passwordhash"    => "",
-        "failed_access_message" => "user %u authentication failure for Baikal",
+        "configured_version"     => BAIKAL_VERSION,
+        "timezone"               => "Europe/Paris",
+        "card_enabled"           => true,
+        "cal_enabled"            => true,
+        "dav_auth_type"          => "Digest",
+        "use_smtp"               => false,
+        "smtp_username"          => "",
+        "smtp_password"          => "",
+        "smtp_host"              => "",
+        "smtp_port"              => "465",
+        "admin_passwordhash"     => "",
+        "failed_access_message"  => "user %u authentication failure for Baikal",
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
-        "auth_realm"            => "BaikalDAV",
-        "base_uri"              => "",
+        "auth_realm"             => "BaikalDAV",
+        "base_uri"               => "",
     ];
 
     function __construct() {
@@ -74,6 +79,31 @@ class Standard extends \Baikal\Model\Config {
             "prop"  => "invite_from",
             "label" => "Email invite sender address",
             "help"  => "Leave empty to disable sending invite emails",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"  => "use_smtp",
+            "label" => "Use SMTP for sending emails",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "smtp_username",
+            "label" => "Username for SMTP server",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "smtp_password",
+            "label" => "Password for SMTP server",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "smtp_host",
+            "label" => "SMTP server address",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "smtp_port",
+            "label" => "SMTP server port",
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
