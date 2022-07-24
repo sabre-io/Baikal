@@ -99,7 +99,7 @@ class Standard extends \Flake\Core\Controller {
                 $oMorpho->remove("ldap_dn");
                 $oMorpho->remove("ldap_search_filter");
             } else {
-                error_log('Unknown LDAP mode: '.$sLDAPm);
+                error_log('Unknown LDAP mode: ' . $sLDAPm);
             }
         } else {
             $oMorpho->remove("ldap_mode");
