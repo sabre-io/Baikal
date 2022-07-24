@@ -136,7 +136,6 @@ class Standard extends \Baikal\Model\Config {
             "label"   => "The base of the LDAP search",
         ]));
 
-
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_attribute",
             "label"   => "Attribute and match the user with.; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
