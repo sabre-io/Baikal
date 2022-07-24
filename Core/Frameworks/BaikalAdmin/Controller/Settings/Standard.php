@@ -67,13 +67,23 @@ class Standard extends \Flake\Core\Controller {
 
     function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
+            $bSMTP = (intval($oForm->postValue("use_smtp")) === 1);
         } else {
             try {
                 $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
             } catch (\Exception $e) {
                 error_log('Error reading baikal.yaml file : ' . $e->getMessage());
             }
+            $bSMTP = $config['system']['use_smtp'] ?? true;
         }
 
+        if ($bSMTP) {
+            $oMorpho->remove("invite_from");
+        } else {
+            $oMorpho->remove("smtp_username");
+            $oMorpho->remove("smtp_password");
+            $oMorpho->remove("smtp_host");
+            $oMorpho->remove("smtp_port");
+        }
     }
 }
