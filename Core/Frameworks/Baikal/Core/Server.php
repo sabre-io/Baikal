@@ -174,10 +174,9 @@ class Server {
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
             if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
-                if($config['system']['use_smtp']) {
+                if ($config['system']['use_smtp']) {
                     $this->server->addPlugin(new \Baikal\Core\IMipSMTPPlugin($config['system']["invite_from"], $config['system']['smtp_host'], $config['system']['smtp_port'], $config['system']['smtp_username'], $config['system']['smtp_password']));
-                }
-                else {
+                } else {
                     $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['system']["invite_from"]));
                 }
             }
