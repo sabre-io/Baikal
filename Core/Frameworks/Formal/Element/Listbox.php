@@ -33,6 +33,7 @@ class Listbox extends \Formal\Element {
         $inputclass = "";
         $groupclass = "";
         $placeholder = "";
+        $onchange = "";
 
         $value = $this->value();
         $label = $this->option("label");
@@ -64,6 +65,10 @@ class Listbox extends \Formal\Element {
             $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
         }
 
+        if ($this->option("refreshonchange") === true) {
+            $onchange = " onchange=\"document.getElementsByTagName('form')[0].elements['refreshed'].value=1;document.getElementsByTagName('form')[0].submit();\" ";
+        }
+
         $clientvalue = htmlspecialchars($value);
 
         $aRenderedOptions = [];
@@ -92,7 +97,7 @@ class Listbox extends \Formal\Element {
 	<div class="control-group{$groupclass}">
 		<label class="control-label" for="{$prop}">{$label}</label>
 		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}>
+			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
 				{$sRenderedOptions}
 			</select>
 			{$helpblock}
