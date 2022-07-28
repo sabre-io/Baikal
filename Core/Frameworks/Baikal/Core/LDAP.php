@@ -136,7 +136,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
         $base = str_replace('%u', $username, $base);
         $base = str_replace('%U', $ldap_user, $base);
         $base = str_replace('%d', $ldap_domain, $base);
-        for($i = 1; $i <= count($domain_split) and $i <= 9; $i++) {
+        for ($i = 1; $i <= count($domain_split) and $i <= 9; ++$i) {
             $base = str_replace('%' . $i, $domain_split[$i - 1], $base);
         }
     }
@@ -199,10 +199,10 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      */
     protected function ldapOpen($username, $password) {
         $conn = ldap_connect($this->ldap_uri);
-        if(!$conn) {
+        if (!$conn) {
             return false;
         }
-        if(!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
+        if (!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
             return false;
         }
 
