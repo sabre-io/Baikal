@@ -124,20 +124,21 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @param string &$base
      * @param string $username
      */
-
     protected function patternReplace(&$base, $username) {
         $user_split = explode('@', $username, 2);
         $ldap_user = $user_split[0];
         $ldap_domain = '';
-        if (count($user_split) > 1)
+        if (count($user_split) > 1) {
             $ldap_domain = $user_split[1];
+        }
         $domain_split = array_reverse(explode('.', $ldap_domain));
 
         $base = str_replace('%u', $username, $base);
         $base = str_replace('%U', $ldap_user, $base);
         $base = str_replace('%d', $ldap_domain, $base);
-        for($i = 1; $i <= count($domain_split) and $i <= 9; $i++)
+        for($i = 1; $i <= count($domain_split) and $i <= 9; $i++) {
             $base = str_replace('%' . $i, $domain_split[$i - 1], $base);
+        }
     }
 
     /**
@@ -150,17 +151,17 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      *
      * @return bool
      */
-
     protected function doesBind(&$conn, $dn, $password) {
         try {
             $bind = ldap_bind($conn, $dn, $password);
-            if ($bind)
+            if ($bind) {
                 return true;
+            }
         } catch (\ErrorException $e) {
             error_log($e->getMessage());
             error_log(ldap_error($conn));
         }
-        
+
         return false;
     }
 
@@ -198,10 +199,12 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      */
     protected function ldapOpen($username, $password) {
         $conn = ldap_connect($this->ldap_uri);
-        if(!$conn)
+        if(!$conn) {
             return false;
-        if(!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3))
+        }
+        if(!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
             return false;
+        }
 
         $success = false;
 
@@ -219,7 +222,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 $this->patternReplace($attribute, $username);
 
                 $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')', [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
-                
+
                 $dn = $result["dn"];
 
                 if ($this->ldap_mode == 'Group') {
@@ -241,8 +244,9 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                             }
                         }
                     }
-                    if (!$inGroup)
+                    if (!$inGroup) {
                         return false;
+                    }
                 }
 
                 $success = $this->doesBind($conn, $dn, $password);
@@ -271,7 +275,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
             error_log('Unknown LDAP authentication mode');
         }
 
-        if ($success){
+        if ($success) {
             $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM ' . $this->table_name . ' WHERE username = ?');
             $stmt->execute([$username]);
             $result = $stmt->fetchAll();
@@ -281,10 +285,12 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 $entry = ldap_get_entries($conn, $search_results);
                 $user_displayname = $username;
                 $user_email = 'unset-email';
-                if (!empty($entry[0][$this->ldap_cn]))
+                if (!empty($entry[0][$this->ldap_cn])) {
                     $user_displayname = $entry[0][$this->ldap_cn][0];
-                if (!empty($entry[0][$this->ldap_mail]))
+                }
+                if (!empty($entry[0][$this->ldap_mail])) {
                     $user_email = $entry[0][$this->ldap_mail][0];
+                }
 
                 $user = new \Baikal\Model\User();
                 $user->set('username', $username);
