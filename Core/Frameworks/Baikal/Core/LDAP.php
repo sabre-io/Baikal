@@ -36,7 +36,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 
     /**
      * LDAP server uri.
-     * e.g. ldaps://ldap.example.org
+     * e.g. "ldaps://ldap.example.org".
      *
      * @var string
      */
