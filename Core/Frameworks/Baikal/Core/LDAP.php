@@ -2,6 +2,8 @@
 
 namespace Baikal\Core;
 
+use Exception;
+
 /**
  * This is an authentication backend that uses ldap.
  *
@@ -173,7 +175,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @param string $ldap_cn
      * @param string $ldap_mail
      */
-    public function __construct(\PDO $pdo, $table_name = 'users', $ldap_mode = 'DN', $ldap_uri = 'ldap://127.0.0.1', $ldap_bind_dn = 'cn=baikal,ou=apps,dc=example,dc=com', $ldap_bind_password = '', $ldap_dn = 'mail=%u', $ldap_cn = 'cn', $ldap_mail = 'mail', $ldap_search_base = 'ou=users,dc=example,dc=com', $ldap_search_attribute = 'uid=%U', $ldap_search_filter = '(objectClass=*)', $ldap_group = 'cn=baikal,ou=groups,dc=example,dc=com') {
+    public function __construct(\PDO $pdo, $table_name, $ldap_mode, $ldap_uri, $ldap_bind_dn, $ldap_bind_password, $ldap_dn, $ldap_cn, $ldap_mail, $ldap_search_base, $ldap_search_attribute, $ldap_search_filter, $ldap_group) {
         $this->pdo                   = $pdo;
         $this->table_name            = $table_name;
         $this->ldap_mode             = $ldap_mode;
@@ -221,13 +223,15 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 $attribute = $this->ldap_search_attribute;
                 $this->patternReplace($attribute, $username);
 
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')', [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')', 
+                    [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
                 $dn = $result["dn"];
 
                 if ($this->ldap_mode == 'Group') {
                     $inGroup = false;
-                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)', ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
+                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)', 
+                        ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
                     if (isset($members["member"])) {
                         foreach ($members["member"] as $member) {
                             if ($member == $result["dn"]) {

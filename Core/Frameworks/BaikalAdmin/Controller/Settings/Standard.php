@@ -102,6 +102,7 @@ class Standard extends \Flake\Core\Controller {
                 error_log('Unknown LDAP mode: ' . $sLDAPm);
             }
         } else {
+            $oMorpho->remove("ldap_uri");
             $oMorpho->remove("ldap_mode");
             $oMorpho->remove("ldap_bind_dn");
             $oMorpho->remove("ldap_bind_password");

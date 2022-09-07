@@ -36,6 +36,7 @@ class Standard extends \Baikal\Model\Config {
         "timezone"               => "Europe/Paris",
         "card_enabled"           => true,
         "cal_enabled"            => true,
+        "admin_passwordhash"     => "",
         "dav_auth_type"          => "Digest",
         "ldap_mode"              => "None",
         "ldap_uri"               => "ldap://127.0.0.1",
@@ -48,7 +49,6 @@ class Standard extends \Baikal\Model\Config {
         "ldap_search_attribute"  => "uid=%U",
         "ldap_search_filter"     => "(objectClass=*)",
         "ldap_group"             => "cn=baikal,ou=groups,dc=example,dc=com",
-        "admin_passwordhash"     => "",
         "failed_access_message"  => "user %u authentication failure for Baikal",
         // While not editable as will change admin & any existing user passwords,
         // could be set to different value when migrating from legacy config
@@ -81,10 +81,22 @@ class Standard extends \Baikal\Model\Config {
             "label" => "Enable CalDAV",
         ]));
 
+        
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "invite_from",
             "label" => "Email invite sender address",
             "help"  => "Leave empty to disable sending invite emails",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop"  => "admin_passwordhash",
+            "label" => "Admin password",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop"       => "admin_passwordhash_confirm",
+            "label"      => "Admin password, confirmation",
+            "validation" => "sameas:admin_passwordhash",
         ]));
 
         $oMorpho->add(new \Formal\Element\Listbox([
@@ -103,7 +115,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_uri",
-            "label"   => "URI of the LDAP server; default ldap://127.0.0.1",
+            "label"   => "URI of the LDAP server",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -118,17 +130,18 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_dn",
-            "label"   => "User DN for bind; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
+            "label"   => "User DN for bind",
+            "help"    => "Replacments: %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_cn",
-            "label"   => "LDAP-attribute for displayname; default cn",
+            "label"   => "LDAP-attribute for displayname",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_mail",
-            "label"   => "LDAP-attribute for email; default mail",
+            "label"   => "LDAP-attribute for email",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -138,28 +151,18 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_attribute",
-            "label"   => "Attribute and match the user with.; with replacments %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
+            "label"   => "Attribute and match the user with",
+            "help"    => "Replacments: %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_filter",
-            "label"   => "The LDAP filter to be applied to the search.",
+            "label"   => "The LDAP filter to be applied to the search",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_group",
-            "label"   => "The Group DN that contains the member atribute of the user.",
-        ]));
-
-        $oMorpho->add(new \Formal\Element\Password([
-            "prop"  => "admin_passwordhash",
-            "label" => "Admin password",
-        ]));
-
-        $oMorpho->add(new \Formal\Element\Password([
-            "prop"       => "admin_passwordhash_confirm",
-            "label"      => "Admin password, confirmation",
-            "validation" => "sameas:admin_passwordhash",
+            "label"   => "The Group DN that contains the member atribute of the user",
         ]));
 
         try {
