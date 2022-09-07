@@ -81,7 +81,6 @@ class Standard extends \Baikal\Model\Config {
             "label" => "Enable CalDAV",
         ]));
 
-        
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "invite_from",
             "label" => "Email invite sender address",

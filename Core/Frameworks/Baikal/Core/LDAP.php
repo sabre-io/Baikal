@@ -2,8 +2,6 @@
 
 namespace Baikal\Core;
 
-use Exception;
-
 /**
  * This is an authentication backend that uses ldap.
  *
@@ -223,14 +221,14 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 $attribute = $this->ldap_search_attribute;
                 $this->patternReplace($attribute, $username);
 
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')', 
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')',
                     [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
                 $dn = $result["dn"];
 
                 if ($this->ldap_mode == 'Group') {
                     $inGroup = false;
-                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)', 
+                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)',
                         ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
                     if (isset($members["member"])) {
                         foreach ($members["member"] as $member) {
