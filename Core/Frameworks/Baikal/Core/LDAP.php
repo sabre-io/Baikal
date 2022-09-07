@@ -62,15 +62,6 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
      * LDAP dn pattern for binding.
      *
-     * %u   - gets replaced by full username
-     * %U   - gets replaced by user part when the
-     *        username is an email address
-     * %d   - gets replaced by domain part when the
-     *        username is an email address
-     * %1-9 - gets replaced by parts of the the domain
-     *        split by '.' in reverse order
-     *        mail.example.org: %1 = org, %2 = example, %3 = mail
-     *
      * @var string
      */
     protected $ldap_dn;
@@ -119,26 +110,76 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     protected $ldap_group;
 
     /**
-     * Replaces patterns for their assigned value.
+     * Replaces patterns for their assigned value using the
+     * given username, using cyrus-sasl style replacements.
      *
-     * @param string &$base
+     * %u   - gets replaced by full username
+     * %U   - gets replaced by user part when the
+     *        username is an email address
+     * %d   - gets replaced by domain part when the
+     *        username is an email address
+     * %%   - gets replaced by %
+     * %1-9 - gets replaced by parts of the the domain
+     *        split by '.' in reverse order
+     *
+     * full example for jane.doe@mail.example.org:
+     *        %u = jane.doe@mail.example.org
+     *        %U = jane.doe
+     *        %d = mail.example.org
+     *        %1 = org
+     *        %2 = example
+     *        %3 = mail
+     *
+     * @param string $line
      * @param string $username
+     *
+     * @return string
      */
-    protected function patternReplace(&$base, $username) {
-        $user_split = explode('@', $username, 2);
-        $ldap_user = $user_split[0];
-        $ldap_domain = '';
-        if (count($user_split) > 1) {
-            $ldap_domain = $user_split[1];
+    protected function patternReplace($line, $username) {
+        $user_split = [$username];
+        $user = $username;
+        $domain = '';
+        try {
+            $user_split = explode('@', $username, 2);
+            $user = $user_split[0];
+            if (2 == count($user_split)) {
+                $domain = $user_split[1];
+            }
+        } catch (Exception $ignored) {
         }
-        $domain_split = array_reverse(explode('.', $ldap_domain));
+        $domain_split = [];
+        try {
+            $domain_split = array_reverse(explode('.', $domain));
+        } catch (Exception $ignored) {
+            $domain_split = [];
+        }
 
-        $base = str_replace('%u', $username, $base);
-        $base = str_replace('%U', $ldap_user, $base);
-        $base = str_replace('%d', $ldap_domain, $base);
-        for ($i = 1; $i <= count($domain_split) and $i <= 9; ++$i) {
-            $base = str_replace('%' . $i, $domain_split[$i - 1], $base);
+        $parsed_line = '';
+        for ($i = 0; $i < strlen($line); ++$i) {
+            if ('%' == $line[$i]) {
+                ++$i;
+                $next_char = $line[$i];
+                if ('u' == $next_char) {
+                    $parsed_line .= $username;
+                } elseif ('U' == $next_char) {
+                    $parsed_line .= $user;
+                } elseif ('d' == $next_char) {
+                    $parsed_line .= $domain;
+                } elseif ('%' == $next_char) {
+                    $parsed_line .= '%';
+                } else {
+                    for ($j = 1; $j <= count($domain_split) && $j <= 9; ++$j) {
+                        if ($next_char == ''.$j) {
+                            $parsed_line .= $domain_split[$j - 1];
+                        }
+                    }
+                }
+            } else {
+                $parsed_line .= $line[$i];
+            }
         }
+
+        return $parsed_line;
     }
 
     /**
@@ -209,7 +250,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
         $success = false;
 
         if ($this->ldap_mode == 'DN') {
-            $this->patternReplace($dn, $username);
+            $dn = $this->patternReplace($dn, $username);
 
             $success = $this->doesBind($conn, $dn, $password);
         } elseif ($this->ldap_mode == 'Attribute' || $this->ldap_mode == 'Group') {
@@ -219,7 +260,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 }
 
                 $attribute = $this->ldap_search_attribute;
-                $this->patternReplace($attribute, $username);
+                $attribute = $this->patternReplace($attribute, $username);
 
                 $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')',
                     [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
@@ -263,7 +304,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 }
 
                 $filter = $this->ldap_search_filter;
-                $this->patternReplace($filter, $username);
+                $filter = $this->patternReplace($filter, $username);
 
                 $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
