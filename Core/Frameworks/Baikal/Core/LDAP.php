@@ -2,6 +2,8 @@
 
 namespace Baikal\Core;
 
+use Exception;
+
 /**
  * This is an authentication backend that uses ldap.
  *
@@ -250,9 +252,9 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
         $success = false;
 
         if ($this->ldap_mode == 'DN') {
-            $dn = $this->patternReplace($dn, $username);
+            $dn = $this->patternReplace($this->ldap_dn, $username);
 
-            $success = $this->doesBind($conn, $dn, $password);
+            $success = $this->doesBind($conn, $username, $password);
         } elseif ($this->ldap_mode == 'Attribute' || $this->ldap_mode == 'Group') {
             try {
                 if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
