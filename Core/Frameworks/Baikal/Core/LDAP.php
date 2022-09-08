@@ -169,7 +169,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                     $parsed_line .= '%';
                 } else {
                     for ($j = 1; $j <= count($domain_split) && $j <= 9; ++$j) {
-                        if ($next_char == ''.$j) {
+                        if ($next_char == '' . $j) {
                             $parsed_line .= $domain_split[$j - 1];
                         }
                     }
