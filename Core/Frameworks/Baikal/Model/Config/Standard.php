@@ -177,6 +177,7 @@ class Standard extends \Baikal\Model\Config {
             $sNotice = "-- Leave empty to keep current password --";
             $oMorpho->element("admin_passwordhash")->setOption("placeholder", $sNotice);
             $oMorpho->element("admin_passwordhash_confirm")->setOption("placeholder", $sNotice);
+            $oMorpho->element("ldap_bind_password")->setOption("placeholder", "-- Not Shown --");
         }
 
         return $oMorpho;
@@ -187,7 +188,7 @@ class Standard extends \Baikal\Model\Config {
     }
 
     function set($sProp, $sValue) {
-        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm") {
+        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm" || $sProp == "ldap_bind_password") {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "admin_passwordhash" && $sValue !== "") {
@@ -204,7 +205,7 @@ class Standard extends \Baikal\Model\Config {
     }
 
     function get($sProp) {
-        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm") {
+        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm" || $sProp === "ldap_bind_password") {
             return "";
         }
 
