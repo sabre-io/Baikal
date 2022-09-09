@@ -159,6 +159,7 @@ class Server {
         $this->server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, $this->authRealm));
         $this->server->addPlugin(new \Sabre\DAVACL\Plugin());
         $this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+        $this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
         $this->server->addPlugin(new \Sabre\DAV\PropertyStorage\Plugin(
             new \Sabre\DAV\PropertyStorage\Backend\PDO($this->pdo)
