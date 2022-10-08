@@ -53,7 +53,7 @@ if (!file_exists(PROJECT_PATH_ROOT . 'vendor/')) {
 
 require PROJECT_PATH_ROOT . "vendor/autoload.php";
 
-# Bootstraping Flake
+# Bootstrapping Flake
 \Flake\Framework::bootstrap();
 
 # Bootstrap BaikalAdmin
