@@ -60,6 +60,7 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         $this->__container->offsetUnset($offset);
     }
 
+    #[\ReturnTypeWillChange]
     function &offsetGet($offset) {
         if (is_null($this->__container)) {
             return null;
@@ -74,10 +75,12 @@ abstract class ChainLink implements \Flake\Core\Datastructure\Chainable {
         $this->__container->rewind();
     }
 
+    #[\ReturnTypeWillChange]
     function current() {
         return $this->__container->current();
     }
 
+    #[\ReturnTypeWillChange]
     function key() {
         return $this->__container->key();
     }
