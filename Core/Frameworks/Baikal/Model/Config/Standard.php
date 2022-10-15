@@ -188,7 +188,7 @@ class Standard extends \Baikal\Model\Config {
     }
 
     function set($sProp, $sValue) {
-        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm" || $sProp == "ldap_bind_password") {
+        if ($sProp === "admin_passwordhash" || $sProp === "admin_passwordhash_confirm") {
             # Special handling for password and passwordconfirm
 
             if ($sProp === "admin_passwordhash" && $sValue !== "") {
