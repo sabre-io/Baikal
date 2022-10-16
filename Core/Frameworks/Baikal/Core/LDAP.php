@@ -30,7 +30,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
      * LDAP Config.
      * LDAP Config Struct.
-     * 
+     *
      * @var \Baikal\Model\Structs\LDAPConfig
      */
     protected $ldap_config;
