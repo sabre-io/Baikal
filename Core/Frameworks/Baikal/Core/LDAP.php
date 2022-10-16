@@ -28,88 +28,12 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     protected $table_name;
 
     /**
-     * LDAP mode.
-     * Defines if LDAP authentication should match
-     * by DN, Attribute, or Filter.
-     *
-     * @var string
+     * LDAP Config.
+     * LDAP Config Struct.
+     * 
+     * @var \Baikal\Model\Structs\LDAPConfig
      */
-    protected $ldap_mode;
-
-    /**
-     * LDAP server uri.
-     * e.g. "ldaps://ldap.example.org".
-     *
-     * @var string
-     */
-    protected $ldap_uri;
-
-    /**
-     * LDAP bind dn.
-     * Defines the bind dn that Baikal is going to use
-     * when looking for an attribute or filtering.
-     *
-     * @var string
-     */
-    protected $ldap_bind_dn;
-
-    /**
-     * LDAP bind password.
-     * Defines the password used by Baikal for binding.
-     *
-     * @var string
-     */
-    protected $ldap_bind_password;
-
-    /**
-     * LDAP dn pattern for binding.
-     *
-     * @var string
-     */
-    protected $ldap_dn;
-
-    /**
-     * LDAP attribute to use for name.
-     *
-     * @var string
-     */
-    protected $ldap_cn;
-
-    /**
-     * LDAP attribute used for mail.
-     *
-     * @var string
-     */
-    protected $ldap_mail;
-
-    /**
-     * LDAP base path where to search for attributes
-     * and apply filters.
-     *
-     * @var string
-     */
-    protected $ldap_search_base;
-
-    /**
-     * LDAP attribute to search for.
-     *
-     * @var string
-     */
-    protected $ldap_search_attribute;
-
-    /**
-     * LDAP filter to apply.
-     *
-     * @var string
-     */
-    protected $ldap_search_filter;
-
-    /**
-     * LDAP group to check if a user is member of.
-     *
-     * @var string
-     */
-    protected $ldap_group;
+    protected $ldap_config;
 
     /**
      * Replaces patterns for their assigned value using the
@@ -211,25 +135,14 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
      * Creates the backend object.
      *
-     * @param string $ldap_uri
-     * @param string $ldap_dn
-     * @param string $ldap_cn
-     * @param string $ldap_mail
+     * @param \PD0 $pdo
+     * @param string $table_name
+     * @param \Baikal\Model\Structs\LDAPConfig $ldap_config
      */
-    public function __construct(\PDO $pdo, $table_name, $ldap_mode, $ldap_uri, $ldap_bind_dn, $ldap_bind_password, $ldap_dn, $ldap_cn, $ldap_mail, $ldap_search_base, $ldap_search_attribute, $ldap_search_filter, $ldap_group) {
-        $this->pdo                   = $pdo;
-        $this->table_name            = $table_name;
-        $this->ldap_mode             = $ldap_mode;
-        $this->ldap_uri              = $ldap_uri;
-        $this->ldap_bind_dn          = $ldap_bind_dn;
-        $this->ldap_bind_password    = $ldap_bind_password;
-        $this->ldap_dn               = $ldap_dn;
-        $this->ldap_cn               = $ldap_cn;
-        $this->ldap_mail             = $ldap_mail;
-        $this->ldap_search_base      = $ldap_search_base;
-        $this->ldap_search_attribute = $ldap_search_attribute;
-        $this->ldap_search_filter    = $ldap_search_filter;
-        $this->ldap_group            = $ldap_group;
+    public function __construct(\PDO $pdo, $table_name, $ldap_config) {
+        $this->pdo          = $pdo;
+        $this->table_name   = $table_name;
+        $this->ldap_config  = $ldap_config;
     }
 
     /**
@@ -241,7 +154,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @return bool
      */
     protected function ldapOpen($username, $password) {
-        $conn = ldap_connect($this->ldap_uri);
+        $conn = ldap_connect($this->ldap_config->ldap_uri);
         if (!$conn) {
             return false;
         }
@@ -251,27 +164,27 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 
         $success = false;
 
-        if ($this->ldap_mode == 'DN') {
-            $dn = $this->patternReplace($this->ldap_dn, $username);
+        if ($this->ldap_config->ldap_mode == 'DN') {
+            $dn = $this->patternReplace($this->ldap_config->ldap_dn, $username);
 
             $success = $this->doesBind($conn, $username, $password);
-        } elseif ($this->ldap_mode == 'Attribute' || $this->ldap_mode == 'Group') {
+        } elseif ($this->ldap_config->ldap_mode == 'Attribute' || $this->ldap_config->ldap_mode == 'Group') {
             try {
-                if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
+                if (!$this->doesBind($conn, $this->ldap_config->ldap_bind_dn, $this->ldap_config->ldap_bind_password)) {
                     return false;
                 }
 
-                $attribute = $this->ldap_search_attribute;
+                $attribute = $this->ldap_config->ldap_search_attribute;
                 $attribute = $this->patternReplace($attribute, $username);
 
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, '(' . $attribute . ')',
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_config->ldap_search_base, '(' . $attribute . ')',
                     [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
                 $dn = $result["dn"];
 
-                if ($this->ldap_mode == 'Group') {
+                if ($this->ldap_config->ldap_mode == 'Group') {
                     $inGroup = false;
-                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_group, '(objectClass=*)',
+                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_config->ldap_group, '(objectClass=*)',
                         ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
                     if (isset($members["member"])) {
                         foreach ($members["member"] as $member) {
@@ -299,16 +212,16 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 error_log($e->getMessage());
                 error_log(ldap_error($conn));
             }
-        } elseif ($this->ldap_mode == 'Filter') {
+        } elseif ($this->ldap_config->ldap_mode == 'Filter') {
             try {
-                if (!$this->doesBind($conn, $this->ldap_bind_dn, $this->ldap_bind_password)) {
+                if (!$this->doesBind($conn, $this->ldap_config->ldap_bind_dn, $this->ldap_config->ldap_bind_password)) {
                     return false;
                 }
 
-                $filter = $this->ldap_search_filter;
+                $filter = $this->ldap_config->ldap_search_filter;
                 $filter = $this->patternReplace($filter, $username);
 
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
+                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_config->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
                 $dn = $result["dn"];
                 $success = $this->doesBind($conn, $dn, $password);
@@ -326,15 +239,15 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
             $result = $stmt->fetchAll();
 
             if (empty($result)) {
-                $search_results = ldap_read($conn, $dn, '(objectclass=*)', [$this->ldap_cn, $this->ldap_mail]);
+                $search_results = ldap_read($conn, $dn, '(objectclass=*)', [$this->ldap_config->ldap_cn, $this->ldap_config->ldap_mail]);
                 $entry = ldap_get_entries($conn, $search_results);
                 $user_displayname = $username;
                 $user_email = 'unset-email';
-                if (!empty($entry[0][$this->ldap_cn])) {
-                    $user_displayname = $entry[0][$this->ldap_cn][0];
+                if (!empty($entry[0][$this->ldap_config->ldap_cn])) {
+                    $user_displayname = $entry[0][$this->ldap_config->ldap_cn][0];
                 }
-                if (!empty($entry[0][$this->ldap_mail])) {
-                    $user_email = $entry[0][$this->ldap_mail][0];
+                if (!empty($entry[0][$this->ldap_config->ldap_mail])) {
+                    $user_email = $entry[0][$this->ldap_config->ldap_mail][0];
                 }
 
                 $user = new \Baikal\Model\User();

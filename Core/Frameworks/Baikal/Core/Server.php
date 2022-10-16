@@ -136,7 +136,19 @@ class Server {
         } elseif ($this->authType === 'Apache') {
             $authBackend = new \Sabre\DAV\Auth\Backend\Apache();
         } elseif ($this->authType === 'LDAP') {
-            $authBackend = new \Baikal\Core\LDAP($this->pdo, 'users', $config['system']['ldap_mode'], $config['system']['ldap_uri'], $config['system']['ldap_bind_dn'], $config['system']['ldap_bind_password'], $config['system']['ldap_dn'], $config['system']['ldap_cn'], $config['system']['ldap_mail'], $config['system']['ldap_search_base'], $config['system']['ldap_search_attribute'], $config['system']['ldap_search_filter'], $config['system']['ldap_group']);
+            $LDAPConfig = new \Baikal\Model\Structs\LDAPConfig();
+            $LDAPConfig->ldap_mode              = $config['system']['ldap_mode'];
+            $LDAPConfig->ldap_uri               = $config['system']['ldap_uri'];
+            $LDAPConfig->ldap_bind_dn           = $config['system']['ldap_bind_dn'];
+            $LDAPConfig->ldap_bind_password     = $config['system']['ldap_bind_password'];
+            $LDAPConfig->ldap_dn                = $config['system']['ldap_dn'];
+            $LDAPConfig->ldap_cn                = $config['system']['ldap_cn'];
+            $LDAPConfig->ldap_mail              = $config['system']['ldap_mail'];
+            $LDAPConfig->ldap_search_base       = $config['system']['ldap_search_base'];
+            $LDAPConfig->ldap_search_attribute  = $config['system']['ldap_search_attribute'];
+            $LDAPConfig->ldap_search_filter     = $config['system']['ldap_search_filter'];
+            $LDAPConfig->ldap_group             = $config['system']['ldap_group'];
+            $authBackend = new \Baikal\Core\LDAP($this->pdo, 'users', $LDAPConfig);
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
             $authBackend->setRealm($this->authRealm);
