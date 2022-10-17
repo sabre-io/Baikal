@@ -201,6 +201,10 @@ class Standard extends \Baikal\Model\Config {
             return $this;
         }
 
+        if (!isset($sValue)) {
+            return;
+        }
+
         parent::set($sProp, $sValue);
     }
 
