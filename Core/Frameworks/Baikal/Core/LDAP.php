@@ -10,7 +10,7 @@ use Exception;
  * @copyright Copyright (C) fruux GmbH (https://fruux.com/)
  * @author Aisha Tammy <aisha@bsd.ac>
  * @author El-Virus <elvirus@ilsrv.com>
- * @license http://sabre.io/license/ Modified BSD License
+ * @license http://sabre.io/license/ Modified GPL License
  */
 class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
