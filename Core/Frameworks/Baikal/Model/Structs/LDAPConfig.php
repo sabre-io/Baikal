@@ -6,7 +6,7 @@ namespace Baikal\Model\Structs;
  * Struct that holds the Configuration parameters for LDAP authentication.
  *
  * @author El-Virus <elvirus@ilsrv.com>
- * @license http://sabre.io/license/ Modified BSD License
+ * @license http://sabre.io/license/ Modified GPL License
  */
 class LDAPConfig {
     public $ldap_mode;
