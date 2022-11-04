@@ -201,6 +201,10 @@ class Standard extends \Baikal\Model\Config {
             return $this;
         }
 
+        if ($sProp === "ldap_bind_password" && $sValue === "") {
+            return;
+        }
+
         if (!isset($sValue)) {
             return;
         }
