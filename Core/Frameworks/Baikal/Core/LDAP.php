@@ -188,7 +188,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
         if ($this->ldap_config->ldap_mode == 'DN') {
             $dn = $this->patternReplace($this->ldap_config->ldap_dn, $username);
 
-            $success = $this->doesBind($conn, $username, $password);
+            $success = $this->doesBind($conn, $dn, $password);
         } elseif ($this->ldap_config->ldap_mode == 'Attribute' || $this->ldap_config->ldap_mode == 'Group') {
             try {
                 if (!$this->doesBind($conn, $this->ldap_config->ldap_bind_dn, $this->ldap_config->ldap_bind_password)) {
