@@ -156,7 +156,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_filter",
-            "label"   => "The LDAP filter to be applied to the search",
+            "label"   => "LDAP filter to be applied to the search",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
