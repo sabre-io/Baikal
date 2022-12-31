@@ -145,7 +145,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_base",
-            "label"   => "The base of the LDAP search",
+            "label"   => "Base of the LDAP search",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -161,7 +161,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_group",
-            "label"   => "The Group DN that contains the member atribute of the user",
+            "label"   => "Group DN that contains the member atribute of the user",
         ]));
 
         try {
