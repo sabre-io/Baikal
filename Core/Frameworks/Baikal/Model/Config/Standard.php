@@ -150,7 +150,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_search_attribute",
-            "label"   => "Attribute and match the user with",
+            "label"   => "Attribute to match the user with",
             "help"    => "Replacments: %u => username, %U => user part, %d => domain part of username, %1-9 parts of the domain in reverse order",
         ]));
 
