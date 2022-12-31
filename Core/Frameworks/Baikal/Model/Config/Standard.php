@@ -124,7 +124,7 @@ class Standard extends \Baikal\Model\Config {
 
         $oMorpho->add(new \Formal\Element\Password([
             "prop"    => "ldap_bind_password",
-            "label"   => "The password of the bind DN user",
+            "label"   => "Password of the bind DN user",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
