@@ -175,7 +175,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @return bool
      */
     protected function ldapOpen($username, $password) {
-        $conn = ldap_connect($this->ldap_config->ldap_uri);
+        $conn = \ldap_connect($this->ldap_config->ldap_uri);
         if (!$conn) {
             return false;
         }
