@@ -201,6 +201,10 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
                 $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_config->ldap_search_base, '(' . $attribute . ')',
                     [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
 
+                if ((!isset($result)) || (!isset($result["dn"]))) {
+                    return false;
+                }
+
                 $dn = $result["dn"];
 
                 if ($this->ldap_config->ldap_mode == 'Group') {
