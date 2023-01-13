@@ -300,8 +300,10 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     protected function validateUserPass($username, $password) {
         if (!extension_loaded("ldap")) {
             error_log('PHP LDAP extension not enabled');
+
             return false;
         }
+
         return $this->ldapOpen($username, $password);
     }
 }
