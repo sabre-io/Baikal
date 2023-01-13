@@ -2,6 +2,7 @@
 
 namespace Baikal\Core;
 
+use Error;
 use Exception;
 
 #################################################################
@@ -297,6 +298,10 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @return bool
      */
     protected function validateUserPass($username, $password) {
+        if (!extension_loaded("ldap")) {
+            error_log('PHP LDAP extension not enabled');
+            return false;
+        }
         return $this->ldapOpen($username, $password);
     }
 }
