@@ -235,7 +235,7 @@ class Framework extends \Flake\Core\Framework {
 
         # Determine PROJECT_URI
         $sProtocol = \Flake\Util\Tools::getCurrentProtocol();
-        $sHttpBaseUrl = strtolower($_SERVER["REQUEST_URI"]);
+        $sHttpBaseUrl = $_SERVER["REQUEST_URI"];
         $sHttpBaseUrl = self::rmQuery($sHttpBaseUrl);
         $sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
         $sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);
