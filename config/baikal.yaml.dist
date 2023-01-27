@@ -18,5 +18,5 @@ database:
     mysql_username: 'baikal'
     mysql_password: 'baikal'
     mysql_options:
-        !php/const:PDO::MYSQL_ATTR_SSL_CA: ""
-        !php/const:PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT: false
+        1009: "ca.crt"
+        1014: false
