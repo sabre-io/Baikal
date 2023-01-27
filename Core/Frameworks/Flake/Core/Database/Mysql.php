@@ -33,7 +33,7 @@ class Mysql extends \Flake\Core\Database {
     protected $sUsername = "";
     protected $sPassword = "";
 
-    function __construct($sHost, $sDbName, $sUsername, $sPassword) {
+    function __construct($sHost, $sDbName, $sUsername, $sPassword, $options = []) {
         $this->sHost = $sHost;
         $this->sDbName = $sDbName;
         $this->sUsername = $sUsername;
@@ -42,7 +42,8 @@ class Mysql extends \Flake\Core\Database {
         $this->oDb = new \PDO(
             'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
             $this->sUsername,
-            $this->sPassword
+            $this->sPassword,
+            $options
         );
         $this->oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }

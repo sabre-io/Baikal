@@ -313,7 +313,8 @@ class Framework extends \Flake\Core\Framework {
                 $config['database']['mysql_host'],
                 $config['database']['mysql_dbname'],
                 $config['database']['mysql_username'],
-                $config['database']['mysql_password']
+                $config['database']['mysql_password'],
+                $config['database']['mysql_options'] ?? []
             );
 
             # We now setup t6he connexion to use UTF8
