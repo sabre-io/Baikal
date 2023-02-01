@@ -17,9 +17,11 @@ jobs:
         include:
           - php-versions: '8.1'
             cs-fixer: false
+          - php-versions: '8.2'
+            cs-fixer: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
