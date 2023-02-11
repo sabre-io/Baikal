@@ -26,4 +26,4 @@
 #################################################################
 
 define("BAIKAL_VERSION", "0.9.3");
-define("BAIKAL_HOMEPAGE", "http://sabre.io/baikal/");
+define("BAIKAL_HOMEPAGE", "https://sabre.io/baikal/");
