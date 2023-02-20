@@ -4,14 +4,6 @@
     "keywords": ["Framework", "WebDAV", "CalDAV", "CardDAV", "iCalendar"],
     "homepage": "http://sabre.io/baikal/",
     "license" : "GPL-3.0",
-    "authors": [
-        {
-            "name": "Jérôme Schneider",
-            "email": "mail@jeromeschneider.fr",
-            "homepage" : "http://jerome.io",
-            "role" : "Developer"
-        }
-    ],
     "require": {
         "php"           : "^7.2 || ^8.0",
         "sabre/dav"     : "~4.3.0",
