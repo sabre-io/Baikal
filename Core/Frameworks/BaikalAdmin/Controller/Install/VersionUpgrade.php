@@ -499,6 +499,11 @@ SQL
     );
             $this->aSuccess[] = 'Migrated calendars table';
         }
+        if (version_compare($sVersionFrom, '0.9.4', '<')) {
+            $pdo->exec("UPDATE calendarinstances SET access = 1 WHERE access IS NULL");
+            $pdo->exec("UPDATE calendarinstances SET share_invitestatus = 2 WHERE share_invitestatus IS NULL");
+            $this->aSuccess[] = 'Updated default values in calendarinstances table';
+        }
 
         $this->updateConfiguredVersion($sVersionTo);
 
