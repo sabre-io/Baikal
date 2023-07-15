@@ -35,14 +35,16 @@ class Calendar extends \Flake\Core\Model\Db {
     const LABELFIELD = "displayname";
 
     protected $aData = [
-        "principaluri"  => "",
-        "displayname"   => "",
-        "uri"           => "",
-        "description"   => "",
-        "calendarorder" => 0,
-        "calendarcolor" => "",
-        "timezone"      => null,
-        "calendarid"    => 0,
+        "principaluri"       => "",
+        "displayname"        => "",
+        "uri"                => "",
+        "description"        => "",
+        "calendarorder"      => 0,
+        "calendarcolor"      => "",
+        "timezone"           => null,
+        "calendarid"         => 0,
+        "access"             => 1,
+        "share_invitestatus" => 2,
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
