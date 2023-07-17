@@ -242,7 +242,7 @@ class Calendar extends \Flake\Core\Model\Db {
 
     function hasInstances() {
         $rSql = $GLOBALS["DB"]->exec_SELECTquery(
-            "count(*)",
+            "count(*) as count",
             "calendarinstances",
             "calendarid" . "='" . $this->aData["calendarid"] . "'"
         );
@@ -252,7 +252,7 @@ class Calendar extends \Flake\Core\Model\Db {
         } else {
             reset($aRs);
 
-            return $aRs["count(*)"] > 1;
+            return $aRs["count"] > 1;
         }
     }
 

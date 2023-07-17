@@ -75,6 +75,7 @@ class Database extends \Flake\Core\Controller {
     function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
             $bMySQL = (intval($oForm->postValue("mysql")) === 1);
+            $bPgSQL = (intval($oForm->postValue("pgsql")) === 1);
         } else {
             try {
                 $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
@@ -82,15 +83,25 @@ class Database extends \Flake\Core\Controller {
                 error_log('Error reading baikal.yaml file : ' . $e->getMessage());
             }
             $bMySQL = $config['database']['mysql'] ?? true;
+            $bPgSQL = $config['database']['pgsql'] ?? true;
         }
 
-        if ($bMySQL === true) {
+        if ($bMySQL === true || $bPgSQL === true) {
             $oMorpho->remove("sqlite_file");
-        } else {
+        }
+
+        if (!$bMySQL) {
             $oMorpho->remove("mysql_host");
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
             $oMorpho->remove("mysql_password");
+        }
+
+        if (!$bPgSQL) {
+            $oMorpho->remove("pgsql_host");
+            $oMorpho->remove("pgsql_dbname");
+            $oMorpho->remove("pgsql_username");
+            $oMorpho->remove("pgsql_password");
         }
     }
 
@@ -129,6 +140,40 @@ class Database extends \Flake\Core\Controller {
                 $sMessage .= "<br /><br /><strong>Nothing has been saved</strong>";
 
                 $oForm->declareError($oMorpho->element("mysql"), $sMessage);
+
+                return;
+            }
+        } elseif (intval($oForm->modelInstance()->get("pgsql")) === 1) {
+            # We have to check the PostgreSQL connection
+            $sHost = $oForm->modelInstance()->get("pgsql_host");
+            $sDbName = $oForm->modelInstance()->get("pgsql_dbname");
+            $sUsername = $oForm->modelInstance()->get("pgsql_username");
+            $sPassword = $oForm->modelInstance()->get("pgsql_password");
+
+            try {
+                $oDB = new \Flake\Core\Database\Pgsql(
+                    $sHost,
+                    $sDbName,
+                    $sUsername,
+                    $sPassword
+                );
+            } catch (\Exception $e) {
+                $sMessage = "<strong>PostgreSQL error:</strong> " . $e->getMessage();
+                $sMessage .= "<br /><strong>Nothing has been saved</strong>";
+                $oForm->declareError($oMorpho->element("pgsql_host"), $sMessage);
+                $oForm->declareError($oMorpho->element("pgsql_dbname"));
+                $oForm->declareError($oMorpho->element("pgsql_username"));
+                $oForm->declareError($oMorpho->element("pgsql_password"));
+
+                return;
+            }
+
+            if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDB)) !== true) {
+                $sMessage = "<strong>PostgresSQL error:</strong> These tables, required by Baïkal, are missing: <strong>" . implode(", ", $aMissingTables) . "</strong><br />";
+                $sMessage .= "You may want create these tables using the file <strong>Core/Resources/Db/PgSQL/db.sql</strong>";
+                $sMessage .= "<br /><br /><strong>Nothing has been saved</strong>";
+
+                $oForm->declareError($oMorpho->element("pgsql"), $sMessage);
 
                 return;
             }
