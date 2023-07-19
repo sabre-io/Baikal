@@ -17,3 +17,6 @@ database:
     mysql_dbname: 'baikal'
     mysql_username: 'baikal'
     mysql_password: 'baikal'
+    mysql_options:
+        1009: "ca.crt"
+        1014: false
