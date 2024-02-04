@@ -90,9 +90,9 @@ class Cli extends \Flake\Core\Render\Container {
 
     function header($sMsg) {
         $sStr = "\n" . str_repeat("#", 80);
-        $sStr .= "\n" . "#" . str_repeat(" ", 78) . "#";
-        $sStr .= "\n" . "#" . str_pad(strtoupper($sMsg), 78, " ", STR_PAD_BOTH) . "#";
-        $sStr .= "\n" . "#" . str_repeat(" ", 78) . "#";
+        $sStr .= "\n#" . str_repeat(" ", 78) . "#";
+        $sStr .= "\n#" . str_pad(strtoupper($sMsg), 78, " ", STR_PAD_BOTH) . "#";
+        $sStr .= "\n#" . str_repeat(" ", 78) . "#";
         $sStr .= "\n" . str_repeat("#", 80);
         $sStr .= "\n";
 

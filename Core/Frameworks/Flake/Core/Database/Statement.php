@@ -28,7 +28,7 @@
 namespace Flake\Core\Database;
 
 class Statement extends \Flake\Core\FLObject {
-    protected $stmt = null;
+    protected $stmt;
 
     function __construct($stmt) {
         $this->stmt = $stmt;
