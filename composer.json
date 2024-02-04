@@ -17,8 +17,8 @@
         "ext-zlib"      : "*"
     },
     "require-dev" : {
-        "friendsofphp/php-cs-fixer": "3.3.2",
-        "phpstan/phpstan": "^1.2"
+        "friendsofphp/php-cs-fixer": "3.45.0",
+        "phpstan/phpstan": "^1.10"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"

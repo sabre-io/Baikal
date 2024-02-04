@@ -12,12 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3']
         cs-fixer: [ true ]
         include:
-          - php-versions: '8.1'
+          - php-versions: '7.2'
             cs-fixer: false
-          - php-versions: '8.2'
+          - php-versions: '7.3'
             cs-fixer: false
     steps:
       - name: Checkout

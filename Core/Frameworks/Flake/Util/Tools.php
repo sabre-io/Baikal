@@ -342,10 +342,10 @@ class Tools extends \Flake\Core\FLObject {
 </html>
 TEST;
 
-        $sHeaders = "From: " . $sFromName . "<" . $sFromAddress . ">" . "\r\n";
-        $sHeaders .= "Reply-To: " . $sReplyToName . "<" . $sReplyToAddress . ">" . "\r\n";
-        $sHeaders .= "Bcc: " . $sReplyToName . "<" . $sReplyToAddress . ">" . "\r\n";
-        $sHeaders .= "Content-Type: text/html" . "\r\n";
+        $sHeaders = "From: " . $sFromName . "<" . $sFromAddress . ">\r\n";
+        $sHeaders .= "Reply-To: " . $sReplyToName . "<" . $sReplyToAddress . ">\r\n";
+        $sHeaders .= "Bcc: " . $sReplyToName . "<" . $sReplyToAddress . ">\r\n";
+        $sHeaders .= "Content-Type: text/html\r\n";
 
         mail($sToAddress, $sSubject, $sMessage, $sHeaders);
     }
@@ -761,14 +761,14 @@ TEST;
         $data = "";
         if ($bodylen > 0) {
             switch ($method) {
-            case 8:
-                // Currently the only supported compression method:
-                $data = gzinflate($body, $maxlength);
-                break;
-            default:
-                $error = "Unknown compression method.";
+                case 8:
+                    // Currently the only supported compression method:
+                    $data = gzinflate($body, $maxlength);
+                    break;
+                default:
+                    $error = "Unknown compression method.";
 
-                return false;
+                    return false;
             }
         }  // zero-byte body content is allowed
         // Verifiy CRC32
