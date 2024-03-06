@@ -9,7 +9,7 @@
         "php"           : "^7.2 || ^8.0",
         "sabre/dav"     : "~4.6.0",
         "twig/twig"     : "~2.14.8",
-        "symfony/yaml"  : "^3.4",
+        "symfony/yaml"  : "^5.4",
         "psr/log"       : "^1",
         "ext-dom"       : "*",
         "ext-openssl"   : "*",
