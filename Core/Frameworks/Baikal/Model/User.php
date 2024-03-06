@@ -39,7 +39,7 @@ class User extends \Flake\Core\Model\Db {
         "digesta1" => "",
     ];
 
-    protected $oIdentityPrincipal = null;
+    protected $oIdentityPrincipal;
 
     function initByPrimary($sPrimary) {
         parent::initByPrimary($sPrimary);

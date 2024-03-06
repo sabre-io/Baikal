@@ -246,7 +246,7 @@ class Calendar extends \Flake\Core\Model\Db {
         $rSql = $GLOBALS["DB"]->exec_SELECTquery(
             "count(*)",
             "calendarinstances",
-            "calendarid" . "='" . $this->aData["calendarid"] . "'"
+            "calendarid='" . $this->aData["calendarid"] . "'"
         );
 
         if (($aRs = $rSql->fetch()) === false) {

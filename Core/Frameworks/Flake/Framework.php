@@ -211,7 +211,7 @@ class Framework extends \Flake\Core\Framework {
             if (isset($config["system"]["base_uri"]) && $config["system"]["base_uri"] !== "") {
                 // SabreDAV needs a "/" at the beginning of BASEURL
                 define("PROJECT_BASEURI",
-                        self::prependSlash(self::appendSlash($config["system"]["base_uri"])));
+                    self::prependSlash(self::appendSlash($config["system"]["base_uri"])));
                 define("PROJECT_URI", \Flake\Util\Tools::getCurrentProtocol() . "://"
                     . $_SERVER["HTTP_HOST"] . PROJECT_BASEURI);
 
