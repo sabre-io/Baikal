@@ -37,6 +37,11 @@ class Database extends \Baikal\Model\Config {
         "mysql_username" => "",
         "mysql_password" => "",
         "encryption_key" => "",
+        "pgsql"          => false,
+        "pgsql_host"     => "",
+        "pgsql_dbname"   => "",
+        "pgsql_username" => "",
+        "pgsql_password" => "",
     ];
 
     function __construct() {
@@ -80,6 +85,34 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "mysql_password",
             "label" => "MySQL password",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop" => "pgsql",
+            "label" => "Use PostgreSQL",
+            "help" => "If checked, Baïkal will use PostgreSQL",
+            "refreshonchange" => true,
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_host",
+            "label" => "PostgreSQL host",
+            "help" => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (?)",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_dbname",
+            "label" => "PostgreSQL database name",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_username",
+            "label" => "PostgreSQL username",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop" => "pgsql_password",
+            "label" => "PostgreSQL password",
         ]));
 
         return $oMorpho;
