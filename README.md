@@ -27,4 +27,4 @@ Many thanks to Daniel Aleksandersen (@zcode) for greatly improving the quality o
 [4]: https://fruux.com/
 [5]: https://sabre.io/baikal/upgrade/
 [6]: https://github.com/JsBergbau/BaikalAnleitung
-[7]: https://github.com/AlexandreMonroche/BaikalGuide
+[7]: https://github.com/criticalsool/Baikal-Guide-FR
