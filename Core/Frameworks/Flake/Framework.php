@@ -163,10 +163,24 @@ class Framework extends \Flake\Core\Framework {
 
         define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
         define("PROJECT_PATH_CORERESOURCES", PROJECT_PATH_CORE . "Resources/");
-        define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
-        define("PROJECT_PATH_CONFIG", PROJECT_PATH_ROOT . "config/");
         define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
         define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
+
+        // set PROJECT_PATH_CONFIG from BAIKAL_PATH_CONFIG
+        $baikalPathConfig = getenv('BAIKAL_PATH_CONFIG');
+        if ($baikalPathConfig !== false) {
+            define("PROJECT_PATH_CONFIG", $baikalPathConfig);
+        } else {
+            define("PROJECT_PATH_CONFIG", PROJECT_PATH_ROOT . "config/");
+        }
+
+        // set PROJECT_PATH_SPECIFIC from BAIKAL_PATH_CONFIG
+        $baikalPathConfig = getenv('BAIKAL_PATH_SPECIFIC');
+        if ($baikalPathConfig !== false) {
+            define("PROJECT_PATH_SPECIFIC", $baikalPathConfig);
+        } else {
+            define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
+        }
 
         require_once PROJECT_PATH_CORE . "Distrib.php";
 
