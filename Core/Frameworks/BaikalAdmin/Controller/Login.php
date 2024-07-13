@@ -34,7 +34,7 @@ class Login extends \Flake\Core\Controller {
     }
 
     function render() {
-        $sActionUrl = \Flake\Util\Tools::getCurrentUrl();
+        $sActionUrl = PROJECT_BASEURI;
         $sSubmittedFlagName = "auth";
         $sMessage = "";
 
