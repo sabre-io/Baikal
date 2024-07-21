@@ -505,6 +505,14 @@ SQL
             $this->aSuccess[] = 'Updated default values in calendarinstances table';
         }
 
+        if (version_compare($sVersionFrom, '0.10.0', '<')) {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+
+            $oConfig = new \Baikal\Model\Config\Database();
+            $oConfig->set("backend", intval($config['database']['mysql']) === 1 ? 'mysql' : 'sqlite');
+            $oConfig->persist();
+        }
+
         $this->updateConfiguredVersion($sVersionTo);
 
         return true;

@@ -45,8 +45,8 @@ class Tools {
 
         # Asserting PDO::SQLite or PDO::MySQL
         $aPDODrivers = \PDO::getAvailableDrivers();
-        if (!in_array('sqlite', $aPDODrivers, true) && !in_array('mysql', $aPDODrivers, true)) {
-            exit('<strong>Baikal Fatal Error</strong>: Both <strong>PDO::sqlite</strong> and <strong>PDO::mysql</strong> are unavailable. One of them at least is required by Baikal.');
+        if (!in_array('sqlite', $aPDODrivers, true) && !in_array('mysql', $aPDODrivers, true) && !in_array('pgsql', $aPDODrivers, true)) {
+            exit('<strong>Baikal Fatal Error</strong>: None of <strong>PDO::sqlite</strong>, <strong>PDO::mysql</strong> or <strong>PDO::pgsql</strong> are available. One of them at least is required by Baikal.');
         }
 
         # Assert that the temp folder is writable

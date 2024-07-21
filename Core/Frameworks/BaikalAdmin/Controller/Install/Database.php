@@ -38,18 +38,22 @@ class Database extends \Flake\Core\Controller {
         if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
             require_once PROJECT_PATH_SPECIFIC . "config.system.php";
             $this->oModel->set('sqlite_file', PROJECT_SQLITE_FILE);
-            $this->oModel->set('mysql', PROJECT_DB_MYSQL);
+            $this->oModel->set('backend', PROJECT_DB_BACKEND);
             $this->oModel->set('mysql_host', PROJECT_DB_MYSQL_HOST);
             $this->oModel->set('mysql_dbname', PROJECT_DB_MYSQL_DBNAME);
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
+            $this->oModel->set('pgsql_host', PROJECT_DB_PGSQL_HOST);
+            $this->oModel->set('pgsql_dbname', PROJECT_DB_PGSQL_DBNAME);
+            $this->oModel->set('pgsql_username', PROJECT_DB_PGSQL_USERNAME);
+            $this->oModel->set('pgsql_password', PROJECT_DB_PGSQL_PASSWORD);
             $this->oModel->set('encryption_key', BAIKAL_ENCRYPTION_KEY);
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close"           => false,
-            "hook.validation" => [$this, "validateConnection"],
-            "hook.morphology" => [$this, "hideMySQLFieldWhenNeeded"],
+            "hook.validation" => [$this, "validateSQLConnection"],
+            "hook.morphology" => [$this, "hideSQLFieldWhenNeeded"],
         ]);
 
         if ($this->oForm->submitted()) {
@@ -99,11 +103,11 @@ class Database extends \Flake\Core\Controller {
         return $oView->render();
     }
 
-    function validateConnection($oForm, $oMorpho) {
+    function validateMySQLConnection($oForm, $oMorpho) {
         if ($oForm->refreshed()) {
             return true;
         }
-        $bMySQLEnabled = $oMorpho->element("mysql")->value();
+        $bMySQLEnabled = $oMorpho->element("backend")->value() == 'mysql';
 
         if ($bMySQLEnabled) {
             $sHost = $oMorpho->element("mysql_host")->value();
@@ -129,7 +133,7 @@ class Database extends \Flake\Core\Controller {
                         $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
                         $oForm->declareError(
-                            $oMorpho->element("mysql"),
+                            $oMorpho->element("backend"),
                             $sMessage
                         );
                     } else {
@@ -142,7 +146,7 @@ class Database extends \Flake\Core\Controller {
 
                 return true;
             } catch (\Exception $e) {
-                $oForm->declareError($oMorpho->element("mysql"),
+                $oForm->declareError($oMorpho->element("backend"),
                     "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
                 $oForm->declareError($oMorpho->element("mysql_host"));
                 $oForm->declareError($oMorpho->element("mysql_dbname"));
@@ -211,10 +215,10 @@ class Database extends \Flake\Core\Controller {
 
     function hideMySQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
-            $bMySQL = (intval($oForm->postValue("mysql")) === 1);
+            $bMySQL = ($oForm->postValue("backend") == 'mysql');
         } else {
             // oMorpho won't have the values from the model set on it yet
-            $bMySQL = $this->oModel->get("mysql");
+            $bMySQL = $this->oModel->get("backend") == 'mysql';
         }
 
         if ($bMySQL === true) {
@@ -224,6 +228,105 @@ class Database extends \Flake\Core\Controller {
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
             $oMorpho->remove("mysql_password");
+        }
+    }
+
+    function validatePgSQLConnection($oForm, $oMorpho) {
+        $bPgSqlEnabled = $oMorpho->element("backend")->value() == 'pgsql';
+
+        if ($bPgSqlEnabled) {
+            $sHost = $oMorpho->element("pgsql_host")->value();
+            $sDbname = $oMorpho->element("pgsql_dbname")->value();
+            $sUsername = $oMorpho->element("pgsql_username")->value();
+            $sPassword = $oMorpho->element("pgsql_password")->value();
+
+            try {
+                $oDb = new \Flake\Core\Database\Pgsql(
+                    $sHost,
+                    $sDbname,
+                    $sUsername,
+                    $sPassword
+                );
+
+                if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
+                    # Checking if all tables are missing
+                    $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
+                    if (count($aRequiredTables) !== count($aMissingTables)) {
+                        $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+                        $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+                        $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/PgSQL/db.sql</strong></p>";
+                        $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+
+                        $oForm->declareError(
+                            $oMorpho->element("backend"),
+                            $sMessage
+                        );
+                    } else {
+                        # All tables are missing
+                        # We add these tables ourselves to the database, to initialize Baïkal
+                        $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/PgSQL/db.sql");
+                        $oDb->getPDO()->exec($sSqlDefinition);
+                    }
+                }
+
+                return true;
+            } catch (\Exception $e) {
+                $oForm->declareError(
+                    $oMorpho->element("backend"),
+                    "Baïkal was not able to establish a connexion to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
+                );
+
+                $oForm->declareError(
+                    $oMorpho->element("pgsql_host")
+                );
+
+                $oForm->declareError(
+                    $oMorpho->element("pgsql_dbname")
+                );
+
+                $oForm->declareError(
+                    $oMorpho->element("pgsql_username")
+                );
+
+                $oForm->declareError(
+                    $oMorpho->element("pgsql_password")
+                );
+            }
+        }
+    }
+
+    public function validateSQLConnection($oForm, $oMorpho) {
+        if ($oMorpho->element("backend")->value() == 'mysql') {
+            $this->validateMySQLConnection($oForm, $oMorpho);
+        } elseif ($oMorpho->element("backend")->value() == 'pgsql') {
+            $this->validatePgSQLConnection($oForm, $oMorpho);
+        }
+    }
+
+    public function hideSqlFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+        if ($oMorpho->element("backend")->value() == 'mysql') {
+            $this->hideMySQLFieldWhenNeeded($oForm, $oMorpho);
+        } elseif ($oMorpho->element("backend")->value() == 'pgsql') {
+            $this->hidePgSQLFieldWhenNeeded($oForm, $oMorpho);
+        }
+    }
+
+    public function hidePgSQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+        if ($oForm->submitted()) {
+            $bPgSQL = ($oForm->postValue("backend")) == 'pgsql';
+        } else {
+            // oMorpho won't have the values from the model set on it yet
+            $bPgSQL = $this->oModel->get("backend") == 'pgsql';
+        }
+
+        if ($bPgSQL === true) {
+            $oMorpho->remove("sqlite_file");
+            $this->hideMySQLFieldWhenNeeded($oForm, $oMorpho);
+        } else {
+            $oMorpho->remove("pgsql_host");
+            $oMorpho->remove("pgsql_dbname");
+            $oMorpho->remove("pgsql_username");
+            $oMorpho->remove("pgsql_password");
         }
     }
 }
