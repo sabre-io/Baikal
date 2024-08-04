@@ -163,10 +163,24 @@ class Framework extends \Flake\Core\Framework {
 
         define("PROJECT_PATH_CORE", PROJECT_PATH_ROOT . "Core/");
         define("PROJECT_PATH_CORERESOURCES", PROJECT_PATH_CORE . "Resources/");
-        define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
-        define("PROJECT_PATH_CONFIG", PROJECT_PATH_ROOT . "config/");
         define("PROJECT_PATH_FRAMEWORKS", PROJECT_PATH_CORE . "Frameworks/");
         define("PROJECT_PATH_WWWROOT", PROJECT_PATH_CORE . "WWWRoot/");
+
+        // set PROJECT_PATH_CONFIG from BAIKAL_PATH_CONFIG
+        $baikalPathConfig = getenv('BAIKAL_PATH_CONFIG');
+        if ($baikalPathConfig !== false) {
+            define("PROJECT_PATH_CONFIG", $baikalPathConfig);
+        } else {
+            define("PROJECT_PATH_CONFIG", PROJECT_PATH_ROOT . "config/");
+        }
+
+        // set PROJECT_PATH_SPECIFIC from BAIKAL_PATH_CONFIG
+        $baikalPathConfig = getenv('BAIKAL_PATH_SPECIFIC');
+        if ($baikalPathConfig !== false) {
+            define("PROJECT_PATH_SPECIFIC", $baikalPathConfig);
+        } else {
+            define("PROJECT_PATH_SPECIFIC", PROJECT_PATH_ROOT . "Specific/");
+        }
 
         require_once PROJECT_PATH_CORE . "Distrib.php";
 
@@ -211,7 +225,7 @@ class Framework extends \Flake\Core\Framework {
             if (isset($config["system"]["base_uri"]) && $config["system"]["base_uri"] !== "") {
                 // SabreDAV needs a "/" at the beginning of BASEURL
                 define("PROJECT_BASEURI",
-                        self::prependSlash(self::appendSlash($config["system"]["base_uri"])));
+                    self::prependSlash(self::appendSlash($config["system"]["base_uri"])));
                 define("PROJECT_URI", \Flake\Util\Tools::getCurrentProtocol() . "://"
                     . $_SERVER["HTTP_HOST"] . PROJECT_BASEURI);
 
@@ -235,7 +249,7 @@ class Framework extends \Flake\Core\Framework {
 
         # Determine PROJECT_URI
         $sProtocol = \Flake\Util\Tools::getCurrentProtocol();
-        $sHttpBaseUrl = strtolower($_SERVER["REQUEST_URI"]);
+        $sHttpBaseUrl = $_SERVER["REQUEST_URI"];
         $sHttpBaseUrl = self::rmQuery($sHttpBaseUrl);
         $sHttpBaseUrl = self::rmScriptName($sHttpBaseUrl, $sScript);
         $sHttpBaseUrl = self::rmProjectContext($sHttpBaseUrl);

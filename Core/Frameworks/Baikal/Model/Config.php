@@ -68,9 +68,9 @@ abstract class Config extends \Flake\Core\Model\NoDb {
 
     function writable() {
         return (
-            @file_exists(PROJECT_PATH_CONFIG . "baikal.yaml") &&
-            @is_file(PROJECT_PATH_CONFIG . "baikal.yaml") &&
-            @is_writable(PROJECT_PATH_CONFIG . "baikal.yaml")
+            @file_exists(PROJECT_PATH_CONFIG . "baikal.yaml")
+            && @is_file(PROJECT_PATH_CONFIG . "baikal.yaml")
+            && @is_writable(PROJECT_PATH_CONFIG . "baikal.yaml")
         );
     }
 

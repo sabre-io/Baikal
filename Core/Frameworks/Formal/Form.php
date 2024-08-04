@@ -38,15 +38,15 @@ class Form {
         "hook.validation" => false,
         "hook.morphology" => false,
     ];
-    protected $oModelInstance = null;
-    protected $oElements = null;
+    protected $oModelInstance;
+    protected $oElements;
     protected $aErrors = [];
-    protected $bPersisted = null;        # TRUE when form has persisted; available only after execute
+    protected $bPersisted;        # TRUE when form has persisted; available only after execute
 
     protected $sDisplayTitle = "";        # Displayed form title; generated in setModelInstance()
     protected $sDisplayMessage = "";    # Displayed confirm message; generated in execute()
 
-    protected $oMorpho = null;
+    protected $oMorpho;
 
     function __construct($sModelClass, $aOptions = []) {
         $this->sModelClass = $sModelClass;

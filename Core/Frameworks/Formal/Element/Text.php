@@ -84,6 +84,7 @@ class Text extends \Formal\Element {
 
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
             $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $popover .= " data-html=\"true\"";
         }
 
         $sHtml = <<<HTML

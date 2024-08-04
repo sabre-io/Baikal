@@ -35,14 +35,16 @@ class Calendar extends \Flake\Core\Model\Db {
     const LABELFIELD = "displayname";
 
     protected $aData = [
-        "principaluri"  => "",
-        "displayname"   => "",
-        "uri"           => "",
-        "description"   => "",
-        "calendarorder" => 0,
-        "calendarcolor" => "",
-        "timezone"      => null,
-        "calendarid"    => 0,
+        "principaluri"       => "",
+        "displayname"        => "",
+        "uri"                => "",
+        "description"        => "",
+        "calendarorder"      => 0,
+        "calendarcolor"      => "",
+        "timezone"           => null,
+        "calendarid"         => 0,
+        "access"             => 1,
+        "share_invitestatus" => 2,
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
@@ -200,10 +202,10 @@ class Calendar extends \Flake\Core\Model\Db {
             "label"      => "Calendar color",
             "validation" => "color",
             "popover"    => [
-                    "title"   => "Calendar color",
-                    "content" => "This is the color that will be displayed in your CalDAV client.<br/>" .
-                    "Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.<br/>" .
-                    "This value is optional.",
+                "title"   => "Calendar color",
+                "content" => "This is the color that will be displayed in your CalDAV client.<br/>" .
+                "Must be supplied in format '#RRGGBBAA' (alpha channel optional) with hexadecimal values.<br/>" .
+                "This value is optional.",
             ],
         ]));
 
@@ -244,7 +246,7 @@ class Calendar extends \Flake\Core\Model\Db {
         $rSql = $GLOBALS["DB"]->exec_SELECTquery(
             "count(*)",
             "calendarinstances",
-            "calendarid" . "='" . $this->aData["calendarid"] . "'"
+            "calendarid='" . $this->aData["calendarid"] . "'"
         );
 
         if (($aRs = $rSql->fetch()) === false) {

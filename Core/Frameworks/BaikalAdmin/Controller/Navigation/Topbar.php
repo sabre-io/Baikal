@@ -48,9 +48,9 @@ class Topbar extends \Flake\Core\Controller {
             $sActiveHome = "active";
         }
         if (
-            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Users") ||
-            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\Calendars") ||
-            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\AddressBooks")
+            $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\Users")
+            || $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\Calendars")
+            || $sCurrentRoute === $GLOBALS["ROUTER"]::getRouteForController("\BaikalAdmin\Controller\User\AddressBooks")
         ) {
             $sActiveUsers = "active";
         }

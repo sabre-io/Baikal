@@ -27,7 +27,6 @@
 
 namespace Baikal\Core;
 
-use PDO;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -71,7 +70,7 @@ class Server {
     /**
      * Reference to Database object.
      *
-     * @var PDO
+     * @var \PDO
      */
     protected $pdo;
 
@@ -96,10 +95,10 @@ class Server {
      * @param bool $enableCardDAV
      * @param string $authType
      * @param string $authRealm
-     * @param PDO $pdo
+     * @param \PDO $pdo
      * @param string $baseUri
      */
-    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, PDO $pdo, $baseUri) {
+    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, \PDO $pdo, $baseUri) {
         $this->enableCalDAV = $enableCalDAV;
         $this->enableCardDAV = $enableCardDAV;
         $this->authType = $authType;

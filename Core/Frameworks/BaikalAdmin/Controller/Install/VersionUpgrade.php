@@ -387,7 +387,7 @@ CREATE TABLE calendarinstances (
     UNIQUE (calendarid, share_href)
 );
 SQL
-        );
+                );
                 $this->aSuccess[] = 'Created calendarinstances table';
                 $pdo->exec('
 INSERT INTO calendarinstances
@@ -426,7 +426,7 @@ CREATE TABLE calendars (
     components text NOT NULL
 );
 SQL
-        );
+                );
                 $this->aSuccess[] = 'Created new calendars table';
             } else { // mysql
                 $pdo->exec(<<<SQL
@@ -450,7 +450,7 @@ CREATE TABLE calendarinstances (
     UNIQUE(calendarid, share_href)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 SQL
-        );
+                );
                 $this->aSuccess[] = 'Created calendarinstances table';
                 $pdo->exec('
 INSERT INTO calendarinstances
@@ -489,15 +489,20 @@ CREATE TABLE calendars (
     components VARBINARY(21)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL
-);
+                );
                 $this->aSuccess[] = 'Created new calendars table';
             }
 
             $pdo->exec(<<<SQL
 INSERT INTO calendars (id, synctoken, components) SELECT id, COALESCE(synctoken,1) as synctoken, COALESCE(components,"VEVENT,VTODO,VJOURNAL") as components FROM $calendarBackup
 SQL
-    );
+            );
             $this->aSuccess[] = 'Migrated calendars table';
+        }
+        if (version_compare($sVersionFrom, '0.9.4', '<')) {
+            $pdo->exec("UPDATE calendarinstances SET access = 1 WHERE access IS NULL");
+            $pdo->exec("UPDATE calendarinstances SET share_invitestatus = 2 WHERE share_invitestatus IS NULL");
+            $this->aSuccess[] = 'Updated default values in calendarinstances table';
         }
 
         $this->updateConfiguredVersion($sVersionTo);

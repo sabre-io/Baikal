@@ -7,9 +7,9 @@
     "license" : "GPL-3.0-only",
     "require": {
         "php"           : "^7.2 || ^8.0",
-        "sabre/dav"     : "~4.3.0",
-        "twig/twig"     : "~2.14.8",
-        "symfony/yaml"  : "^3.4",
+        "sabre/dav"     : "~4.6.0",
+        "twig/twig"     : "~3.8.0",
+        "symfony/yaml"  : "^5.4",
         "psr/log"       : "^1",
         "ext-dom"       : "*",
         "ext-openssl"   : "*",
@@ -17,8 +17,8 @@
         "ext-zlib"      : "*"
     },
     "require-dev" : {
-        "friendsofphp/php-cs-fixer": "3.3.2",
-        "phpstan/phpstan": "^1.2"
+        "friendsofphp/php-cs-fixer": "3.52.1",
+        "phpstan/phpstan": "^1.10"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"

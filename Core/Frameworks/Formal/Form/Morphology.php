@@ -28,7 +28,7 @@
 namespace Formal\Form;
 
 class Morphology {
-    protected $oElements = null;
+    protected $oElements;
 
     function __construct() {
         $this->oElements = new \Flake\Core\CollectionTyped("\Formal\Element");
