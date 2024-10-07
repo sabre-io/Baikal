@@ -49,7 +49,6 @@ class Standard extends \Flake\Core\Controller {
         $this->oForm = $this->oModel->formForThisModelInstance([
             "close" => false,
             "hook.morphology"   => [$this, "morphologyHook"],
-            "hook.validation"   => [$this, "validationHook"],
         ]);
 
         if ($this->oForm->submitted()) {
