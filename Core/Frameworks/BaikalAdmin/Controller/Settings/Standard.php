@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\Settings;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Standard extends \Flake\Core\Controller {
     /**
      * @var \Baikal\Model\Config\Standard
