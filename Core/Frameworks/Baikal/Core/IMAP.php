@@ -1,6 +1,6 @@
 <?php
 
-namespace Sabre\DAV\Auth\Backend;
+namespace Baikal\Core;
 
 /**
  * This is an authentication backend that uses imap.
@@ -11,8 +11,7 @@ namespace Sabre\DAV\Auth\Backend;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class IMAP extends AbstractBasic
-{
+class IMAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
      * IMAP server in the form {host[:port][/flag1/flag2...]}.
      *
@@ -27,8 +26,7 @@ class IMAP extends AbstractBasic
      *
      * @param string $mailbox
      */
-    public function __construct($mailbox)
-    {
+    public function __construct($mailbox) {
         $this->mailbox = $mailbox;
     }
 
@@ -40,8 +38,7 @@ class IMAP extends AbstractBasic
      *
      * @return bool
      */
-    protected function imapOpen($username, $password)
-    {
+    protected function imapOpen($username, $password) {
         $success = false;
 
         try {
@@ -75,8 +72,7 @@ class IMAP extends AbstractBasic
      *
      * @return bool
      */
-    protected function validateUserPass($username, $password)
-    {
+    protected function validateUserPass($username, $password) {
         return $this->imapOpen($username, $password);
     }
 }

@@ -84,7 +84,7 @@ class Standard extends \Baikal\Model\Config {
             "refreshonchange" => true,
         ]));
 
-       $oMorpho->add(new \Formal\Element\Text([
+        $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "imap_connection",
             "label" => "IMAP auth connection string",
             "help"  => "For production, use your real IMAP servername with TLS (SSL[993] or StartTLS(143)), eg.: imap.server.com:993/imap/ssl",

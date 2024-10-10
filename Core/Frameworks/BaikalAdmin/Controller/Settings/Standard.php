@@ -64,7 +64,7 @@ class Standard extends \Flake\Core\Controller {
     }
 
 
-   function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+    function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
             $bAuthtype = $oForm->postValue("dav_auth_type");
         } else {
