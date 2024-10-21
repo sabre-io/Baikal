@@ -48,6 +48,7 @@ class Calendar extends \Flake\Core\Model\Db {
     ];
     protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
+    # Initialize new Calander DB either Floating or by Primary Key
     function __construct($sPrimary = false) {
         parent::__construct($sPrimary);
         try {
@@ -58,34 +59,41 @@ class Calendar extends \Flake\Core\Model\Db {
         }
     }
 
+    # Create new Calendar linked to current Calendar DB
     protected function initFloating() {
         parent::initFloating();
         $this->oCalendar = new Calendar\Calendar();
     }
-
+    
+    # Initialize existing Calendar based on specific Primary Key
     protected function initByPrimary($sPrimary) {
         parent::initByPrimary($sPrimary);
         $this->oCalendar = new Calendar\Calendar($this->get("calendarid"));
     }
 
+    # Insert new DB or update existing DB based on the Primary Key
     function persist() {
         $this->oCalendar->persist();
         $this->aData["calendarid"] = $this->oCalendar->get("id");
         parent::persist();
     }
 
+    # Used for webpage view
     static function icon() {
         return "icon-calendar";
     }
 
+    # Used for webpage view
     static function mediumicon() {
         return "glyph-calendar";
     }
 
+    # Used for webpage view
     static function bigicon() {
         return "glyph2x-calendar";
     }
 
+    # Returns requester including current Calendar's ID
     function getEventsBaseRequester() {
         $oBaseRequester = \Baikal\Model\Calendar\Event::getBaseRequester();
         $oBaseRequester->addClauseEquals(

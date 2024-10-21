@@ -6,7 +6,7 @@
 #  (c) 2013 Jérôme Schneider <mail@jeromeschneider.fr>
 #  All rights reserved
 #
-#  http://sabre.io/baikal
+#  http://sabre.io/baika
 #
 #  This script is part of the Baïkal Server project. The Baïkal
 #  Server project is free software; you can redistribute it
@@ -30,27 +30,32 @@ namespace Baikal\Model;
 use Symfony\Component\Yaml\Yaml;
 
 class User extends \Flake\Core\Model\Db {
+    // Constants defining the table name, primary key, and label field
     const DATATABLE = "users";
     const PRIMARYKEY = "id";
     const LABELFIELD = "username";
 
+    // Array to hold user data
     protected $aData = [
         "username" => "",
         "digesta1" => "",
     ];
 
+    // Object to hold the associated principal
     protected $oIdentityPrincipal;
 
+    // Initialize the user by primary key
     function initByPrimary($sPrimary) {
         parent::initByPrimary($sPrimary);
 
-        # Initializing principals
+        // Initializing principals
         $this->oIdentityPrincipal = \Baikal\Model\Principal::getBaseRequester()
             ->addClauseEquals("uri", "principals/" . $this->get("username"))
             ->execute()
             ->first();
     }
 
+    // Get the base requester for address books associated with this user
     function getAddressBooksBaseRequester() {
         $oBaseRequester = \Baikal\Model\AddressBook::getBaseRequester();
         $oBaseRequester->addClauseEquals(
@@ -61,6 +66,7 @@ class User extends \Flake\Core\Model\Db {
         return $oBaseRequester;
     }
 
+    // Get the base requester for calendars associated with this user
     function getCalendarsBaseRequester() {
         $oBaseRequester = \Baikal\Model\Calendar::getBaseRequester();
         $oBaseRequester->addClauseEquals(
@@ -71,24 +77,26 @@ class User extends \Flake\Core\Model\Db {
         return $oBaseRequester;
     }
 
+    // Initialize a floating user (a user not yet persisted in the database)
     function initFloating() {
         parent::initFloating();
 
-        # Initializing principals
+        // Initializing principals
         $this->oIdentityPrincipal = new \Baikal\Model\Principal();
     }
 
+    // Get a property value
     function get($sPropName) {
         if ($sPropName === "password" || $sPropName === "passwordconfirm") {
-            # Special handling for password and passwordconfirm
+            // Special handling for password and passwordconfirm
             return "";
         }
 
         try {
-            # does the property exist on the model object ?
+            // Does the property exist on the model object?
             $sRes = parent::get($sPropName);
         } catch (\Exception $e) {
-            # no, it may belong to the oIdentityPrincipal model object
+            // No, it may belong to the oIdentityPrincipal model object
             if ($this->oIdentityPrincipal) {
                 $sRes = $this->oIdentityPrincipal->get($sPropName);
             } else {
@@ -99,9 +107,10 @@ class User extends \Flake\Core\Model\Db {
         return $sRes;
     }
 
+    // Set a property value
     function set($sPropName, $sPropValue) {
         if ($sPropName === "password" || $sPropName === "passwordconfirm") {
-            # Special handling for password and passwordconfirm
+            // Special handling for password and passwordconfirm
 
             if ($sPropName === "password" && $sPropValue !== "") {
                 parent::set(
@@ -114,10 +123,10 @@ class User extends \Flake\Core\Model\Db {
         }
 
         try {
-            # does the property exist on the model object ?
+            // Does the property exist on the model object?
             parent::set($sPropName, $sPropValue);
         } catch (\Exception $e) {
-            # no, it may belong to the oIdentityPrincipal model object
+            // No, it may belong to the oIdentityPrincipal model object
             if ($this->oIdentityPrincipal) {
                 $this->oIdentityPrincipal->set($sPropName, $sPropValue);
             }
@@ -126,17 +135,18 @@ class User extends \Flake\Core\Model\Db {
         return $this;
     }
 
+    // Persist the user data to the database
     function persist() {
         $bFloating = $this->floating();
 
-        # Persisted first, as Model users loads this data
+        // Persisted first, as Model users loads this data
         $this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
         $this->oIdentityPrincipal->persist();
 
         parent::persist();
 
         if ($bFloating) {
-            # Creating default calendar for user
+            // Creating default calendar for user
             $oDefaultCalendar = new \Baikal\Model\Calendar();
             $oDefaultCalendar->set(
                 "principaluri",
@@ -157,7 +167,7 @@ class User extends \Flake\Core\Model\Db {
 
             $oDefaultCalendar->persist();
 
-            # Creating default address book for user
+            // Creating default address book for user
             $oDefaultAddressBook = new \Baikal\Model\AddressBook();
             $oDefaultAddressBook->set(
                 "principaluri",
@@ -177,10 +187,11 @@ class User extends \Flake\Core\Model\Db {
         }
     }
 
+    // Destroy the user and all related resources
     function destroy() {
-        # TODO: delete all related resources (principals, calendars, calendar events, contact books and contacts)
+        // TODO: delete all related resources (principals, calendars, calendar events, contact books and contacts)
 
-        # Destroying identity principal
+        // Destroying identity principal
         if ($this->oIdentityPrincipal != null) {
             $this->oIdentityPrincipal->destroy();
         }
@@ -198,10 +209,12 @@ class User extends \Flake\Core\Model\Db {
         parent::destroy();
     }
 
+    // Get the mailto URI for the user
     function getMailtoURI() {
         return "mailto:" . rawurlencode($this->get("displayname") . " <" . $this->get("email") . ">");
     }
 
+    // Define the form morphology for this model instance
     function formMorphologyForThisModelInstance() {
         $oMorpho = new \Formal\Form\Morphology();
 
@@ -266,18 +279,22 @@ class User extends \Flake\Core\Model\Db {
         return $oMorpho;
     }
 
+    // Return the icon for the user
     static function icon() {
         return "icon-user";
     }
 
+    // Return the medium icon for the user
     static function mediumicon() {
         return "glyph-user";
     }
 
+    // Return the big icon for the user
     static function bigicon() {
         return "glyph2x-user";
     }
 
+    // Generate a password hash for the given password
     function getPasswordHashForPassword($sPassword) {
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
