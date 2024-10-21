@@ -27,7 +27,20 @@
 
 namespace BaikalAdmin\Core;
 
+/*
+ * this class is responsible for manaaging the view layer in the BaikalAdmin framework.
+ * Every class under BaikalAdmin\View extends this class.
+ * Its sole responsibility is to provide the path to the template file for the correct view.
+ */
+
 class View extends \Flake\Core\View {
+    
+    /*
+    * This method returns the path to the template file for the current view.
+    * It gets the class name of the current view, removes the "BaikalAdmin\View\" prefix, 
+    * and replaces the backslashes with forward slashes.
+    * Then returns that string appended to the end of BAIKALADMIN_PATH_TEMPLATES.
+    */
     function templatesPath() {
         $sViewName = get_class($this);
         $sTemplate = str_replace("\\", "/", substr($sViewName, strlen("BaikalAdmin\\View\\"))) . ".html";

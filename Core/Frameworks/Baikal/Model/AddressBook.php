@@ -27,6 +27,13 @@
 
 namespace Baikal\Model;
 
+/**
+* Class representing an Address Book model.
+*
+* This class extends the \Flake\Core\Model\Db and provides properties, methods, and functionalities
+* related to managing an address book in the application. It includes metadata about the address book,
+* utilities for form generation, and methods to handle linked contacts.
+*/
 class AddressBook extends \Flake\Core\Model\Db {
     const DATATABLE = "addressbooks";
     const PRIMARYKEY = "id";
@@ -55,6 +62,13 @@ class AddressBook extends \Flake\Core\Model\Db {
         return "glyph2x-adress-book";
     }
 
+    /**
+    * Retrieves a base requester for fetching contacts linked to the current address book.
+    *
+    * This method initializes a base requester object and configures it to filter contacts
+    * based on the current address book's ID, ensuring that only contacts associated with
+    * this address book are retrieved.
+    */
     function getContactsBaseRequester() {
         $oBaseRequester = \Baikal\Model\AddressBook\Contact::getBaseRequester();
         $oBaseRequester->addClauseEquals(
@@ -65,9 +79,14 @@ class AddressBook extends \Flake\Core\Model\Db {
         return $oBaseRequester;
     }
 
+    /**
+    * Creates and configures a form morphology for the current model instance. Includes validation rules
+    * and help information for each form field.
+    */
     function formMorphologyForThisModelInstance() {
         $oMorpho = new \Formal\Form\Morphology();
 
+        // Add a text field for the 'uri' property with validation and popover information.
         $oMorpho->add(new \Formal\Element\Text([
             "prop"       => "uri",
             "label"      => "Address Book token ID",
@@ -78,6 +97,7 @@ class AddressBook extends \Flake\Core\Model\Db {
             ],
         ]));
 
+        // Add a text field for the 'displayname' property with validation and popover information.
         $oMorpho->add(new \Formal\Element\Text([
             "prop"       => "displayname",
             "label"      => "Display name",
@@ -88,11 +108,13 @@ class AddressBook extends \Flake\Core\Model\Db {
             ],
         ]));
 
+        // Add a text field for the 'description' property without any validation or popover.
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "description",
             "label" => "Description",
         ]));
 
+        // Check if the model instance is in a "floating" state to determine form field behavior.
         if ($this->floating()) {
             $oMorpho->element("uri")->setOption(
                 "help",
@@ -105,6 +127,10 @@ class AddressBook extends \Flake\Core\Model\Db {
         return $oMorpho;
     }
 
+    /**
+    * Retrieves all contacts linked to the current address book and
+    * ensures they are deleted before removing the address book itself.
+    */
     function destroy() {
         $oContacts = $this->getContactsBaseRequester()->execute();
         foreach ($oContacts as $contact) {
