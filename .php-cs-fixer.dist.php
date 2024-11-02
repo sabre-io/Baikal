@@ -7,7 +7,9 @@ $config->getFinder()
 $config->setRules([
     '@PSR2' => true,
     '@Symfony' => true,
-    'binary_operator_spaces' => [],
+    'binary_operator_spaces' => [
+        'default' => 'at_least_single_space',
+    ],
     'braces_position' => [
         'functions_opening_brace' => 'same_line',
         'classes_opening_brace' => 'same_line'],
