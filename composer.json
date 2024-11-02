@@ -7,7 +7,7 @@
     "license" : "GPL-3.0-only",
     "require": {
         "php"           : "^7.2 || ^8.0",
-        "sabre/dav"     : "~4.6.0",
+        "sabre/dav"     : "~4.7.0",
         "twig/twig"     : "~3.8.0",
         "symfony/yaml"  : "^5.4",
         "psr/log"       : "^1",
