@@ -31,12 +31,16 @@ class Database extends \Baikal\Model\Config {
     # Default values
     protected $aData = [
         "sqlite_file"    => PROJECT_PATH_SPECIFIC . "db/db.sqlite",
-        "mysql"          => false,
+        "backend"        => "",
         "mysql_host"     => "",
         "mysql_dbname"   => "",
         "mysql_username" => "",
         "mysql_password" => "",
         "encryption_key" => "",
+        "pgsql_host"     => "",
+        "pgsql_dbname"   => "",
+        "pgsql_username" => "",
+        "pgsql_password" => "",
     ];
 
     function __construct() {
@@ -46,19 +50,20 @@ class Database extends \Baikal\Model\Config {
     function formMorphologyForThisModelInstance() {
         $oMorpho = new \Formal\Form\Morphology();
 
+        $oMorpho->add(new \Formal\Element\Listbox([
+            "prop"       => "backend",
+            "label"      => "Database Backend",
+            "validation" => "required",
+            "options"    => ['sqlite', 'mysql', 'pgsql'],
+            "refreshonchange" => true,
+        ]));
+
         $oMorpho->add(new \Formal\Element\Text([
             "prop"       => "sqlite_file",
             "label"      => "SQLite file path",
             "validation" => "required",
             "inputclass" => "input-xxlarge",
             "help"       => "The absolute server path to the SQLite file",
-        ]));
-
-        $oMorpho->add(new \Formal\Element\Checkbox([
-            "prop"            => "mysql",
-            "label"           => "Use MySQL",
-            "help"            => "If checked, Baïkal will use MySQL instead of SQLite.",
-            "refreshonchange" => true,
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
@@ -80,6 +85,27 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "mysql_password",
             "label" => "MySQL password",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_host",
+            "label" => "PostgreSQL host",
+            "help" => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (?)",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_dbname",
+            "label" => "PostgreSQL database name",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop" => "pgsql_username",
+            "label" => "PostgreSQL username",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Password([
+            "prop" => "pgsql_password",
+            "label" => "PostgreSQL password",
         ]));
 
         return $oMorpho;
