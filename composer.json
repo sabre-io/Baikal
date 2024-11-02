@@ -6,10 +6,10 @@
     "homepage": "https://sabre.io/baikal/",
     "license" : "GPL-3.0-only",
     "require": {
-        "php"           : "^7.2 || ^8.0",
+        "php"           : "^8.1",
         "sabre/dav"     : "~4.7.0",
-        "twig/twig"     : "~3.8.0",
-        "symfony/yaml"  : "^5.4",
+        "twig/twig"     : "~3.14.0",
+        "symfony/yaml"  : "~6.4.13",
         "psr/log"       : "^1",
         "ext-dom"       : "*",
         "ext-openssl"   : "*",
