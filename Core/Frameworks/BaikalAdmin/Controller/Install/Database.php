@@ -103,200 +103,182 @@ class Database extends \Flake\Core\Controller {
         return $oView->render();
     }
 
+    function validateSQLiteConnection($oForm, $oMorpho) {
+        $sFile = $oMorpho->element("sqlite_file")->value();
+
+        try {
+            # Asserting DB file is writable
+            if (file_exists($sFile) && !is_writable($sFile)) {
+                $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
+                $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
+
+                return false;
+            }
+            # Asserting DB directory is writable
+            if (!is_writable(dirname($sFile))) {
+                $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
+                $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
+
+                return false;
+            }
+
+            $oDb = new \Flake\Core\Database\Sqlite(
+                $sFile
+            );
+
+            if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
+                # Checking if all tables are missing
+                $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
+                if (count($aRequiredTables) !== count($aMissingTables)) {
+                    $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+                    $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+                    $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/SQLite/db.sql</strong></p>";
+                    $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+
+                    $oForm->declareError(
+                        $oMorpho->element("sqlite_file"),
+                        $sMessage
+                    );
+                } else {
+                    # All tables are missing
+                    # We add these tables ourselves to the database, to initialize Baïkal
+                    $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/SQLite/db.sql");
+                    foreach (explode(';', $sSqlDefinition) as $query) {
+                        if (!trim($query)) {
+                            continue;
+                        }
+                        $oDb->query($query);
+                    }
+                }
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            $oForm->declareError(
+                $oMorpho->element("sqlite_file"),
+                "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
+            );
+        }
+    }
+
     function validateMySQLConnection($oForm, $oMorpho) {
         if ($oForm->refreshed()) {
             return true;
         }
-        $bMySQLEnabled = $oMorpho->element("backend")->value() == 'mysql';
 
-        if ($bMySQLEnabled) {
-            $sHost = $oMorpho->element("mysql_host")->value();
-            $sDbname = $oMorpho->element("mysql_dbname")->value();
-            $sUsername = $oMorpho->element("mysql_username")->value();
-            $sPassword = $oMorpho->element("mysql_password")->value();
+        $sHost = $oMorpho->element("mysql_host")->value();
+        $sDbname = $oMorpho->element("mysql_dbname")->value();
+        $sUsername = $oMorpho->element("mysql_username")->value();
+        $sPassword = $oMorpho->element("mysql_password")->value();
 
-            try {
-                $oDb = new \Flake\Core\Database\Mysql(
-                    $sHost,
-                    $sDbname,
-                    $sUsername,
-                    $sPassword
-                );
+        try {
+            $oDb = new \Flake\Core\Database\Mysql(
+                $sHost,
+                $sDbname,
+                $sUsername,
+                $sPassword
+            );
 
-                if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
-                    # Checking if all tables are missing
-                    $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
-                    if (count($aRequiredTables) !== count($aMissingTables)) {
-                        $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
-                        $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
-                        $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/MySQL/db.sql</strong></p>";
-                        $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+            if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
+                # Checking if all tables are missing
+                $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
+                if (count($aRequiredTables) !== count($aMissingTables)) {
+                    $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+                    $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+                    $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/MySQL/db.sql</strong></p>";
+                    $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
-                        $oForm->declareError(
-                            $oMorpho->element("backend"),
-                            $sMessage
-                        );
-                    } else {
-                        # All tables are missing
-                        # We add these tables ourselves to the database, to initialize Baïkal
-                        $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/MySQL/db.sql");
-                        $oDb->query($sSqlDefinition);
-                    }
+                    $oForm->declareError(
+                        $oMorpho->element("backend"),
+                        $sMessage
+                    );
+                } else {
+                    # All tables are missing
+                    # We add these tables ourselves to the database, to initialize Baïkal
+                    $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/MySQL/db.sql");
+                    $oDb->query($sSqlDefinition);
                 }
-
-                return true;
-            } catch (\Exception $e) {
-                $oForm->declareError($oMorpho->element("backend"),
-                    "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
-                $oForm->declareError($oMorpho->element("mysql_host"));
-                $oForm->declareError($oMorpho->element("mysql_dbname"));
-                $oForm->declareError($oMorpho->element("mysql_username"));
-                $oForm->declareError($oMorpho->element("mysql_password"));
             }
-        } else {
-            $sFile = $oMorpho->element("sqlite_file")->value();
 
-            try {
-                # Asserting DB file is writable
-                if (file_exists($sFile) && !is_writable($sFile)) {
-                    $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
-                    $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
-
-                    return false;
-                }
-                # Asserting DB directory is writable
-                if (!is_writable(dirname($sFile))) {
-                    $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
-                    $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
-
-                    return false;
-                }
-
-                $oDb = new \Flake\Core\Database\Sqlite(
-                    $sFile
-                );
-
-                if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
-                    # Checking if all tables are missing
-                    $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
-                    if (count($aRequiredTables) !== count($aMissingTables)) {
-                        $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
-                        $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
-                        $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/SQLite/db.sql</strong></p>";
-                        $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
-
-                        $oForm->declareError(
-                            $oMorpho->element("sqlite_file"),
-                            $sMessage
-                        );
-                    } else {
-                        # All tables are missing
-                        # We add these tables ourselves to the database, to initialize Baïkal
-                        $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/SQLite/db.sql");
-                        foreach (explode(';', $sSqlDefinition) as $query) {
-                            if (!trim($query)) {
-                                continue;
-                            }
-                            $oDb->query($query);
-                        }
-                    }
-                }
-
-                return true;
-            } catch (\Exception $e) {
-                $oForm->declareError(
-                    $oMorpho->element("sqlite_file"),
-                    "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
-                );
-            }
-            // SQLite
-        }
-    }
-
-    function hideMySQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
-        if ($oForm->submitted()) {
-            $bMySQL = ($oForm->postValue("backend") == 'mysql');
-        } else {
-            // oMorpho won't have the values from the model set on it yet
-            $bMySQL = $this->oModel->get("backend") == 'mysql';
-        }
-
-        if ($bMySQL === true) {
-            $oMorpho->remove("sqlite_file");
-        } else {
-            $oMorpho->remove("mysql_host");
-            $oMorpho->remove("mysql_dbname");
-            $oMorpho->remove("mysql_username");
-            $oMorpho->remove("mysql_password");
+            return true;
+        } catch (\Exception $e) {
+            $oForm->declareError($oMorpho->element("backend"),
+                "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
+            $oForm->declareError($oMorpho->element("mysql_host"));
+            $oForm->declareError($oMorpho->element("mysql_dbname"));
+            $oForm->declareError($oMorpho->element("mysql_username"));
+            $oForm->declareError($oMorpho->element("mysql_password"));
         }
     }
 
     function validatePgSQLConnection($oForm, $oMorpho) {
-        $bPgSqlEnabled = $oMorpho->element("backend")->value() == 'pgsql';
+        if ($oForm->refreshed()) {
+            return true;
+        }
 
-        if ($bPgSqlEnabled) {
-            $sHost = $oMorpho->element("pgsql_host")->value();
-            $sDbname = $oMorpho->element("pgsql_dbname")->value();
-            $sUsername = $oMorpho->element("pgsql_username")->value();
-            $sPassword = $oMorpho->element("pgsql_password")->value();
+        $sHost = $oMorpho->element("pgsql_host")->value();
+        $sDbname = $oMorpho->element("pgsql_dbname")->value();
+        $sUsername = $oMorpho->element("pgsql_username")->value();
+        $sPassword = $oMorpho->element("pgsql_password")->value();
 
-            try {
-                $oDb = new \Flake\Core\Database\Pgsql(
-                    $sHost,
-                    $sDbname,
-                    $sUsername,
-                    $sPassword
-                );
+        try {
+            $oDb = new \Flake\Core\Database\Pgsql(
+                $sHost,
+                $sDbname,
+                $sUsername,
+                $sPassword
+            );
 
-                if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
-                    # Checking if all tables are missing
-                    $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
-                    if (count($aRequiredTables) !== count($aMissingTables)) {
-                        $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
-                        $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
-                        $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/PgSQL/db.sql</strong></p>";
-                        $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
+            if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
+                # Checking if all tables are missing
+                $aRequiredTables = \Baikal\Core\Tools::getRequiredTablesList();
+                if (count($aRequiredTables) !== count($aMissingTables)) {
+                    $sMessage = "<br /><p><strong>Database is not structurally complete.</strong></p>";
+                    $sMessage .= "<p>Missing tables are: <strong>" . implode("</strong>, <strong>", $aMissingTables) . "</strong></p>";
+                    $sMessage .= "<p>You will find the SQL definition of Baïkal tables in this file: <strong>Core/Resources/Db/PgSQL/db.sql</strong></p>";
+                    $sMessage .= "<br /><p>Nothing has been saved. <strong>Please, add these tables to the database before pursuing Baïkal initialization.</strong></p>";
 
-                        $oForm->declareError(
-                            $oMorpho->element("backend"),
-                            $sMessage
-                        );
-                    } else {
-                        # All tables are missing
-                        # We add these tables ourselves to the database, to initialize Baïkal
-                        $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/PgSQL/db.sql");
-                        $oDb->getPDO()->exec($sSqlDefinition);
-                    }
+                    $oForm->declareError(
+                        $oMorpho->element("backend"),
+                        $sMessage
+                    );
+                } else {
+                    # All tables are missing
+                    # We add these tables ourselves to the database, to initialize Baïkal
+                    $sSqlDefinition = file_get_contents(PROJECT_PATH_CORERESOURCES . "Db/PgSQL/db.sql");
+                    $oDb->getPDO()->exec($sSqlDefinition);
                 }
-
-                return true;
-            } catch (\Exception $e) {
-                $oForm->declareError(
-                    $oMorpho->element("backend"),
-                    "Baïkal was not able to establish a connexion to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
-                );
-
-                $oForm->declareError(
-                    $oMorpho->element("pgsql_host")
-                );
-
-                $oForm->declareError(
-                    $oMorpho->element("pgsql_dbname")
-                );
-
-                $oForm->declareError(
-                    $oMorpho->element("pgsql_username")
-                );
-
-                $oForm->declareError(
-                    $oMorpho->element("pgsql_password")
-                );
             }
+
+            return true;
+        } catch (\Exception $e) {
+            $oForm->declareError(
+                $oMorpho->element("backend"),
+                "Baïkal was not able to establish a connexion to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
+            );
+
+            $oForm->declareError(
+                $oMorpho->element("pgsql_host")
+            );
+
+            $oForm->declareError(
+                $oMorpho->element("pgsql_dbname")
+            );
+
+            $oForm->declareError(
+                $oMorpho->element("pgsql_username")
+            );
+
+            $oForm->declareError(
+                $oMorpho->element("pgsql_password")
+            );
         }
     }
 
     public function validateSQLConnection($oForm, $oMorpho) {
-        if ($oMorpho->element("backend")->value() == 'mysql') {
+        if ($oMorpho->element("backend")->value() == 'sqlite') {
+            $this->validateSQLiteConnection($oForm, $oMorpho);
+        } elseif ($oMorpho->element("backend")->value() == 'mysql') {
             $this->validateMySQLConnection($oForm, $oMorpho);
         } elseif ($oMorpho->element("backend")->value() == 'pgsql') {
             $this->validatePgSQLConnection($oForm, $oMorpho);
@@ -304,25 +286,25 @@ class Database extends \Flake\Core\Controller {
     }
 
     public function hideSqlFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
-        if ($oMorpho->element("backend")->value() == 'mysql') {
-            $this->hideMySQLFieldWhenNeeded($oForm, $oMorpho);
-        } elseif ($oMorpho->element("backend")->value() == 'pgsql') {
-            $this->hidePgSQLFieldWhenNeeded($oForm, $oMorpho);
-        }
-    }
-
-    public function hidePgSQLFieldWhenNeeded(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
         if ($oForm->submitted()) {
-            $bPgSQL = ($oForm->postValue("backend")) == 'pgsql';
+            $backend = $oForm->postValue("backend");
         } else {
             // oMorpho won't have the values from the model set on it yet
-            $bPgSQL = $this->oModel->get("backend") == 'pgsql';
+            $backend = $this->oModel->get("backend");
         }
 
-        if ($bPgSQL === true) {
+        if ($backend != 'sqlite') {
             $oMorpho->remove("sqlite_file");
-            $this->hideMySQLFieldWhenNeeded($oForm, $oMorpho);
-        } else {
+        }
+
+        if ($backend != 'mysql') {
+            $oMorpho->remove("mysql_host");
+            $oMorpho->remove("mysql_dbname");
+            $oMorpho->remove("mysql_username");
+            $oMorpho->remove("mysql_password");
+        }
+
+        if ($backend != 'pgsql') {
             $oMorpho->remove("pgsql_host");
             $oMorpho->remove("pgsql_dbname");
             $oMorpho->remove("pgsql_username");
