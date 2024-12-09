@@ -26,8 +26,10 @@
 #################################################################
 
 namespace BaikalAdmin\Controller\User;
+use App\Service\CalendarService;
 
 class Calendars extends \Flake\Core\Controller {
+    private $calendarService;
     protected $aMessages = [];
     protected $oModel;    # \Baikal\Model\Calendar
     protected $oUser;    # \Baikal\Model\User
@@ -125,12 +127,9 @@ class Calendars extends \Flake\Core\Controller {
 
     protected function actionNewRequested() {
         $aParams = $this->getParams();
-        if (array_key_exists("new", $aParams) && intval($aParams["new"]) === 1) {
-            return true;
-        }
-
-        return false;
+        return $this -> calendarService -> isNewRequested($aParams);
     }
+}
 
     protected function actionNew() {
         # Building floating model object
