@@ -25,38 +25,46 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-namespace Baikal\Model;
+namespace Baikal\Core;
 
-class Principal extends \Flake\Core\Model\Db {
-    const DATATABLE = "principals";
-    const PRIMARYKEY = "id";
-    protected $aData = [
-        "uri"         => "",
-        "displayname" => "",
-        "email"       => "",
-    ];
+class Icons {
 
-    public function getUri() {
-        return $this->aData['uri'];
+    # User Icons
+    static function iconUser() {
+        return "icon-user";
     }
 
-    public function setUri($uri) {
-        $this->aData['uri'] = $uri;
+    static function mediumiconUser() {
+        return "glyph-user";
     }
 
-    public function getDisplayName() {
-        return $this->aData['displayname'];
+    static function bigiconUser() {
+        return "glyph2x-user";
     }
 
-    public function setDisplayName($displayname) {
-        $this->aData['displayname'] = $displayname;
+    # Address Book Icons
+    static function iconBook() {
+        return "icon-book";
     }
 
-    public function getEmail() {
-        return $this->aData['email'];
+    static function mediumiconBook() {
+        return "glyph-adress-book";
     }
 
-    public function setEmail($email) {
-        $this->aData['email'] = $email;
+    static function bigiconBook() {
+        return "glyph2x-adress-book";
+    }
+
+    # Calendar Icons
+    static function iconCalendar() {
+        return "icon-calendar";
+    }
+
+    static function mediumiconCalendar() {
+        return "glyph-calendar";
+    }
+
+    static function bigiconCalendar() {
+        return "glyph2x-calendar";
     }
 }

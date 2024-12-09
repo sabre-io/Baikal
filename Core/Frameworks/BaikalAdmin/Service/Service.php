@@ -25,38 +25,7 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-namespace Baikal\Model;
-
-class Principal extends \Flake\Core\Model\Db {
-    const DATATABLE = "principals";
-    const PRIMARYKEY = "id";
-    protected $aData = [
-        "uri"         => "",
-        "displayname" => "",
-        "email"       => "",
-    ];
-
-    public function getUri() {
-        return $this->aData['uri'];
-    }
-
-    public function setUri($uri) {
-        $this->aData['uri'] = $uri;
-    }
-
-    public function getDisplayName() {
-        return $this->aData['displayname'];
-    }
-
-    public function setDisplayName($displayname) {
-        $this->aData['displayname'] = $displayname;
-    }
-
-    public function getEmail() {
-        return $this->aData['email'];
-    }
-
-    public function setEmail($email) {
-        $this->aData['email'] = $email;
-    }
+abstract class Service {
+    abstract function getAll(): array;
+    abstract function delete(int $id): bool;
 }
