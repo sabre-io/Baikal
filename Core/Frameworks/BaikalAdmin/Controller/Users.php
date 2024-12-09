@@ -66,7 +66,7 @@ class Users extends \Flake\Core\Controller {
     function render() {
         $oView = new \BaikalAdmin\View\Users();
         $aUsers = $this->$uService->getAll();
-        return $uService->render($oView, $aUsers, $this->aMessages, $this);
+        return $uService->render($oView, $aUsers, $this->aMessages, $oForm, $this);
     }
 
     protected function initForm() {
@@ -131,7 +131,10 @@ class Users extends \Flake\Core\Controller {
         if ($this->actionDeleteConfirmed() !== false) {
             # catching Exception thrown when model already destroyed
             # happens when user refreshes delete-page, for instance
-            $this->userService->deleteUser($iUser)          
+            $this->$uService->delete($iUser)
+
+            # Redirecting to admin home
+            \Flake\Util\Tools::redirectUsingMeta($this->link());          
         } else {
             $oUser = new \Baikal\Model\User($iUser);
             $this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
