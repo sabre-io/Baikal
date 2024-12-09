@@ -96,7 +96,7 @@ class Users extends \BaikalAdmin\Interface\Service {
      * @param int $userId
      * @return bool
      */
-    public function delete(int $userId) {
+    public function delete(int $iUser) {
         try {
             $user = new \Baikal\Model\User($iUser);
             $user->destroy();
