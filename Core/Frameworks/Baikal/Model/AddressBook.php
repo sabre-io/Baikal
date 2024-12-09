@@ -43,18 +43,6 @@ class AddressBook extends \Flake\Core\Model\Db {
         return "Address Book";
     }
 
-    static function icon() {
-        return "icon-book";
-    }
-
-    static function mediumicon() {
-        return "glyph-adress-book";
-    }
-
-    static function bigicon() {
-        return "glyph2x-adress-book";
-    }
-
     function getContactsBaseRequester() {
         $oBaseRequester = \Baikal\Model\AddressBook\Contact::getBaseRequester();
         $oBaseRequester->addClauseEquals(

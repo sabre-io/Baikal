@@ -266,18 +266,6 @@ class User extends \Flake\Core\Model\Db {
         return $oMorpho;
     }
 
-    static function icon() {
-        return "icon-user";
-    }
-
-    static function mediumicon() {
-        return "glyph-user";
-    }
-
-    static function bigicon() {
-        return "glyph2x-user";
-    }
-
     function getPasswordHashForPassword($sPassword) {
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");

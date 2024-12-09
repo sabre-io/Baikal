@@ -74,18 +74,6 @@ class Calendar extends \Flake\Core\Model\Db {
         parent::persist();
     }
 
-    static function icon() {
-        return "icon-calendar";
-    }
-
-    static function mediumicon() {
-        return "glyph-calendar";
-    }
-
-    static function bigicon() {
-        return "glyph2x-calendar";
-    }
-
     function getEventsBaseRequester() {
         $oBaseRequester = \Baikal\Model\Calendar\Event::getBaseRequester();
         $oBaseRequester->addClauseEquals(
