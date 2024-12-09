@@ -40,6 +40,15 @@ class Users extends \Flake\Core\Controller {
      */
     private $oForm;
 
+    /**
+     * @var \BaikalAdmin\Service\Users
+     */
+    private $uService;
+
+    public function __construct() {
+        $uService = new \BaikalAdmin\Service\Users();
+    }
+
     function execute() {
         if ($this->actionEditRequested()) {
             $this->actionEdit();
@@ -56,45 +65,8 @@ class Users extends \Flake\Core\Controller {
 
     function render() {
         $oView = new \BaikalAdmin\View\Users();
-
-        # List of users
-        $aUsers = [];
-        $oUsers = \Baikal\Model\User::getBaseRequester()->execute();
-
-        foreach ($oUsers as $user) {
-            $aUsers[] = [
-                "linkcalendars"    => \BaikalAdmin\Controller\Users::linkCalendars($user),
-                "linkaddressbooks" => \BaikalAdmin\Controller\Users::linkAddressBooks($user),
-                "linkedit"         => \BaikalAdmin\Controller\Users::linkEdit($user),
-                "linkdelete"       => \BaikalAdmin\Controller\Users::linkDelete($user),
-                "mailtouri"        => $user->getMailtoURI(),
-                "username"         => $user->get("username"),
-                "displayname"      => $user->get("displayname"),
-                "email"            => $user->get("email"),
-            ];
-        }
-
-        $oView->setData("users", $aUsers);
-        $oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
-        $oView->setData("usericon", \Baikal\Model\User::icon());
-        $oView->setData("davUri", PROJECT_URI . 'dav.php');
-
-        # Messages
-        $sMessages = implode("\n", $this->aMessages);
-        $oView->setData("messages", $sMessages);
-
-        # Form
-        if ($this->actionNewRequested() || $this->actionEditRequested()) {
-            $sForm = $this->oForm->render();
-        } else {
-            $sForm = "";
-        }
-
-        $oView->setData("form", $sForm);
-        $oView->setData("usericon", \Baikal\Model\User::icon());
-        $oView->setData("controller", $this);
-
-        return $oView->render();
+        $aUsers = $this->$uService->getAll();
+        return $uService->render($oView, $aUsers, $this->aMessages, $this);
     }
 
     protected function initForm() {
@@ -159,17 +131,7 @@ class Users extends \Flake\Core\Controller {
         if ($this->actionDeleteConfirmed() !== false) {
             # catching Exception thrown when model already destroyed
             # happens when user refreshes delete-page, for instance
-
-            try {
-                $oUser = new \Baikal\Model\User($iUser);
-                $oUser->destroy();
-            } catch (\Exception $e) {
-                # user is already deleted; silently discarding
-                error_log($e);
-            }
-
-            # Redirecting to admin home
-            \Flake\Util\Tools::redirectUsingMeta($this->link());
+            $this->userService->deleteUser($iUser)          
         } else {
             $oUser = new \Baikal\Model\User($iUser);
             $this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
