@@ -30,37 +30,43 @@ namespace Baikal\Model;
 use Symfony\Component\Yaml\Yaml;
 
 class Calendar extends \Flake\Core\Model\Db {
-    const DATATABLE = "calendarinstances";
+    const DATATABLE = "calendars";
     const PRIMARYKEY = "id";
-    const LABELFIELD = "displayname";
+    const LABELFIELD = "components";
 
     protected $aData = [
-        "principaluri"       => "",
-        "displayname"        => "",
-        "uri"                => "",
-        "description"        => "",
-        "calendarorder"      => 0,
-        "calendarcolor"      => "",
-        "timezone"           => null,
-        "calendarid"         => 0,
-        "access"             => 1,
-        "share_invitestatus" => 2,
+        "components" => "",
     ];
-    protected $oCalendar; # Baikal\Model\Calendar\Calendar
 
-    function __construct($sPrimary = false) {
-        parent::__construct($sPrimary);
-        try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            $this->set("timezone", $config['system']["timezone"]);
-        } catch (\Exception $e) {
-            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+    public function getComponents() {
+        return $this->aData['components'];
+    }
+
+    public function setComponents($components) {
+        $this->aData['components'] = $components;
+    }
+
+    function hasInstances() {
+        $rSql = $GLOBALS["DB"]->exec_SELECTquery(
+            "count(*) as count",
+            "calendarinstances",
+            "calendarid='" . $this->aData["id"] . "'"
+        );
+
+        if (($aRs = $rSql->fetch()) === false) {
+            return false;
+        } else {
+            reset($aRs);
+
+            return $aRs["count"] > 1;
         }
     }
 
-    protected function initFloating() {
-        parent::initFloating();
-        $this->oCalendar = new Calendar\Calendar();
+    function destroy() {
+        if ($this->hasInstances()) {
+            throw new \Exception("Trying to destroy a calendar with instances");
+        }
+        parent::destroy();
     }
 
     protected function initByPrimary($sPrimary) {
