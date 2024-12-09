@@ -37,14 +37,14 @@ class Calendars extends \BaikalAdmin\Service\Service {
      */
     public function getAll(): array {
         # List of calendars
-        $oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
+        $oCalendars = \Baikal\Model\User::getCalendarsBaseRequester()->execute();
         $aCalendars = [];
 
         foreach ($oCalendars as $calendar) {
             $aCalendars[] = [
-                "linkedit"    => \BaikalAdmin\Controller\Calendars::->linkEdit($calendar),
-                "linkdelete"  => \BaikalAdmin\Controller\Calendars::->linkDelete($calendar),
-                "davuri"      => \BaikalAdmin\Controller\Calendars::->getDavUri($calendar),
+                "linkedit"    => \BaikalAdmin\Controller\User\Calendars::->linkEdit($calendar),
+                "linkdelete"  => \BaikalAdmin\Controller\User\Calendars::->linkDelete($calendar),
+                "davuri"      => \BaikalAdmin\Controller\User\Calendars::->getDavUri($calendar),
                 "icon"        => $calendar->icon(),
                 "label"       => $calendar->label(),
                 "instanced"   => $calendar->hasInstances(),

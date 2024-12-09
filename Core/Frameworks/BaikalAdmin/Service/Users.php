@@ -37,7 +37,7 @@ class Users extends \BaikalAdmin\Service\Service {
      */
     public function getAll(): array {
         $users = [];
-        $userObjects = User::getBaseRequester()->execute();
+        $userObjects = \Baikal\Model\User::getBaseRequester()->execute();
 
         foreach ($userObjects as $user) {
             $users[] = [
