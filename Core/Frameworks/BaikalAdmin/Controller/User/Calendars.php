@@ -75,7 +75,7 @@ class Calendars extends \Flake\Core\Controller {
         $oView->setData("calendars", $aCalendars);
 
         # Messages
-        $sMessages = implode("\n", $this->aMessages);
+        $sMessages = implode("\n", $aMessages);
         $oView->setData("messages", $sMessages);
 
         if ($this->actionNewRequested() || $this->actionEditRequested()) {

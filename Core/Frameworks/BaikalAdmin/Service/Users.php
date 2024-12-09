@@ -29,7 +29,7 @@ namespace BaikalAdmin\Service;
 
 use Baikal\Model\User;
 
-class Users extends \BaikalAdmin\Interface\Service {
+class Users extends \BaikalAdmin\Service\Service {
     /**
      *  Fetches all users and returns them as an array
      * 
@@ -77,7 +77,7 @@ class Users extends \BaikalAdmin\Interface\Service {
         $oView->setData("messages", $sMessages);       
         
         # Form
-        if ($this->actionNewRequested() || $this->actionEditRequested()) {
+        if ($controller->actionNewRequested() || $controller->actionEditRequested()) {
             $sForm = $oForm->render();
         } else {
             $sForm = "";
@@ -93,7 +93,7 @@ class Users extends \BaikalAdmin\Interface\Service {
     /**
      * Delete a user by ID.
      *
-     * @param int $userId
+     * @param int $iUser
      * @return bool
      */
     public function delete(int $iUser) {
@@ -104,8 +104,6 @@ class Users extends \BaikalAdmin\Interface\Service {
             // Log the error and return false if the user doesn't exist or is already deleted.
             error_log($e);
         }
-        # Redirecting to admin home
-        \Flake\Util\Tools::redirectUsingMeta($this->link());
     }
 
 }
