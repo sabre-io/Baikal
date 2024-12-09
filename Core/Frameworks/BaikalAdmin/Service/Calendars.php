@@ -42,9 +42,9 @@ class Calendars extends \BaikalAdmin\Service\Service {
 
         foreach ($oCalendars as $calendar) {
             $aCalendars[] = [
-                "linkedit"    => $this->linkEdit($calendar),
-                "linkdelete"  => $this->linkDelete($calendar),
-                "davuri"      => $this->getDavUri($calendar),
+                "linkedit"    => \BaikalAdmin\Controller\Calendars::->linkEdit($calendar),
+                "linkdelete"  => \BaikalAdmin\Controller\Calendars::->linkDelete($calendar),
+                "davuri"      => \BaikalAdmin\Controller\Calendars::->getDavUri($calendar),
                 "icon"        => $calendar->icon(),
                 "label"       => $calendar->label(),
                 "instanced"   => $calendar->hasInstances(),
@@ -109,8 +109,6 @@ class Calendars extends \BaikalAdmin\Service\Service {
             // Log the error and return false if the user doesn't exist or is already deleted.
             error_log($e);
         }
-        # Redirecting to admin home
-        \Flake\Util\Tools::redirectUsingMeta($this->link());
     }
 
 }

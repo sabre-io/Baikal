@@ -33,6 +33,15 @@ class Calendars extends \Flake\Core\Controller {
     protected $oUser;    # \Baikal\Model\User
     protected $oForm;    # \Formal\Form
 
+    /**
+     * @var \BaikalAdmin\Service\Calendars
+     */
+    private $uService;
+
+    public function __construct() {
+        $uService = new \BaikalAdmin\Service\Calendars();
+    }
+
     function execute() {
         if (($iUser = $this->currentUserId()) === false) {
             throw new \Exception("BaikalAdmin\Controller\User\Calendars::render(): User get-parameter not found.");
@@ -51,48 +60,8 @@ class Calendars extends \Flake\Core\Controller {
 
     function render() {
         $oView = new \BaikalAdmin\View\User\Calendars();
-
-        # User
-        $oView->setData("user", $this->oUser);
-
-        # List of calendars
-        $oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
-        $aCalendars = [];
-
-        foreach ($oCalendars as $calendar) {
-            $aCalendars[] = [
-                "linkedit"    => $this->linkEdit($calendar),
-                "linkdelete"  => $this->linkDelete($calendar),
-                "davuri"      => $this->getDavUri($calendar),
-                "icon"        => $calendar->icon(),
-                "label"       => $calendar->label(),
-                "instanced"   => $calendar->hasInstances(),
-                "events"      => $calendar->getEventsBaseRequester()->count(),
-                "description" => $calendar->get("description"),
-            ];
-        }
-
-        $oView->setData("calendars", $aCalendars);
-
-        # Messages
-        $sMessages = implode("\n", $aMessages);
-        $oView->setData("messages", $sMessages);
-
-        if ($this->actionNewRequested() || $this->actionEditRequested()) {
-            $sForm = $this->oForm->render();
-        } else {
-            $sForm = "";
-        }
-
-        $oView->setData("form", $sForm);
-        $oView->setData("titleicon", \Baikal\Model\Calendar::bigicon());
-        $oView->setData("modelicon", $this->oUser->mediumicon());
-        $oView->setData("modellabel", $this->oUser->label());
-        $oView->setData("linkback", \BaikalAdmin\Controller\Users::link());
-        $oView->setData("linknew", $this->linkNew());
-        $oView->setData("calendaricon", \Baikal\Model\Calendar::icon());
-
-        return $oView->render();
+        $aCalendars = $this->$uService->getAll();
+        return $uService->render($oView,$oUser, $aCalendars, $this->aMessages, $oForm, $this);
     }
 
     protected function initForm() {
@@ -241,13 +210,7 @@ class Calendars extends \Flake\Core\Controller {
         if ($this->actionDeleteConfirmed() !== false) {
             # catching Exception thrown when model already destroyed
             # happens when user refreshes page on delete-URL, for instance
-
-            try {
-                $oModel = new \Baikal\Model\Calendar($iCalendar);
-                $oModel->destroy();
-            } catch (\Exception $e) {
-                # already deleted; silently discarding
-            }
+            $this->$uService->delete($iCalendar);
 
             # Redirecting to admin home
             \Flake\Util\Tools::redirectUsingMeta($this->linkHome());
