@@ -27,6 +27,10 @@
 
 namespace Baikal\Model;
 
+<?php
+
+namespace Baikal\Model;
+
 use Symfony\Component\Yaml\Yaml;
 
 class User extends \Flake\Core\Model\Db {
@@ -40,6 +44,22 @@ class User extends \Flake\Core\Model\Db {
     ];
 
     protected $oIdentityPrincipal;
+
+    public function getUsername() {
+        return $this->aData['username'];
+    }
+
+    public function setUsername($username) {
+        $this->aData['username'] = $username;
+    }
+
+    public function getDigesta1() {
+        return $this->aData['digesta1'];
+    }
+
+    public function setDigesta1($digesta1) {
+        $this->aData['digesta1'] = $digesta1;
+    }
 
     function initByPrimary($sPrimary) {
         parent::initByPrimary($sPrimary);
@@ -264,18 +284,6 @@ class User extends \Flake\Core\Model\Db {
         }
 
         return $oMorpho;
-    }
-
-    static function icon() {
-        return "icon-user";
-    }
-
-    static function mediumicon() {
-        return "glyph-user";
-    }
-
-    static function bigicon() {
-        return "glyph2x-user";
     }
 
     function getPasswordHashForPassword($sPassword) {
