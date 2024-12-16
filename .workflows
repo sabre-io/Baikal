@@ -1,0 +1,48 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up PHP
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, intl, xml, sqlite3
+        coverage: xdebug
+
+    # Install dependencies
+    - name: Install dependencies
+      run: composer install
+
+    # Run tests
+    - name: Run tests
+      run: vendor/bin/phpunit
+
+  deploy-to-azure:
+    needs: build-and-test
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
+    # Deploy to Azure (if configured)
+    - name: Deploy to Azure
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: YourAppName
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
