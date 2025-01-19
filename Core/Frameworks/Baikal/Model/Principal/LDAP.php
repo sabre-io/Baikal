@@ -1,4 +1,5 @@
 <?php
+
 #################################################################
 #  Copyright notice
 #
@@ -175,12 +176,11 @@ class LDAP extends DBPrincipal {
     }
 
     function persist() {
-		return parent::persist();
-	}
+        return parent::persist();
+    }
 
     function destroy() {
-		return parent::destroy();
-	}
+        return parent::destroy();
+    }
 };
 
-?>
