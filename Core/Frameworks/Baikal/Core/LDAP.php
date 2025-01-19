@@ -3,7 +3,6 @@
 namespace Baikal\Core;
 
 use Baikal\Model\Principal\LDAP as Principal;
-use Exception;
 
 #################################################################
 #  Copyright notice
@@ -93,7 +92,8 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
             if (2 == count($user_split)) {
                 $domain = $user_split[1];
             }
-        } catch (\Exception $ignored) {}
+        } catch (\Exception $ignored) {
+        }
         $domain_split = [];
         try {
             $domain_split = array_reverse(explode('.', $domain));
@@ -177,7 +177,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     protected function ldapOpen($username, $password) {
         try {
             $principal = new Principal($username, $this->ldap_config);
-        } catch (Exception $ignored) {
+        } catch (\Exception $ignored) {
             return false;
         }
 

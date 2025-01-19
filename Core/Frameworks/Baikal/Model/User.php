@@ -27,7 +27,6 @@
 
 namespace Baikal\Model;
 
-use Exception;
 use Symfony\Component\Yaml\Yaml;
 
 class User extends \Flake\Core\Model\Db {
@@ -36,7 +35,7 @@ class User extends \Flake\Core\Model\Db {
     const LABELFIELD = "username";
 
     protected $aData = [
-        "federation" => NULL,
+        "federation" => null,
         "username" => "",
         "digesta1" => "",
     ];
@@ -53,7 +52,7 @@ class User extends \Flake\Core\Model\Db {
             ->first();
 
         switch (parent::get("federation")) {
-            case NULL:
+            case null:
                 $this->oIdentityPrincipal = $dbPrincipal;
                 break;
 
@@ -62,7 +61,7 @@ class User extends \Flake\Core\Model\Db {
                 break;
 
             default:
-                throw new Exception("Unknown user federation");
+                throw new \Exception("Unknown user federation");
         }
     }
 

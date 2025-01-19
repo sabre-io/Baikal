@@ -220,8 +220,9 @@ class Users extends \Flake\Core\Controller {
     }
 
     static function linkEdit(\Baikal\Model\User $user) {
-        if (!$user->isEditable())
+        if (!$user->isEditable()) {
             return NULL;
+        }
 
         return self::buildRoute([
             "edit" => $user->get("id"),

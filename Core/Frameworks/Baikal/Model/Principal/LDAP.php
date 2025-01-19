@@ -26,10 +26,9 @@
 
 namespace Baikal\Model\Principal;
 
-use \Exception;
-use Symfony\Component\Yaml\Yaml;
-use \Baikal\Core\LDAP as LDAPCore;
+use Baikal\Core\LDAP as LDAPCore;
 use Baikal\Model\Structs\LDAPConfig;
+use Symfony\Component\Yaml\Yaml;
 
 /** @phpstan-consistent-constructor */
 class LDAP extends DBPrincipal {
@@ -42,7 +41,7 @@ class LDAP extends DBPrincipal {
         "email"       => "",
     ];
 
-    public function __construct($username, $ldap_config = NULL) {
+    public function __construct($username, $ldap_config = null) {
         if (!isset($ldap_config)) {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . 'baikal.yaml');
             $ldap_config = LDAPConfig::fromArray($config['system']);
@@ -51,10 +50,10 @@ class LDAP extends DBPrincipal {
 
         $conn = ldap_connect($ldap_config->ldap_uri);
         if (!$conn) {
-            throw new Exception('LDAP connect failed');
+            throw new \Exception('LDAP connect failed');
         }
         if (!ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
-            throw new Exception('LDAP server does not support protocol version 3');
+            throw new \Exception('LDAP server does not support protocol version 3');
         }
 
         try {
@@ -67,19 +66,19 @@ class LDAP extends DBPrincipal {
                 case 'Group':
                     try {
                         if (!LDAPCore::doesBind($conn, $ldap_config->ldap_bind_dn, $ldap_config->ldap_bind_password)) {
-                            throw new Exception('LDAP Service user fails to bind');
+                            throw new \Exception('LDAP Service user fails to bind');
                         }
-        
+
                         $attribute = $ldap_config->ldap_search_attribute;
                         $attribute = LDAPCore::patternReplace($attribute, $username);
-        
+
                         $result = ldap_get_entries($conn, ldap_search($conn, $ldap_config->ldap_search_base, '(' . $attribute . ')',
                             [$ldap_config->ldap_search_attribute], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
-        
+
                         if ((!isset($result)) || (!isset($result['dn']))) {
-                            throw new Exception('No LDAP entry matches Attribute');
+                            throw new \Exception('No LDAP entry matches Attribute');
                         }
-        
+
                         if ($ldap_config->ldap_mode == 'Group') {
                             $inGroup = false;
                             $members = ldap_get_entries($conn, ldap_read($conn, $ldap_config->ldap_group, '(objectClass=*)',
@@ -101,40 +100,40 @@ class LDAP extends DBPrincipal {
                                 }
                             }
                             if (!$inGroup) {
-                                throw new Exception('The user is not in the specified Group');
+                                throw new \Exception('The user is not in the specified Group');
                             }
                         }
-        
+
                         $this->dn = $result['dn'];
                     } catch (\ErrorException $e) {
                         error_log($e->getMessage());
                         error_log(ldap_error($conn));
-                        throw new Exception('LDAP error');
+                        throw new \Exception('LDAP error');
                     }
                     break;
 
                 case 'Filter':
                     try {
                         if (!LDAPCore::doesBind($conn, $ldap_config->ldap_bind_dn, $ldap_config->ldap_bind_password)) {
-                            throw new Exception('LDAP Service user fails to bind');
+                            throw new \Exception('LDAP Service user fails to bind');
                         }
-        
+
                         $filter = $this->ldap_config->ldap_search_filter;
                         $filter = LDAPCore::patternReplace($filter, $username);
-        
+
                         $result = ldap_get_entries($conn, ldap_search($conn, $ldap_config->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
-        
+
                         $this->dn = $result['dn'];
                     } catch (\ErrorException $e) {
                         error_log($e->getMessage());
                         error_log(ldap_error($conn));
-                        throw new Exception('LDAP error');
+                        throw new \Exception('LDAP error');
                     }
                     break;
-                
+
                 default:
                     error_log('Unknown LDAP authentication mode');
-                    throw new Exception('Unknown LDAP authentication mode');
+                    throw new \Exception('Unknown LDAP authentication mode');
             }
 
             $results = ldap_read($conn, $this->dn, '(objectclass=*)', [$ldap_config->ldap_cn, $ldap_config->ldap_mail]);
@@ -168,14 +167,20 @@ class LDAP extends DBPrincipal {
 
         return $principal;
     }
-    
+
     function set($sPropName, $sPropValue) {
         if (!array_key_exists($sPropName, $this->aData)) {
             parent::set($sPropName, $sPropValue);
-		}
+        }
     }
-    function persist() { return parent::persist(); }
-    function destroy() { return parent::destroy(); }
+
+    function persist() {
+		return parent::persist();
+	}
+
+    function destroy() {
+		return parent::destroy();
+	}
 };
 
 ?>
