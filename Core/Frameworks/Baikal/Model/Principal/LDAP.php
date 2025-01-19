@@ -182,5 +182,4 @@ class LDAP extends DBPrincipal {
     function destroy() {
         return parent::destroy();
     }
-};
-
+}
