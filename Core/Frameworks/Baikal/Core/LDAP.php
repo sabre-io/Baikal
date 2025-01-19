@@ -2,14 +2,14 @@
 
 namespace Baikal\Core;
 
-use Error;
+use Baikal\Model\Principal\LDAP as Principal;
 use Exception;
 
 #################################################################
 #  Copyright notice
 #
-#  (c) 2022 Aisha Tammy <aisha@bsd.ac>
-#  (c) 2022 El-Virus <elvirus@ilsrv.com>
+#  (c) 2022      Aisha Tammy <aisha@bsd.ac>
+#  (c) 2022-2025 El-Virus <elvirus@ilsrv.com>
 #  All rights reserved
 #
 #  http://sabre.io/baikal
@@ -83,7 +83,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      *
      * @return string
      */
-    protected function patternReplace($line, $username) {
+    public static function patternReplace($line, $username) {
         $user_split = [$username];
         $user = $username;
         $domain = '';
@@ -93,12 +93,11 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
             if (2 == count($user_split)) {
                 $domain = $user_split[1];
             }
-        } catch (Exception $ignored) {
-        }
+        } catch (\Exception $ignored) {}
         $domain_split = [];
         try {
             $domain_split = array_reverse(explode('.', $domain));
-        } catch (Exception $ignored) {
+        } catch (\Exception $ignored) {
             $domain_split = [];
         }
 
@@ -140,7 +139,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      *
      * @return bool
      */
-    protected function doesBind(&$conn, $dn, $password) {
+    public static function doesBind(&$conn, $dn, $password) {
         try {
             $bind = ldap_bind($conn, $dn, $password);
             if ($bind) {
@@ -176,7 +175,13 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
      * @return bool
      */
     protected function ldapOpen($username, $password) {
-        $conn = \ldap_connect($this->ldap_config->ldap_uri);
+        try {
+            $principal = new Principal($username, $this->ldap_config);
+        } catch (Exception $ignored) {
+            return false;
+        }
+
+        $conn = ldap_connect($this->ldap_config->ldap_uri);
         if (!$conn) {
             return false;
         }
@@ -184,107 +189,22 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
             return false;
         }
 
-        $success = false;
+        $success = $this->doesBind($conn, $principal->dn, $password);
 
-        if ($this->ldap_config->ldap_mode == 'DN') {
-            $dn = $this->patternReplace($this->ldap_config->ldap_dn, $username);
-
-            $success = $this->doesBind($conn, $dn, $password);
-        } elseif ($this->ldap_config->ldap_mode == 'Attribute' || $this->ldap_config->ldap_mode == 'Group') {
-            try {
-                if (!$this->doesBind($conn, $this->ldap_config->ldap_bind_dn, $this->ldap_config->ldap_bind_password)) {
-                    return false;
-                }
-
-                $attribute = $this->ldap_config->ldap_search_attribute;
-                $attribute = $this->patternReplace($attribute, $username);
-
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_config->ldap_search_base, '(' . $attribute . ')',
-                    [explode('=', $attribute, 2)[0]], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
-
-                if ((!isset($result)) || (!isset($result["dn"]))) {
-                    return false;
-                }
-
-                $dn = $result["dn"];
-
-                if ($this->ldap_config->ldap_mode == 'Group') {
-                    $inGroup = false;
-                    $members = ldap_get_entries($conn, ldap_read($conn, $this->ldap_config->ldap_group, '(objectClass=*)',
-                        ['member', 'uniqueMember'], 0, 0, 0, LDAP_DEREF_NEVER, []))[0];
-                    if (isset($members["member"])) {
-                        foreach ($members["member"] as $member) {
-                            if ($member == $result["dn"]) {
-                                $inGroup = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isset($members["uniqueMember"])) {
-                        foreach ($members["uniqueMember"] as $member) {
-                            if ($member == $result["dn"]) {
-                                $inGroup = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (!$inGroup) {
-                        return false;
-                    }
-                }
-
-                $success = $this->doesBind($conn, $dn, $password);
-            } catch (\ErrorException $e) {
-                error_log($e->getMessage());
-                error_log(ldap_error($conn));
-            }
-        } elseif ($this->ldap_config->ldap_mode == 'Filter') {
-            try {
-                if (!$this->doesBind($conn, $this->ldap_config->ldap_bind_dn, $this->ldap_config->ldap_bind_password)) {
-                    return false;
-                }
-
-                $filter = $this->ldap_config->ldap_search_filter;
-                $filter = $this->patternReplace($filter, $username);
-
-                $result = ldap_get_entries($conn, ldap_search($conn, $this->ldap_config->ldap_search_base, $filter, [], 0, 1, 0, LDAP_DEREF_ALWAYS, []))[0];
-
-                $dn = $result["dn"];
-                $success = $this->doesBind($conn, $dn, $password);
-            } catch (\ErrorException $e) {
-                error_log($e->getMessage());
-                error_log(ldap_error($conn));
-            }
-        } else {
-            error_log('Unknown LDAP authentication mode');
-        }
+        ldap_close($conn);
 
         if ($success) {
-            $stmt = $this->pdo->prepare('SELECT username, digesta1 FROM ' . $this->table_name . ' WHERE username = ?');
+            $stmt = $this->pdo->prepare('SELECT 1 FROM ' . $this->table_name . ' WHERE username = ?');
             $stmt->execute([$username]);
             $result = $stmt->fetchAll();
 
             if (empty($result)) {
-                $search_results = ldap_read($conn, $dn, '(objectclass=*)', [$this->ldap_config->ldap_cn, $this->ldap_config->ldap_mail]);
-                $entry = ldap_get_entries($conn, $search_results);
-                $user_displayname = $username;
-                $user_email = 'unset-email';
-                if (!empty($entry[0][$this->ldap_config->ldap_cn])) {
-                    $user_displayname = $entry[0][$this->ldap_config->ldap_cn][0];
-                }
-                if (!empty($entry[0][$this->ldap_config->ldap_mail])) {
-                    $user_email = $entry[0][$this->ldap_config->ldap_mail][0];
-                }
-
                 $user = new \Baikal\Model\User();
+                $user->set('federation', 'LDAP');
                 $user->set('username', $username);
-                $user->set('displayname', $user_displayname);
-                $user->set('email', $user_email);
                 $user->persist();
             }
         }
-
-        ldap_close($conn);
 
         return $success;
     }

@@ -3,7 +3,7 @@
 #################################################################
 #  Copyright notice
 #
-#  (c) 2022 El-Virus <elvirus@ilsrv.com>
+#  (c) 2022-2025 El-Virus <elvirus@ilsrv.com>
 #  All rights reserved
 #
 #  http://sabre.io/baikal
@@ -30,7 +30,7 @@ namespace Baikal\Model\Structs;
 /**
  * Struct that holds the Configuration parameters for LDAP authentication.
  */
-class LDAPConfig {
+final class LDAPConfig {
     public $ldap_mode;
     public $ldap_uri;
     public $ldap_bind_dn;
@@ -42,4 +42,22 @@ class LDAPConfig {
     public $ldap_search_attribute;
     public $ldap_search_filter;
     public $ldap_group;
+
+    public static function fromArray($array) {
+        $LDAPConfig = new static();
+
+        $LDAPConfig->ldap_mode              = $array['ldap_mode'];
+        $LDAPConfig->ldap_uri               = $array['ldap_uri'];
+        $LDAPConfig->ldap_bind_dn           = $array['ldap_bind_dn'];
+        $LDAPConfig->ldap_bind_password     = $array['ldap_bind_password'];
+        $LDAPConfig->ldap_dn                = $array['ldap_dn'];
+        $LDAPConfig->ldap_cn                = $array['ldap_cn'];
+        $LDAPConfig->ldap_mail              = $array['ldap_mail'];
+        $LDAPConfig->ldap_search_base       = $array['ldap_search_base'];
+        $LDAPConfig->ldap_search_attribute  = $array['ldap_search_attribute'];
+        $LDAPConfig->ldap_search_filter     = $array['ldap_search_filter'];
+        $LDAPConfig->ldap_group             = $array['ldap_group'];
+
+        return $LDAPConfig;
+    }
 }
