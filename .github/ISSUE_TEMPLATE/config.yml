@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Docker
+    url: https://github.com/ckulka/baikal-docker/
+    about: Having problems with a Docker installation? Contact the authors of the docker image.
+  - name: Installation Instructions
+    url: https://sabre.io/baikal/install/
+    about: Please review the instructions before asking for help with your new installation.
