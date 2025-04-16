@@ -1,0 +1,49 @@
+name: Bug report
+description: Create a report to help us improve existing features
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have used the search function for [**OPEN**](https://github.com/sabre-io/Baikal/issues) issues to see if someone else has already submitted the same bug report.
+          required: true
+        - label: I have **also** used the search function for [**CLOSED**](https://github.com/sabre-io/Baikal/issues?q=is%3Aissue+is%3Aclosed) issues to see if the problem is already solved and just waiting to be released.
+          required: true
+        - label: I will describe the problem with as much detail as possible.
+          required: true
+        - label: This is not about the docker image. In that case, contact the authors of the docker image.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Baikal version
+      placeholder: x.y.z
+    validations:
+      required: true
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Give a step-by-step instruction what you have to do before the bug occurrs.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: After following the steps, what did you think Baikal would do?
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behaviour
+      description: What did Baikal do instead?
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Especially in case of a blank page or other larger problems, enable logs on your server and post the error message.
