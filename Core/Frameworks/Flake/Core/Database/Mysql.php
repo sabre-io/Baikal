@@ -42,7 +42,7 @@ class Mysql extends \Flake\Core\Database {
         $this->sCaCert = $sCaCert;
 
         $options = array(
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         );
 
         if ($this->sCaCert !== "") {
