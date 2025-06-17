@@ -41,9 +41,9 @@ class Mysql extends \Flake\Core\Database {
         $this->sPassword = $sPassword;
         $this->sCaCert = $sCaCert;
 
-        $options = array(
+        $options = [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        );
+        ];
 
         if ($this->sCaCert !== "") {
             $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
