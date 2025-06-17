@@ -17,6 +17,7 @@ database:
     mysql_dbname: 'baikal'
     mysql_username: 'baikal'
     mysql_password: 'baikal'
+    mysql_ca_cert: '/path/to/sqlca.pem'
     pgsql_host: 'localhost'
     pgsql_dbname: 'baikal'
     pgsql_username: 'baikal'

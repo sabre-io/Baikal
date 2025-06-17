@@ -36,6 +36,7 @@ class Database extends \Baikal\Model\Config {
         "mysql_dbname"   => "",
         "mysql_username" => "",
         "mysql_password" => "",
+        "mysql_ca_cert"  => "",
         "encryption_key" => "",
         "pgsql_host"     => "",
         "pgsql_dbname"   => "",
@@ -85,6 +86,11 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "mysql_password",
             "label" => "MySQL password",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"  => "mysql_ca_cert",
+            "label" => "MySQL CA Certificate",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([

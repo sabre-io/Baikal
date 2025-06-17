@@ -43,6 +43,7 @@ class Database extends \Flake\Core\Controller {
             $this->oModel->set('mysql_dbname', PROJECT_DB_MYSQL_DBNAME);
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
+            $this->oModel->set('mysql_ca_cert', PROJECT_DB_MYSQL_CA_CERT);
             $this->oModel->set('pgsql_host', PROJECT_DB_PGSQL_HOST);
             $this->oModel->set('pgsql_dbname', PROJECT_DB_PGSQL_DBNAME);
             $this->oModel->set('pgsql_username', PROJECT_DB_PGSQL_USERNAME);
@@ -170,13 +171,15 @@ class Database extends \Flake\Core\Controller {
         $sDbname = $oMorpho->element("mysql_dbname")->value();
         $sUsername = $oMorpho->element("mysql_username")->value();
         $sPassword = $oMorpho->element("mysql_password")->value();
+        $sCaCert = $oMorpho->element("mysql_ca_cert")->value();
 
         try {
             $oDb = new \Flake\Core\Database\Mysql(
                 $sHost,
                 $sDbname,
                 $sUsername,
-                $sPassword
+                $sPassword,
+                $sCaCert
             );
 
             if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
@@ -208,6 +211,7 @@ class Database extends \Flake\Core\Controller {
             $oForm->declareError($oMorpho->element("mysql_dbname"));
             $oForm->declareError($oMorpho->element("mysql_username"));
             $oForm->declareError($oMorpho->element("mysql_password"));
+            $oForm->declareError($oMorpho->element("mysql_ca_cert"));
         }
     }
 
@@ -302,6 +306,7 @@ class Database extends \Flake\Core\Controller {
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
             $oMorpho->remove("mysql_password");
+            $oMorpho->remove("mysql_ca_cert");
         }
 
         if ($backend != 'pgsql') {

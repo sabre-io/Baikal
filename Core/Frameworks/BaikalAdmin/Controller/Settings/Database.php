@@ -104,6 +104,7 @@ class Database extends \Flake\Core\Controller {
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
             $oMorpho->remove("mysql_password");
+            $oMorpho->remove("mysql_ca_cert");
         }
 
         if (!$bPgSQL) {
@@ -127,6 +128,7 @@ class Database extends \Flake\Core\Controller {
             $sDbName = $oForm->modelInstance()->get("{$dbBackendPrefix}_dbname");
             $sUsername = $oForm->modelInstance()->get("{$dbBackendPrefix}_username");
             $sPassword = $oForm->modelInstance()->get("{$dbBackendPrefix}_password");
+            $sCaCert = $oForm->modelInstance()->get("{$dbBackendPrefix}_ca_cert");
 
             try {
                 $oDB = (($oForm->modelInstance()->get("backend")) == 'pgsql'
@@ -139,7 +141,8 @@ class Database extends \Flake\Core\Controller {
                     $sHost,
                     $sDbName,
                     $sUsername,
-                    $sPassword
+                    $sPassword,
+                    $sCaCert
                 );
             } catch (\Exception $e) {
                 $sMessage = "<strong>{$dbBackendName} error:</strong> " . $e->getMessage();
@@ -148,6 +151,7 @@ class Database extends \Flake\Core\Controller {
                 $oForm->declareError($oMorpho->element("{$dbBackendPrefix}_dbname"));
                 $oForm->declareError($oMorpho->element("{$dbBackendPrefix}_username"));
                 $oForm->declareError($oMorpho->element("{$dbBackendPrefix}_password"));
+                $oForm->declareError($oMorpho->element("{$dbBackendPrefix}_ca_cert"));
 
                 return;
             }
