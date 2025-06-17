@@ -32,19 +32,29 @@ class Mysql extends \Flake\Core\Database {
     protected $sDbName = "";
     protected $sUsername = "";
     protected $sPassword = "";
+    protected $sCaCert = "";
 
-    function __construct($sHost, $sDbName, $sUsername, $sPassword) {
+    function __construct($sHost, $sDbName, $sUsername, $sPassword, $sCaCert = "") {
         $this->sHost = $sHost;
         $this->sDbName = $sDbName;
         $this->sUsername = $sUsername;
         $this->sPassword = $sPassword;
+        $this->sCaCert = $sCaCert;
+
+        $options = array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        );
+
+        if ($this->sCaCert !== "") {
+            $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
+        }
 
         $this->oDb = new \PDO(
             'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
             $this->sUsername,
-            $this->sPassword
+            $this->sPassword,
+            $options
         );
-        $this->oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     function tables() {

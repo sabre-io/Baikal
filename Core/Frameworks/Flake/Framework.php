@@ -326,12 +326,17 @@ class Framework extends \Flake\Core\Framework {
             exit("<h3>The constant PROJECT_DB_MYSQL_PASSWORD, containing the MySQL database password, is not set.<br />You should set it in config/baikal.yaml</h3>");
         }
 
+        if (!$config['database']['mysql_ca_cert']) {
+            exit("<h3>The constant PROJECT_DB_MYSQL_CA_CERT, containing the MySQL database CA Cert file path, is not set.<br />You should set it in config/baikal.yaml</h3>");
+        }
+
         try {
             $GLOBALS["DB"] = new \Flake\Core\Database\Mysql(
                 $config['database']['mysql_host'],
                 $config['database']['mysql_dbname'],
                 $config['database']['mysql_username'],
-                $config['database']['mysql_password']
+                $config['database']['mysql_password'],
+                $config['database']['mysql_ca_cert']
             );
 
             # We now setup t6he connexion to use UTF8
