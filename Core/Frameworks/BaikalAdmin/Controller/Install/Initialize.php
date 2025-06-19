@@ -82,8 +82,12 @@ class Initialize extends \Flake\Core\Controller {
 
                 # Default: PDO::SQLite or PDO::MySQL ?
                 $aPDODrivers = \PDO::getAvailableDrivers();
-                if (!in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
-                    $oDatabaseConfig->set("mysql", true);
+                if (in_array('sqlite', $aPDODrivers)) {    # PDO::MySQL is already asserted in \Baikal\Core\Tools::assertEnvironmentIsOk()
+                    $oDatabaseConfig->set("backend", 'sqlite');
+                } elseif (in_array('mysql', $aPDODrivers)) {
+                    $oDatabaseConfig->set("backend", 'mysql');
+                } else {
+                    $oDatabaseConfig->set("backend", 'pgsql');
                 }
 
                 $oDatabaseConfig->persist();

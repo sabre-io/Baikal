@@ -25,5 +25,5 @@
 #  This copyright notice MUST APPEAR in all copies of the script!
 #################################################################
 
-define("BAIKAL_VERSION", "0.9.5");
+define("BAIKAL_VERSION", "0.10.1");
 define("BAIKAL_HOMEPAGE", "https://sabre.io/baikal/");

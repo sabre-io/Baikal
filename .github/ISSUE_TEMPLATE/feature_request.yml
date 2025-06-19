@@ -1,0 +1,38 @@
+name: Feature request
+description: Request a new feature
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have used the search function for [**OPEN**](https://github.com/sabre-io/Baikal/issues) issues to see if someone else has already submitted the same feature request.
+          required: true
+        - label: I have **also** used the search function for [**CLOSED**](https://github.com/sabre-io/Baikal/issues?q=is%3Aissue+is%3Aclosed) issues to see if the feature is already implemented and just waiting to be released.
+          required: true
+        - label: I will describe the problem with as much detail as possible.
+          required: true
+        - label: This is not about the docker image. In that case, contact the authors of the docker image.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Baikal version
+      placeholder: x.y.z
+    validations:
+      required: true
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Problem you are having
+  - type: textarea
+    id: expected
+    attributes:
+      label: Suggested solution
+      description: Try do be as specific as possible. Please not only explain what the feature does, but also how. When your request is about changing or extending the UI, describe what the UI would look like and how the user would interact with it.
