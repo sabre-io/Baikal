@@ -1,5 +1,6 @@
 parameters:
   level: 0
+  reportUnmatchedIgnoredErrors: false
   excludePaths:
     - Core/Frameworks/BaikalAdmin/Resources/GlyphiconsPro/generate-sprite.php
     - Core/Resources/Web/BaikalAdmin/GlyphiconsPro/generate-sprite.php
@@ -14,3 +15,5 @@ parameters:
     -
       message: '#Access to undefined constant Flake\\Core\\Model::LABELFIELD.#'
       path: Core/Frameworks/Flake/Core/Model.php
+    -
+      identifier: unset.possiblyHookedProperty
