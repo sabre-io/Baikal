@@ -8,8 +8,8 @@
     "require": {
         "php"           : "^8.1",
         "sabre/dav"     : "~4.7.0",
-        "twig/twig"     : "~3.14.0",
-        "symfony/yaml"  : "~6.4.13",
+        "twig/twig"     : "~3.22.0",
+        "symfony/yaml"  : "~7.3.5",
         "psr/log"       : "^1",
         "ext-dom"       : "*",
         "ext-openssl"   : "*",
@@ -17,8 +17,8 @@
         "ext-zlib"      : "*"
     },
     "require-dev" : {
-        "friendsofphp/php-cs-fixer": "3.65.0",
-        "phpstan/phpstan": "^1.10"
+        "friendsofphp/php-cs-fixer": "3.89.2",
+        "phpstan/phpstan": "~2.1.32"
     },
     "replace" : {
         "jeromeschneider/baikal" : "self.version"

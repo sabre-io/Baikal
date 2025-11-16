@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
+        php-versions: ['8.2', '8.3', '8.4', '8.5', '8.6']
         cs-fixer: [ true ]
     steps:
       - name: Checkout
@@ -48,7 +48,7 @@ jobs:
 
       - name: Code Analysis (PHP CS-Fixer)
         if: matrix.cs-fixer == true
-        run: php vendor/bin/php-cs-fixer fix --dry-run --diff
+        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --allow-unsupported-php-version=yes
 
       - name: Code Analysis (PHPStan)
         run: composer phpstan
