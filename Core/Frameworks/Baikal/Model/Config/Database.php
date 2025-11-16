@@ -91,12 +91,13 @@ class Database extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "mysql_ca_cert",
             "label" => "MySQL CA Certificate",
+            "help"  => "Optional. Leave blank to ignore",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop" => "pgsql_host",
             "label" => "PostgreSQL host",
-            "help" => "Host ip or name, including <strong>':portnumber'</strong> if port is not the default one (?)",
+            "help" => "Host ip or name, including ':portnumber' if port is not the default one",
         ]));
 
         $oMorpho->add(new \Formal\Element\Text([
