@@ -332,7 +332,7 @@ class Framework extends \Flake\Core\Framework {
                 $config['database']['mysql_dbname'],
                 $config['database']['mysql_username'],
                 $config['database']['mysql_password'],
-                $config['database']['mysql_ca_cert']
+                key_exists('mysql_ca_cert', $config['database']) ? $config['database']['mysql_ca_cert'] : ''
             );
 
             # We now setup the connection to use UTF8
