@@ -204,7 +204,7 @@ class Database extends \Flake\Core\Controller {
             } catch (\Exception $e) {
                 $oForm->declareError(
                     $oMorpho->element("sqlite_file"),
-                    "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
+                    "Baïkal was not able to establish a connection to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
                 );
             }
         }

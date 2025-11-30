@@ -157,7 +157,7 @@ class Database extends \Flake\Core\Controller {
         } catch (\Exception $e) {
             $oForm->declareError(
                 $oMorpho->element("sqlite_file"),
-                "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
+                "Baïkal was not able to establish a connection to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
             );
         }
     }
@@ -206,7 +206,7 @@ class Database extends \Flake\Core\Controller {
             return true;
         } catch (\Exception $e) {
             $oForm->declareError($oMorpho->element("backend"),
-                "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
+                "Baïkal was not able to establish a connection to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
             $oForm->declareError($oMorpho->element("mysql_host"));
             $oForm->declareError($oMorpho->element("mysql_dbname"));
             $oForm->declareError($oMorpho->element("mysql_username"));
@@ -258,7 +258,7 @@ class Database extends \Flake\Core\Controller {
         } catch (\Exception $e) {
             $oForm->declareError(
                 $oMorpho->element("backend"),
-                "Baïkal was not able to establish a connexion to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
+                "Baïkal was not able to establish a connection to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
             );
 
             $oForm->declareError(
