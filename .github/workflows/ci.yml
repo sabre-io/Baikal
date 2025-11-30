@@ -5,6 +5,7 @@ on:
       - master
       - release/*
   pull_request:
+
 jobs:
   code-analysis:
     name: Code Analysis (PHP ${{ matrix.php-versions }})
@@ -17,38 +18,66 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+      - name: Setup PHP and Install Composer Dependencies
+        uses: ./.github/actions/build
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, dom, fileinfo, mysql, redis, opcache
-          coverage: ${{ matrix.coverage }}
-          tools: composer
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          # Use composer.json for key, if composer.lock is not committed.
-          # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Remove php-cs-fixer dependency when not used
-        if: matrix.cs-fixer == false
-        run: composer remove --dev friendsofphp/php-cs-fixer
-
-      - name: Install composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
       - name: Code Analysis (PHP CS-Fixer)
         if: matrix.cs-fixer == true
         run: php vendor/bin/php-cs-fixer fix --dry-run --diff --allow-unsupported-php-version=yes
-
       - name: Code Analysis (PHPStan)
         run: composer phpstan
+
+  tests:
+    name: Tests (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.2', '8.3', '8.4', '8.5', '8.6']
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: baikal_test
+          MYSQL_USER: baikal
+          MYSQL_PASSWORD: baikal
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: baikal_test
+          POSTGRES_USER: baikal
+          POSTGRES_PASSWORD: baikal
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U baikal"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP and Install Composer Dependencies
+        uses: ./.github/actions/build
+        with:
+          php-version: ${{ matrix.php-versions }}
+      - name: Start PHP server
+        run: php -S 0.0.0.0:8000 -t . > php_server.log 2>&1 &
+      - name: Setup Python
+        run: |
+          pip install mechanicalsoup mysql-connector-python psycopg2 --break-system-packages
+      - name: Run tests
+        env:
+          BAIKAL_BASE_URL: http://localhost:8000/html/
+        run: python run_tests.py
+      - name: Print server logs
+        run: cat php_server.log
