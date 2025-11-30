@@ -332,13 +332,13 @@ class Framework extends \Flake\Core\Framework {
                 $config['database']['mysql_dbname'],
                 $config['database']['mysql_username'],
                 $config['database']['mysql_password'],
-                $config['database']['mysql_ca_cert']
+                key_exists('mysql_ca_cert', $config['database']) ? $config['database']['mysql_ca_cert'] : ''
             );
 
-            # We now setup t6he connexion to use UTF8
+            # We now setup the connection to use UTF8
             $GLOBALS["DB"]->query("SET NAMES UTF8");
         } catch (\Exception $e) {
-            exit("<h3>Baïkal was not able to establish a connexion to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
+            exit("<h3>Ba&iuml;kal was not able to establish a connection to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
         }
 
         return true;
