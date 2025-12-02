@@ -1,40 +1,9 @@
 import os, sys, importlib.util, traceback, mechanicalsoup
-import mysql.connector
-import psycopg2
 from tests.test_helpers import BASE_URL, ADMIN_PASSWORD
 
 FAILED = False
 
-def reset_mysql():
-    conn = mysql.connector.connect(
-        host="127.0.0.1",
-        user="baikal",
-        password="baikal"
-    )
-    cursor = conn.cursor()
-    cursor.execute("DROP DATABASE IF EXISTS baikal_test")
-    cursor.execute("CREATE DATABASE baikal_test")
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-def reset_pgsql():
-    conn = psycopg2.connect(
-        host="127.0.0.1",
-        user="baikal",
-        password="baikal",
-        dbname="postgres"
-    )
-    conn.autocommit = True
-    cursor = conn.cursor()
-    cursor.execute("DROP DATABASE IF EXISTS baikal_test")
-    cursor.execute("CREATE DATABASE baikal_test")
-    cursor.close()
-    conn.close()
-
-def reset_db(print_trace = False):
-    global RESET_PRINTED
-    db_path = "Specific/db/db.sqlite"
+def remove_config():
     yaml_path = "config/baikal.yaml"
     if os.path.exists(yaml_path):
         try:
@@ -49,21 +18,6 @@ def reset_db(print_trace = False):
         except Exception as e:
             print("Error while checking baikal.yaml:", e)
             sys.exit(1)
-    if os.path.exists(db_path):
-        os.remove(db_path)
-        
-    try:
-        reset_mysql()
-    except:
-        if print_trace:
-            traceback.print_exc()
-            print("Unable to reset mysql database, maybe mysql server is not running")
-    try:
-        reset_pgsql()
-    except:
-        if print_trace:
-            traceback.print_exc()
-            print("Unable to reset pgsql database, maybe postgres server is not running")
 
 def load_tests(path):
     files = []
@@ -90,16 +44,22 @@ def run_file(path):
         FAILED = True
         traceback.print_exc()
         return
+
+    setup_function = None
+    for s in dir(mod):
+        if s == "setup":
+            setup_function = getattr(mod, s)
+
     for n in dir(mod):
         if not n.startswith("test_"):
             continue
         print(path, "::", n, sep = '')
-        
-        reset_db()
+        remove_config()
     
         browser = mechanicalsoup.StatefulBrowser()
         test_function = getattr(mod, n)
         try:
+            setup_function()
             test_function(browser)
             print("[OK]")
         except:
@@ -110,7 +70,6 @@ def run_file(path):
 
 def main():
     global FAILED
-    reset_db(True) # Print errors once
     
     if len(sys.argv) > 1:
         run_file(sys.argv[1])
