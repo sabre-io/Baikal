@@ -6,7 +6,7 @@
     "homepage": "https://sabre.io/baikal/",
     "license" : "GPL-3.0-only",
     "require": {
-        "php"           : "^8.1",
+        "php"           : "^8.2",
         "sabre/dav"     : "~4.7.0",
         "twig/twig"     : "~3.22.0",
         "symfony/yaml"  : "~7.3.5",
