@@ -37,9 +37,9 @@ class Cli extends \Flake\Core\Render\Container {
         $this->sys_init();
         $this->init();
 
-        $this->echoFlush($this->notice("process started @" . strftime("%d/%m/%Y %H:%M:%S")));
+        $this->echoFlush($this->notice("process started @" . (new \DateTimeImmutable())->format('d/m/Y H:i:s')));
         $this->execute();
-        $this->echoFlush($this->notice("process ended @" . strftime("%d/%m/%Y %H:%M:%S")) . "\n\n");
+        $this->echoFlush($this->notice("process ended @" . (new \DateTimeImmutable())->format('d/m/Y H:i:s')) . "\n\n");
     }
 
     function execute() {
