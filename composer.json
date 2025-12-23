@@ -10,7 +10,6 @@
         "sabre/dav"     : "~4.7.0",
         "twig/twig"     : "~3.22.0",
         "symfony/yaml"  : "~7.3.5",
-        "psr/log"       : "^1",
         "ext-dom"       : "*",
         "ext-openssl"   : "*",
         "ext-pdo"       : "*",
