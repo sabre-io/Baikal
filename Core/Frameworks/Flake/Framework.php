@@ -202,7 +202,7 @@ class Framework extends \Flake\Core\Framework {
                 session_start();
             }
             if (!isset($_SESSION['CSRF_TOKEN'])) {
-                $_SESSION['CSRF_TOKEN'] = bin2hex(openssl_random_pseudo_bytes(20));
+                $_SESSION['CSRF_TOKEN'] = bin2hex(random_bytes(20));
             }
         }
 

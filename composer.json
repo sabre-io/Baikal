@@ -11,7 +11,6 @@
         "twig/twig"     : "~3.22.0",
         "symfony/yaml"  : "~7.3.5",
         "ext-dom"       : "*",
-        "ext-openssl"   : "*",
         "ext-pdo"       : "*",
         "ext-zlib"      : "*"
     },
