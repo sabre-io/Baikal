@@ -241,14 +241,6 @@ class Tools extends \Flake\Core\FLObject {
         return strip_tags($sInput);
     }
 
-    static function getHumanDate($iStamp) {
-        return ucwords(strftime("%A, %d %B %Y", $iStamp));
-    }
-
-    static function getHumanTime($iStamp) {
-        return strftime("%Hh%M", $iStamp);
-    }
-
     static function trimExplode($string, $delim = ",", $removeEmptyValues = false, $limit = 0) {
         $explodedValues = explode($delim, $string);
 
