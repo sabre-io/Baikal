@@ -59,7 +59,7 @@ class Calendar extends \Flake\Core\Model\Db {
                 $vtimezone->add('TZID', $config['system']["timezone"]);
                 $this->set(
                     "timezone",
-                    rtrim($vcalendar->serialize(),"\r\n")
+                    rtrim($vcalendar->serialize(), "\r\n")
                 );
             }
         } catch (\Exception $e) {
