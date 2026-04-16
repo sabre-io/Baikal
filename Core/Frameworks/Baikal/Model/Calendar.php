@@ -27,6 +27,7 @@
 
 namespace Baikal\Model;
 
+use Sabre\VObject\Component\VCalendar;
 use Symfony\Component\Yaml\Yaml;
 
 class Calendar extends \Flake\Core\Model\Db {
@@ -52,7 +53,15 @@ class Calendar extends \Flake\Core\Model\Db {
         parent::__construct($sPrimary);
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            $this->set("timezone", $config['system']["timezone"]);
+            if (!empty($config['system']["timezone"])) {
+                $vcalendar = new VCalendar();
+                $vtimezone = $vcalendar->add('VTIMEZONE');
+                $vtimezone->add('TZID', $config['system']["timezone"]);
+                $this->set(
+                    "timezone",
+                    rtrim($vcalendar->serialize(),"\r\n")
+                );
+            }
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
