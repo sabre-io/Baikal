@@ -18,7 +18,5 @@ jobs:
         uses: ./.github/actions/build
         with:
           php-version: 8.2
-      - name: Build assets
-        run: make build-assets
       - name: Build dist
         run: make dist
