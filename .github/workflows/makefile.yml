@@ -24,4 +24,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Baikal
-          path: build/baikal
+          path: build/baikal*.zip
+          archive: false
