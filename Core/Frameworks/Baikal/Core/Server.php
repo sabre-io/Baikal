@@ -170,9 +170,9 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
             $this->server->addPlugin(new \Baikal\Core\FreeBusySchedulePlugin(
-+                $principalBackend,
-+                $config['system']['allow_free_busy_lookup'] ?? true
-+            ));
+                $principalBackend,
+                $config['system']['allow_free_busy_lookup'] ?? true
+            ));
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
             if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
