@@ -513,6 +513,79 @@ SQL
             $oConfig->persist();
         }
 
+        if (version_compare($sVersionFrom, '0.12.1', '<')) {
+            $this->aSuccess[] = 'Adding calendar-proxy-read and -write...';
+            $select = $pdo->query("
+                SELECT uri
+                FROM principals
+                WHERE uri NOT LIKE '%/calendar-proxy-read'
+                AND uri NOT LIKE '%/calendar-proxy-write'
+            ");
+
+            $exists = $pdo->prepare("
+                SELECT id
+                FROM principals
+                WHERE uri = ?
+            ");
+
+            $insert = $pdo->prepare("
+                INSERT INTO principals (uri, email, displayname)
+                VALUES (?, NULL, NULL)
+            ");
+
+            foreach ($select->fetchAll(\PDO::FETCH_COLUMN) as $principalUri) {
+                foreach (['calendar-proxy-read', 'calendar-proxy-write'] as $proxy) {
+                    $proxyUri = $principalUri . '/' . $proxy;
+
+                    $exists->execute([$proxyUri]);
+                    if ($exists->fetchColumn() !== false) {
+                        continue;
+                    }
+
+                    $insert->execute([$proxyUri]);
+                    $this->aSuccess[] = $proxy . ' added for principal ' . $principalUri;
+                }
+            }
+
+            $select = $pdo->query("
+                SELECT id, timezone
+                FROM calendarinstances
+                WHERE timezone IS NOT NULL
+                AND timezone != ''
+                AND timezone NOT LIKE 'BEGIN:VCALENDAR%'
+            ");
+
+            $update = $pdo->prepare("
+                UPDATE calendarinstances
+                SET timezone = ?
+                WHERE id = ?
+            ");
+
+            $count = 0;
+
+            while ($row = $select->fetch(\PDO::FETCH_ASSOC)) {
+                $timezone = trim($row['timezone']);
+
+                if ($timezone === '') {
+                    continue;
+                }
+
+                $vcalendar = new \Sabre\VObject\Component\VCalendar();
+                $vtimezone = $vcalendar->add('VTIMEZONE');
+                $vtimezone->add('TZID', $timezone);
+
+                $update->execute([
+                    rtrim($vcalendar->serialize(), "\r\n"),
+                    $row['id'],
+                ]);
+
+                ++$count;
+                $vcalendar->destroy();
+
+                $this->aSuccess[] = 'Migrated ' . $count . ' calendar timezone value(s) to VCALENDAR format';
+            }
+        }
+
         $this->updateConfiguredVersion($sVersionTo);
 
         return true;
