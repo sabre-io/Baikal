@@ -2,8 +2,7 @@
 
 namespace Baikal\Core;
 
-final class FreeBusyPrincipalBackend extends \Sabre\DAVACL\PrincipalBackend\PDO
-{
+final class FreeBusyPrincipalBackend extends \Sabre\DAVACL\PrincipalBackend\PDO {
     private array $temporaryProxyReadMembers = [];
 
     public function addTemporaryCalendarProxyRead(
@@ -14,13 +13,11 @@ final class FreeBusyPrincipalBackend extends \Sabre\DAVACL\PrincipalBackend\PDO
         $this->temporaryProxyReadMembers[$proxyPrincipal][$organizerPrincipal] = true;
     }
 
-    public function clearTemporaryCalendarProxyRead(): void
-    {
+    public function clearTemporaryCalendarProxyRead(): void {
         $this->temporaryProxyReadMembers = [];
     }
 
-    public function getGroupMemberSet($principal)
-    {
+    public function getGroupMemberSet($principal) {
         $members = parent::getGroupMemberSet($principal);
 
         if (isset($this->temporaryProxyReadMembers[$principal])) {
@@ -33,8 +30,7 @@ final class FreeBusyPrincipalBackend extends \Sabre\DAVACL\PrincipalBackend\PDO
         return array_values(array_unique($members));
     }
 
-    public function getGroupMembership($principal)
-    {
+    public function getGroupMembership($principal) {
         $groups = parent::getGroupMembership($principal);
 
         foreach ($this->temporaryProxyReadMembers as $proxyPrincipal => $members) {

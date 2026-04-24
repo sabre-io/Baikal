@@ -9,8 +9,7 @@ use Sabre\HTTP\ResponseInterface;
 use Sabre\VObject\Component;
 use Sabre\VObject\Reader;
 
-final class FreeBusySchedulePlugin extends Plugin
-{
+final class FreeBusySchedulePlugin extends Plugin {
     public function __construct(
         private FreeBusyPrincipalBackend $principalBackend,
         private bool $allowFreeBusyLookup = true
@@ -50,15 +49,13 @@ final class FreeBusySchedulePlugin extends Plugin
         }
     }
 
-    private function isFreeBusyRequest(Component $vObject): bool
-    {
+    private function isFreeBusyRequest(Component $vObject): bool {
         return isset($vObject->METHOD)
             && strtoupper((string) $vObject->METHOD) === 'REQUEST'
             && isset($vObject->VFREEBUSY);
     }
 
-    private function getAttendeePrincipals(Component $vObject): array
-    {
+    private function getAttendeePrincipals(Component $vObject): array {
         $principals = [];
 
         if (!isset($vObject->VFREEBUSY->ATTENDEE)) {
