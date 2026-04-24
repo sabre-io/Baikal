@@ -513,7 +513,8 @@ SQL
             $oConfig->persist();
         }
 
-        if (version_compare($sVersionFrom, '0.11.1', '<')) {
+        if (version_compare($sVersionFrom, '0.12.1', '<')) {
+            $this->aSuccess[] = 'Adding calendar-proxy-read and -write...';
             $select = $pdo->query("
                 SELECT uri
                 FROM principals
@@ -542,6 +543,7 @@ SQL
                     }
 
                     $insert->execute([$proxyUri]);
+                    $this->aSuccess[] = $proxy . ' added for principal ' . $principalUri;
                 }
             }
         }
