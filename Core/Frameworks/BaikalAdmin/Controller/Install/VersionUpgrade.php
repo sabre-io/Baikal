@@ -546,7 +546,7 @@ SQL
                     $this->aSuccess[] = $proxy . ' added for principal ' . $principalUri;
                 }
             }
-            
+
             $select = $pdo->query("
                 SELECT id, timezone
                 FROM calendarinstances
@@ -582,7 +582,7 @@ SQL
                 ++$count;
                 $vcalendar->destroy();
 
-            $this->aSuccess[] = 'Migrated ' . $count . ' calendar timezone value(s) to VCALENDAR format';
+                $this->aSuccess[] = 'Migrated ' . $count . ' calendar timezone value(s) to VCALENDAR format';
             }
         }
 
