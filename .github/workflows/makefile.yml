@@ -1,0 +1,30 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP and Install Composer Dependencies
+        uses: ./.github/actions/build
+        with:
+          php-version: 8.2
+      - name: Build dist
+        run: make dist
+      - name: Upload build file
+        uses: actions/upload-artifact@v4
+        with:
+          name: Baikal
+          path: |
+            build/*
+            !build/baikal*.zip
+          overwrite: true
+          include-hidden-files: true
