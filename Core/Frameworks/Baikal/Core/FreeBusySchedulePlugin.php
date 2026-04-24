@@ -25,10 +25,15 @@ final class FreeBusySchedulePlugin extends Plugin {
             return parent::outboxRequest($outboxNode, $request, $response);
         }
 
-        $body = $request->getBody();
+        $body = $request->getBodyAsString();
         $vObject = Reader::read($body);
-        // Reset body so the parent can reuse it
-        $request->setBody($body);
+
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $body);
+        rewind($stream);
+
+        $request = clone $request;
+        $request->setBody($stream);
 
         try {
             if (!$this->isFreeBusyRequest($vObject)) {
