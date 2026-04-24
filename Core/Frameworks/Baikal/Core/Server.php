@@ -138,7 +138,7 @@ class Server {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
             $authBackend->setRealm($this->authRealm);
         }
-        $principalBackend = new \Sabre\DAVACL\PrincipalBackend\PDO($this->pdo);
+        $principalBackend = new \Baikal\Core\FreeBusyPrincipalBackend($this->pdo);
 
         $nodes = [
             new \Sabre\CalDAV\Principal\Collection($principalBackend),
@@ -169,7 +169,10 @@ class Server {
         if ($this->enableCalDAV) {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
-            $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
+            $this->server->addPlugin(new \Baikal\Core\FreeBusySchedulePlugin(
++                $principalBackend,
++                $config['system']['allow_free_busy_lookup'] ?? true
++            ));
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
             if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
