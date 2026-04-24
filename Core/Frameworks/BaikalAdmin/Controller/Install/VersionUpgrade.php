@@ -513,6 +513,38 @@ SQL
             $oConfig->persist();
         }
 
+        if (version_compare($sVersionFrom, '0.11.1', '<')) {
+            $select = $pdo->query("
+                SELECT uri
+                FROM principals
+                WHERE uri NOT LIKE '%/calendar-proxy-read'
+                AND uri NOT LIKE '%/calendar-proxy-write'
+            ");
+
+            $exists = $pdo->prepare("
+                SELECT id
+                FROM principals
+                WHERE uri = ?
+            ");
+
+            $insert = $pdo->prepare("
+                INSERT INTO principals (uri, email, displayname)
+                VALUES (?, NULL, NULL)
+            ");
+
+            foreach ($select->fetchAll(\PDO::FETCH_COLUMN) as $principalUri) {
+                foreach (['calendar-proxy-read', 'calendar-proxy-write'] as $proxy) {
+                    $proxyUri = $principalUri . '/' . $proxy;
+
+                    $exists->execute([$proxyUri]);
+                    if ($exists->fetchColumn() !== false) {
+                        continue;
+                    }
+
+                    $insert->execute([$proxyUri]);
+                }
+            }
+
         $this->updateConfiguredVersion($sVersionTo);
 
         return true;
