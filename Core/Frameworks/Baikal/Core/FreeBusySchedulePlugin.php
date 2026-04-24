@@ -27,6 +27,8 @@ final class FreeBusySchedulePlugin extends Plugin {
 
         $body = $request->getBody();
         $vObject = Reader::read($body);
+        // Reset body so the parent can reuse it
+        $request->setBody($body);
 
         try {
             if (!$this->isFreeBusyRequest($vObject)) {
