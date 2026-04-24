@@ -546,6 +546,44 @@ SQL
                     $this->aSuccess[] = $proxy . ' added for principal ' . $principalUri;
                 }
             }
+            
+            $select = $pdo->query("
+                SELECT id, timezone
+                FROM calendarinstances
+                WHERE timezone IS NOT NULL
+                AND timezone != ''
+                AND timezone NOT LIKE 'BEGIN:VCALENDAR%'
+            ");
+
+            $update = $pdo->prepare("
+                UPDATE calendarinstances
+                SET timezone = ?
+                WHERE id = ?
+            ");
+
+            $count = 0;
+
+            while ($row = $select->fetch(\PDO::FETCH_ASSOC)) {
+                $timezone = trim($row['timezone']);
+
+                if ($timezone === '') {
+                    continue;
+                }
+
+                $vcalendar = new \Sabre\VObject\Component\VCalendar();
+                $vtimezone = $vcalendar->add('VTIMEZONE');
+                $vtimezone->add('TZID', $timezone);
+
+                $update->execute([
+                    rtrim($vcalendar->serialize(), "\r\n"),
+                    $row['id'],
+                ]);
+
+                ++$count;
+                $vcalendar->destroy();
+
+            $this->aSuccess[] = 'Migrated ' . $count . ' calendar timezone value(s) to VCALENDAR format';
+            }
         }
 
         $this->updateConfiguredVersion($sVersionTo);
