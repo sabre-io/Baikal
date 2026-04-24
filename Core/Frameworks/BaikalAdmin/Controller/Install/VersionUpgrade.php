@@ -544,6 +544,7 @@ SQL
                     $insert->execute([$proxyUri]);
                 }
             }
+        }
 
         $this->updateConfiguredVersion($sVersionTo);
 
