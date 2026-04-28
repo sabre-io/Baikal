@@ -46,7 +46,14 @@ class Mysql extends \Flake\Core\Database {
         ];
 
         if ($this->sCaCert !== "") {
-            $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
+             if (PHP_VERSION_ID >= 80500) {
+                // PHP 8.5+
+                // @phpstan-ignore class.notFound
+                $options[\Pdo\Mysql::ATTR_SSL_CA] = $this->sCaCert;
+            } else {
+                // @phpstan-ignore class.notFound
+                $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
+            }
         }
 
         $this->oDb = new \PDO(
