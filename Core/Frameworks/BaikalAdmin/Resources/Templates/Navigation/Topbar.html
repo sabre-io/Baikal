@@ -1,23 +1,19 @@
 {% autoescape false %}
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</a>
-			<a class="brand" href="{{ homelink }}"><img style="vertical-align: text-top; line-height: 20px;" src="res/core/BaikalAdmin/Templates/Page/baikal-text-20.png" /> Web Admin</a>
-			<div class="nav-collapse">
-				<ul class="nav">
-					<li class="{{ activehome }}"> <a href="{{ homelink }}">Dashboard</a></li>
-					<li class="{{ activeusers }}"> <a href="{{ userslink }}">Users and resources</a></li>
-					<li class="{{ activesettingsstandard }}"> <a href="{{ settingsstandardlink }}">System Settings</a></li>
-					<li class="{{ activesettingsdatabase }}"> <a href="{{ settingsdatabaselink }}">Database settings</a></li>
-					<li> <a href="{{ logoutlink }}"><i class="icon-eject icon-white"></i> Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+<nav class="navbar navbar-fixed-top navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+            <a class="navbar-brand" href="{{ homelink }}"><img style="vertical-align: text-top; line-height: 20px;" src="res/core/BaikalAdmin/Templates/Page/baikal-text-20.png" /> Web Admin</a>
+            <ul class="navbar-nav">
+	        <li class="nav-item"><a class="nav-link {{ activehome }}" href="{{ homelink }}">Dashboard</a></li>
+	        <li class="nav-item"><a class="nav-link {{ activeusers }}" href="{{ userslink }}">Users and resources</a></li>
+	        <li class="nav-item"><a class="nav-link {{ activesettingsstandard }}" href="{{ settingsstandardlink }}">System Settings</a></li>
+	        <li class="nav-item"><a class="nav-link {{ activesettingsdatabase }}" href="{{ settingsdatabaselink }}">Database settings</a></li>
+	        <li class="nav-item"><a class="nav-link" href="{{ logoutlink }}"><i class="fa fa-eject"></i> Logout</a></li>
+	    </ul>
+        </div>
+    </div>
+</nav>
 {% endautoescape %}

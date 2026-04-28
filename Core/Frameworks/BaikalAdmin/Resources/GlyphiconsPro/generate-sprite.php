@@ -400,11 +400,11 @@ function generateSprite($aSymbols, $iCols, $iRows, $iPngWidth, $iPngHeight, $sCl
     $iSpriteHeight = ceil($iSymbolHeight);
 
     $sCss = <<<CSS
-.btn-large [class^="{$sClassPrefix}"] {
+.btn-lg [class^="{$sClassPrefix}"] {
   margin-top: 1px;
 }
 
-.btn-small [class^="{$sClassPrefix}"] {
+.btn-sm [class^="{$sClassPrefix}"] {
   margin-top: -1px;
 }
 

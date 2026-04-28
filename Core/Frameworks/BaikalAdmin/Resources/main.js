@@ -1,16 +1,21 @@
 $(document).ready(function() {
     $("[rel=tooltip]").tooltip();
-    $(".popover-hover").popover();
+    $(".popover-hover").popover({
+        html: true
+    });
     $(".popover-focus").popover({
-        trigger: 'focus'
+        trigger: 'focus',
+        html: true
     });
     $(".popover-focus-top").popover({
         trigger: 'focus',
-        placement: 'top'
+        placement: 'top',
+        html: true
     });
     $(".popover-focus-bottom").popover({
         trigger: 'focus',
-        placement: 'bottom'
+        placement: 'bottom',
+        html: true
     });
 });
 
