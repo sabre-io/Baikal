@@ -49,8 +49,7 @@ class Mysql extends \Flake\Core\Database {
             if (defined('Pdo\Mysql::ATTR_SSL_CA')) {
                 // PHP 8.5+
                 $options[\Pdo\Mysql::ATTR_SSL_CA] = $this->sCaCert;
-            }
-            else {
+            } else {
                 $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
             }
         }
