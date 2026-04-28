@@ -46,7 +46,7 @@ class Mysql extends \Flake\Core\Database {
         ];
 
         if ($this->sCaCert !== "") {
-             if (PHP_VERSION_ID >= 80500) {
+            if (PHP_VERSION_ID >= 80500) {
                 // PHP 8.5+
                 // @phpstan-ignore class.notFound
                 $options[\Pdo\Mysql::ATTR_SSL_CA] = $this->sCaCert;
