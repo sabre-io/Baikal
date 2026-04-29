@@ -17,6 +17,9 @@ parameters:
       path: Core/Frameworks/Flake/Core/Model.php
     -
       identifier: unset.possiblyHookedProperty
+    -
+      message: '#Fetching deprecated class constant MYSQL_ATTR_SSL_CA of class PDO\.#'
+      path: Core/Frameworks/Flake/Core/Database/Mysql.php
 
 includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
