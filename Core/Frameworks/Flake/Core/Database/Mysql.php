@@ -46,7 +46,13 @@ class Mysql extends \Flake\Core\Database {
         ];
 
         if ($this->sCaCert !== "") {
-            $options[\PDO::MYSQL_ATTR_SSL_CA] = $this->sCaCert;
+            // PDO::MYSQL_ATTR_SSL_CA was deprecated in PHP 8.4 in favour of PDO\Mysql::ATTR_SSL_CA.
+            // Use constant() to resolve the right name at runtime without a direct reference to
+            // the deprecated constant, keeping compatibility with PHP 8.2 and 8.3.
+            $sslCaAttr = defined('PDO\Mysql::ATTR_SSL_CA')
+                ? constant('PDO\Mysql::ATTR_SSL_CA')
+                : constant('PDO::MYSQL_ATTR_SSL_CA');
+            $options[$sslCaAttr] = $this->sCaCert;
         }
 
         $this->oDb = new \PDO(
