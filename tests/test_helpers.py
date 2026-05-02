@@ -1,4 +1,7 @@
-import mechanicalsoup, os, sys
+import mechanicalsoup
+import os
+import sys
+from urllib.parse import urljoin
 
 BASE_URL = os.environ.get("BAIKAL_BASE_URL", "http://localhost/html/")
 ADMIN_PASSWORD = "secret123"
@@ -8,7 +11,8 @@ def follow_link_containing(browser: mechanicalsoup.StatefulBrowser, text_substri
     page = browser.get_current_page()
     link = None
     for a in page.find_all("a"):
-        if a and a.get_text(strip=True) and text_substring in a.get_text(strip=True).lower():
+        text = " ".join(a.get_text().split()).lower()
+        if text and text_substring in text:
             link = a
             break
     if link is None:
@@ -45,6 +49,29 @@ def assert_dashboard(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     assert "dashboard" in page.text.lower()
     assert "about this system" in page.text.lower()
+
+def follow_meta_redirect(browser: mechanicalsoup.StatefulBrowser):
+    page = browser.get_current_page()
+    meta = page.find("meta", attrs={"http-equiv": lambda x: x and x.lower() == "refresh"})
+    if meta:
+        content = meta.get("content", "")
+        if "url=" in content.lower():
+            idx = content.lower().index("url=")
+            url = content[idx + 4:].strip()
+            url = urljoin(browser.get_url(), url)
+            browser.open(url)
+
+def find_and_follow_row_link(browser: mechanicalsoup.StatefulBrowser, row_text: str, link_text: str):
+    page = browser.get_current_page()
+    row_text_lower = row_text.lower()
+    link_text_lower = link_text.lower()
+    for tr in page.find_all("tr"):
+        if row_text_lower in tr.get_text(strip=True).lower():
+            for a in tr.find_all("a"):
+                if a.get_text(strip=True) and link_text_lower in a.get_text(strip=True).lower():
+                    browser.follow_link(a)
+                    return
+    raise RuntimeError(f"No row containing '{row_text}' with link '{link_text}' found on page")
 
 def assert_upgrade(browser: mechanicalsoup.StatefulBrowser):
     browser.open(BASE_URL)
