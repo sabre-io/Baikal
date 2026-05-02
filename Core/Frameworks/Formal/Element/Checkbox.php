@@ -63,7 +63,7 @@ class Checkbox extends \Formal\Element {
         if (($aPopover = $this->option("popover")) !== "") {
             $inputclass .= " popover-hover ";
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $popover .= " data-bs-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
         }
 
         if ($this->option("refreshonchange") === true) {

@@ -62,7 +62,7 @@ class Listbox extends \Formal\Element {
         if (($aPopover = $this->option("popover")) !== "") {
             $inputclass .= " popover-focus ";
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $popover .= " data-bs-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
         }
 
         if ($this->option("refreshonchange") === true) {
