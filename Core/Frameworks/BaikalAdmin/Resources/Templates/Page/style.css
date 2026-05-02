@@ -46,6 +46,10 @@ p.lead { line-height: 40px;}
 }
 
 @media (max-width: 550px) {
+        .jumbotron {
+            padding-top:7px;
+        }
+    
 	.jumbotron h1 {
 		font-size: 20px;
 		font-weight: bold;
