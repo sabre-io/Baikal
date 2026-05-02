@@ -25,7 +25,7 @@
 			<td class="col-contacts">{{ addressbook.contacts|escape }}</td>
 			<td class="col-description">{{ addressbook.description|escape }}</td>
 			<td class="col-actions" style="text-align:right">
-					<nobr><span class="btn btn-light popover-hover" data-placement="bottom" data-bs-toggle="popover" title="Setup info" data-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ addressbook.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
+					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ addressbook.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ addressbook.linkedit }}"><i class="fa fa-edit"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ addressbook.linkdelete }}"><i class="fa fa-remove"></i> Delete</a></nobr>
 			</td>
