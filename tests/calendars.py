@@ -22,7 +22,6 @@ def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
     assert_dashboard(browser)
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
-    """Create a standard test user. install_sqlite must have been called first."""
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
     browser.select_form("form")
@@ -34,12 +33,10 @@ def create_test_user(browser: mechanicalsoup.StatefulBrowser):
     browser.submit_selected()
 
 def navigate_to_user_calendars(browser: mechanicalsoup.StatefulBrowser):
-    """Navigate to the calendar list for caluser."""
     follow_link_containing(browser, "users and resources")
     find_and_follow_row_link(browser, "caluser", "calendars")
 
 def create_test_calendar(browser: mechanicalsoup.StatefulBrowser):
-    """Create a test calendar for caluser. install_sqlite and create_test_user must have been called first."""
     navigate_to_user_calendars(browser)
     follow_link_containing(browser, "add calendar")
     browser.select_form("form")

@@ -43,8 +43,5 @@
             "composer cs-fixer",
             "composer phpstan"
         ]
-    },
-    "config": {
-        "use-github-api": false
     }
 }

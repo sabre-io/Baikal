@@ -22,7 +22,6 @@ def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
     assert_dashboard(browser)
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
-    """Create a standard test user. install_sqlite must have been called first."""
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
     browser.select_form("form")
