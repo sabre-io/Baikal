@@ -46,6 +46,30 @@ def assert_dashboard(browser: mechanicalsoup.StatefulBrowser):
     assert "dashboard" in page.text.lower()
     assert "about this system" in page.text.lower()
 
+def follow_meta_redirect(browser: mechanicalsoup.StatefulBrowser):
+    """Navigate to the URL specified in a meta-refresh tag, if present."""
+    page = browser.get_current_page()
+    meta = page.find("meta", attrs={"http-equiv": lambda x: x and x.lower() == "refresh"})
+    if meta:
+        content = meta.get("content", "")
+        if "url=" in content.lower():
+            idx = content.lower().index("url=")
+            url = content[idx + 4:].strip()
+            browser.open(url)
+
+def find_and_follow_row_link(browser: mechanicalsoup.StatefulBrowser, row_text: str, link_text: str):
+    """Follow a link inside a table row that contains row_text."""
+    page = browser.get_current_page()
+    row_text_lower = row_text.lower()
+    link_text_lower = link_text.lower()
+    for tr in page.find_all("tr"):
+        if row_text_lower in tr.get_text(strip=True).lower():
+            for a in tr.find_all("a"):
+                if a.get_text(strip=True) and link_text_lower in a.get_text(strip=True).lower():
+                    browser.follow_link(a)
+                    return
+    raise RuntimeError(f"No row containing '{row_text}' with link '{link_text}' found on page")
+
 def assert_upgrade(browser: mechanicalsoup.StatefulBrowser):
     browser.open(BASE_URL)
     page = browser.get_current_page()
