@@ -1,4 +1,5 @@
-import mechanicalsoup, os
+import mechanicalsoup
+import os
 from test_helpers import (
     assert_dashboard, assert_installed, setup_admin_password,
     follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
