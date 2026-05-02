@@ -1,8 +1,5 @@
 {% autoescape false %}
 {% set url = 'https://sabre.io/baikal/' %}
-<style>
-	.label-intext { vertical-align: top;}
-</style>
 <header class="jumbotron subhead" id="overview">
 	<h1><i class="glyph2x-circle-info"></i>Dashboard</h1>
 </header>
@@ -12,14 +9,14 @@
 		<h1>About this system</h1>
 	</div>
 	<div class="row">
-		<div class="span3">
+		<div class="col-md-3">
 			<h2>Version</h2>
-			<p>This systems runs Baïkal <span class="label label-info label-intext">{{ BAIKAL_VERSION }}</span><br />
+			<p>This systems runs Baïkal <span class="badge text-bg-info">{{ BAIKAL_VERSION }}</span><br />
 				<small><a href="{{ url }}" target="_blank">{{ url }}</a></small>
 			</p>
 			<p id="newVersionContainer" style="display: none;">
 				<a class="alert alert-info" href="https://github.com/sabre-io/Baikal/releases/latest" target="_blank">
-					New version available: <span id="newVersion" class="label label-info label-intext">0.0.0</span>
+					New version available: <span id="newVersion" class="badge text-bg-info">0.0.0</span>
 				</a>
 			</p>
 			<script type="text/javascript">
@@ -36,21 +33,21 @@
 				};
 			</script>
 		</div>
-		<div class="span3">
+		<div class="col-md-3">
 			<h2>Services</h2>
 			{% if cal_enabled %}
-				{% set caldavclass = 'label-success' %}
+				{% set caldavclass = 'text-bg-success' %}
 				{% set caldavtext = 'On' %}
 			{% else %}
-				{% set caldavclass = 'label-important' %}
+				{% set caldavclass = 'text-bg-warning' %}
 				{% set caldavtext = 'Off' %}
 			{% endif %}
 			
 			{% if card_enabled %}
-				{% set carddavclass = 'label-success' %}
+				{% set carddavclass = 'text-bg-success' %}
 				{% set carddavtext = 'On' %}
 			{% else %}
-				{% set carddavclass = 'label-important' %}
+				{% set carddavclass = 'text-bg-warning' %}
 				{% set carddavtext = 'Off' %}
 			{% endif %}
 			
@@ -58,20 +55,20 @@
 				<tbody>
 					<tr>
 						<td>Web admin</td>
-						<td><span class="label label-success label-intext">On</span></p></td>
+						<td><span class="badge text-bg-success">On</span></p></td>
 					</tr>
 					<tr>
 						<td>CalDAV</td>
-						<td><span class="label {{ caldavclass }} label-intext">{{ caldavtext }}</span></td>
+						<td><span class="badge {{ caldavclass }}">{{ caldavtext }}</span></td>
 					</tr>
 					<tr>
 						<td>CardDAV</td>
-						<td><span class="label {{ carddavclass }} label-intext">{{ carddavtext }}</span></td>
+						<td><span class="badge {{ carddavclass }}">{{ carddavtext }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div class="span6">
+		<div class="col-md-6">
 			<h2>License and credits</h2>
 			<p>Baïkal is open source software licensed under the terms of the GNU GPL v3.</p>
 			<p>Baïkal is based upon other open source projects.<br />Read the <a href="https://github.com/sabre-io/Baikal/blob/master/README.md" target="_blank">README.md</a> file to learn about that.</p>
@@ -85,43 +82,43 @@
 		<h1>Statistics</h1>
 	</div>
 	<div class="row">
-		<div class="span4">
+		<div class="col-md-4">
 			<h2>Users</h2>
 			<table class="table">
 				<tbody>
 					<tr>
 						<td>Registered users</td>
-						<td><span class="badge">{{ nbusers }}</span></td>
+						<td><span class="badge text-bg-secondary">{{ nbusers }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div class="span4">
+		<div class="col-md-4">
 			<h2>CalDAV</h2>
 			<table class="table">
 				<tbody>
 					<tr>
 						<td>Number of calendars</td>
-						<td><span class="badge">{{ nbcalendars }}</span></td>
+						<td><span class="badge text-bg-secondary">{{ nbcalendars }}</span></td>
 					</tr>
 					<tr>
 						<td>Number of events</td>
-						<td><span class="badge">{{ nbevents }}</span></td>
+						<td><span class="badge text-bg-secondary">{{ nbevents }}</span></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div class="span4">
+		<div class="col-md-4">
 			<h2>CardDAV</h2>
 			<table class="table">
 				<tbody>
 					<tr>
 						<td>Number of address books</td>
-						<td><span class="badge">{{ nbbooks }}</span></td>
+						<td><span class="badge text-bg-secondary">{{ nbbooks }}</span></td>
 					</tr>
 					<tr>
 						<td>Number of contacts</td>
-						<td><span class="badge">{{ nbcontacts }}</span></td>
+						<td><span class="badge text-bg-secondary">{{ nbcontacts }}</span></td>
 					</tr>
 				</tbody>
 			</table>

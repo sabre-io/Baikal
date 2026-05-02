@@ -267,7 +267,7 @@ class User extends \Flake\Core\Model\Db {
     }
 
     static function icon() {
-        return "icon-user";
+        return "fa fa-user";
     }
 
     static function mediumicon() {

@@ -1,18 +1,21 @@
 {% autoescape false %}
-<header class="jumbotron subhead" id="overview">
+<div class="container">
+<div class="jumbotron" id="overview">
 	<h1><i class="{{ titleicon }}"></i>Calendars</h1>
 	<p class="lead">Manage Calendars for<i class="{{ modelicon }}"></i><strong>{{ modellabel }}</strong>.</p>
-	<p class="pull-left"><a href="{{ linkback }}" class="btn"><i class="icon-chevron-left"></i> Back to users list</a></p>
-	<p class="pull-right"><a class="btn btn btn-inverse" href="{{ linknew }}"><i class="icon-white {{ calendaricon }}"></i> + Add calendar</a></p>
-</header>
+        <div class="row justify-content-md-center">
+            <p class="col"><a href="{{ linkback }}" class="btn btn-light"><i class="fa fa-chevron-left"></i> Back to users list</a></p>
+	    <p class="col text-end"><a class="btn btn-secondary" href="{{ linknew }}"><i class="fa {{ calendaricon }}"></i> + Add calendar</a></p>
+        </div>
+</div>
 
-<table class="table table-bordered table-striped calendars">
+<table class="table table-striped calendars">
 	<thead>
 		<tr>
 			<th>Display name</th>
 			<th>Events</th>
 			<th>Description</th>
-			<th class="no-border-left"></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,12 +24,10 @@
 			<td class="col-displayname"><i class="{{ calendar.icon }}"></i> {{ calendar.label|escape }}{%if calendar.instanced%} <span class="label label-info label-intext">Has instances</span>{% endif %}</td>
 			<td class="col-events">{{ calendar.events|escape }}</td>
 			<td class="col-description">{{ calendar.description|escape }}</td>
-			<td class="col-actions no-border-left">
-				<p class="pull-right">
-					<nobr><span class="btn popover-hover" data-placement="bottom" data-toggle="popover" title="Setup info" data-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ calendar.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="icon-info-sign"></i></span></nobr>
-					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="icon-edit icon-white"></i> Edit</a></nobr>
-					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="icon-remove icon-white"></i> Delete</a></nobr>
-				</p>
+			<td class="col-actions" style="text-align:right">
+					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ calendar.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>"><i class="fa fa-circle-info"></i></span></nobr>
+					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="fa fa-edit"></i> Edit</a></nobr>
+					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="fa fa-remove"></i> Delete</a></nobr>
 			</td>
 		</tr>
 		{% endfor %}

@@ -51,7 +51,7 @@ class Text extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " error";
+            $groupclass .= " has-error";
         }
 
         if (trim($this->option("class")) !== "") {
@@ -83,18 +83,17 @@ class Text extends \Formal\Element {
             }
 
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
-            $popover .= " data-html=\"true\"";
+            $popover .= " data-bs-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
         }
 
         $sHtml = <<<HTML
-<div class="control-group{$groupclass}">
-	<label class="control-label" for="{$prop}">{$label}</label>
-	<div class="controls">
+    <div class="form-group row mb-2{$groupclass}">
+	<label class="control-label col-sm-2" for="{$prop}">{$label}</label>
+	<div class="col-sm-10">
 		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
 		{$helpblock}
 	</div>
-</div>
+    </div>
 HTML;
 
         return $sHtml . $this->renderWitness();

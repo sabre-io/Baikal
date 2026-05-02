@@ -387,7 +387,7 @@ class Form {
         $sSubmittedFlagName = $this->submitSignatureName();
         if ($this->option("close") === true) {
             $sCloseUrl = $this->option("closeurl");
-            $sCloseButton = '<a class="btn" href="' . $sCloseUrl . '">Close</a>';
+            $sCloseButton = '<a class="btn btn-light" href="' . $sCloseUrl . '">Close</a>';
         } else {
             $sCloseButton = "";
         }
@@ -400,7 +400,7 @@ class Form {
         $sActionUrl = $this->option("action");
 
         $sHtml = <<<HTML
-<form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/form-data">
+<form ction="{$sActionUrl}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="{$sSubmittedFlagName}" value="1" />
     <input type="hidden" name="refreshed" value="0" />
     <input type="hidden" name="CSRF_TOKEN" value="{$csrfToken}" />
@@ -408,7 +408,7 @@ class Form {
         <legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
         {$this->sDisplayMessage}
         {$elements}
-        <div class="form-actions">
+        <div>
             <button type="submit" class="btn btn-primary">Save changes</button>
             {$sCloseButton}
         </div>

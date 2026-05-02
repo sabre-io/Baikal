@@ -1,10 +1,10 @@
 
 /* 350 glyphs, generated on 2012-04-06 23:34:03; C=10; R=35; W=400; H=1400; PREFIX=glyph- */
-.btn-large [class^="glyph-"] {
+.btn-lg [class^="glyph-"] {
   margin-top: 1px;
 }
 
-.btn-small [class^="glyph-"] {
+.btn-sm [class^="glyph-"] {
   margin-top: -1px;
 }
 

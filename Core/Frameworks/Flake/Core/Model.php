@@ -71,7 +71,7 @@ abstract class Model extends \Flake\Core\FLObject {
     }
 
     static function icon() {
-        return "icon-book";
+        return "fa fa-book";
     }
 
     static function mediumicon() {

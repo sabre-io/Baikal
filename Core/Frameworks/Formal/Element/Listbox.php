@@ -30,7 +30,7 @@ namespace Formal\Element;
 class Listbox extends \Formal\Element {
     function render() {
         $disabled = "";
-        $inputclass = "";
+        $inputclass = "form-select";
         $groupclass = "";
         $placeholder = "";
         $onchange = "";
@@ -47,7 +47,7 @@ class Listbox extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " error";
+            $groupclass .= " has-error";
         }
 
         $aOptions = $this->option("options");
@@ -62,7 +62,7 @@ class Listbox extends \Formal\Element {
         if (($aPopover = $this->option("popover")) !== "") {
             $inputclass .= " popover-focus ";
             $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $popover .= " data-bs-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
         }
 
         if ($this->option("refreshonchange") === true) {
@@ -94,14 +94,14 @@ class Listbox extends \Formal\Element {
         unset($aRenderedOptions);
 
         $sHtml = <<<HTML
-	<div class="control-group{$groupclass}">
-		<label class="control-label" for="{$prop}">{$label}</label>
-		<div class="controls">
-			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
-				{$sRenderedOptions}
-			</select>
-			{$helpblock}
-		</div>
+	<div class="form-group row mb-2 {$groupclass}">
+            <label class="control-label col-sm-2" for="{$prop}">{$label}</label>
+            <div class="col-sm-10">
+                <select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
+                    {$sRenderedOptions}
+	        </select>
+            </div>
+	    {$helpblock}
 	</div>
 HTML;
 
