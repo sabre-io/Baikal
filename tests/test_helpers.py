@@ -1,4 +1,7 @@
-import mechanicalsoup, os, sys
+import mechanicalsoup
+import os
+import sys
+from urllib.parse import urljoin
 
 BASE_URL = os.environ.get("BAIKAL_BASE_URL", "http://localhost/html/")
 ADMIN_PASSWORD = "secret123"
@@ -8,7 +11,11 @@ def follow_link_containing(browser: mechanicalsoup.StatefulBrowser, text_substri
     page = browser.get_current_page()
     link = None
     for a in page.find_all("a"):
-        if a and a.get_text(strip=True) and text_substring in a.get_text(strip=True).lower():
+        # Normalize whitespace so that links whose text spans multiple nested
+        # tags (e.g. "Delete <strong><i></i> username</strong>") are matched
+        # reliably by their plain-text content.
+        text = " ".join(a.get_text().split()).lower()
+        if text and text_substring in text:
             link = a
             break
     if link is None:
@@ -50,7 +57,8 @@ def follow_meta_redirect(browser: mechanicalsoup.StatefulBrowser):
     """Navigate to the URL specified in a meta-refresh tag, if present.
 
     If the current page contains a meta-refresh tag, the browser navigates to
-    the target URL. If no such tag is found, this is a no-op.
+    the target URL. If no such tag is found, this is a no-op. Relative URLs
+    are resolved against the current page URL.
     """
     page = browser.get_current_page()
     meta = page.find("meta", attrs={"http-equiv": lambda x: x and x.lower() == "refresh"})
@@ -59,6 +67,7 @@ def follow_meta_redirect(browser: mechanicalsoup.StatefulBrowser):
         if "url=" in content.lower():
             idx = content.lower().index("url=")
             url = content[idx + 4:].strip()
+            url = urljoin(browser.get_url(), url)
             browser.open(url)
 
 def find_and_follow_row_link(browser: mechanicalsoup.StatefulBrowser, row_text: str, link_text: str):

@@ -21,58 +21,107 @@ def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
     assert_installed(browser)
     assert_dashboard(browser)
 
-def create_user(browser: mechanicalsoup.StatefulBrowser, username: str, displayname: str, email: str, password: str):
-    """Navigate to users list, create a new user, and land on the users page."""
+def create_test_user(browser: mechanicalsoup.StatefulBrowser):
+    """Create a standard test user. install_sqlite must have been called first."""
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
     browser.select_form("form")
-    browser["data[username]"] = username
-    browser["data[displayname]"] = displayname
-    browser["data[email]"] = email
-    browser["data[password]"] = password
-    browser["data[passwordconfirm]"] = password
+    browser["data[username]"] = "caluser"
+    browser["data[displayname]"] = "Calendar User"
+    browser["data[email]"] = "caluser@example.com"
+    browser["data[password]"] = "password123"
+    browser["data[passwordconfirm]"] = "password123"
     browser.submit_selected()
 
-def test_calendars_create_edit_delete(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
-
-    # Create a user and navigate to their calendars
-    create_user(browser, "caluser", "Calendar User", "caluser@example.com", "password123")
+def navigate_to_user_calendars(browser: mechanicalsoup.StatefulBrowser):
+    """Navigate to the calendar list for caluser."""
+    follow_link_containing(browser, "users and resources")
     find_and_follow_row_link(browser, "caluser", "calendars")
-    page = browser.get_current_page()
-    assert "calendars" in page.text.lower()
-    assert "caluser" in page.text.lower()
-    # Default calendar should be present
-    assert "default calendar" in page.text.lower()
 
-    # Add a new calendar
+def create_test_calendar(browser: mechanicalsoup.StatefulBrowser):
+    """Create a test calendar for caluser. install_sqlite and create_test_user must have been called first."""
+    navigate_to_user_calendars(browser)
     follow_link_containing(browser, "add calendar")
     browser.select_form("form")
     browser["data[uri]"] = "test-calendar"
     browser["data[displayname]"] = "Test Calendar"
     browser["data[description]"] = "A test calendar"
     browser.submit_selected()
+
+def test_calendar_create(browser: mechanicalsoup.StatefulBrowser):
+    install_sqlite(browser)
+    create_test_user(browser)
+
+    navigate_to_user_calendars(browser)
+    page = browser.get_current_page()
+    assert "calendars" in page.text.lower()
+    assert "caluser" in page.text.lower()
+    assert "default calendar" in page.text.lower()
+
+    follow_link_containing(browser, "add calendar")
+    browser.select_form("form")
+    browser["data[uri]"] = "test-calendar"
+    browser["data[displayname]"] = "Test Calendar"
+    browser["data[description]"] = "A test calendar"
+    browser.submit_selected()
+
     page = browser.get_current_page()
     assert "test calendar" in page.text.lower()
 
-    # Edit the newly created calendar (the form on the page already has the edit action)
+def test_calendar_create_invalid_uri(browser: mechanicalsoup.StatefulBrowser):
+    install_sqlite(browser)
+    create_test_user(browser)
+
+    navigate_to_user_calendars(browser)
+    follow_link_containing(browser, "add calendar")
+    browser.select_form("form")
+    browser["data[uri]"] = "Invalid URI!"
+    browser["data[displayname]"] = "Test Calendar"
+    browser.submit_selected()
+
+    page = browser.get_current_page()
+    assert "validation error" in page.text.lower()
+    assert "is not valid" in page.text.lower()
+
+def test_calendar_create_missing_displayname(browser: mechanicalsoup.StatefulBrowser):
+    install_sqlite(browser)
+    create_test_user(browser)
+
+    navigate_to_user_calendars(browser)
+    follow_link_containing(browser, "add calendar")
+    browser.select_form("form")
+    browser["data[uri]"] = "test-calendar"
+    browser["data[displayname]"] = ""
+    browser.submit_selected()
+
+    page = browser.get_current_page()
+    assert "validation error" in page.text.lower()
+    assert "display name" in page.text.lower()
+    assert "is required" in page.text.lower()
+
+def test_calendar_edit(browser: mechanicalsoup.StatefulBrowser):
+    install_sqlite(browser)
+    create_test_user(browser)
+    create_test_calendar(browser)
+
+    # The edit form is shown right after creation; update the display name
     browser.select_form("form")
     browser["data[displayname]"] = "Test Calendar Updated"
     browser["data[description]"] = "Updated description"
     browser.submit_selected()
+
     page = browser.get_current_page()
     assert "test calendar updated" in page.text.lower()
 
-    # Navigate back to the calendars page for a clean view
-    follow_link_containing(browser, "back to users list")
-    find_and_follow_row_link(browser, "caluser", "calendars")
+def test_calendar_delete(browser: mechanicalsoup.StatefulBrowser):
+    install_sqlite(browser)
+    create_test_user(browser)
+    create_test_calendar(browser)
 
-    # Delete "Test Calendar Updated"
-    find_and_follow_row_link(browser, "test calendar updated", "delete")
-    # The delete confirmation page shows a "Delete Test Calendar Updated" link to confirm
-    follow_link_containing(browser, "delete test calendar updated")
+    navigate_to_user_calendars(browser)
+    find_and_follow_row_link(browser, "test calendar", "delete")
+    follow_link_containing(browser, "delete test calendar")
     follow_meta_redirect(browser)
 
-    # Verify calendar is gone
     page = browser.get_current_page()
-    assert "test calendar updated" not in page.text.lower()
+    assert "test calendar" not in page.text.lower()
