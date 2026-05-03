@@ -84,7 +84,7 @@ if (!$config || !isset($config['system']["configured_version"])) {
 } else {
     if ($config['system']["configured_version"] !== BAIKAL_VERSION) {
         # we have to upgrade Baïkal
-        if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
+        if ($config['system']["auto_upgrade"] == true || \Flake\Util\Tools::GET("upgradeConfirmed")) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
         } else {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\UpgradeConfirmation());
