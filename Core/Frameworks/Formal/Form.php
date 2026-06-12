@@ -400,7 +400,7 @@ class Form {
         $sActionUrl = $this->option("action");
 
         $sHtml = <<<HTML
-<form ction="{$sActionUrl}" method="post" enctype="multipart/form-data">
+<form action="{$sActionUrl}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="{$sSubmittedFlagName}" value="1" />
     <input type="hidden" name="refreshed" value="0" />
     <input type="hidden" name="CSRF_TOKEN" value="{$csrfToken}" />
