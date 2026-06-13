@@ -8,7 +8,7 @@
     "require": {
         "php"           : "^8.2",
         "sabre/dav"     : "~4.7.0",
-        "twig/twig"     : "~3.24.0",
+        "twig/twig"     : "~3.27.1",
         "symfony/yaml"  : "~7.4.8",
         "ext-dom"       : "*",
         "ext-pdo"       : "*",
