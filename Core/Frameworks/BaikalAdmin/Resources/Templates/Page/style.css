@@ -1,9 +1,5 @@
 /* generics */
 
-body {
-	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-}
-
 .table thead th {
 	background-color: #777;
 	color: white;
@@ -50,6 +46,10 @@ p.lead { line-height: 40px;}
 }
 
 @media (max-width: 550px) {
+        .jumbotron {
+            padding-top:7px;
+        }
+    
 	.jumbotron h1 {
 		font-size: 20px;
 		font-weight: bold;

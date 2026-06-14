@@ -30,7 +30,7 @@ namespace Formal;
 abstract class Element {
     protected $aOptions = [
         "class"           => "",
-        "inputclass"      => "input-xlarge",
+        "inputclass"      => "form-control",
         "readonly"        => false,
         "validation"      => "",
         "error"           => false,
