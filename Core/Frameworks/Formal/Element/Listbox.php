@@ -47,7 +47,7 @@ class Listbox extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " has-error";
+            $groupclass .= " is-invalid";
         }
 
         $aOptions = $this->option("options");
