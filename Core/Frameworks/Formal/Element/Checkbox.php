@@ -53,7 +53,7 @@ class Checkbox extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " has-error";
+            $groupclass .= " is-invalid";
         }
 
         if (($sHelp = trim($this->option("help"))) !== "") {
