@@ -95,13 +95,13 @@ class Listbox extends \Formal\Element {
 
         $sHtml = <<<HTML
 	<div class="form-group row mb-2 {$groupclass}">
-            <label class="control-label col-sm-2" for="{$prop}">{$label}</label>
+            <label class="col-form-label col-sm-2" for="{$prop}">{$label}</label>
             <div class="col-sm-10">
                 <select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
                     {$sRenderedOptions}
 	        </select>
+			{$helpblock}
             </div>
-	    {$helpblock}
 	</div>
 HTML;
 
