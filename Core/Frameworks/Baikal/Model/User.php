@@ -132,6 +132,7 @@ class User extends \Flake\Core\Model\Db {
         # Persisted first, as Model users loads this data
         $this->oIdentityPrincipal->set("uri", "principals/" . $this->get("username"));
         $this->oIdentityPrincipal->persist();
+        $this->ensureCalendarProxyPrincipals();
 
         parent::persist();
 
@@ -286,5 +287,26 @@ class User extends \Flake\Core\Model\Db {
         }
 
         return md5($this->get("username") . ':' . $config['system']['auth_realm'] . ':' . $sPassword);
+    }
+
+    private function ensureCalendarProxyPrincipals(): void {
+        $baseUri = 'principals/' . $this->get('username');
+
+        foreach (['calendar-proxy-read', 'calendar-proxy-write'] as $proxy) {
+            $uri = $baseUri . '/' . $proxy;
+
+            $existing = \Baikal\Model\Principal::getBaseRequester()
+                ->addClauseEquals('uri', $uri)
+                ->execute()
+                ->first();
+
+            if ($existing) {
+                continue;
+            }
+
+            $principal = new \Baikal\Model\Principal();
+            $principal->set('uri', $uri);
+            $principal->persist();
+        }
     }
 }
