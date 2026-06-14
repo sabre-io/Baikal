@@ -88,7 +88,7 @@ class Text extends \Formal\Element {
 
         $sHtml = <<<HTML
     <div class="form-group row mb-2{$groupclass}">
-	<label class="control-label col-sm-2" for="{$prop}">{$label}</label>
+	<label class="col-form-label col-sm-2" for="{$prop}">{$label}</label>
 	<div class="col-sm-10">
 		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
 		{$helpblock}
