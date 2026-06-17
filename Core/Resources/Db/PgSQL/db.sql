@@ -37,8 +37,8 @@ CREATE TABLE calendarobjects (
     etag TEXT,
     size INT CHECK (size > 0) NOT NULL,
     componenttype TEXT,
-    firstoccurence INT CHECK (firstoccurence > 0),
-    lastoccurence INT CHECK (lastoccurence > 0),
+    firstoccurence INT,
+    lastoccurence INT,
     uid TEXT
 );
 
