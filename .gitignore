@@ -25,3 +25,4 @@ nbproject
 # Tests
 .php-cs-fixer.cache
 .php_cs.cache
+php_server.log

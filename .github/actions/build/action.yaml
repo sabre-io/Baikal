@@ -12,7 +12,7 @@ runs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php-version }}
-        extensions: mbstring, dom, fileinfo, mysql, pgsql, pdo_pgsql, redis, opcache
+        extensions: mbstring, dom, fileinfo, mysql, pgsql, pdo_pgsql, redis, opcache, imap
         tools: composer
 
     - name: Get composer cache directory
