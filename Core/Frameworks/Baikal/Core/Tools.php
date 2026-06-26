@@ -65,7 +65,7 @@ class Tools {
     }
 
     static function assertBaikalIsOk() {
-        # DB connexion has not been asserted earlier by Flake, to give us a chance to trigger the install tool
+        # DB connection has not been asserted earlier by Flake, to give us a chance to trigger the install tool
         # We assert it right now
         if (!\Flake\Framework::isDBInitialized() && (!defined("BAIKAL_CONTEXT_INSTALL") || BAIKAL_CONTEXT_INSTALL === false)) {
             throw new \Exception("<strong>Fatal error</strong>: no connection to a database is available.");

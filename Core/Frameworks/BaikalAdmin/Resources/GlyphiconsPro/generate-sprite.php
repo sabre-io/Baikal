@@ -456,7 +456,7 @@ CSS;
 CSS;
     }
 
-    $sCss = "\n/* " . count($aSprites) . " glyphs, generated on " . strftime("%Y-%m-%d %H:%M:%S") . "; C=" . $iCols . "; R=" . $iRows . "; W=" . $iPngWidth . "; H=" . $iPngHeight . "; PREFIX=" . $sClassPrefix . " */\n" . $sCss;
+    $sCss = "\n/* " . count($aSprites) . " glyphs, generated on " . (new DateTimeImmutable())->format('Y-m-d H:i:s') . "; C=" . $iCols . "; R=" . $iRows . "; W=" . $iPngWidth . "; H=" . $iPngHeight . "; PREFIX=" . $sClassPrefix . " */\n" . $sCss;
 
     return $sCss;
 }

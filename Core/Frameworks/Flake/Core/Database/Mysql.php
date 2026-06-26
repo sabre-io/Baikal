@@ -32,19 +32,35 @@ class Mysql extends \Flake\Core\Database {
     protected $sDbName = "";
     protected $sUsername = "";
     protected $sPassword = "";
+    protected $sCaCert = "";
 
-    function __construct($sHost, $sDbName, $sUsername, $sPassword) {
+    function __construct($sHost, $sDbName, $sUsername, $sPassword, $sCaCert = "") {
         $this->sHost = $sHost;
         $this->sDbName = $sDbName;
         $this->sUsername = $sUsername;
         $this->sPassword = $sPassword;
+        $this->sCaCert = $sCaCert;
+
+        $options = [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        ];
+
+        if ($this->sCaCert !== "") {
+            // PDO::MYSQL_ATTR_SSL_CA was deprecated in PHP 8.4 in favour of PDO\Mysql::ATTR_SSL_CA.
+            // Use constant() to resolve the right name at runtime without a direct reference to
+            // the deprecated constant, keeping compatibility with PHP 8.2 and 8.3.
+            $sslCaAttr = defined('PDO\Mysql::ATTR_SSL_CA')
+                ? constant('PDO\Mysql::ATTR_SSL_CA')
+                : constant('PDO::MYSQL_ATTR_SSL_CA');
+            $options[$sslCaAttr] = $this->sCaCert;
+        }
 
         $this->oDb = new \PDO(
             'mysql:host=' . $this->sHost . ';dbname=' . $this->sDbName,
             $this->sUsername,
-            $this->sPassword
+            $this->sPassword,
+            $options
         );
-        $this->oDb->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     function tables() {

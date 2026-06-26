@@ -115,7 +115,7 @@ class Server {
      * @return void
      */
     function start() {
-        $this->server->exec();
+        $this->server->start();
     }
 
     /**

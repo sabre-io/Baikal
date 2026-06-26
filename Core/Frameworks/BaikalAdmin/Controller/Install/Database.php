@@ -43,6 +43,7 @@ class Database extends \Flake\Core\Controller {
             $this->oModel->set('mysql_dbname', PROJECT_DB_MYSQL_DBNAME);
             $this->oModel->set('mysql_username', PROJECT_DB_MYSQL_USERNAME);
             $this->oModel->set('mysql_password', PROJECT_DB_MYSQL_PASSWORD);
+            $this->oModel->set('mysql_ca_cert', PROJECT_DB_MYSQL_CA_CERT);
             $this->oModel->set('pgsql_host', PROJECT_DB_PGSQL_HOST);
             $this->oModel->set('pgsql_dbname', PROJECT_DB_PGSQL_DBNAME);
             $this->oModel->set('pgsql_username', PROJECT_DB_PGSQL_USERNAME);
@@ -156,7 +157,7 @@ class Database extends \Flake\Core\Controller {
         } catch (\Exception $e) {
             $oForm->declareError(
                 $oMorpho->element("sqlite_file"),
-                "Baïkal was not able to establish a connexion to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
+                "Baïkal was not able to establish a connection to the SQLite database as configured.<br />SQLite says: " . $e->getMessage() . (string) $e
             );
         }
     }
@@ -170,13 +171,15 @@ class Database extends \Flake\Core\Controller {
         $sDbname = $oMorpho->element("mysql_dbname")->value();
         $sUsername = $oMorpho->element("mysql_username")->value();
         $sPassword = $oMorpho->element("mysql_password")->value();
+        $sCaCert = $oMorpho->element("mysql_ca_cert")->value();
 
         try {
             $oDb = new \Flake\Core\Database\Mysql(
                 $sHost,
                 $sDbname,
                 $sUsername,
-                $sPassword
+                $sPassword,
+                $sCaCert
             );
 
             if (($aMissingTables = \Baikal\Core\Tools::isDBStructurallyComplete($oDb)) !== true) {
@@ -203,11 +206,12 @@ class Database extends \Flake\Core\Controller {
             return true;
         } catch (\Exception $e) {
             $oForm->declareError($oMorpho->element("backend"),
-                "Baïkal was not able to establish a connexion to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
+                "Baïkal was not able to establish a connection to the MySQL database as configured.<br />MySQL says: " . $e->getMessage());
             $oForm->declareError($oMorpho->element("mysql_host"));
             $oForm->declareError($oMorpho->element("mysql_dbname"));
             $oForm->declareError($oMorpho->element("mysql_username"));
             $oForm->declareError($oMorpho->element("mysql_password"));
+            $oForm->declareError($oMorpho->element("mysql_ca_cert"));
         }
     }
 
@@ -254,7 +258,7 @@ class Database extends \Flake\Core\Controller {
         } catch (\Exception $e) {
             $oForm->declareError(
                 $oMorpho->element("backend"),
-                "Baïkal was not able to establish a connexion to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
+                "Baïkal was not able to establish a connection to the PostgreSQL database as configured.<br />PostgreSQL says: " . $e->getMessage()
             );
 
             $oForm->declareError(
@@ -302,6 +306,7 @@ class Database extends \Flake\Core\Controller {
             $oMorpho->remove("mysql_dbname");
             $oMorpho->remove("mysql_username");
             $oMorpho->remove("mysql_password");
+            $oMorpho->remove("mysql_ca_cert");
         }
 
         if ($backend != 'pgsql') {

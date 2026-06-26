@@ -16,7 +16,7 @@ dist: vendor/autoload.php
 		$(BUILD_FILES) \
 		--exclude="*.swp" \
 		$(BUILD_DIR)
-	composer config platform.php 8.1 -d $(BUILD_DIR)
+	composer config platform.php 8.2 -d $(BUILD_DIR)
 	composer install --no-interaction --no-dev -d $(BUILD_DIR)
 	rm $(BUILD_DIR)/composer.*
 	cd build; zip -r baikal-$(VERSION).zip baikal/
