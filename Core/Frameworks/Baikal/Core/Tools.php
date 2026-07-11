@@ -49,6 +49,13 @@ class Tools {
             exit('<strong>Baikal Fatal Error</strong>: None of <strong>PDO::sqlite</strong>, <strong>PDO::mysql</strong> or <strong>PDO::pgsql</strong> are available. One of them at least is required by Baikal.');
         }
 
+        # Asserting XMLReader is available
+        # Without it, the install tool and admin GUI still work, but every CalDAV/CardDAV
+        # request fails deep inside sabre/xml with 'Class "XMLReader" not found'.
+        if (!class_exists('XMLReader')) {
+            exit('<strong>Baikal Fatal Error</strong>: The <strong>XMLReader</strong> class is unavailable. The <strong>xml</strong> PHP extension is required by Baikal.');
+        }
+
         # Assert that the temp folder is writable
         if (!\is_writable(\sys_get_temp_dir())) {
             exit('<strong>Baikal Fatal Error</strong>: The system temp directory is not writable.');
