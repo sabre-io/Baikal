@@ -1,7 +1,7 @@
 {% autoescape false %}
 {% set url = 'https://sabre.io/baikal/' %}
 <header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-circle-info"></i>Dashboard</h1>
+	<h1><i class="fa fa-circle-info me-3"></i>Dashboard</h1>
 </header>
 
 <section id="about">
@@ -11,12 +11,12 @@
 	<div class="row">
 		<div class="col-md-3">
 			<h2>Version</h2>
-			<p>This systems runs Baïkal <span class="badge text-bg-info">{{ BAIKAL_VERSION }}</span><br />
+			<p>This systems runs Baïkal <strong>{{ BAIKAL_VERSION }}</strong><br />
 				<small><a href="{{ url }}" target="_blank">{{ url }}</a></small>
 			</p>
 			<p id="newVersionContainer" style="display: none;">
 				<a class="alert alert-info" href="https://github.com/sabre-io/Baikal/releases/latest" target="_blank">
-					New version available: <span id="newVersion" class="badge text-bg-info">0.0.0</span>
+					New version available: <span id="newVersion" class="badge text-bg-success">0.0.0</span>
 				</a>
 			</p>
 			<script type="text/javascript">
@@ -55,7 +55,7 @@
 				<tbody>
 					<tr>
 						<td>Web admin</td>
-						<td><span class="badge text-bg-success">On</span></p></td>
+						<td><span class="badge text-bg-success">On</span></td>
 					</tr>
 					<tr>
 						<td>CalDAV</td>

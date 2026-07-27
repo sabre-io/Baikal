@@ -47,7 +47,7 @@ class VersionUpgrade extends \Flake\Core\Controller {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
 
-        $sBigIcon = "glyph2x-magic";
+        $sBigIcon = "fa fa-wand-magic-sparkles me-3";
         $sBaikalVersion = BAIKAL_VERSION;
         $sBaikalConfiguredVersion = $config['system']['configured_version'];
 
@@ -80,7 +80,7 @@ HTML;
         }
 
         if ($bSuccess === false) {
-            $sHtml .= "<p>&nbsp;</p><p><span class='label label-important'>Error</span> Baïkal has not been upgraded. See the section 'Errors' for details.</p>";
+            $sHtml .= "<p>&nbsp;</p><p><span class='badge text-bg-danger'>Error</span> Baïkal has not been upgraded. See the section 'Errors' for details.</p>";
         } else {
             $sHtml .= "<p>&nbsp;</p><p>Baïkal has been successfully upgraded. You may now <a class='btn btn-success' href='" . PROJECT_URI . "admin/'>Access the Baïkal admin</a></p>";
         }

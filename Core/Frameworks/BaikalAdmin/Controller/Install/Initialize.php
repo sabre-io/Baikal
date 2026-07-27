@@ -96,7 +96,6 @@ class Initialize extends \Flake\Core\Controller {
     }
 
     function render() {
-        $sBigIcon = "glyph2x-magic";
         $sBaikalVersion = BAIKAL_VERSION;
 
         $oView = new \BaikalAdmin\View\Install\Initialize();

@@ -39,7 +39,6 @@ class Listbox extends \Formal\Element {
         $label = $this->option("label");
         $prop = $this->option("prop");
         $helpblock = "";
-        $popover = "";
 
         if ($this->option("readonly") === true) {
             $inputclass .= " disabled";
@@ -56,13 +55,11 @@ class Listbox extends \Formal\Element {
         }
 
         if (($sHelp = trim($this->option("help"))) !== "") {
-            $helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+            $helpblock .= "<div class=\"form-text\">" . $sHelp . "</div>";
         }
 
         if (($aPopover = $this->option("popover")) !== "") {
-            $inputclass .= " popover-focus ";
-            $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-bs-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $helpblock .= "<div class=\"form-text\">" . $aPopover["content"] . "</div>";
         }
 
         if ($this->option("refreshonchange") === true) {
@@ -94,14 +91,14 @@ class Listbox extends \Formal\Element {
         unset($aRenderedOptions);
 
         $sHtml = <<<HTML
-	<div class="form-group row mb-2 {$groupclass}">
-            <label class="col-form-label col-sm-2" for="{$prop}">{$label}</label>
-            <div class="col-sm-10">
-                <select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$popover}{$onchange}>
-                    {$sRenderedOptions}
-	        </select>
+	<div class="row mb-3 {$groupclass}">
+		<label class="col-sm-4 col-form-label" for="{$prop}">{$label}</label>
+		<div class="col-sm-8">
+			<select class="{$inputclass}" id="{$prop}" name="data[{$prop}]"{$disabled}{$onchange}>
+				{$sRenderedOptions}
+			</select>
 			{$helpblock}
-            </div>
+		</div>
 	</div>
 HTML;
 

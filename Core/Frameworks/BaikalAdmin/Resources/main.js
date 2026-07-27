@@ -1,20 +1,5 @@
 $(document).ready(function() {
-    $("[rel=tooltip]").tooltip();
     $(".popover-hover").popover({
-        html: true
-    });
-    $(".popover-focus").popover({
-        trigger: 'focus',
-        html: true
-    });
-    $(".popover-focus-top").popover({
-        trigger: 'focus',
-        placement: 'top',
-        html: true
-    });
-    $(".popover-focus-bottom").popover({
-        trigger: 'focus',
-        placement: 'bottom',
         html: true
     });
 });

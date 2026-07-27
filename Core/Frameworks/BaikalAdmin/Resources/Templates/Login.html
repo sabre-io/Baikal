@@ -1,27 +1,25 @@
 {% autoescape false %}
 <header class="jumbotron subhead" id="overview">
-	<h1><i class="glyph2x-lock"></i>Authentication</h1>
+	<h1><i class="fa fa-lock me-3"></i>Authentication</h1>
 	<p class="lead">Please authenticate to access Baïkal Web Admin.</p>
 </header>
 
 {{ message }}
 
-<form class="form-horizontal" action="{{ actionurl }}" method="post" enctype="multipart/form-data">
+<form action="{{ actionurl }}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="{{ submittedflagname }}" value="1" />
 	<fieldset>
-		<p>
-			<label for="login">Login</label>
-			<input type="text" id="login" name="login" value="{{ login }}">
-		</p>
-
-		<p>
-			<label for="password">Password</label>
-			<input type="password" id="password" name="password" value="{{ password }}">
-		</p>
-		
-		<div>
-			<button type="submit" class="btn btn-primary">Authenticate</button>
+		<div class="mb-3">
+			<label class="form-label" for="login">Login</label>
+			<input type="text" class="form-control" id="login" name="login" value="{{ login }}">
 		</div>
+
+		<div class="mb-3">
+			<label class="form-label" for="password">Password</label>
+			<input type="password" class="form-control" id="password" name="password" value="{{ password }}">
+		</div>
+
+		<button type="submit" class="btn btn-primary">Authenticate</button>
 	</fieldset>
 </form>
 {% endautoescape %}

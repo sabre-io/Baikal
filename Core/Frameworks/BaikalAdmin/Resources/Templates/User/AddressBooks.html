@@ -1,15 +1,15 @@
 {% autoescape false %}
 <div class="container">
 <div class="jumbotron" id="overview">
-	<h1><i class="{{ titleicon }}"></i>Address Books</h1>
-	<p class="lead">Manage Address Books for<i class="{{ modelicon }}"></i><strong>{{ modellabel }}</strong>.</p>
+	<h1><i class="{{ titleicon }} me-3"></i>Address Books</h1>
+	<p class="lead">Manage Address Books for <i class="{{ modelicon }} mx-1"></i> <strong>{{ modellabel }}</strong>.</p>
         <div class="row justify-content-md-center">
             <p class="col"><a href="{{ linkback }}" class="btn btn-light"><i class="fa fa-chevron-left"></i> Back to users list</a></p>
             <p class="col text-end"><a class="btn btn-secondary" href="{{ linknew }}"><i class="{{ addressbookicon }}"></i> + Add address book</a></p>
         </div>
 </div>
 
-<table class="table table-striped addressbooks">
+<table class="table addressbooks">
 	<thead>
 		<tr>
 			<th>Display name</th>
@@ -24,8 +24,8 @@
 			<td class="col-displayname"><i class="{{ addressbook.icon }}"></i> {{ addressbook.label|escape }}</td>
 			<td class="col-contacts">{{ addressbook.contacts|escape }}</td>
 			<td class="col-description">{{ addressbook.description|escape }}</td>
-			<td class="col-actions" style="text-align:right">
-					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ addressbook.davuri }}<i class='icon-file'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='icon-file'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
+			<td class="col-actions text-end">
+					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ addressbook.davuri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ addressbook.linkedit }}"><i class="fa fa-edit"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ addressbook.linkdelete }}"><i class="fa fa-remove"></i> Delete</a></nobr>
 			</td>

@@ -48,11 +48,11 @@ class AddressBook extends \Flake\Core\Model\Db {
     }
 
     static function mediumicon() {
-        return "glyph-adress-book";
+        return "fa fa-address-book";
     }
 
     static function bigicon() {
-        return "glyph2x-adress-book";
+        return "fa fa-address-book";
     }
 
     function getContactsBaseRequester() {
