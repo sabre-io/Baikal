@@ -1,10 +1,6 @@
 parameters:
   level: 0
   reportUnmatchedIgnoredErrors: false
-  excludePaths:
-    - Core/Frameworks/BaikalAdmin/Resources/GlyphiconsPro/generate-sprite.php
-    - Core/Resources/Web/BaikalAdmin/GlyphiconsPro/generate-sprite.php (?)
-    - html/res/core/BaikalAdmin/GlyphiconsPro/generate-sprite.php (?)
   ignoreErrors:
     -
       message: '#Instantiated class Flake\\Core\\Exception not found.#'
