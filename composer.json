@@ -11,7 +11,7 @@
         "twig/twig"               : "~3.27.1",
         "symfony/yaml"            : "~7.4.8",
         "twbs/bootstrap"          : "~5.3.8",
-        "fortawesome/font-awesome": "~7.2.0",
+        "fortawesome/font-awesome": "~7.3.1",
         "ext-dom"                 : "*",
         "ext-pdo"                 : "*",
         "ext-zlib"                : "*"
