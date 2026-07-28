@@ -69,6 +69,14 @@ $server = new \Baikal\Core\Server(
     $config['system']["card_enabled"],
     $config['system']["dav_auth_type"],
     $config['system']["auth_realm"],
+    array($config['system']["ldap_url"],
+          $config['system']["ldap_base"],
+          $config['system']["ldap_admin"],
+          $config['system']["ldap_pass"],
+          $config['system']["ldap_user_filter"],
+          $config['system']["ldap_group_filter"],
+          $config['system']["ldap_group_attribute"],
+          $config['system']["ldap_group_name"]),
     $GLOBALS['DB']->getPDO(),
     PROJECT_BASEURI . 'card.php/'
 );

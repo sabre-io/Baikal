@@ -43,6 +43,14 @@ class Standard extends \Baikal\Model\Config {
         // could be set to different value when migrating from legacy config
         "auth_realm"            => "BaikalDAV",
         "base_uri"              => "",
+        "ldap_url"              => "ldaps://server.net/",
+        "ldap_base"             => "dc=base",
+        "ldap_admin"            => "",
+        "ldap_pass"             => "",
+        "ldap_user_filter"      => "(uid=%u)",
+        "ldap_group_filter"     => "(cn=%g)",
+        "ldap_group_attribute"  => "memberUid",
+        "ldap_group_name"       => "",
     ];
 
     function __construct() {
@@ -79,8 +87,54 @@ class Standard extends \Baikal\Model\Config {
         $oMorpho->add(new \Formal\Element\Listbox([
             "prop"    => "dav_auth_type",
             "label"   => "WebDAV authentication type",
-            "options" => ["Digest", "Basic", "Apache"],
+            "options" => ["Digest", "Basic", "Apache", "LDAP"],
+            "refreshonchange" => true,
         ]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_url",
+            "label"   => "LDAP server URL",
+            "help"    => "e.g. ldaps://server.net/, ldap://host/",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_base",
+            "label"   => "LDAP base DN",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_admin",
+            "label"   => "LDAP admin DN",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_pass",
+            "label"   => "LDAP admin password",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_user_filter",
+            "label"   => "LDAP user filter",
+            "help"    => "e.g. (&(objectClass=posixAccount)(uid=%u))",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_group_filter",
+            "label"   => "LDAP group filter",
+            "help"    => "e.g. (&(objectClass=posixGroup)(cn=%g))",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_group_attribute",
+            "label"   => "LDAP group membership attribute",
+            "help"    => "e.g. memberUid",
+	]));
+
+        $oMorpho->add(new \Formal\Element\Text([
+            "prop"    => "ldap_group_name",
+            "label"   => "LDAP group name",
+            "help"    => "e.g. users",
+	]));
 
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "admin_passwordhash",
@@ -106,6 +160,16 @@ class Standard extends \Baikal\Model\Config {
             $sNotice = "-- Leave empty to keep current password --";
             $oMorpho->element("admin_passwordhash")->setOption("placeholder", $sNotice);
             $oMorpho->element("admin_passwordhash_confirm")->setOption("placeholder", $sNotice);
+        }
+
+        if (!isset($config['system']["ldap_admin"]) || (trim($config['system']["ldap_admin"]) === "")) {
+            $sNotice = "-- Leave empty if not used --";
+            $oMorpho->element("ldap_admin")->setOption("placeholder", $sNotice);
+        }
+
+        if (!isset($config['system']["ldap_pass"]) || (trim($config['system']["ldap_pass"]) === "")) {
+            $sNotice = "-- Leave empty if not used --";
+            $oMorpho->element("ldap_pass")->setOption("placeholder", $sNotice);
         }
 
         return $oMorpho;
