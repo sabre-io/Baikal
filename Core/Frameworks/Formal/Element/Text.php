@@ -43,7 +43,6 @@ class Text extends \Formal\Element {
         $prop = $this->option("prop");
         $placeholder = "";
         $helpblock = "";
-        $popover = "";
 
         if ($this->option("readonly") === true) {
             $inputclass .= " disabled";
@@ -51,7 +50,7 @@ class Text extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " error";
+            $groupclass .= " is-invalid";
         }
 
         if (trim($this->option("class")) !== "") {
@@ -71,30 +70,21 @@ class Text extends \Formal\Element {
         $sInputType = $this->inputtype();
 
         if (($sHelp = trim($this->option("help"))) !== "") {
-            $helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+            $helpblock .= "<div class=\"form-text\">" . $sHelp . "</div>";
         }
 
         if (($aPopover = $this->option("popover")) !== "") {
-            if (array_key_exists("position", $aPopover)) {
-                $sPosition = $aPopover["position"];
-                $inputclass .= " popover-focus-" . $sPosition;
-            } else {
-                $inputclass .= " popover-focus ";
-            }
-
-            $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
-            $popover .= " data-html=\"true\"";
+            $helpblock .= "<div class=\"form-text\">" . $aPopover["content"] . "</div>";
         }
 
         $sHtml = <<<HTML
-<div class="control-group{$groupclass}">
-	<label class="control-label" for="{$prop}">{$label}</label>
-	<div class="controls">
-		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}{$popover}/>
+    <div class="row mb-3{$groupclass}">
+	<label class="col-sm-4 col-form-label" for="{$prop}">{$label}</label>
+	<div class="col-sm-8">
+		<input type="{$sInputType}" class="{$inputclass}" id="{$prop}" name="data[{$prop}]" value="{$clientvalue}"{$disabled}{$placeholder}/>
 		{$helpblock}
 	</div>
-</div>
+    </div>
 HTML;
 
         return $sHtml . $this->renderWitness();

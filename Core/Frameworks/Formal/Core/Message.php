@@ -37,7 +37,7 @@ class Message {
         }
 
         $sHtml = <<<HTML
-<div id="message" class="alert alert-block alert-error">
+<div id="message" class="alert alert-danger">
 	{$sTitle}
 	{$sMessage}
 </div>
@@ -48,17 +48,19 @@ HTML;
 
     static function notice($sMessage, $sTitle = "", $bClose = true) {
         $sClose = "";
+        $sDismissible = "";
 
         if ($sTitle !== "") {
             $sTitle = '<h3 class="alert-heading">' . $sTitle . '</h3>';
         }
 
         if ($bClose === true) {
-            $sClose = '<a class="close" data-dismiss="alert" href="#">&times;</a>';
+            $sClose = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            $sDismissible = " alert-dismissible";
         }
 
         $sHtml = <<<HTML
-<div id="message" class="alert alert-info">
+<div id="message" class="alert alert-info{$sDismissible}">
 	{$sClose}
 	{$sTitle}
 	{$sMessage}
@@ -70,12 +72,11 @@ HTML;
 
     static function warningConfirmMessage($sHeader, $sDescription, $sActionUrl, $sActionLabel, $sCancelUrl, $sCancelLabel = "Cancel") {
         $sHtml = <<<HTML
-<div id="message" class="alert alert-block alert-error">
-	<!--a class="close" data-dismiss="alert" href="#">&times;</a-->
+<div id="message" class="alert alert-danger">
 	<h3 class="alert-heading">{$sHeader}</h3>
 	{$sDescription}
 	<p>
-		<a class="btn btn-danger" href="{$sActionUrl}">{$sActionLabel}</a> <a class="btn" href="{$sCancelUrl}">Cancel</a>
+		<a class="btn btn-danger" href="{$sActionUrl}">{$sActionLabel}</a> <a class="btn btn-light" href="{$sCancelUrl}">Cancel</a>
 	</p>
 </div>
 HTML;

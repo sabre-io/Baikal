@@ -63,7 +63,6 @@ class Database extends \Baikal\Model\Config {
             "prop"       => "sqlite_file",
             "label"      => "SQLite file path",
             "validation" => "required",
-            "inputclass" => "input-xxlarge",
             "help"       => "The absolute server path to the SQLite file",
         ]));
 

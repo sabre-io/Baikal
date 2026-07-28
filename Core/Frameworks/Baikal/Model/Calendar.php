@@ -75,15 +75,15 @@ class Calendar extends \Flake\Core\Model\Db {
     }
 
     static function icon() {
-        return "icon-calendar";
+        return "fa fa-calendar";
     }
 
     static function mediumicon() {
-        return "glyph-calendar";
+        return "fa fa-calendar";
     }
 
     static function bigicon() {
-        return "glyph2x-calendar";
+        return "fa fa-calendar";
     }
 
     function getEventsBaseRequester() {

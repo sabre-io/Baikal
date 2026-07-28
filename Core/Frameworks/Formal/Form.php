@@ -108,10 +108,10 @@ class Form {
         # Displayed form title is generated depending on modelInstance floatingness
 
         if ($this->floatingModelInstance()) {
-            $this->sDisplayTitle = "Creating new<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->humanName() . "</strong>";
+            $this->sDisplayTitle = "Creating new <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->humanName() . "</strong>";
         } else {
             # This is changed if form is persisted, after persistance, to reflect possible change in model instance label
-            $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+            $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->label() . "</strong>";
         }
 
         return $this;
@@ -226,7 +226,7 @@ class Form {
             $this->modelInstance()->persist();
             if ($bWasFloating === false) {
                 # Title is generated now, as submitted data might have changed the model instance label
-                $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . "<i class=" . $this->modelInstance()->mediumicon() . "></i><strong>" . $this->modelInstance()->label() . "</strong>";
+                $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->label() . "</strong>";
             }
             $this->bPersisted = true;
         } else {
@@ -387,7 +387,7 @@ class Form {
         $sSubmittedFlagName = $this->submitSignatureName();
         if ($this->option("close") === true) {
             $sCloseUrl = $this->option("closeurl");
-            $sCloseButton = '<a class="btn" href="' . $sCloseUrl . '">Close</a>';
+            $sCloseButton = '<a class="btn btn-light" href="' . $sCloseUrl . '">Close</a>';
         } else {
             $sCloseButton = "";
         }
@@ -400,17 +400,19 @@ class Form {
         $sActionUrl = $this->option("action");
 
         $sHtml = <<<HTML
-<form class="form-horizontal" action="{$sActionUrl}" method="post" enctype="multipart/form-data">
+<form action="{$sActionUrl}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="{$sSubmittedFlagName}" value="1" />
     <input type="hidden" name="refreshed" value="0" />
     <input type="hidden" name="CSRF_TOKEN" value="{$csrfToken}" />
     <fieldset>
-        <legend style="line-height: 40px;">{$this->sDisplayTitle}</legend>
+        <legend class="border-bottom pb-2 mb-4">{$this->sDisplayTitle}</legend>
         {$this->sDisplayMessage}
         {$elements}
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            {$sCloseButton}
+        <div class="row">
+            <div class="col-sm-8 offset-sm-4">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                {$sCloseButton}
+            </div>
         </div>
     </fieldset>
 </form>

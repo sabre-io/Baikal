@@ -75,15 +75,15 @@ abstract class Config extends \Flake\Core\Model\NoDb {
     }
 
     static function icon() {
-        return "icon-cog";
+        return "fa fa-cog";
     }
 
     static function mediumicon() {
-        return "glyph-cogwheel";
+        return "fa fa-cog";
     }
 
     static function bigicon() {
-        return "glyph2x-cogwheel";
+        return "fa fa-cog";
     }
 
     function floating() {

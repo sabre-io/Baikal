@@ -267,15 +267,15 @@ class User extends \Flake\Core\Model\Db {
     }
 
     static function icon() {
-        return "icon-user";
+        return "fa fa-user";
     }
 
     static function mediumicon() {
-        return "glyph-user";
+        return "fa fa-user";
     }
 
     static function bigicon() {
-        return "glyph2x-user";
+        return "fa fa-user";
     }
 
     function getPasswordHashForPassword($sPassword) {

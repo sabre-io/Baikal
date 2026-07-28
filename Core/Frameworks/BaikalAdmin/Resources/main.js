@@ -1,16 +1,10 @@
 $(document).ready(function() {
-    $("[rel=tooltip]").tooltip();
-    $(".popover-hover").popover();
-    $(".popover-focus").popover({
-        trigger: 'focus'
+    $(".popover-hover").popover({
+        html: true
     });
-    $(".popover-focus-top").popover({
-        trigger: 'focus',
-        placement: 'top'
-    });
-    $(".popover-focus-bottom").popover({
-        trigger: 'focus',
-        placement: 'bottom'
+
+    $(document).on("click", ".copy-to-clipboard", function() {
+        copyToClipboard(this);
     });
 });
 

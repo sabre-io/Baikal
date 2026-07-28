@@ -44,15 +44,15 @@ class AddressBook extends \Flake\Core\Model\Db {
     }
 
     static function icon() {
-        return "icon-book";
+        return "fa fa-book";
     }
 
     static function mediumicon() {
-        return "glyph-adress-book";
+        return "fa fa-address-book";
     }
 
     static function bigicon() {
-        return "glyph2x-adress-book";
+        return "fa fa-address-book";
     }
 
     function getContactsBaseRequester() {

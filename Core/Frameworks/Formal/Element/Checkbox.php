@@ -39,7 +39,6 @@ class Checkbox extends \Formal\Element {
         $groupclass = "";
         $onchange = "";
         $helpblock = "";
-        $popover = "";
 
         $value = $this->value();
 
@@ -53,17 +52,15 @@ class Checkbox extends \Formal\Element {
         }
 
         if ($this->option("error") === true) {
-            $groupclass .= " error";
+            $groupclass .= " is-invalid";
         }
 
         if (($sHelp = trim($this->option("help"))) !== "") {
-            $helpblock = "<p class=\"help-block\">" . $sHelp . "</p>";
+            $helpblock .= "<div class=\"form-text\">" . $sHelp . "</div>";
         }
 
         if (($aPopover = $this->option("popover")) !== "") {
-            $inputclass .= " popover-hover ";
-            $popover = " title=\"" . htmlspecialchars($aPopover["title"]) . "\" ";
-            $popover .= " data-content=\"" . htmlspecialchars($aPopover["content"]) . "\" ";
+            $helpblock .= "<div class=\"form-text\">" . $aPopover["content"] . "</div>";
         }
 
         if ($this->option("refreshonchange") === true) {
@@ -71,10 +68,12 @@ class Checkbox extends \Formal\Element {
         }
 
         $sHtml = <<<HTML
-<div class="control-group{$groupclass}">
-	<label class="control-label" for="{$prop}">{$label}</label>
-	<div class="controls">
-		<input type="checkbox" class="input-xlarge{$inputclass}" id="{$prop}" name="data[{$prop}]" value="1"{$checked}{$disabled}{$popover}{$onchange}/>
+<div class="row mb-3{$groupclass}">
+	<label class="col-sm-4 col-form-label" for="{$prop}">{$label}</label>
+	<div class="col-sm-8">
+		<div class="form-check pt-2">
+			<input type="checkbox" class="form-check-input{$inputclass}" id="{$prop}" name="data[{$prop}]" value="1"{$checked}{$disabled}{$onchange}/>
+		</div>
 		{$helpblock}
 	</div>
 </div>

@@ -71,15 +71,15 @@ abstract class Model extends \Flake\Core\FLObject {
     }
 
     static function icon() {
-        return "icon-book";
+        return "fa fa-book";
     }
 
     static function mediumicon() {
-        return "glyph-book";
+        return "fa fa-book";
     }
 
     static function bigicon() {
-        return "glyph2x-book";
+        return "fa fa-book";
     }
 
     static function humanName() {
