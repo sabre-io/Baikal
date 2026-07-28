@@ -16,7 +16,7 @@
 			{{ user.displayname|escape }} <a href="{{ user.mailtouri|escape }}">&lt;{{ user.email|escape }}&gt;</a>
 		</td>
 		<td class="col-actions text-end">
-		  <nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ davUri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
+		  <nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard'>{{ davUri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>" data-html="true"><i class="fa fa-circle-info"></i></span></nobr>
 			<nobr><a class="btn btn-light" href="{{ user.linkcalendars }}"><i class="{{ calendaricon }}"></i> Calendars</a></nobr>
 			<nobr><a class="btn btn-light" href="{{ user.linkaddressbooks }}"><i class="fa fa-book"></i> Address Books</a></nobr>
 			<nobr><a class="btn btn-primary" href="{{ user.linkedit }}"><i class="fa fa-edit"></i>  Edit</a></nobr>

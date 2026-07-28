@@ -2,6 +2,10 @@ $(document).ready(function() {
     $(".popover-hover").popover({
         html: true
     });
+
+    $(document).on("click", ".copy-to-clipboard", function() {
+        copyToClipboard(this);
+    });
 });
 
 function copyToClipboard(el) {

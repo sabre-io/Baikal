@@ -25,7 +25,7 @@
 			<td class="col-events">{{ calendar.events|escape }}</td>
 			<td class="col-description">{{ calendar.description|escape }}</td>
 			<td class="col-actions text-end">
-					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ calendar.davuri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard' onclick='copyToClipboard(this);'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>"><i class="fa fa-circle-info"></i></span></nobr>
+					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard'>{{ calendar.davuri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>"><i class="fa fa-circle-info"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="fa fa-edit"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="fa fa-remove"></i> Delete</a></nobr>
 			</td>
