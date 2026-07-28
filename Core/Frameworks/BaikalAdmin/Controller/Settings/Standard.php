@@ -77,7 +77,7 @@ class Standard extends \Flake\Core\Controller {
             $bLDAP = $config['system']['dav_auth_type'] === "LDAP" ?? false;
         }
 
-	if ($bLDAP !== true) {
+        if ($bLDAP !== true) {
             $oMorpho->remove("ldap_url");
             $oMorpho->remove("ldap_base");
             $oMorpho->remove("ldap_admin");

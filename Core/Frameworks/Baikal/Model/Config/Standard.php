@@ -95,46 +95,46 @@ class Standard extends \Baikal\Model\Config {
             "prop"    => "ldap_url",
             "label"   => "LDAP server URL",
             "help"    => "e.g. ldaps://server.net/, ldap://host/",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_base",
             "label"   => "LDAP base DN",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_admin",
             "label"   => "LDAP admin DN",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_pass",
             "label"   => "LDAP admin password",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_user_filter",
             "label"   => "LDAP user filter",
             "help"    => "e.g. (&(objectClass=posixAccount)(uid=%u))",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_group_filter",
             "label"   => "LDAP group filter",
             "help"    => "e.g. (&(objectClass=posixGroup)(cn=%g))",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_group_attribute",
             "label"   => "LDAP group membership attribute",
             "help"    => "e.g. memberUid",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Text([
             "prop"    => "ldap_group_name",
             "label"   => "LDAP group name",
             "help"    => "e.g. users",
-	]));
+        ]));
 
         $oMorpho->add(new \Formal\Element\Password([
             "prop"  => "admin_passwordhash",

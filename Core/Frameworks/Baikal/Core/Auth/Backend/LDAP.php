@@ -9,66 +9,65 @@ namespace Baikal\Core\Auth\Backend;
  * @author Michel Stam
  * @license http://sabre.io/license/ Modified BSD License
  */
-class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
-{
+class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic {
     /**
-     * LDAP server url in the form ldap(s)://host:port
+     * LDAP server url in the form ldap(s)://host:port.
      *
      * @var string
      */
     protected $url;
 
     /**
-     * LDAP base DN
+     * LDAP base DN.
      *
      * @var string
      */
     protected $base;
 
     /**
-     * LDAP admin DN (may be empty)
+     * LDAP admin DN (may be empty).
      *
      * @var string
      */
     protected $admin_dn;
 
     /**
-     * LDAP admin password (may be empty)
+     * LDAP admin password (may be empty).
      *
      * @var string
      */
     protected $admin_password;
 
     /**
-     * LDAP attribute (user account; %u for username)
+     * LDAP attribute (user account; %u for username).
      *
      * @var string
      */
     protected $user_filter;
 
     /**
-     * LDAP filter (groups)
+     * LDAP filter (groups).
      *
      * @var string
      */
     protected $group_filter;
 
     /**
-     * LDAP attribute (groups)
+     * LDAP attribute (groups).
      *
      * @var string
      */
     protected $group_attr;
 
     /**
-     * Group name (required group membership)
+     * Group name (required group membership).
      *
      * @var string
      */
     protected $group;
 
     /**
-     * Creates the backend object. URL format: ldap(s)://host[:port]/
+     * Creates the backend object. URL format: ldap(s)://host[:port]/.
      *
      * @param string $url
      * @param string $base
@@ -79,8 +78,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      * @param string $grp_attr
      * @param string $group
      */
-    public function __construct($url, $base, $adm_dn, $adm_pass, $usr_filter, $grp_filter, $grp_attr, $grp)
-    {
+    public function __construct($url, $base, $adm_dn, $adm_pass, $usr_filter, $grp_filter, $grp_attr, $grp) {
         $this->url = $url;
         $this->base = $base;
         $this->admin_dn = $adm_dn;
@@ -92,19 +90,18 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
     }
 
     /**
-     * Do an LDAP search and return the DN and attributes
+     * Do an LDAP search and return the DN and attributes.
      *
      * @param string $handle
      * @param string $filt
      *
      * @return array
      */
-    private function do_search($handle, $filt)
-    {
-        $success = FALSE;
-        $answer = array( );
+    private function do_search($handle, $filt) {
+        $success = false;
+        $answer = [];
 
-        $res = ldap_search($handle, $this->base, $filt, array($this->group_attr));
+        $res = ldap_search($handle, $this->base, $filt, [$this->group_attr]);
         $success = $res && (ldap_count_entries($handle, $res) > 0);
         if ($success) {
             $entry = ldap_first_entry($handle, $res);
@@ -114,13 +111,13 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
                 unset($list[$this->group_attr]['count']);
                 $answer[] = $list[$this->group_attr];
             } else {
-                $answer[] = array( );
+                $answer[] = [];
             }
 
             ldap_free_result($res);
         }
 
-        return $success ? $answer : FALSE;
+        return $success ? $answer : false;
     }
 
     /**
@@ -131,14 +128,13 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
      *
      * @return bool
      */
-    protected function validateUserPass($username, $password)
-    {
-        $user_dn = FALSE;
-        $res = FALSE;
-        $group_dn = FALSE;
-        $success = FALSE;
-        $user_memberships = FALSE;
-        $group_members = FALSE;
+    protected function validateUserPass($username, $password) {
+        $user_dn = false;
+        $res = false;
+        $group_dn = false;
+        $success = false;
+        $user_memberships = false;
+        $group_members = false;
 
         try {
             $handle = ldap_connect($this->url);
@@ -150,7 +146,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
             if ($handle) {
                 $filter = str_replace('%u', $username, $this->user_filter);
                 $res = $this->do_search($handle, $filter);
-		$success = !empty($res);
+                $success = !empty($res);
             }
 
             if ($success) {
@@ -173,7 +169,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
                 if ($success) {
                     $filter = str_replace('%g', $this->group, $this->group_filter);
                     $res = $this->do_search($handle, $filter);
-		    $success = !empty($res);
+                    $success = !empty($res);
                 }
 
                 if ($success) {
@@ -183,16 +179,16 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
 
                 // AD style groups
                 if ($success && !empty($user_memberships)) {
-                    $success = (array_search($group_dn, $user_memberships) !== FALSE);
+                    $success = (array_search($group_dn, $user_memberships) !== false);
                 }
 
                 // POSIX style groups
                 if ($success && !empty($group_members)) {
-                    $success = (array_search($username, $group_members) !== FALSE);
+                    $success = (array_search($username, $group_members) !== false);
 
                     // Could also be a DN, not a group name
                     if (!$success) {
-                        $success = (array_search($group_dn, $group_members) !== FALSE);
+                        $success = (array_search($group_dn, $group_members) !== false);
                     }
                 }
             }
@@ -202,7 +198,7 @@ class LDAP extends \Sabre\DAV\Auth\Backend\AbstractBasic
             }
         } catch (\ErrorException $e) {
             error_log($e->getMessage());
-            $success = FALSE;
+            $success = false;
         }
 
         return $success;

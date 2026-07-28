@@ -27,10 +27,7 @@
 
 namespace Baikal\Core;
 
-use PDO;
-use Symfony\Component\Yaml\Yaml;
-
-/**
+/*
  * Baikal Server automatic user creation plugin.
  *
  * @copyright Copyright (C) Michel Stam <michel@reverze.net>
@@ -39,32 +36,26 @@ use Symfony\Component\Yaml\Yaml;
 
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
-use Sabre\HTTP\Request;
 
-class AutoUser extends ServerPlugin
-{
+class AutoUser extends ServerPlugin {
     private $authPlugin;
     private $server;
 
-    function __construct($authPlugin)
-    {
+    function __construct($authPlugin) {
         $this->authPlugin = $authPlugin;
     }
 
-    public function initialize(Server $server)
-    {
+    public function initialize(Server $server) {
         $this->server = $server;
         $server->on('beforeMethod:*', [$this, 'beforeMethod'], 11);
     }
 
-    function getPluginName()
-    {
+    function getPluginName() {
         return 'autouser';
     }
 
-    public function beforeMethod(\Sabre\HTTP\Request $request)
-    {
-	$principal = $this->authPlugin->getCurrentPrincipal();
+    public function beforeMethod(\Sabre\HTTP\Request $request) {
+        $principal = $this->authPlugin->getCurrentPrincipal();
         if ($principal === null) {
             return;
         }
@@ -79,12 +70,10 @@ class AutoUser extends ServerPlugin
         $oUser->persist();
     }
 
-    public function getPluginInfo()
-    {
+    public function getPluginInfo() {
         return [
             'name' => $this->getPluginName(),
-            'description' => 'Automatically creates users'
+            'description' => 'Automatically creates users',
         ];
     }
-
 }

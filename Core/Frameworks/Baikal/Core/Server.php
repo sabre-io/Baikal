@@ -68,56 +68,56 @@ class Server {
     protected $authRealm;
 
     /**
-     * LDAP connection URL
+     * LDAP connection URL.
      *
      * @var string
      */
     protected $ldap_url;
 
     /**
-     * LDAP admin
+     * LDAP admin.
      *
      * @var string
      */
     protected $ldap_admin;
 
     /**
-     * LDAP password
+     * LDAP password.
      *
      * @var string
      */
     protected $ldap_pass;
 
     /**
-     * LDAP base
+     * LDAP base.
      *
      * @var string
      */
     protected $ldap_base;
 
     /**
-     * LDAP user filter
+     * LDAP user filter.
      *
      * @var string
      */
     protected $ldap_user_filter;
 
     /**
-     * LDAP group filter
+     * LDAP group filter.
      *
      * @var string
      */
     protected $ldap_group_filter;
 
     /**
-     * LDAP group attribute
+     * LDAP group attribute.
      *
      * @var string
      */
     protected $ldap_group_attribute;
 
     /**
-     * LDAP group name
+     * LDAP group name.
      *
      * @var string
      */
@@ -154,7 +154,7 @@ class Server {
      * @param \PDO $pdo
      * @param string $baseUri
      */
-    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, Array $ldap, \PDO $pdo, $baseUri) {
+    function __construct($enableCalDAV, $enableCardDAV, $authType, $authRealm, array $ldap, \PDO $pdo, $baseUri) {
         $this->enableCalDAV = $enableCalDAV;
         $this->enableCardDAV = $enableCardDAV;
         $this->authType = $authType;
@@ -200,13 +200,13 @@ class Server {
             $authBackend = new \Sabre\DAV\Auth\Backend\Apache();
         } elseif ($this->authType === 'LDAP') {
             $authBackend = new \Baikal\Core\Auth\Backend\LDAP($this->ldap_url,
-                                                              $this->ldap_base,
-                                                              $this->ldap_admin,
-                                                              $this->ldap_pass,
-                                                              $this->ldap_user_filter,
-                                                              $this->ldap_group_filter,
-                                                              $this->ldap_group_attribute,
-                                                              $this->ldap_group_name);
+                $this->ldap_base,
+                $this->ldap_admin,
+                $this->ldap_pass,
+                $this->ldap_user_filter,
+                $this->ldap_group_filter,
+                $this->ldap_group_attribute,
+                $this->ldap_group_name);
             $authBackend->setRealm($this->authRealm);
         } else {
             $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
@@ -238,9 +238,9 @@ class Server {
             new \Sabre\DAV\PropertyStorage\Backend\PDO($this->pdo)
         ));
 
-	if ($this->authType == 'LDAP') {
-		$this->server->addPlugin(new \Baikal\Core\AutoUser($authPlugin));
-	}
+        if ($this->authType == 'LDAP') {
+            $this->server->addPlugin(new \Baikal\Core\AutoUser($authPlugin));
+        }
 
         // WebDAV-Sync!
         $this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
