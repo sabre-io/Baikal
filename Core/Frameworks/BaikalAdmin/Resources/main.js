@@ -11,10 +11,22 @@ $(document).ready(function() {
 async function copyToClipboard(el) {
     const type = "text/plain";
     const clipboardItemData = {
-      [type]: $(el).text(),
+        [type]: $(el).text(),
     };
     const clipboardItem = new ClipboardItem(clipboardItemData);
     await navigator.clipboard.write([clipboardItem]);
-      // TODO: Flash $(el) with CSS transitions
-  }
+    flash(el);
+}
+
+function flash(el) {
+    el.style.transition = "none";
+    el.style.backgroundColor = "#75c753";
+    void el.offsetWidth;
+    el.style.transition = "background-color 1500ms ease";
+    el.style.backgroundColor = "transparent";
+    el.addEventListener("transitionend", function handler() {
+        el.style.transition = "";
+        el.style.backgroundColor = "";
+        el.removeEventListener("transitionend", handler);
+    });
 }
