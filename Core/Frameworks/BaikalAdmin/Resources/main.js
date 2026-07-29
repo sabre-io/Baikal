@@ -16,6 +16,5 @@ function copyToClipboard(el) {
     sel.addRange(range);
     document.execCommand("copy");
     sel.removeAllRanges();
-    $(el).css({backgroundColor:"#75c753"});
-    $(el).animate({backgroundColor:"transparent"}, 1500);
+    // TODO: Flash $(el) with CSS transitions
 }
