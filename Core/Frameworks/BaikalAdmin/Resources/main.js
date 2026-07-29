@@ -8,13 +8,13 @@ $(document).ready(function() {
     });
 });
 
-function copyToClipboard(el) {
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    document.execCommand("copy");
-    sel.removeAllRanges();
-    // TODO: Flash $(el) with CSS transitions
+async function copyToClipboard(el) {
+    const type = "text/plain";
+    const clipboardItemData = {
+      [type]: $(el).text(),
+    };
+    const clipboardItem = new ClipboardItem(clipboardItemData);
+    await navigator.clipboard.write([clipboardItem]);
+      // TODO: Flash $(el) with CSS transitions
+  }
 }
