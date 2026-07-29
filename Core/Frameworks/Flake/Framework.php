@@ -336,7 +336,7 @@ class Framework extends \Flake\Core\Framework {
             );
 
             # We now setup the connection to use UTF8
-            $GLOBALS["DB"]->query("SET NAMES UTF8");
+            $GLOBALS["DB"]->query("SET NAMES utf8mb4");
         } catch (\Exception $e) {
             exit("<h3>Ba&iuml;kal was not able to establish a connection to the configured MySQL database (as configured in config/baikal.yaml).</h3>");
         }
