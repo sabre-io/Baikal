@@ -12,6 +12,7 @@
         "symfony/yaml"            : "~7.4.8",
         "twbs/bootstrap"          : "~5.3.8",
         "fortawesome/font-awesome": "~7.3.1",
+        "components/jquery"       : "~4.0.0",
         "ext-dom"                 : "*",
         "ext-pdo"                 : "*",
         "ext-zlib"                : "*"
