@@ -19,7 +19,10 @@ dist: vendor/autoload.php
 	composer config platform.php 8.2 -d $(BUILD_DIR)
 	composer install --no-interaction --no-dev -d $(BUILD_DIR)
 	rm $(BUILD_DIR)/composer.*
-	cd build; zip -r baikal-$(VERSION).zip baikal/
+	# inline symlinks
+	find $(BUILD_DIR) -type l -exec sh -c 'target=$$(readlink -f "$$1"); rm "$$1"; cp -rL "$$target" "$$1"' _ {} \;
+	rm -r $(BUILD_DIR)/vendor/twbs/bootstrap $(BUILD_DIR)/vendor/fortawesome/font-awesome
+	cd build; zip -ry baikal-$(VERSION).zip baikal/
 
 build-assets: vendor/autoload.php
 	cat vendor/sabre/dav/examples/sql/mysql.*.sql > Core/Resources/Db/MySQL/db.sql
