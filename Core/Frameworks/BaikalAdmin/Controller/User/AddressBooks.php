@@ -250,10 +250,10 @@ class AddressBooks extends \Flake\Core\Controller {
         } else {
             $oModel = new \Baikal\Model\AddressBook($iModel);
             $this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
-                "Check twice, you're about to delete " . $oModel->label() . "</strong> from the database !",
+                "Check twice, you're about to delete " . htmlspecialchars($oModel->label()) . "</strong> from the database !",
                 "<p>You are about to delete a contact book and all it's visiting cards. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
                 $this->linkDeleteConfirm($oModel),
-                "Delete <strong><i class='" . $oModel->icon() . " icon-white'></i> " . $oModel->label() . "</strong>",
+                "Delete <strong><i class='" . $oModel->icon() . " icon-white'></i> " . htmlspecialchars($oModel->label()) . "</strong>",
                 $this->linkHome()
             );
         }

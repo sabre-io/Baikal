@@ -4,6 +4,7 @@ import sys
 from urllib.parse import urljoin
 
 BASE_URL = os.environ.get("BAIKAL_BASE_URL", "http://localhost/html/")
+ROOT_DIR = os.environ.get("BAIKAL_ROOT_DIR", ".")
 ADMIN_PASSWORD = "secret123"
 
 def follow_link_containing(browser: mechanicalsoup.StatefulBrowser, text_substring: str):
