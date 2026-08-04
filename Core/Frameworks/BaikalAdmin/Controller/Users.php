@@ -173,10 +173,10 @@ class Users extends \Flake\Core\Controller {
         } else {
             $oUser = new \Baikal\Model\User($iUser);
             $this->aMessages[] = \Formal\Core\Message::warningConfirmMessage(
-                "Check twice, you're about to delete " . $oUser->label() . "</strong> from the database !",
+                "Check twice, you're about to delete " . htmlspecialchars($oUser->label()) . "</strong> from the database !",
                 "<p>You are about to delete a user and all it's calendars / contacts. This operation cannot be undone.</p><p>So, now that you know all that, what shall we do ?</p>",
                 $this->linkDeleteConfirm($oUser),
-                "Delete <strong><i class='" . $oUser->icon() . " icon-white'></i> " . $oUser->label() . "</strong>",
+                "Delete <strong><i class='" . $oUser->icon() . " icon-white'></i> " . htmlspecialchars($oUser->label()) . "</strong>",
                 $this->link()
             );
         }
