@@ -1,12 +1,12 @@
 import mechanicalsoup
 import os
 from test_helpers import (
-    assert_dashboard, assert_installed, setup_admin_password,
+    ROOT_DIR, assert_dashboard, assert_installed, setup_admin_password,
     follow_link_containing,
 )
 
 def setup():
-    db_path = "Specific/db/db.sqlite"
+    db_path = os.path.join(ROOT_DIR, "Specific/db/db.sqlite")
     if os.path.exists(db_path):
         os.remove(db_path)
 

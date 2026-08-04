@@ -1,6 +1,6 @@
 import mechanicalsoup, os
 import importlib.util, mysql.connector
-from test_helpers import assert_installed, assert_dashboard, assert_upgrade, setup_admin_password
+from test_helpers import ROOT_DIR, assert_installed, assert_dashboard, assert_upgrade, setup_admin_password
 
 def setup():
     conn = mysql.connector.connect(
@@ -54,7 +54,7 @@ system:
     base_uri: ''
     invite_from: noreply@localhost
 database:
-    sqlite_file: {os.getcwd()}/Specific/db/db.sqlite
+    sqlite_file: {os.path.abspath(os.path.join(ROOT_DIR, "Specific/db/db.sqlite"))}
     backend: mysql
     mysql_host: 127.0.0.1
     mysql_dbname: baikal_test
@@ -62,6 +62,6 @@ database:
     mysql_password: baikal
     encryption_key: 89dc0abf3bf079f11df5f009a1b41fe1
 """
-    with open("config/baikal.yaml", "w", encoding="utf-8") as f:
+    with open(os.path.join(ROOT_DIR, "config/baikal.yaml"), "w", encoding="utf-8") as f:
         f.write(config)
     assert_upgrade(browser)

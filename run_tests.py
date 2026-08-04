@@ -1,10 +1,10 @@
 import os, sys, importlib.util, traceback, mechanicalsoup
-from tests.test_helpers import BASE_URL, ADMIN_PASSWORD
+from tests.test_helpers import BASE_URL, ADMIN_PASSWORD, ROOT_DIR
 
 FAILED = False
 
 def remove_config():
-    yaml_path = "config/baikal.yaml"
+    yaml_path = os.path.join(ROOT_DIR, "config/baikal.yaml")
     if os.path.exists(yaml_path):
         try:
             with open(yaml_path, "r", encoding="utf-8") as f:
