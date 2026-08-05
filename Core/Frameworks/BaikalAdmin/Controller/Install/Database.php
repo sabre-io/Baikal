@@ -64,7 +64,9 @@ class Database extends \Flake\Core\Controller {
                 if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
                     @unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
                 }
-                touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+                if (!touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+                    exit('<h1>Error - Insufficient permissions on the configuration folder</h1><p>The database was configured, but Ba&iuml;kal could not create <strong>' . htmlspecialchars(PROJECT_PATH_SPECIFIC) . 'INSTALL_DISABLED</strong>, which is required to close the install wizard. Please make the <strong>Specific/</strong> folder writable and reload this page.</p>');
+                }
 
                 if (defined("BAIKAL_CONFIGURED_VERSION")) {
                     $oStandardConfig = new \Baikal\Model\Config\Standard();

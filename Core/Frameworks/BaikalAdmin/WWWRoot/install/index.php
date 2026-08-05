@@ -68,6 +68,16 @@ $oPage->setBaseUrl(PROJECT_URI);
 
 $oPage->zone("navbar")->addBlock(new \BaikalAdmin\Controller\Navigation\Topbar\Install());
 
+// CSRF token check
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['CSRF_TOKEN'])) {
+        throw new \Exception('CSRF token was not submitted. Try removing your cookies and reloading the page.');
+    }
+    if ($_POST['CSRF_TOKEN'] !== $_SESSION['CSRF_TOKEN']) {
+        throw new \Exception('CSRF token did not match the session CSRF token. Please try to do this action again.');
+    }
+}
+
 try {
     $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
 } catch (\Exception $e) {
@@ -83,6 +93,7 @@ if (!$config || !isset($config['system']["configured_version"])) {
     $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Initialize());
 } else {
     if ($config['system']["configured_version"] !== BAIKAL_VERSION) {
+        # No auth check: the login page itself redirects here, and upgrading is safe.
         # we have to upgrade Baïkal
         if (\Flake\Util\Tools::GET("upgradeConfirmed")) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\VersionUpgrade());
@@ -90,6 +101,7 @@ if (!$config || !isset($config['system']["configured_version"])) {
             $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\UpgradeConfirmation());
         }
     } elseif (!file_exists(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+        # No auth check: reachable during the installation wizard, disabled afterwards.
         $oPage->zone("Payload")->addBlock(new \BaikalAdmin\Controller\Install\Database());
     } else {
         echo "Installation was already completed. Please head to the admin interface to modify any settings.\n";
