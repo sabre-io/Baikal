@@ -7,6 +7,26 @@ BASE_URL = os.environ.get("BAIKAL_BASE_URL", "http://localhost/html/")
 ROOT_DIR = os.environ.get("BAIKAL_ROOT_DIR", ".")
 ADMIN_PASSWORD = "secret123"
 
+_CHECKED_ASSET_URLS = set()
+
+def _with_asset_check(method):
+    def wrapper(self, *args, **kwargs):
+        result = method(self, *args, **kwargs)
+        page = self.get_current_page()
+        if page is not None:
+            tags = page.find_all("script", src=True) + page.find_all("link", rel=("stylesheet", "icon"), href=True)
+            for src in {tag.get("src") or tag.get("href") for tag in tags}:
+                full_url = urljoin(self.get_url(), src)
+                if full_url not in _CHECKED_ASSET_URLS:
+                    resp = self.session.get(full_url)
+                    assert resp.status_code == 200, f"Asset '{full_url}' returned {resp.status_code}"
+                    _CHECKED_ASSET_URLS.add(full_url)
+        return result
+    return wrapper
+
+mechanicalsoup.StatefulBrowser.open = _with_asset_check(mechanicalsoup.StatefulBrowser.open)
+mechanicalsoup.StatefulBrowser.submit_selected = _with_asset_check(mechanicalsoup.StatefulBrowser.submit_selected)
+
 def follow_link_containing(browser: mechanicalsoup.StatefulBrowser, text_substring: str):
     text_substring = text_substring.lower()
     page = browser.get_current_page()
