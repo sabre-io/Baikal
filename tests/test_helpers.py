@@ -14,9 +14,11 @@ def _with_asset_check(method):
         result = method(self, *args, **kwargs)
         page = self.get_current_page()
         if page is not None:
+            base = page.find("base", href=True)
+            base_url = urljoin(self.get_url(), base["href"]) if base else self.get_url()
             tags = page.find_all("script", src=True) + page.find_all("link", rel=("stylesheet", "icon"), href=True)
             for src in {tag.get("src") or tag.get("href") for tag in tags}:
-                full_url = urljoin(self.get_url(), src)
+                full_url = urljoin(base_url, src)
                 if full_url not in _CHECKED_ASSET_URLS:
                     resp = self.session.get(full_url)
                     assert resp.status_code == 200, f"Asset '{full_url}' returned {resp.status_code}"
