@@ -101,6 +101,17 @@ class Calendar extends \Flake\Core\Model\Db {
             return $this->oCalendar->get($sPropName);
         }
 
+        if ($sPropName === "events") {
+            # TRUE if components contains VEVENT, FALSE otherwise
+            if (($sComponents = $this->get("components")) !== "") {
+                $aComponents = explode(",", $sComponents);
+            } else {
+                $aComponents = [];
+            }
+
+            return in_array("VEVENT", $aComponents);
+        }
+
         if ($sPropName === "todos") {
             # TRUE if components contains VTODO, FALSE otherwise
             if (($sComponents = $this->get("components")) !== "") {
@@ -129,6 +140,26 @@ class Calendar extends \Flake\Core\Model\Db {
     function set($sPropName, $sValue) {
         if ($sPropName === "components") {
             return $this->oCalendar->set($sPropName, $sValue);
+        }
+
+        if ($sPropName === "events") {
+            if (($sComponents = $this->get("components")) !== "") {
+                $aComponents = explode(",", $sComponents);
+            } else {
+                $aComponents = [];
+            }
+
+            if ($sValue === true) {
+                if (!in_array("VEVENT", $aComponents)) {
+                    $aComponents[] = "VEVENT";
+                }
+            } else {
+                if (in_array("VEVENT", $aComponents)) {
+                    unset($aComponents[array_search("VEVENT", $aComponents)]);
+                }
+            }
+
+            return $this->set("components", implode(",", $aComponents));
         }
 
         if ($sPropName === "todos") {
@@ -212,6 +243,12 @@ class Calendar extends \Flake\Core\Model\Db {
         $oMorpho->add(new \Formal\Element\Text([
             "prop"  => "description",
             "label" => "Description",
+        ]));
+
+        $oMorpho->add(new \Formal\Element\Checkbox([
+            "prop"  => "events",
+            "label" => "Events",
+            "help"  => "If checked, events will be enabled on this calendar.",
         ]));
 
         $oMorpho->add(new \Formal\Element\Checkbox([
