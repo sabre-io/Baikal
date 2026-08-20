@@ -9,6 +9,7 @@ system:
     failed_access_message: 'user %u authentication failure for Baikal'
     auth_realm: BaikalDAV
     base_uri: ''
+    allow_free_busy_lookup: true
 database:
     encryption_key: 5d3f0fa0192e3058ea70f1bb20924add
     backend: 'mysql'
