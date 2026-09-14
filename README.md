@@ -7,6 +7,8 @@ This is the source repository for the Baïkal CalDAV and CardDAV server.
 
 Head to [sabre.io/baikal][2] for information about installation, upgrading and troubleshooting.
 
+You can also deploy Baïkal with one click using the official [Easypanel](https://easypanel.io/) template: https://easypanel.io/templates/baikal
+
 A German tutorial about installation of Baïkal, using it together with Thunderbird, Android and DavX5, sharing calendars, database maintenance and security can be found [here][6]. Its focus is for people with not so much IT experience. Therefore it is very detailed, step by step with a RaspberryPI used as server.
 
 With the same objective, a French guide, about installation on Debian, database maintenance, security and dealing with iOS clients can be found [here][7]. Its focus is also for people with not so much IT experience.
