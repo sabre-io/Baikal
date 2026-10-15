@@ -511,6 +511,76 @@ SQL
             $oConfig = new \Baikal\Model\Config\Database();
             $oConfig->set("backend", intval($config['database']['mysql']) === 1 ? 'mysql' : 'sqlite');
             $oConfig->persist();
+
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            $databaseConfig = $config['database'];
+        }
+
+        if (version_compare($sVersionFrom, '0.12.1', '<=')) {
+            if ($databaseConfig['backend'] === 'sqlite') {
+                $pdo->exec(<<<SQL
+CREATE TABLE calendarinstances_new (
+    id integer primary key asc NOT NULL,
+    calendarid integer,
+    principaluri text,
+    access integer DEFAULT 1 NOT NULL,
+    displayname text,
+    uri text NOT NULL,
+    description text,
+    calendarorder integer,
+    calendarcolor text,
+    timezone text,
+    transparent bool,
+    share_href text,
+    share_displayname text,
+    share_invitestatus integer DEFAULT 2 NOT NULL,
+    UNIQUE (principaluri, uri),
+    UNIQUE (calendarid, principaluri),
+    UNIQUE (calendarid, share_href)
+);
+SQL
+                );
+                $pdo->exec(<<<SQL
+INSERT INTO calendarinstances_new (
+    id,
+    calendarid,
+    principaluri,
+    access,
+    displayname,
+    uri,
+    description,
+    calendarorder,
+    calendarcolor,
+    timezone,
+    transparent,
+    share_href,
+    share_displayname,
+    share_invitestatus
+)
+SELECT
+    id,
+    calendarid,
+    principaluri,
+    COALESCE(access, 1),
+    displayname,
+    uri,
+    description,
+    calendarorder,
+    calendarcolor,
+    timezone,
+    transparent,
+    share_href,
+    share_displayname,
+    COALESCE(share_invitestatus, 2)
+FROM calendarinstances;
+SQL
+                );
+
+                $pdo->exec('DROP TABLE calendarinstances');
+                $pdo->exec('ALTER TABLE calendarinstances_new RENAME TO calendarinstances');
+
+                $this->aSuccess[] = 'Updated calendarinstances table';
+            }
         }
 
         $this->updateConfiguredVersion($sVersionTo);
