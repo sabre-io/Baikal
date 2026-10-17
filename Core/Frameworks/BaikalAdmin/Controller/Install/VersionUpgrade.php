@@ -518,7 +518,9 @@ SQL
 
         if (version_compare($sVersionFrom, '0.12.1', '<=')) {
             if ($databaseConfig['backend'] === 'sqlite') {
-                $pdo->exec(<<<SQL
+                try {
+                    $pdo->beginTransaction();
+                    $pdo->exec(<<<SQL
 CREATE TABLE calendarinstances_new (
     id integer primary key asc NOT NULL,
     calendarid integer,
@@ -539,8 +541,8 @@ CREATE TABLE calendarinstances_new (
     UNIQUE (calendarid, share_href)
 );
 SQL
-                );
-                $pdo->exec(<<<SQL
+                    );
+                    $pdo->exec(<<<SQL
 INSERT INTO calendarinstances_new (
     id,
     calendarid,
@@ -574,12 +576,17 @@ SELECT
     COALESCE(share_invitestatus, 2)
 FROM calendarinstances;
 SQL
-                );
-
-                $pdo->exec('DROP TABLE calendarinstances');
-                $pdo->exec('ALTER TABLE calendarinstances_new RENAME TO calendarinstances');
-
-                $this->aSuccess[] = 'Updated calendarinstances table';
+                    );
+                    $pdo->exec('DROP TABLE calendarinstances');
+                    $pdo->exec('ALTER TABLE calendarinstances_new RENAME TO calendarinstances');
+                    $pdo->commit();
+                    $this->aSuccess[] = 'Updated calendarinstances table';
+                } catch (\Throwable $e) {
+                    if ($pdo->inTransaction()) {
+                        $pdo->rollBack();
+                    }
+                    throw $e;
+                }
             }
         }
 
