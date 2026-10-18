@@ -50,7 +50,7 @@ CREATE TABLE calendarinstances (
     id integer primary key asc NOT NULL,
     calendarid integer,
     principaluri text,
-    access integer,
+    access integer DEFAULT 1 NOT NULL,
     displayname text,
     uri text NOT NULL,
     description text,
@@ -60,7 +60,7 @@ CREATE TABLE calendarinstances (
     transparent bool,
     share_href text,
     share_displayname text,
-    share_invitestatus integer DEFAULT '2',
+    share_invitestatus integer DEFAULT 2 NOT NULL,
     UNIQUE (principaluri, uri),
     UNIQUE (calendarid, principaluri),
     UNIQUE (calendarid, share_href)
