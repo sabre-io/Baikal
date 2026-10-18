@@ -16,6 +16,18 @@ Upgrading
 
 Please follow [the upgrade instructions][5].
 
+Running tests
+-------------
+
+The tests reset the configuration and database, so do not run them on a real installation.
+
+    php -S 127.0.0.1:8000 -t . &
+    BAIKAL_BASE_URL=http://127.0.0.1:8000/html/ BAIKAL_TEST_BACKENDS=sqlite python3 run_tests.py
+
+Or run them against all databases with Docker:
+
+    docker compose -f tests/compose.yml run --rm tests
+
 Credits
 -------
 

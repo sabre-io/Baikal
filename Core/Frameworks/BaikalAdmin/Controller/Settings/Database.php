@@ -171,14 +171,14 @@ class Database extends \Flake\Core\Controller {
             try {
                 # Asserting DB file is writable
                 if (file_exists($sFile) && !is_writable($sFile)) {
-                    $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
+                    $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . htmlspecialchars($sFile) . "</span>";
                     $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
 
                     return;
                 }
                 # Asserting DB directory is writable
                 if (!is_writable(dirname($sFile))) {
-                    $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
+                    $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . htmlspecialchars(dirname($sFile)) . "</span>";
                     $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
 
                     return;

@@ -1,0 +1,67 @@
+services:
+  tests:
+    build:
+      dockerfile_inline: |
+        FROM php:8.4-cli
+        RUN apt-get update \
+            && apt-get install -y --no-install-recommends git libpq-dev python3 python3-pip unzip \
+            && docker-php-ext-install pdo_mysql pdo_pgsql \
+            && rm -rf /var/lib/apt/lists/*
+        RUN pip3 install --break-system-packages mechanicalsoup mysql-connector-python psycopg2-binary
+        COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+        WORKDIR /baikal
+        COPY composer.json ./
+        RUN composer install --no-dev --no-autoloader --no-interaction --no-progress
+        COPY . .
+        RUN composer dump-autoload --no-dev
+      context: ..
+    pull_policy: build
+    tmpfs:
+      - /baikal/config
+      - /baikal/Specific/db
+    environment:
+      BAIKAL_BASE_URL: http://127.0.0.1:8000/html/
+      BAIKAL_ROOT_DIR: .
+      BAIKAL_TEST_BACKENDS: ${BAIKAL_TEST_BACKENDS:-}
+      BAIKAL_TEST_MYSQL_HOST: mysql
+      BAIKAL_TEST_PGSQL_HOST: pgsql
+      PYTHONUNBUFFERED: 1
+    command:
+      - sh
+      - -ec
+      - |
+        php -S 127.0.0.1:8000 -t . > /tmp/php_server.log 2>&1 &
+        until php -r 'exit(@fsockopen("127.0.0.1", 8000) ? 0 : 1);'; do sleep 0.1; done
+        python3 run_tests.py || { cat /tmp/php_server.log; exit 1; }
+    depends_on:
+      mysql:
+        condition: service_healthy
+      pgsql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: baikal_test
+      MYSQL_USER: baikal
+      MYSQL_PASSWORD: baikal
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-ubaikal", "-pbaikal", "--silent"]
+      interval: 2s
+      retries: 60
+
+  pgsql:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: baikal_test
+      POSTGRES_USER: baikal
+      POSTGRES_PASSWORD: baikal
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "baikal"]
+      interval: 2s
+      retries: 60

@@ -64,7 +64,9 @@ class Database extends \Flake\Core\Controller {
                 if (file_exists(PROJECT_PATH_SPECIFIC . "config.system.php")) {
                     @unlink(PROJECT_PATH_SPECIFIC . "config.system.php");
                 }
-                touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED');
+                if (!touch(PROJECT_PATH_SPECIFIC . '/INSTALL_DISABLED')) {
+                    exit('<h1>Error - Insufficient permissions on the configuration folder</h1><p>The database was configured, but Ba&iuml;kal could not create <strong>' . htmlspecialchars(PROJECT_PATH_SPECIFIC) . 'INSTALL_DISABLED</strong>, which is required to close the install wizard. Please make the <strong>Specific/</strong> folder writable and reload this page.</p>');
+                }
 
                 if (defined("BAIKAL_CONFIGURED_VERSION")) {
                     $oStandardConfig = new \Baikal\Model\Config\Standard();
@@ -109,14 +111,14 @@ class Database extends \Flake\Core\Controller {
         try {
             # Asserting DB file is writable
             if (file_exists($sFile) && !is_writable($sFile)) {
-                $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . $sFile . "</span>";
+                $sMessage = "DB file is not writable. Please give write permissions on file <span style='font-family: monospace'>" . htmlspecialchars($sFile) . "</span>";
                 $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
 
                 return false;
             }
             # Asserting DB directory is writable
             if (!is_writable(dirname($sFile))) {
-                $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . dirname($sFile) . "</span>";
+                $sMessage = "The <em>FOLDER</em> containing the DB file is not writable, and it has to.<br />Please give write permissions on folder <span style='font-family: monospace'>" . htmlspecialchars(dirname($sFile)) . "</span>";
                 $oForm->declareError($oMorpho->element("sqlite_file"), $sMessage);
 
                 return false;

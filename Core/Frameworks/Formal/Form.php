@@ -111,7 +111,7 @@ class Form {
             $this->sDisplayTitle = "Creating new <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->humanName() . "</strong>";
         } else {
             # This is changed if form is persisted, after persistance, to reflect possible change in model instance label
-            $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->label() . "</strong>";
+            $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . htmlspecialchars($this->modelInstance()->label()) . "</strong>";
         }
 
         return $this;
@@ -209,7 +209,7 @@ class Form {
 
             if ($this->floatingModelInstance()) {
                 $this->sDisplayMessage = \Formal\Core\Message::notice(
-                    $this->modelInstance()->humanName() . " <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> has been created.",
+                    $this->modelInstance()->humanName() . " <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . htmlspecialchars($this->modelInstance()->label()) . "</strong> has been created.",
                     "",
                     false
                 );
@@ -217,7 +217,7 @@ class Form {
             } else {
                 $bWasFloating = false;
                 $this->sDisplayMessage = \Formal\Core\Message::notice(
-                    "Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . $this->modelInstance()->label() . "</strong> have been saved.",
+                    "Changes on <i class='" . $this->modelInstance()->icon() . "'></i> <strong>" . htmlspecialchars($this->modelInstance()->label()) . "</strong> have been saved.",
                     false,    # No title
                     false    # No close button
                 );
@@ -226,7 +226,7 @@ class Form {
             $this->modelInstance()->persist();
             if ($bWasFloating === false) {
                 # Title is generated now, as submitted data might have changed the model instance label
-                $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . $this->modelInstance()->label() . "</strong>";
+                $this->sDisplayTitle = "Editing " . $this->modelInstance()->humanName() . " <i class=\"" . $this->modelInstance()->mediumicon() . " mx-1\"></i> <strong>" . htmlspecialchars($this->modelInstance()->label()) . "</strong>";
             }
             $this->bPersisted = true;
         } else {

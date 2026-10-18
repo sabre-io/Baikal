@@ -1,10 +1,15 @@
 import os, sys, importlib.util, traceback, mechanicalsoup
-from tests.test_helpers import BASE_URL, ADMIN_PASSWORD
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests"))
+from lib import backends
+from lib.helpers import ROOT_DIR
 
 FAILED = False
+TESTS_RUN = 0
+ENABLED_BACKENDS = [b.strip() for b in (os.environ.get("BAIKAL_TEST_BACKENDS") or "sqlite,mysql,pgsql").split(",")]
+assert set(ENABLED_BACKENDS) <= {b.name for b in backends.ALL}, f"Unknown backend in BAIKAL_TEST_BACKENDS: {ENABLED_BACKENDS}"
 
 def remove_config():
-    yaml_path = "config/baikal.yaml"
+    yaml_path = os.path.join(ROOT_DIR, "config/baikal.yaml")
     if os.path.exists(yaml_path):
         try:
             with open(yaml_path, "r", encoding="utf-8") as f:
@@ -21,15 +26,14 @@ def remove_config():
 
 def load_tests(path):
     files = []
-    for r, _, f in os.walk(path):
-        for x in f:
-            if x.endswith(".py"):
-                files.append(os.path.join(r, x))
+    for x in os.listdir(path):
+        if x.endswith(".py"):
+            files.append(os.path.join(path, x))
     assert files != []
     return sorted(files)
 
 def run_file(path):
-    global FAILED
+    global FAILED, TESTS_RUN
     test_folder = os.path.dirname(os.path.abspath(path))
     if test_folder not in sys.path:
         sys.path.insert(0, test_folder)
@@ -45,28 +49,29 @@ def run_file(path):
         traceback.print_exc()
         return
 
-    setup_function = None
-    for s in dir(mod):
-        if s == "setup":
-            setup_function = getattr(mod, s)
+    module_backends = getattr(mod, "BACKENDS", [backends.SQLITE])
 
     for n in dir(mod):
         if not n.startswith("test_"):
             continue
-        print(path, "::", n, sep = '')
-        remove_config()
-    
-        browser = mechanicalsoup.StatefulBrowser()
-        test_function = getattr(mod, n)
-        try:
-            setup_function()
-            test_function(browser)
-            print("[OK]")
-        except:
-            FAILED = True
-            traceback.print_exc()
-            print(browser.get_current_page())
-            print("[FAIL]: ", path, "::", n, sep = '')
+        for backend in module_backends:
+            if backend.name not in ENABLED_BACKENDS:
+                continue
+            print(path, "::", n, "[", backend, "]", sep = '')
+            remove_config()
+            TESTS_RUN += 1
+
+            browser = mechanicalsoup.StatefulBrowser()
+            test_function = getattr(mod, n)
+            try:
+                backend.reset()
+                test_function(browser, backend)
+                print("[OK]")
+            except:
+                FAILED = True
+                traceback.print_exc()
+                print(browser.get_current_page())
+                print("[FAIL]: ", path, "::", n, "[", backend, "]", sep = '')
 
 def main():
     global FAILED
@@ -77,7 +82,10 @@ def main():
         for f in load_tests("tests"):
             run_file(f)
 
-    if FAILED:
+    if TESTS_RUN == 0:
+        print("No tests were run.")
+        sys.exit(1)
+    elif FAILED:
         print("Some tests failed.")
         sys.exit(1)
     else:

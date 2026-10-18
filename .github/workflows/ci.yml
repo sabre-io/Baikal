@@ -70,14 +70,27 @@ jobs:
         uses: ./.github/actions/build
         with:
           php-version: ${{ matrix.php-versions }}
-      - name: Start PHP server
-        run: php -S 0.0.0.0:8000 -t . > php_server.log 2>&1 &
       - name: Setup Python
         run: |
           pip install mechanicalsoup mysql-connector-python psycopg2 --break-system-packages
-      - name: Run tests
+      - name: Start PHP server (checkout)
+        run: php -S 0.0.0.0:8000 -t . > php_server.log 2>&1 &
+      - name: Run tests (checkout)
         env:
           BAIKAL_BASE_URL: http://localhost:8000/html/
+          BAIKAL_ROOT_DIR: .
+        run: python run_tests.py
+      - name: Build dist zip
+        run: |
+          make dist
+          unzip build/baikal-*.zip -d build/extracted
+      - name: Start PHP server (dist)
+        run: php -S 0.0.0.0:8001 -t build/extracted/baikal > php_server_dist.log 2>&1 &
+      - name: Run tests (dist)
+        env:
+          BAIKAL_BASE_URL: http://localhost:8001/html/
+          BAIKAL_ROOT_DIR: build/extracted/baikal
         run: python run_tests.py
       - name: Print server logs
-        run: cat php_server.log
+        if: always()
+        run: cat php_server.log php_server_dist.log

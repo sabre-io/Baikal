@@ -1,25 +1,8 @@
 import mechanicalsoup
-import os
-from test_helpers import (
-    assert_dashboard, assert_installed, setup_admin_password,
+from lib.backends import Backend
+from lib.helpers import (
     follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
 )
-
-def setup():
-    db_path = "Specific/db/db.sqlite"
-    if os.path.exists(db_path):
-        os.remove(db_path)
-
-def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
-    setup_admin_password(browser)
-
-    page = browser.get_current_page()
-    assert "baïkal database setup" in page.text.lower()
-    browser.select_form("form")
-    browser.submit_selected()
-
-    assert_installed(browser)
-    assert_dashboard(browser)
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
     follow_link_containing(browser, "users and resources")
@@ -45,8 +28,8 @@ def create_test_addressbook(browser: mechanicalsoup.StatefulBrowser):
     browser["data[description]"] = "A test address book"
     browser.submit_selected()
 
-def test_addressbook_create(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     navigate_to_user_addressbooks(browser)
@@ -65,8 +48,8 @@ def test_addressbook_create(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     assert "test address book" in page.text.lower()
 
-def test_addressbook_create_invalid_uri(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_create_invalid_uri(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     navigate_to_user_addressbooks(browser)
@@ -80,8 +63,8 @@ def test_addressbook_create_invalid_uri(browser: mechanicalsoup.StatefulBrowser)
     assert "validation error" in page.text.lower()
     assert "is not valid" in page.text.lower()
 
-def test_addressbook_create_missing_displayname(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_create_missing_displayname(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     navigate_to_user_addressbooks(browser)
@@ -96,8 +79,8 @@ def test_addressbook_create_missing_displayname(browser: mechanicalsoup.Stateful
     assert "display name" in page.text.lower()
     assert "is required" in page.text.lower()
 
-def test_addressbook_edit(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_edit(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
     create_test_addressbook(browser)
 
@@ -110,8 +93,8 @@ def test_addressbook_edit(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     assert "test address book updated" in page.text.lower()
 
-def test_addressbook_delete(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_delete(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
     create_test_addressbook(browser)
 
