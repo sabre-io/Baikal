@@ -1,27 +1,11 @@
 import mechanicalsoup
-import os
-from test_helpers import (
-    ROOT_DIR, assert_dashboard, assert_installed, setup_admin_password,
+from lib.backends import Backend
+from lib.helpers import (
+    setup_admin_password,
     follow_link_containing, find_and_follow_row_link,
 )
 
 XSS_PAYLOAD = '<script>alert("xss")</script>'
-
-def setup():
-    db_path = os.path.join(ROOT_DIR, "Specific/db/db.sqlite")
-    if os.path.exists(db_path):
-        os.remove(db_path)
-
-def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
-    setup_admin_password(browser)
-
-    page = browser.get_current_page()
-    assert "baïkal database setup" in page.text.lower()
-    browser.select_form("form")
-    browser.submit_selected()
-
-    assert_installed(browser)
-    assert_dashboard(browser)
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser, username="abuser", displayname="Test User"):
     follow_link_containing(browser, "users and resources")
@@ -64,8 +48,8 @@ def assert_payload_escaped(browser: mechanicalsoup.StatefulBrowser, context):
     raw_html = str(browser.get_current_page())
     assert XSS_PAYLOAD not in raw_html, f"XSS payload was reflected without HTML-escaping ({context})"
 
-def test_addressbook_displayname_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_displayname_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     create_test_addressbook(browser, displayname=XSS_PAYLOAD)
@@ -76,8 +60,8 @@ def test_addressbook_displayname_xss_is_escaped_on_create(browser: mechanicalsou
     navigate_to_user_addressbooks(browser)
     assert_payload_escaped(browser, "address book list")
 
-def test_addressbook_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_addressbook_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
     create_test_addressbook(browser)
 
@@ -91,8 +75,8 @@ def test_addressbook_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.
     navigate_to_user_addressbooks(browser)
     assert_payload_escaped(browser, "address book list after edit")
 
-def test_calendar_displayname_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_calendar_displayname_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     create_test_calendar(browser, displayname=XSS_PAYLOAD)
@@ -101,8 +85,8 @@ def test_calendar_displayname_xss_is_escaped_on_create(browser: mechanicalsoup.S
     navigate_to_user_calendars(browser)
     assert_payload_escaped(browser, "calendar list")
 
-def test_calendar_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_calendar_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
     create_test_calendar(browser)
 
@@ -114,8 +98,8 @@ def test_calendar_displayname_xss_is_escaped_on_edit(browser: mechanicalsoup.Sta
     navigate_to_user_calendars(browser)
     assert_payload_escaped(browser, "calendar list after edit")
 
-def test_user_username_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_username_xss_is_escaped_on_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser, username=XSS_PAYLOAD, displayname="XSS User")
     # Username is the User model's LABELFIELD, used in the "has been created" notice.
     assert_payload_escaped(browser, "user creation notice/edit form")
@@ -123,15 +107,15 @@ def test_user_username_xss_is_escaped_on_create(browser: mechanicalsoup.Stateful
     follow_link_containing(browser, "users and resources")
     assert_payload_escaped(browser, "user list")
 
-def test_user_displayname_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_displayname_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser, username="dnuser", displayname=XSS_PAYLOAD)
     assert_payload_escaped(browser, "user creation notice/edit form")
 
     follow_link_containing(browser, "users and resources")
     assert_payload_escaped(browser, "user list")
 
-def test_install_sqlite_path_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser):
+def test_install_sqlite_path_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
     setup_admin_password(browser)
     page = browser.get_current_page()
     assert "baïkal database setup" in page.text.lower()
@@ -144,8 +128,8 @@ def test_install_sqlite_path_xss_is_escaped(browser: mechanicalsoup.StatefulBrow
     assert "not writable" in page.text.lower()
     assert_payload_escaped(browser, "sqlite path validation error during install")
 
-def test_settings_sqlite_path_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_settings_sqlite_path_xss_is_escaped(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "database settings")
     browser.select_form("form")

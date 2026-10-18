@@ -1,0 +1,8 @@
+.git
+build
+vendor
+composer.lock
+config/baikal.yaml
+Specific/INSTALL_DISABLED
+Specific/db/*.sqlite
+**/__pycache__
