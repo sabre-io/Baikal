@@ -516,7 +516,7 @@ SQL
             $databaseConfig = $config['database'];
         }
 
-        if (version_compare($sVersionFrom, '0.12.1', '<=')) {
+        if (version_compare($sVersionFrom, '0.13.0', '<')) {
             if ($databaseConfig['backend'] === 'sqlite') {
                 try {
                     $pdo->beginTransaction();
