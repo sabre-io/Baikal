@@ -30,9 +30,9 @@ services:
       - sh
       - -ec
       - |
-        php -S 127.0.0.1:8000 -t . > /tmp/php_server.log 2>&1 &
+        php -S 127.0.0.1:8000 -t . > /dev/null 2>&1 &
         until php -r 'exit(@fsockopen("127.0.0.1", 8000) ? 0 : 1);'; do sleep 0.1; done
-        python3 run_tests.py || { cat /tmp/php_server.log; exit 1; }
+        python3 run_tests.py
     depends_on:
       mysql:
         condition: service_healthy
