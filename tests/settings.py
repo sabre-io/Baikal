@@ -1,28 +1,11 @@
 import mechanicalsoup
-import os
-from test_helpers import (
-    ROOT_DIR, assert_dashboard, assert_installed, setup_admin_password,
+from lib.backends import Backend
+from lib.helpers import (
     follow_link_containing,
 )
 
-def setup():
-    db_path = os.path.join(ROOT_DIR, "Specific/db/db.sqlite")
-    if os.path.exists(db_path):
-        os.remove(db_path)
-
-def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
-    setup_admin_password(browser)
-
-    page = browser.get_current_page()
-    assert "baïkal database setup" in page.text.lower()
-    browser.select_form("form")
-    browser.submit_selected()
-
-    assert_installed(browser)
-    assert_dashboard(browser)
-
-def test_system_settings_save(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_system_settings_save(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "system settings")
     page = browser.get_current_page()
@@ -36,8 +19,8 @@ def test_system_settings_save(browser: mechanicalsoup.StatefulBrowser):
     assert "baïkal system settings" in page.text.lower()
     assert "error" not in page.text.lower()
 
-def test_system_settings_password_mismatch(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_system_settings_password_mismatch(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "system settings")
     browser.select_form("form")

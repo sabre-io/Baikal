@@ -1,25 +1,8 @@
 import mechanicalsoup
-import os
-from test_helpers import (
-    ROOT_DIR, assert_dashboard, assert_installed, setup_admin_password,
+from lib.backends import Backend
+from lib.helpers import (
     follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
 )
-
-def setup():
-    db_path = os.path.join(ROOT_DIR, "Specific/db/db.sqlite")
-    if os.path.exists(db_path):
-        os.remove(db_path)
-
-def install_sqlite(browser: mechanicalsoup.StatefulBrowser):
-    setup_admin_password(browser)
-
-    page = browser.get_current_page()
-    assert "baïkal database setup" in page.text.lower()
-    browser.select_form("form")
-    browser.submit_selected()
-
-    assert_installed(browser)
-    assert_dashboard(browser)
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
     follow_link_containing(browser, "users and resources")
@@ -32,8 +15,8 @@ def create_test_user(browser: mechanicalsoup.StatefulBrowser):
     browser["data[passwordconfirm]"] = "password123"
     browser.submit_selected()
 
-def test_user_create(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
@@ -48,8 +31,8 @@ def test_user_create(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     assert "testuser" in page.text
 
-def test_user_create_missing_required_fields(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_create_missing_required_fields(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
@@ -60,8 +43,8 @@ def test_user_create_missing_required_fields(browser: mechanicalsoup.StatefulBro
     assert "validation error" in page.text.lower()
     assert "is required" in page.text.lower()
 
-def test_user_create_invalid_email(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_create_invalid_email(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
@@ -77,8 +60,8 @@ def test_user_create_invalid_email(browser: mechanicalsoup.StatefulBrowser):
     assert "validation error" in page.text.lower()
     assert "should be an email" in page.text.lower()
 
-def test_user_create_password_mismatch(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_create_password_mismatch(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
 
     follow_link_containing(browser, "users and resources")
     follow_link_containing(browser, "add user")
@@ -94,8 +77,8 @@ def test_user_create_password_mismatch(browser: mechanicalsoup.StatefulBrowser):
     assert "validation error" in page.text.lower()
     assert "does not match" in page.text.lower()
 
-def test_user_create_duplicate_username(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_create_duplicate_username(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     follow_link_containing(browser, "add user")
@@ -111,8 +94,8 @@ def test_user_create_duplicate_username(browser: mechanicalsoup.StatefulBrowser)
     assert "validation error" in page.text.lower()
     assert "has to be unique" in page.text.lower()
 
-def test_user_edit(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_edit(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     find_and_follow_row_link(browser, "testuser", "edit")
@@ -123,8 +106,8 @@ def test_user_edit(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     assert "test user updated" in page.text.lower()
 
-def test_user_delete(browser: mechanicalsoup.StatefulBrowser):
-    install_sqlite(browser)
+def test_user_delete(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
     create_test_user(browser)
 
     find_and_follow_row_link(browser, "testuser", "delete")
