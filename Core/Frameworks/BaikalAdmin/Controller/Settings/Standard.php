@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\Settings;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Standard extends \Flake\Core\Controller {
     /**
      * @var \Baikal\Model\Config\Standard
@@ -47,7 +49,8 @@ class Standard extends \Flake\Core\Controller {
         }
 
         $this->oForm = $this->oModel->formForThisModelInstance([
-            "close" => false,
+            "close"           => false,
+            "hook.morphology" => [$this, "morphologyHook"],
         ]);
 
         if ($this->oForm->submitted()) {
@@ -60,5 +63,29 @@ class Standard extends \Flake\Core\Controller {
         $oView->setData("form", $this->oForm->render());
 
         return $oView->render();
+    }
+
+    function morphologyHook(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+        if ($oForm->submitted()) {
+            $bLDAP = ($oForm->postValue("dav_auth_type") === "LDAP");
+        } else {
+            try {
+                $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+            } catch (\Exception $e) {
+                error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+            }
+            $bLDAP = $config['system']['dav_auth_type'] === "LDAP" ?? false;
+        }
+
+        if ($bLDAP !== true) {
+            $oMorpho->remove("ldap_url");
+            $oMorpho->remove("ldap_base");
+            $oMorpho->remove("ldap_admin");
+            $oMorpho->remove("ldap_pass");
+            $oMorpho->remove("ldap_user_filter");
+            $oMorpho->remove("ldap_group_filter");
+            $oMorpho->remove("ldap_group_attribute");
+            $oMorpho->remove("ldap_group_name");
+        }
     }
 }

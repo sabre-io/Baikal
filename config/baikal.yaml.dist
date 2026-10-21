@@ -7,6 +7,14 @@ system:
     dav_auth_type: 'Digest'
     admin_passwordhash: 5fe794627e1f841f8debba065e2c807a
     failed_access_message: 'user %u authentication failure for Baikal'
+    ldap_url: 'ldaps://ldap.sabre.io'
+    ldap_base: 'o=baikal,dc=sabre,dc=io'
+    ldap_admin: ''
+    ldap_pass: ''
+    ldap_user_filter: '(&(objectClass=posixAccount)(uid=%u))'
+    ldap_group_filter: '(&(objectClass=posixGroup)(cn=%g))'
+    ldap_group_attribute: memberUid
+    ldap_group_name: users
     auth_realm: BaikalDAV
     base_uri: ''
 database:
