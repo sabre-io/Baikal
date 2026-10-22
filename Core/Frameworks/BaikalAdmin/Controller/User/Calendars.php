@@ -98,10 +98,21 @@ class Calendars extends \Flake\Core\Controller {
     protected function initForm() {
         if ($this->actionEditRequested() || $this->actionNewRequested()) {
             $aOptions = [
-                "closeurl" => $this->linkHome(),
+                "closeurl"        => $this->linkHome(),
+                "hook.validation" => [$this, "validateReservedUri"],
             ];
 
             $this->oForm = $this->oModel->formForThisModelInstance($aOptions);
+        }
+    }
+
+    # The URI of birthday calendars may not be used for other calendars
+    function validateReservedUri(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+        if ($oForm->floatingModelInstance() && $oMorpho->element("uri")->value() === \Baikal\Core\BirthdayCalendar\BirthdayService::CALENDAR_URI) {
+            $oForm->declareError(
+                $oMorpho->element("uri"),
+                "<strong>" . $oMorpho->element("uri")->option("label") . "</strong> '" . \Baikal\Core\BirthdayCalendar\BirthdayService::CALENDAR_URI . "' is reserved for the birthday calendar."
+            );
         }
     }
 

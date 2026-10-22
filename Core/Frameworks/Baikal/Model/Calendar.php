@@ -258,7 +258,25 @@ class Calendar extends \Flake\Core\Model\Db {
         }
     }
 
+    function isBirthdayCalendar() {
+        if ($this->get("uri") !== \Baikal\Core\BirthdayCalendar\BirthdayService::CALENDAR_URI) {
+            return false;
+        }
+
+        $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
+
+        return $oBirthdayService->hasCalendar($this->get("principaluri"));
+    }
+
     function destroy() {
+        if ($this->isBirthdayCalendar()) {
+            # Also removes the marker of the birthday calendar
+            $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
+            $oBirthdayService->deleteCalendar($this->get("principaluri"));
+
+            return;
+        }
+
         $hasInstances = $this->hasInstances();
         if (!$hasInstances) {
             $oEvents = $this->getEventsBaseRequester()->execute();
