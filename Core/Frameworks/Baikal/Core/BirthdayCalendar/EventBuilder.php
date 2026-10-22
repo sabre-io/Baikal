@@ -128,19 +128,19 @@ class EventBuilder {
             $firstYear = max($year + 1, $this->referenceYear - self::YEARS_BEFORE);
             $lastYear = $this->referenceYear + self::YEARS_AFTER;
 
-            for ($iYear = $firstYear; $iYear <= $lastYear; ++$iYear) {
+            for ($occurrenceYear = $firstYear; $occurrenceYear <= $lastYear; ++$occurrenceYear) {
                 # In non leap years, February 29th birthdays occur on February 28th
-                $iDay = ($isLeapDay && !checkdate(2, 29, $iYear)) ? 28 : $day;
+                $occurrenceDay = ($isLeapDay && !checkdate(2, 29, $occurrenceYear)) ? 28 : $day;
 
                 $vOverride = $this->addEvent(
                     $vCalendar,
                     $uid,
-                    $iYear,
+                    $occurrenceYear,
                     $month,
-                    $iDay,
-                    self::SUMMARY_PREFIX . $name . " (" . ($iYear - $year) . ")"
+                    $occurrenceDay,
+                    self::SUMMARY_PREFIX . $name . " (" . ($occurrenceYear - $year) . ")"
                 );
-                $vOverride->add("RECURRENCE-ID", $this->formatDate($iYear, $month, $iDay), ["VALUE" => "DATE"]);
+                $vOverride->add("RECURRENCE-ID", $this->formatDate($occurrenceYear, $month, $occurrenceDay), ["VALUE" => "DATE"]);
             }
         }
 
@@ -183,24 +183,24 @@ class EventBuilder {
             return null;
         }
 
-        $sValue = trim((string) $vCard->BDAY->getValue());
-        if ($sValue === "") {
+        $value = trim((string) $vCard->BDAY->getValue());
+        if ($value === "") {
             return null;
         }
 
         try {
-            $aParts = VObject\DateTimeParser::parseVCardDateTime($sValue);
+            $parts = VObject\DateTimeParser::parseVCardDateTime($value);
         } catch (\Exception $e) {
             return null;
         }
 
-        if ($aParts["month"] === null || $aParts["date"] === null) {
+        if ($parts["month"] === null || $parts["date"] === null) {
             return null;
         }
 
-        $year = $aParts["year"] === null ? null : intval($aParts["year"]);
-        $month = intval($aParts["month"]);
-        $day = intval($aParts["date"]);
+        $year = $parts["year"] === null ? null : intval($parts["year"]);
+        $month = intval($parts["month"]);
+        $day = intval($parts["date"]);
 
         # Apple clients store birthdays without year as e.g. "1604-03-15"
         # with the parameter X-APPLE-OMIT-YEAR=1604
@@ -224,21 +224,21 @@ class EventBuilder {
      */
     protected function getName(VObject\Component\VCard $vCard) {
         if (isset($vCard->FN)) {
-            $sName = trim((string) $vCard->FN->getValue());
-            if ($sName !== "") {
-                return $sName;
+            $name = trim((string) $vCard->FN->getValue());
+            if ($name !== "") {
+                return $name;
             }
         }
 
         if (isset($vCard->N)) {
             # N: family;given;additional;prefix;suffix
-            $aParts = $vCard->N->getParts();
-            $aName = array_filter(
-                [$aParts[1] ?? "", $aParts[0] ?? ""],
-                function ($sPart) { return trim($sPart) !== ""; }
+            $parts = $vCard->N->getParts();
+            $nameParts = array_filter(
+                [$parts[1] ?? "", $parts[0] ?? ""],
+                function ($part) { return trim($part) !== ""; }
             );
 
-            return trim(implode(" ", $aName));
+            return trim(implode(" ", $nameParts));
         }
 
         return "";

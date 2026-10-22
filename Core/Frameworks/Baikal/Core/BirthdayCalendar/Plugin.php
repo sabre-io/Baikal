@@ -84,35 +84,35 @@ class Plugin extends DAV\ServerPlugin {
      * Returns the first calendar in the home that sabre/dav would accept as
      * default calendar, skipping the birthday calendar.
      *
-     * @param string $sHomePath
-     * @param string $sBirthdayPath
+     * @param string $homePath
+     * @param string $birthdayPath
      *
      * @return DAV\Xml\Property\LocalHref|null
      */
-    protected function findDefaultCalendar($sHomePath, $sBirthdayPath) {
+    protected function findDefaultCalendar($homePath, $birthdayPath) {
         $sccs = "{" . CalDAV\Plugin::NS_CALDAV . "}supported-calendar-component-set";
 
-        $aResult = $this->server->getPropertiesIteratorForPath($sHomePath, [
+        $result = $this->server->getPropertiesIteratorForPath($homePath, [
             "{DAV:}resourcetype",
             "{DAV:}share-access",
             $sccs,
         ], 1);
 
-        foreach ($aResult as $aChild) {
-            if ($aChild["href"] === $sBirthdayPath) {
+        foreach ($result as $child) {
+            if ($child["href"] === $birthdayPath) {
                 continue;
             }
-            if (!isset($aChild[200]["{DAV:}resourcetype"]) || !$aChild[200]["{DAV:}resourcetype"]->is("{" . CalDAV\Plugin::NS_CALDAV . "}calendar")) {
+            if (!isset($child[200]["{DAV:}resourcetype"]) || !$child[200]["{DAV:}resourcetype"]->is("{" . CalDAV\Plugin::NS_CALDAV . "}calendar")) {
                 continue;
             }
-            if (isset($aChild[200]["{DAV:}share-access"])) {
-                $shareAccess = $aChild[200]["{DAV:}share-access"]->getValue();
+            if (isset($child[200]["{DAV:}share-access"])) {
+                $shareAccess = $child[200]["{DAV:}share-access"]->getValue();
                 if ($shareAccess !== DAV\Sharing\Plugin::ACCESS_NOTSHARED && $shareAccess !== DAV\Sharing\Plugin::ACCESS_SHAREDOWNER) {
                     continue;
                 }
             }
-            if (!isset($aChild[200][$sccs]) || in_array("VEVENT", $aChild[200][$sccs]->getValue())) {
-                return new DAV\Xml\Property\LocalHref($aChild["href"]);
+            if (!isset($child[200][$sccs]) || in_array("VEVENT", $child[200][$sccs]->getValue())) {
+                return new DAV\Xml\Property\LocalHref($child["href"]);
             }
         }
 
@@ -120,17 +120,17 @@ class Plugin extends DAV\ServerPlugin {
     }
 
     /**
-     * @param string $sPath
+     * @param string $path
      *
      * @return bool
      */
-    protected function isBirthdayCalendar($sPath) {
-        if (basename($sPath) !== BirthdayService::CALENDAR_URI) {
+    protected function isBirthdayCalendar($path) {
+        if (basename($path) !== BirthdayService::CALENDAR_URI) {
             return false;
         }
 
         try {
-            return $this->server->tree->getNodeForPath($sPath) instanceof ReadOnlyCalendar;
+            return $this->server->tree->getNodeForPath($path) instanceof ReadOnlyCalendar;
         } catch (DAV\Exception\NotFound $e) {
             return false;
         }

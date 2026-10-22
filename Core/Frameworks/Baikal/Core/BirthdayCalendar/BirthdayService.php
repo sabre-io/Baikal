@@ -90,7 +90,7 @@ class BirthdayService {
      *
      * @var array
      */
-    protected $aCalendarIds = [];
+    protected $calendarIds = [];
 
     /**
      * Reference years by principal URI (null if there is none), as read or
@@ -98,7 +98,7 @@ class BirthdayService {
      *
      * @var array
      */
-    protected $aReferenceYears = [];
+    protected $referenceYears = [];
 
     /**
      * @param EventBuilder|null $eventBuilder defaults to a builder for the current year
@@ -151,7 +151,7 @@ class BirthdayService {
 
         # Year 0 marks the calendar as birthday calendar, with events still to be generated
         $this->setReferenceYear($principalUri, 0);
-        $this->aCalendarIds[$principalUri] = $calendarId;
+        $this->calendarIds[$principalUri] = $calendarId;
 
         return $calendarId;
     }
@@ -170,8 +170,8 @@ class BirthdayService {
 
         $this->calendarBackend->deleteCalendar($calendarId);
         $this->propertyBackend->delete($this->getCalendarPath($principalUri));
-        $this->aCalendarIds[$principalUri] = false;
-        $this->aReferenceYears[$principalUri] = null;
+        $this->calendarIds[$principalUri] = false;
+        $this->referenceYears[$principalUri] = null;
     }
 
     /**
@@ -203,30 +203,30 @@ class BirthdayService {
      */
     protected function rebuildEvents($principalUri, $calendarId) {
         # All existing events are loaded at once instead of one query per card
-        $aExistingEvents = [];
-        $aObjectUris = array_column($this->calendarBackend->getCalendarObjects($calendarId), "uri");
-        foreach ($this->calendarBackend->getMultipleCalendarObjects($calendarId, $aObjectUris) as $aObject) {
-            $aExistingEvents[$aObject["uri"]] = $aObject["calendardata"];
+        $existingEvents = [];
+        $objectUris = array_column($this->calendarBackend->getCalendarObjects($calendarId), "uri");
+        foreach ($this->calendarBackend->getMultipleCalendarObjects($calendarId, $objectUris) as $object) {
+            $existingEvents[$object["uri"]] = $object["calendardata"];
         }
 
-        $aExpectedUris = [];
-        foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $aAddressBook) {
-            $aCardUris = array_column($this->cardBackend->getCards($aAddressBook["id"]), "uri");
+        $expectedUris = [];
+        foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $addressBook) {
+            $cardUris = array_column($this->cardBackend->getCards($addressBook["id"]), "uri");
 
             # Cards are loaded in chunks to stay below the limit of bound
             # parameters of the database (999 on older SQLite versions)
-            foreach (array_chunk($aCardUris, self::CARD_CHUNK_SIZE) as $aChunk) {
-                foreach ($this->cardBackend->getMultipleCards($aAddressBook["id"], $aChunk) as $aCard) {
-                    if ($this->writeEvent($calendarId, $aAddressBook["id"], $aCard["uri"], $aCard["carddata"], $aExistingEvents)) {
-                        $aExpectedUris[$this->getEventUri($aAddressBook["id"], $aCard["uri"])] = true;
+            foreach (array_chunk($cardUris, self::CARD_CHUNK_SIZE) as $chunk) {
+                foreach ($this->cardBackend->getMultipleCards($addressBook["id"], $chunk) as $card) {
+                    if ($this->writeEvent($calendarId, $addressBook["id"], $card["uri"], $card["carddata"], $existingEvents)) {
+                        $expectedUris[$this->getEventUri($addressBook["id"], $card["uri"])] = true;
                     }
                 }
             }
         }
 
-        foreach (array_keys($aExistingEvents) as $sEventUri) {
-            if (!isset($aExpectedUris[$sEventUri])) {
-                $this->calendarBackend->deleteCalendarObject($calendarId, (string) $sEventUri);
+        foreach (array_keys($existingEvents) as $eventUri) {
+            if (!isset($expectedUris[$eventUri])) {
+                $this->calendarBackend->deleteCalendarObject($calendarId, (string) $eventUri);
             }
         }
 
@@ -318,11 +318,11 @@ class BirthdayService {
             return;
         }
 
-        $sPrefix = $addressBookId . "-";
-        $this->runInTransaction(function () use ($calendarId, $sPrefix) {
-            foreach ($this->calendarBackend->getCalendarObjects($calendarId) as $aObject) {
-                if (strpos($aObject["uri"], $sPrefix) === 0) {
-                    $this->calendarBackend->deleteCalendarObject($calendarId, $aObject["uri"]);
+        $prefix = $addressBookId . "-";
+        $this->runInTransaction(function () use ($calendarId, $prefix) {
+            foreach ($this->calendarBackend->getCalendarObjects($calendarId) as $object) {
+                if (strpos($object["uri"], $prefix) === 0) {
+                    $this->calendarBackend->deleteCalendarObject($calendarId, $object["uri"]);
                 }
             }
         });
@@ -352,34 +352,34 @@ class BirthdayService {
      * @param int $addressBookId
      * @param string $cardUri
      * @param string $cardData
-     * @param array|null $aExistingEvents data of all events in the calendar by URI, if already
+     * @param array|null $existingEvents data of all events in the calendar by URI, if already
      *                                    loaded; otherwise the event is looked up
      *
      * @return bool true if the card has an event
      */
-    protected function writeEvent($calendarId, $addressBookId, $cardUri, $cardData, ?array $aExistingEvents = null) {
-        $sEventUri = $this->getEventUri($addressBookId, $cardUri);
-        $sEventData = $this->eventBuilder->build($cardData, "baikal-birthday-" . basename($sEventUri, ".ics"));
+    protected function writeEvent($calendarId, $addressBookId, $cardUri, $cardData, ?array $existingEvents = null) {
+        $eventUri = $this->getEventUri($addressBookId, $cardUri);
+        $eventData = $this->eventBuilder->build($cardData, "baikal-birthday-" . basename($eventUri, ".ics"));
 
-        if ($aExistingEvents === null) {
-            $aExisting = $this->calendarBackend->getCalendarObject($calendarId, $sEventUri);
-            $sExistingData = $aExisting === null ? null : $aExisting["calendardata"];
+        if ($existingEvents === null) {
+            $existing = $this->calendarBackend->getCalendarObject($calendarId, $eventUri);
+            $existingData = $existing === null ? null : $existing["calendardata"];
         } else {
-            $sExistingData = $aExistingEvents[$sEventUri] ?? null;
+            $existingData = $existingEvents[$eventUri] ?? null;
         }
 
-        if ($sEventData === null) {
-            if ($sExistingData !== null) {
-                $this->calendarBackend->deleteCalendarObject($calendarId, $sEventUri);
+        if ($eventData === null) {
+            if ($existingData !== null) {
+                $this->calendarBackend->deleteCalendarObject($calendarId, $eventUri);
             }
 
             return false;
         }
 
-        if ($sExistingData === null) {
-            $this->calendarBackend->createCalendarObject($calendarId, $sEventUri, $sEventData);
-        } elseif ($this->withoutTimestamps($sExistingData) !== $this->withoutTimestamps($sEventData)) {
-            $this->calendarBackend->updateCalendarObject($calendarId, $sEventUri, $sEventData);
+        if ($existingData === null) {
+            $this->calendarBackend->createCalendarObject($calendarId, $eventUri, $eventData);
+        } elseif ($this->withoutTimestamps($existingData) !== $this->withoutTimestamps($eventData)) {
+            $this->calendarBackend->updateCalendarObject($calendarId, $eventUri, $eventData);
         }
 
         return true;
@@ -387,13 +387,13 @@ class BirthdayService {
 
     /**
      * @param array $calendarId
-     * @param string $sEventUri
+     * @param string $eventUri
      *
      * @return void
      */
-    protected function deleteEvent($calendarId, $sEventUri) {
-        if ($this->calendarBackend->getCalendarObject($calendarId, $sEventUri) !== null) {
-            $this->calendarBackend->deleteCalendarObject($calendarId, $sEventUri);
+    protected function deleteEvent($calendarId, $eventUri) {
+        if ($this->calendarBackend->getCalendarObject($calendarId, $eventUri) !== null) {
+            $this->calendarBackend->deleteCalendarObject($calendarId, $eventUri);
         }
     }
 
@@ -424,12 +424,12 @@ class BirthdayService {
     /**
      * Removes DTSTAMP lines, which change on every build.
      *
-     * @param string $sCalendarData
+     * @param string $calendarData
      *
      * @return string
      */
-    protected function withoutTimestamps($sCalendarData) {
-        return preg_replace('/^DTSTAMP:[^\r\n]*\r?\n/m', '', (string) $sCalendarData);
+    protected function withoutTimestamps($calendarData) {
+        return preg_replace('/^DTSTAMP:[^\r\n]*\r?\n/m', '', (string) $calendarData);
     }
 
     /**
@@ -441,17 +441,17 @@ class BirthdayService {
      * @return array|null
      */
     protected function getCalendarId($principalUri) {
-        if (!array_key_exists($principalUri, $this->aCalendarIds)) {
+        if (!array_key_exists($principalUri, $this->calendarIds)) {
             $calendarId = $this->findCalendarInstance($principalUri);
             if ($calendarId !== null && $this->getReferenceYear($principalUri) === null) {
                 # Not created by this service
                 $calendarId = null;
             }
 
-            $this->aCalendarIds[$principalUri] = $calendarId ?? false;
+            $this->calendarIds[$principalUri] = $calendarId ?? false;
         }
 
-        return $this->aCalendarIds[$principalUri] === false ? null : $this->aCalendarIds[$principalUri];
+        return $this->calendarIds[$principalUri] === false ? null : $this->calendarIds[$principalUri];
     }
 
     /**
@@ -465,9 +465,9 @@ class BirthdayService {
     protected function findCalendarInstance($principalUri) {
         $stmt = $this->pdo->prepare("SELECT calendarid, id FROM calendarinstances WHERE principaluri = ? AND uri = ?");
         $stmt->execute([$principalUri, self::CALENDAR_URI]);
-        $aRow = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return $aRow === false ? null : [intval($aRow["calendarid"]), intval($aRow["id"])];
+        return $row === false ? null : [intval($row["calendarid"]), intval($row["id"])];
     }
 
     /**
@@ -480,9 +480,9 @@ class BirthdayService {
     function getPrincipalUriForAddressBook($addressBookId) {
         $stmt = $this->pdo->prepare("SELECT principaluri FROM addressbooks WHERE id = ?");
         $stmt->execute([$addressBookId]);
-        $sPrincipalUri = $stmt->fetchColumn();
+        $principalUri = $stmt->fetchColumn();
 
-        return $sPrincipalUri === false ? null : $sPrincipalUri;
+        return $principalUri === false ? null : $principalUri;
     }
 
     /**
@@ -503,16 +503,16 @@ class BirthdayService {
      */
     protected function getReferenceYear($principalUri) {
         # The calendar home may be accessed several times per request
-        if (!array_key_exists($principalUri, $this->aReferenceYears)) {
-            $sPath = $this->getCalendarPath($principalUri);
-            $propFind = new DAV\PropFind($sPath, [self::PROPERTY_REFERENCE_YEAR]);
-            $this->propertyBackend->propFind($sPath, $propFind);
-            $sYear = $propFind->get(self::PROPERTY_REFERENCE_YEAR);
+        if (!array_key_exists($principalUri, $this->referenceYears)) {
+            $path = $this->getCalendarPath($principalUri);
+            $propFind = new DAV\PropFind($path, [self::PROPERTY_REFERENCE_YEAR]);
+            $this->propertyBackend->propFind($path, $propFind);
+            $value = $propFind->get(self::PROPERTY_REFERENCE_YEAR);
 
-            $this->aReferenceYears[$principalUri] = $sYear === null ? null : intval($sYear);
+            $this->referenceYears[$principalUri] = $value === null ? null : intval($value);
         }
 
-        return $this->aReferenceYears[$principalUri];
+        return $this->referenceYears[$principalUri];
     }
 
     /**
@@ -528,26 +528,26 @@ class BirthdayService {
      * @return bool true if the reference year was changed by this call
      */
     protected function claimReferenceYear($principalUri, $expectedYear, $year) {
-        $sPath = $this->getCalendarPath($principalUri);
-        $sName = self::PROPERTY_REFERENCE_YEAR;
-        $sYear = strval($year);
-        $sExpectedYear = strval($expectedYear);
+        $path = $this->getCalendarPath($principalUri);
+        $name = self::PROPERTY_REFERENCE_YEAR;
+        $value = strval($year);
+        $expectedValue = strval($expectedYear);
 
         $stmt = $this->pdo->prepare("UPDATE " . $this->propertyBackend->tableName . " SET value = :value WHERE path = :path AND name = :name AND value = :expected");
-        $stmt->bindParam("value", $sYear, \PDO::PARAM_LOB);
-        $stmt->bindParam("path", $sPath, \PDO::PARAM_STR);
-        $stmt->bindParam("name", $sName, \PDO::PARAM_STR);
-        $stmt->bindParam("expected", $sExpectedYear, \PDO::PARAM_LOB);
+        $stmt->bindParam("value", $value, \PDO::PARAM_LOB);
+        $stmt->bindParam("path", $path, \PDO::PARAM_STR);
+        $stmt->bindParam("name", $name, \PDO::PARAM_STR);
+        $stmt->bindParam("expected", $expectedValue, \PDO::PARAM_LOB);
         $stmt->execute();
 
         if ($stmt->rowCount() !== 1) {
             # Changed by another request, so the cached value is outdated
-            unset($this->aReferenceYears[$principalUri]);
+            unset($this->referenceYears[$principalUri]);
 
             return false;
         }
 
-        $this->aReferenceYears[$principalUri] = $year;
+        $this->referenceYears[$principalUri] = $year;
 
         return true;
     }
@@ -562,6 +562,6 @@ class BirthdayService {
         $propPatch = new DAV\PropPatch([self::PROPERTY_REFERENCE_YEAR => strval($year)]);
         $this->propertyBackend->propPatch($this->getCalendarPath($principalUri), $propPatch);
         $propPatch->commit();
-        $this->aReferenceYears[$principalUri] = $year;
+        $this->referenceYears[$principalUri] = $year;
     }
 }

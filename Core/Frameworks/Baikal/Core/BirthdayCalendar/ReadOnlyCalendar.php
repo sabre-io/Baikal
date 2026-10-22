@@ -60,9 +60,9 @@ class ReadOnlyCalendar extends \Sabre\CalDAV\SharedCalendar {
     /**
      * @return array
      */
-    protected function withoutDeniedPrivileges(array $aAcl) {
-        return array_values(array_filter($aAcl, function ($aAce) {
-            return !in_array($aAce["privilege"], self::DENIED_PRIVILEGES, true);
+    protected function withoutDeniedPrivileges(array $acl) {
+        return array_values(array_filter($acl, function ($ace) {
+            return !in_array($ace["privilege"], self::DENIED_PRIVILEGES, true);
         }));
     }
 }
