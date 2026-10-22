@@ -143,17 +143,25 @@ class Server {
         $nodes = [
             new \Sabre\CalDAV\Principal\Collection($principalBackend),
         ];
+        # Birthday calendars need both CalDAV and CardDAV
+        $birthdayService = null;
+        if ($this->enableCalDAV && $this->enableCardDAV) {
+            $birthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($this->pdo);
+        }
+
         if ($this->enableCalDAV) {
             $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);
-            $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
+            if ($birthdayService !== null) {
+                # Serves the birthday calendars read-only
+                $nodes[] = new \Baikal\Core\BirthdayCalendar\CalendarRoot($principalBackend, $calendarBackend, $birthdayService);
+            } else {
+                $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
+            }
         }
         if ($this->enableCardDAV) {
-            if ($this->enableCalDAV) {
+            if ($birthdayService !== null) {
                 # Keeps the birthday calendars up to date
-                $carddavBackend = new \Baikal\Core\BirthdayCalendar\CardDAVBackend(
-                    $this->pdo,
-                    new \Baikal\Core\BirthdayCalendar\BirthdayService($this->pdo)
-                );
+                $carddavBackend = new \Baikal\Core\BirthdayCalendar\CardDAVBackend($this->pdo, $birthdayService);
             } else {
                 $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
             }
