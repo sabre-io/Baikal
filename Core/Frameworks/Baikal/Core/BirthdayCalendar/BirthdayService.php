@@ -101,11 +101,14 @@ class BirthdayService {
     protected $referenceYears = [];
 
     /**
+     * @param CalDAV\Backend\PDO|null $calendarBackend defaults to a new backend for $pdo
      * @param EventBuilder|null $eventBuilder defaults to a builder for the current year
      */
-    function __construct(\PDO $pdo, ?EventBuilder $eventBuilder = null) {
+    function __construct(\PDO $pdo, ?CalDAV\Backend\PDO $calendarBackend = null, ?EventBuilder $eventBuilder = null) {
         $this->pdo = $pdo;
-        $this->calendarBackend = new CalDAV\Backend\PDO($pdo);
+        $this->calendarBackend = $calendarBackend ?? new CalDAV\Backend\PDO($pdo);
+        # Not the CardDAVBackend of the server, as the service only reads
+        # cards and must not notify itself
         $this->cardBackend = new CardDAV\Backend\PDO($pdo);
         $this->propertyBackend = new DAV\PropertyStorage\Backend\PDO($pdo);
         $this->eventBuilder = $eventBuilder ?? new EventBuilder();
