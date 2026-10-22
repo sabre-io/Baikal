@@ -179,6 +179,20 @@ class BirthdayService {
             return;
         }
 
+        # Writing all events in one transaction is much faster than one
+        # transaction per statement, especially on SQLite
+        $this->runInTransaction(function () use ($principalUri, $calendarId) {
+            $this->rebuildEvents($principalUri, $calendarId);
+        });
+    }
+
+    /**
+     * @param string $principalUri
+     * @param array $calendarId
+     *
+     * @return void
+     */
+    protected function rebuildEvents($principalUri, $calendarId) {
         # All existing events are loaded at once instead of one query per card
         $aExistingEvents = [];
         $aObjectUris = array_column($this->calendarBackend->getCalendarObjects($calendarId), "uri");
@@ -296,11 +310,13 @@ class BirthdayService {
         }
 
         $sPrefix = $addressBookId . "-";
-        foreach ($this->calendarBackend->getCalendarObjects($calendarId) as $aObject) {
-            if (strpos($aObject["uri"], $sPrefix) === 0) {
-                $this->calendarBackend->deleteCalendarObject($calendarId, $aObject["uri"]);
+        $this->runInTransaction(function () use ($calendarId, $sPrefix) {
+            foreach ($this->calendarBackend->getCalendarObjects($calendarId) as $aObject) {
+                if (strpos($aObject["uri"], $sPrefix) === 0) {
+                    $this->calendarBackend->deleteCalendarObject($calendarId, $aObject["uri"]);
+                }
             }
-        }
+        });
     }
 
     /**
@@ -370,6 +386,30 @@ class BirthdayService {
         if ($this->calendarBackend->getCalendarObject($calendarId, $sEventUri) !== null) {
             $this->calendarBackend->deleteCalendarObject($calendarId, $sEventUri);
         }
+    }
+
+    /**
+     * Runs the given function in a transaction, unless one is already active.
+     * The transaction is rolled back if the function throws.
+     *
+     * @return void
+     */
+    protected function runInTransaction(callable $fn) {
+        if ($this->pdo->inTransaction()) {
+            $fn();
+
+            return;
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $fn();
+        } catch (\Throwable $e) {
+            $this->pdo->rollBack();
+
+            throw $e;
+        }
+        $this->pdo->commit();
     }
 
     /**
