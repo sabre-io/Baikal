@@ -93,6 +93,14 @@ class BirthdayService {
     protected $aCalendarIds = [];
 
     /**
+     * Reference years by principal URI (null if there is none), as read or
+     * written during this request.
+     *
+     * @var array
+     */
+    protected $aReferenceYears = [];
+
+    /**
      * @param EventBuilder|null $eventBuilder defaults to a builder for the current year
      */
     function __construct(\PDO $pdo, ?EventBuilder $eventBuilder = null) {
@@ -163,6 +171,7 @@ class BirthdayService {
         $this->calendarBackend->deleteCalendar($calendarId);
         $this->propertyBackend->delete($this->getCalendarPath($principalUri));
         $this->aCalendarIds[$principalUri] = false;
+        $this->aReferenceYears[$principalUri] = null;
     }
 
     /**
@@ -493,12 +502,17 @@ class BirthdayService {
      * @return int|null
      */
     protected function getReferenceYear($principalUri) {
-        $sPath = $this->getCalendarPath($principalUri);
-        $propFind = new DAV\PropFind($sPath, [self::PROPERTY_REFERENCE_YEAR]);
-        $this->propertyBackend->propFind($sPath, $propFind);
-        $sYear = $propFind->get(self::PROPERTY_REFERENCE_YEAR);
+        # The calendar home may be accessed several times per request
+        if (!array_key_exists($principalUri, $this->aReferenceYears)) {
+            $sPath = $this->getCalendarPath($principalUri);
+            $propFind = new DAV\PropFind($sPath, [self::PROPERTY_REFERENCE_YEAR]);
+            $this->propertyBackend->propFind($sPath, $propFind);
+            $sYear = $propFind->get(self::PROPERTY_REFERENCE_YEAR);
 
-        return $sYear === null ? null : intval($sYear);
+            $this->aReferenceYears[$principalUri] = $sYear === null ? null : intval($sYear);
+        }
+
+        return $this->aReferenceYears[$principalUri];
     }
 
     /**
@@ -526,7 +540,16 @@ class BirthdayService {
         $stmt->bindParam("expected", $sExpectedYear, \PDO::PARAM_LOB);
         $stmt->execute();
 
-        return $stmt->rowCount() === 1;
+        if ($stmt->rowCount() !== 1) {
+            # Changed by another request, so the cached value is outdated
+            unset($this->aReferenceYears[$principalUri]);
+
+            return false;
+        }
+
+        $this->aReferenceYears[$principalUri] = $year;
+
+        return true;
     }
 
     /**
@@ -539,5 +562,6 @@ class BirthdayService {
         $propPatch = new DAV\PropPatch([self::PROPERTY_REFERENCE_YEAR => strval($year)]);
         $this->propertyBackend->propPatch($this->getCalendarPath($principalUri), $propPatch);
         $propPatch->commit();
+        $this->aReferenceYears[$principalUri] = $year;
     }
 }
