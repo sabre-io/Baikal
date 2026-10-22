@@ -148,7 +148,15 @@ class Server {
             $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
         }
         if ($this->enableCardDAV) {
-            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
+            if ($this->enableCalDAV) {
+                # Keeps the birthday calendars up to date
+                $carddavBackend = new \Baikal\Core\BirthdayCalendar\CardDAVBackend(
+                    $this->pdo,
+                    new \Baikal\Core\BirthdayCalendar\BirthdayService($this->pdo)
+                );
+            } else {
+                $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
+            }
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
 
