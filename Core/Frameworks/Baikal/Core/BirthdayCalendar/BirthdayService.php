@@ -493,7 +493,10 @@ class BirthdayService {
      * @return string
      */
     protected function getCalendarPath($principalUri) {
-        return "calendars/" . basename($principalUri) . "/" . self::CALENDAR_URI;
+        # The calendar home is named like in Sabre\CalDAV\CalendarHome::getName()
+        [, $principalName] = \Sabre\Uri\split($principalUri);
+
+        return CalDAV\Plugin::CALENDAR_ROOT . "/" . $principalName . "/" . self::CALENDAR_URI;
     }
 
     /**
