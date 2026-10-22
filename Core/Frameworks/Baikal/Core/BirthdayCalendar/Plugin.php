@@ -46,6 +46,11 @@ class Plugin extends DAV\ServerPlugin {
     function initialize(DAV\Server $server) {
         $this->server = $server;
 
+        # The marker of birthday calendars is managed by BirthdayService only.
+        # Clients removing it would make the calendar writable, clients
+        # setting it would let the next rebuild delete their events.
+        $server->protectedProperties[] = BirthdayService::PROPERTY_REFERENCE_YEAR;
+
         # Runs after Sabre\CalDAV\Schedule\Plugin computed the default calendar
         $server->on("propFind", [$this, "propFindDefaultCalendar"], 110);
     }

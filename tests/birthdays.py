@@ -207,3 +207,26 @@ def test_birthday_calendar_not_default_calendar(browser: mechanicalsoup.Stateful
 
     assert requests.delete(BASE_URL + f"cal.php/calendars/{USERNAME}/default/", auth=AUTH).status_code == 204
     assert "contact_birthdays" not in default_calendar()
+
+def test_birthday_calendar_marker_protected(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
+    create_test_user(browser)
+    put_card(ADDRESSBOOK_URL + "anna.vcf", vcard("Anna Example", "1990-03-15"))
+    create_birthday_calendar(browser)
+
+    def proppatch(url: str, action: str) -> str:
+        value = "<b:birthday-reference-year>2000</b:birthday-reference-year>" if action == "set" else "<b:birthday-reference-year/>"
+        body = f'<?xml version="1.0"?><d:propertyupdate xmlns:d="DAV:" xmlns:b="http://sabre.io/baikal"><d:{action}><d:prop>{value}</d:prop></d:{action}></d:propertyupdate>'
+        response = requests.request("PROPPATCH", url, data=body, auth=AUTH)
+        assert response.status_code == 207, f"PROPPATCH returned {response.status_code}"
+        return response.text
+
+    # The marker can neither be removed from the birthday calendar ...
+    assert "403" in proppatch(CALENDAR_URL, "remove")
+    event = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:test\r\nBEGIN:VEVENT\r\nUID:test\r\nDTSTAMP:20260101T000000Z\r\nDTSTART:20260101T100000Z\r\nSUMMARY:Test\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    headers = {"Content-Type": "text/calendar"}
+    assert requests.put(CALENDAR_URL + "test.ics", data=event, auth=AUTH, headers=headers).status_code == 403
+    assert "🎂 Anna Example" in summaries()
+
+    # ... nor be set on other calendars
+    assert "403" in proppatch(BASE_URL + f"cal.php/calendars/{USERNAME}/default/", "set")
