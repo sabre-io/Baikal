@@ -143,12 +143,18 @@ class Server {
         $nodes = [
             new \Sabre\CalDAV\Principal\Collection($principalBackend),
         ];
+        $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);
+        # Existing birthday calendars stay read-only and up to date even if
+        # CalDAV or CardDAV is disabled later on
+        $birthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($this->pdo, $calendarBackend);
+
         if ($this->enableCalDAV) {
-            $calendarBackend = new \Sabre\CalDAV\Backend\PDO($this->pdo);
-            $nodes[] = new \Sabre\CalDAV\CalendarRoot($principalBackend, $calendarBackend);
+            # Serves the birthday calendars read-only
+            $nodes[] = new \Baikal\Core\BirthdayCalendar\CalendarRoot($principalBackend, $calendarBackend, $birthdayService);
         }
         if ($this->enableCardDAV) {
-            $carddavBackend = new \Sabre\CardDAV\Backend\PDO($this->pdo);
+            # Keeps the birthday calendars up to date
+            $carddavBackend = new \Baikal\Core\BirthdayCalendar\CardDAVBackend($this->pdo, $birthdayService);
             $nodes[] = new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend);
         }
 
@@ -170,6 +176,7 @@ class Server {
             $this->server->addPlugin(new \Sabre\CalDAV\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
             $this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
+            $this->server->addPlugin(new \Baikal\Core\BirthdayCalendar\Plugin());
             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
             if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {

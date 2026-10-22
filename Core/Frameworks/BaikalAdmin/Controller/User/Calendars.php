@@ -27,8 +27,11 @@
 
 namespace BaikalAdmin\Controller\User;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Calendars extends \Flake\Core\Controller {
     protected $aMessages = [];
+    protected $bBirthdayCalendarsAvailable;  # read from baikal.yaml once per request
     protected $oModel;    # \Baikal\Model\Calendar
     protected $oUser;    # \Baikal\Model\User
     protected $oForm;    # \Formal\Form
@@ -46,6 +49,8 @@ class Calendars extends \Flake\Core\Controller {
             $this->actionEdit();
         } elseif ($this->actionDeleteRequested()) {
             $this->actionDelete();
+        } elseif ($this->actionBirthdaysRequested()) {
+            $this->actionBirthdays();
         }
     }
 
@@ -59,7 +64,12 @@ class Calendars extends \Flake\Core\Controller {
         $oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
         $aCalendars = [];
 
+        $bHasBirthdayCalendar = false;
+
         foreach ($oCalendars as $calendar) {
+            $bBirthdays = $calendar->isBirthdayCalendar();
+            $bHasBirthdayCalendar = $bHasBirthdayCalendar || $bBirthdays;
+
             $aCalendars[] = [
                 "linkedit"    => $this->linkEdit($calendar),
                 "linkdelete"  => $this->linkDelete($calendar),
@@ -69,10 +79,18 @@ class Calendars extends \Flake\Core\Controller {
                 "instanced"   => $calendar->hasInstances(),
                 "events"      => $calendar->getEventsBaseRequester()->count(),
                 "description" => $calendar->get("description"),
+                "birthdays"   => $bBirthdays,
             ];
         }
 
         $oView->setData("calendars", $aCalendars);
+        $oView->setData(
+            "linknewbirthdays",
+            (!$bHasBirthdayCalendar && $this->birthdayCalendarsAvailable()) ? $this->linkBirthdays("create") : ""
+        );
+        $oView->setData("linkrebuildbirthdays", $bHasBirthdayCalendar ? $this->linkBirthdays("rebuild") : "");
+        # The birthday actions are sent as POST, which is checked against the CSRF token
+        $oView->setData("csrftoken", $_SESSION["CSRF_TOKEN"] ?? "");
 
         # Messages
         $sMessages = implode("\n", $this->aMessages);
@@ -98,10 +116,21 @@ class Calendars extends \Flake\Core\Controller {
     protected function initForm() {
         if ($this->actionEditRequested() || $this->actionNewRequested()) {
             $aOptions = [
-                "closeurl" => $this->linkHome(),
+                "closeurl"        => $this->linkHome(),
+                "hook.validation" => [$this, "validateReservedUri"],
             ];
 
             $this->oForm = $this->oModel->formForThisModelInstance($aOptions);
+        }
+    }
+
+    # The URI of birthday calendars may not be used for other calendars
+    function validateReservedUri(\Formal\Form $oForm, \Formal\Form\Morphology $oMorpho) {
+        if ($oForm->floatingModelInstance() && $oMorpho->element("uri")->value() === \Baikal\Core\BirthdayCalendar\BirthdayService::CALENDAR_URI) {
+            $oForm->declareError(
+                $oMorpho->element("uri"),
+                "<strong>" . $oMorpho->element("uri")->option("label") . "</strong> '" . \Baikal\Core\BirthdayCalendar\BirthdayService::CALENDAR_URI . "' is reserved for the birthday calendar."
+            );
         }
     }
 
@@ -261,6 +290,69 @@ class Calendars extends \Flake\Core\Controller {
                 $this->linkHome()
             );
         }
+    }
+
+    # Action birthdays (create or rebuild the birthday calendar)
+
+    function linkBirthdays($sAction) {
+        return self::buildRoute([
+            "user"      => $this->currentUserId(),
+            "birthdays" => $sAction,
+        ]) . "#message";
+    }
+
+    protected function actionBirthdaysRequested() {
+        $aParams = $this->getParams();
+
+        # Only POST requests are checked against the CSRF token
+        return ($_SERVER["REQUEST_METHOD"] ?? "") === "POST"
+            && array_key_exists("birthdays", $aParams)
+            && in_array($aParams["birthdays"], ["create", "rebuild"], true);
+    }
+
+    protected function actionBirthdays() {
+        $aParams = $this->getParams();
+        $sPrincipalUri = $this->oUser->get("uri");
+
+        if (!$this->birthdayCalendarsAvailable()) {
+            $this->aMessages[] = \Formal\Core\Message::error(
+                "Birthday calendars require both CalDAV and CardDAV to be enabled."
+            );
+
+            return;
+        }
+
+        try {
+            $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
+            if ($aParams["birthdays"] === "create") {
+                $oBirthdayService->ensureCalendarExists($sPrincipalUri);
+            }
+            $oBirthdayService->syncPrincipal($sPrincipalUri);
+        } catch (\Exception $e) {
+            $this->aMessages[] = \Formal\Core\Message::error(htmlspecialchars($e->getMessage()));
+
+            return;
+        }
+
+        # Redirecting to admin home
+        \Flake\Util\Tools::redirectUsingMeta($this->linkHome());
+    }
+
+    # Birthday calendars can only be created and rebuilt if CalDAV and CardDAV are enabled.
+    # Like cal.php and card.php, only the value true counts as enabled.
+    protected function birthdayCalendarsAvailable() {
+        if ($this->bBirthdayCalendarsAvailable === null) {
+            try {
+                $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+                $this->bBirthdayCalendarsAvailable = ($config['system']["cal_enabled"] ?? false) === true
+                    && ($config['system']["card_enabled"] ?? false) === true;
+            } catch (\Exception $e) {
+                error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+                $this->bBirthdayCalendarsAvailable = false;
+            }
+        }
+
+        return $this->bBirthdayCalendarsAvailable;
     }
 
     # Link to home

@@ -106,11 +106,23 @@ class AddressBook extends \Flake\Core\Model\Db {
     }
 
     function destroy() {
+        $sPrincipalUri = $this->get("principaluri");
+        $iAddressBookId = $this->get("id");
+
         $oContacts = $this->getContactsBaseRequester()->execute();
         foreach ($oContacts as $contact) {
             $contact->destroy();
         }
 
         parent::destroy();
+
+        # Contacts were deleted directly, so the birthday calendar has to be told
+        try {
+            $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
+            $oBirthdayService->onAddressBookDeleted($sPrincipalUri, $iAddressBookId);
+        } catch (\Throwable $e) {
+            # Also catches PHP errors, as the address book is already deleted
+            error_log("Error updating birthday calendar: " . $e);
+        }
     }
 }

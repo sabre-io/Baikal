@@ -7,7 +7,7 @@ services:
             && apt-get install -y --no-install-recommends git libpq-dev python3 python3-pip unzip \
             && docker-php-ext-install pdo_mysql pdo_pgsql \
             && rm -rf /var/lib/apt/lists/*
-        RUN pip3 install --break-system-packages mechanicalsoup mysql-connector-python psycopg2-binary
+        RUN pip3 install --break-system-packages mechanicalsoup requests mysql-connector-python psycopg2-binary
         COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
         WORKDIR /baikal
         COPY composer.json ./

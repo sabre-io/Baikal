@@ -50,6 +50,9 @@ class Calendars extends \Flake\Core\Route {
             "confirm" => [
                 "required" => false,
             ],
+            "birthdays" => [
+                "required" => false,
+            ],
         ];
     }
 }
