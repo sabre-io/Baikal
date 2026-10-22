@@ -80,7 +80,6 @@ class Calendars extends \Flake\Core\Controller {
                 "events"      => $calendar->getEventsBaseRequester()->count(),
                 "description" => $calendar->get("description"),
                 "birthdays"   => $bBirthdays,
-                "linkrebuild" => $bBirthdays ? $this->linkBirthdays("rebuild") : "",
             ];
         }
 
@@ -89,6 +88,7 @@ class Calendars extends \Flake\Core\Controller {
             "linknewbirthdays",
             (!$bHasBirthdayCalendar && $this->birthdayCalendarsAvailable()) ? $this->linkBirthdays("create") : ""
         );
+        $oView->setData("linkrebuildbirthdays", $bHasBirthdayCalendar ? $this->linkBirthdays("rebuild") : "");
         # The birthday actions are sent as POST, which is checked against the CSRF token
         $oView->setData("csrftoken", $_SESSION["CSRF_TOKEN"] ?? "");
 

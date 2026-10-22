@@ -40,6 +40,6 @@
 {{ form }}
 {# Sent as POST, which is checked against the CSRF token; placed last, so the edit form stays the first form #}
 {% if linknewbirthdays %}<form id="birthdays-create" method="post" action="{{ linknewbirthdays }}"><input type="hidden" name="CSRF_TOKEN" value="{{ csrftoken|escape }}" /></form>{% endif %}
-{% for calendar in calendars %}{% if calendar.birthdays %}<form id="birthdays-rebuild" method="post" action="{{ calendar.linkrebuild }}"><input type="hidden" name="CSRF_TOKEN" value="{{ csrftoken|escape }}" /></form>{% endif %}{% endfor %}
+{% if linkrebuildbirthdays %}<form id="birthdays-rebuild" method="post" action="{{ linkrebuildbirthdays }}"><input type="hidden" name="CSRF_TOKEN" value="{{ csrftoken|escape }}" /></form>{% endif %}
 </div>
 {% endautoescape %}
