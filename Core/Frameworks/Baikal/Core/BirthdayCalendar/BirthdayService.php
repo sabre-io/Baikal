@@ -47,6 +47,7 @@ class BirthdayService {
     const CALENDAR_URI = "contact_birthdays";
     const CALENDAR_DISPLAYNAME = "Birthdays";
     const CALENDAR_DESCRIPTION = "Birthdays of your contacts";
+    const CALENDAR_COLOR = "#c061cb";
 
     /**
      * Property storing the reference year the events were generated for.
@@ -136,6 +137,7 @@ class BirthdayService {
         $calendarId = $this->calendarBackend->createCalendar($principalUri, self::CALENDAR_URI, [
             "{DAV:}displayname"                                                  => self::CALENDAR_DISPLAYNAME,
             "{" . CalDAV\Plugin::NS_CALDAV . "}calendar-description"             => self::CALENDAR_DESCRIPTION,
+            "{http://apple.com/ns/ical/}calendar-color"                          => self::CALENDAR_COLOR,
             "{" . CalDAV\Plugin::NS_CALDAV . "}supported-calendar-component-set" => new CalDAV\Xml\Property\SupportedCalendarComponentSet(["VEVENT"]),
         ]);
 

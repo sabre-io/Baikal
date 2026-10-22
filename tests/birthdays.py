@@ -92,7 +92,11 @@ def test_birthday_calendar_follows_contacts(browser: mechanicalsoup.StatefulBrow
     assert "birthdays" in page.text.lower()
     assert "add birthday calendar" not in page.text.lower()
 
-    age = date.today().year - 1990
+    body = '<?xml version="1.0"?><d:propfind xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/"><d:prop><a:calendar-color/></d:prop></d:propfind>'
+    response = requests.request("PROPFIND", CALENDAR_URL, data=body, auth=AUTH, headers={"Depth": "0"})
+    assert "#c061cb" in response.text
+
+    age =date.today().year - 1990
     assert f"🎂 Anna Example ({age})" in summaries()
     assert "🎂 Anna Example" in summaries()
 
