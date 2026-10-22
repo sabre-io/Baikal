@@ -190,3 +190,20 @@ def test_no_birthday_calendar_by_default(browser: mechanicalsoup.StatefulBrowser
     navigate_to_user_calendars(browser)
     page = browser.get_current_page()
     assert "add birthday calendar" in page.text.lower()
+
+def test_birthday_calendar_not_default_calendar(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
+    create_test_user(browser)
+    create_birthday_calendar(browser)
+
+    def default_calendar() -> str:
+        body = '<?xml version="1.0"?><d:propfind xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav"><d:prop><c:schedule-default-calendar-URL/></d:prop></d:propfind>'
+        response = requests.request("PROPFIND", BASE_URL + f"cal.php/principals/{USERNAME}/", data=body, auth=AUTH, headers={"Depth": "0"})
+        assert response.status_code == 207, f"PROPFIND returned {response.status_code}"
+        return response.text
+
+    # Invitations are delivered to the default calendar, bypassing the ACL
+    assert f"calendars/{USERNAME}/default" in default_calendar()
+
+    assert requests.delete(BASE_URL + f"cal.php/calendars/{USERNAME}/default/", auth=AUTH).status_code == 204
+    assert "contact_birthdays" not in default_calendar()
