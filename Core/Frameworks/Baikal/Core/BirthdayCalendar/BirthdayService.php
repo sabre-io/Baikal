@@ -55,6 +55,11 @@ class BirthdayService {
     const PROPERTY_REFERENCE_YEAR = "{http://sabre.io/baikal}birthday-reference-year";
 
     /**
+     * Maximum number of cards loaded with one query.
+     */
+    const CARD_CHUNK_SIZE = 500;
+
+    /**
      * @var \PDO
      */
     protected $pdo;
@@ -175,13 +180,14 @@ class BirthdayService {
         $aExpectedUris = [];
         foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $aAddressBook) {
             $aCardUris = array_column($this->cardBackend->getCards($aAddressBook["id"]), "uri");
-            if (count($aCardUris) === 0) {
-                continue;
-            }
 
-            foreach ($this->cardBackend->getMultipleCards($aAddressBook["id"], $aCardUris) as $aCard) {
-                if ($this->writeEvent($calendarId, $aAddressBook["id"], $aCard["uri"], $aCard["carddata"])) {
-                    $aExpectedUris[] = $this->getEventUri($aAddressBook["id"], $aCard["uri"]);
+            # Cards are loaded in chunks to stay below the limit of bound
+            # parameters of the database (999 on older SQLite versions)
+            foreach (array_chunk($aCardUris, self::CARD_CHUNK_SIZE) as $aChunk) {
+                foreach ($this->cardBackend->getMultipleCards($aAddressBook["id"], $aChunk) as $aCard) {
+                    if ($this->writeEvent($calendarId, $aAddressBook["id"], $aCard["uri"], $aCard["carddata"])) {
+                        $aExpectedUris[] = $this->getEventUri($aAddressBook["id"], $aCard["uri"]);
+                    }
                 }
             }
         }
