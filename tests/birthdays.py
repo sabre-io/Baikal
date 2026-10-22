@@ -1,5 +1,6 @@
 import re
 from datetime import date
+from urllib.parse import urljoin
 
 import mechanicalsoup
 import requests
@@ -34,9 +35,22 @@ def navigate_to_user_calendars(browser: mechanicalsoup.StatefulBrowser):
     follow_link_containing(browser, "users and resources")
     find_and_follow_row_link(browser, USERNAME, "calendars")
 
+def submit_button_form(browser: mechanicalsoup.StatefulBrowser, row_text: str, button_text: str):
+    """Submits the form of the first button containing button_text in an element containing row_text."""
+    page = browser.get_current_page()
+    for container in page.find_all(["tr", "div"]):
+        if row_text.lower() not in container.get_text(strip=True).lower():
+            continue
+        for button in container.find_all("button"):
+            if button_text.lower() in button.get_text(strip=True).lower():
+                browser.select_form(f"form#{button['form']}")
+                browser.submit_selected()
+                return
+    raise RuntimeError(f"No element containing '{row_text}' with button '{button_text}' found on page")
+
 def create_birthday_calendar(browser: mechanicalsoup.StatefulBrowser):
     navigate_to_user_calendars(browser)
-    follow_link_containing(browser, "add birthday calendar")
+    submit_button_form(browser, "add birthday calendar", "add birthday calendar")
     follow_meta_redirect(browser)
 
 def vcard(name: str, bday: str | None) -> str:
@@ -123,7 +137,7 @@ def test_birthday_calendar_rebuild_and_delete(browser: mechanicalsoup.StatefulBr
     put_card(ADDRESSBOOK_URL + "anna.vcf", vcard("Anna Example", "1990-03-15"))
     create_birthday_calendar(browser)
 
-    find_and_follow_row_link(browser, "birthdays", "rebuild")
+    submit_button_form(browser, "birthdays", "rebuild")
     follow_meta_redirect(browser)
     assert "🎂 Anna Example" in summaries()
 
@@ -136,9 +150,24 @@ def test_birthday_calendar_rebuild_and_delete(browser: mechanicalsoup.StatefulBr
     assert requests.request("PROPFIND", CALENDAR_URL, auth=AUTH, headers={"Depth": "0"}).status_code == 404
 
     # The calendar can be created again
-    follow_link_containing(browser, "add birthday calendar")
+    submit_button_form(browser, "add birthday calendar", "add birthday calendar")
     follow_meta_redirect(browser)
     assert "🎂 Anna Example" in summaries()
+
+def test_birthday_calendar_actions_require_post(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
+    backend.install(browser)
+    create_test_user(browser)
+    put_card(ADDRESSBOOK_URL + "anna.vcf", vcard("Anna Example", "1990-03-15"))
+    navigate_to_user_calendars(browser)
+
+    # A plain link, e.g. embedded in another site, does not create the calendar
+    form = browser.get_current_page().find("form", id="birthdays-create")
+    browser.open(urljoin(browser.url, form["action"]))
+    assert requests.request("PROPFIND", CALENDAR_URL, auth=AUTH, headers={"Depth": "0"}).status_code == 404
+
+    # Neither does a POST without the CSRF token
+    browser.session.post(urljoin(browser.url, form["action"]))
+    assert requests.request("PROPFIND", CALENDAR_URL, auth=AUTH, headers={"Depth": "0"}).status_code == 404
 
 def test_birthday_calendar_address_book_delete(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
     backend.install(browser)

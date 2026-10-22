@@ -88,6 +88,8 @@ class Calendars extends \Flake\Core\Controller {
             "linknewbirthdays",
             (!$bHasBirthdayCalendar && $this->birthdayCalendarsAvailable()) ? $this->linkBirthdays("create") : ""
         );
+        # The birthday actions are sent as POST, which is checked against the CSRF token
+        $oView->setData("csrftoken", $_SESSION["CSRF_TOKEN"] ?? "");
 
         # Messages
         $sMessages = implode("\n", $this->aMessages);
@@ -301,7 +303,9 @@ class Calendars extends \Flake\Core\Controller {
     protected function actionBirthdaysRequested() {
         $aParams = $this->getParams();
 
-        return array_key_exists("birthdays", $aParams)
+        # Only POST requests are checked against the CSRF token
+        return ($_SERVER["REQUEST_METHOD"] ?? "") === "POST"
+            && array_key_exists("birthdays", $aParams)
             && in_array($aParams["birthdays"], ["create", "rebuild"], true);
     }
 
