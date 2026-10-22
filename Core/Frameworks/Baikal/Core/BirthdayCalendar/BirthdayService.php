@@ -221,8 +221,25 @@ class BirthdayService {
             return;
         }
 
-        if ($this->getReferenceYear($principalUri) !== $this->eventBuilder->getReferenceYear()) {
+        $previousYear = $this->getReferenceYear($principalUri);
+        $year = $this->eventBuilder->getReferenceYear();
+        if ($previousYear === null || $previousYear === $year) {
+            return;
+        }
+
+        # Several clients may sync right after New Year; only the request
+        # that moves the reference year forward rebuilds the calendar
+        if (!$this->claimReferenceYear($principalUri, $previousYear, $year)) {
+            return;
+        }
+
+        try {
             $this->syncPrincipal($principalUri);
+        } catch (\Throwable $e) {
+            # Lets the next request try again
+            $this->setReferenceYear($principalUri, $previousYear);
+
+            throw $e;
         }
     }
 
@@ -440,6 +457,34 @@ class BirthdayService {
         $sYear = $propFind->get(self::PROPERTY_REFERENCE_YEAR);
 
         return $sYear === null ? null : intval($sYear);
+    }
+
+    /**
+     * Changes the reference year only if it still has the expected value.
+     *
+     * The value is bound as LOB like in the property storage backend, so it
+     * compares equal to the stored value on all databases.
+     *
+     * @param string $principalUri
+     * @param int $expectedYear
+     * @param int $year
+     *
+     * @return bool true if the reference year was changed by this call
+     */
+    protected function claimReferenceYear($principalUri, $expectedYear, $year) {
+        $sPath = $this->getCalendarPath($principalUri);
+        $sName = self::PROPERTY_REFERENCE_YEAR;
+        $sYear = strval($year);
+        $sExpectedYear = strval($expectedYear);
+
+        $stmt = $this->pdo->prepare("UPDATE " . $this->propertyBackend->tableName . " SET value = :value WHERE path = :path AND name = :name AND value = :expected");
+        $stmt->bindParam("value", $sYear, \PDO::PARAM_LOB);
+        $stmt->bindParam("path", $sPath, \PDO::PARAM_STR);
+        $stmt->bindParam("name", $sName, \PDO::PARAM_STR);
+        $stmt->bindParam("expected", $sExpectedYear, \PDO::PARAM_LOB);
+        $stmt->execute();
+
+        return $stmt->rowCount() === 1;
     }
 
     /**
