@@ -25,8 +25,8 @@
 			<td class="col-events">{{ calendar.events|escape }}</td>
 			<td class="col-description">{{ calendar.description|escape }}</td>
 			<td class="col-actions text-end">
-					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard'>{{ calendar.davuri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>"><i class="fa fa-circle-info"></i></span></nobr>
 					{% if calendar.birthdays %}<nobr><button type="submit" form="birthdays-rebuild" class="btn btn-light" title="Regenerates all events from the contacts of this user."><i class="fa fa-rotate"></i> Rebuild</button></nobr>{% endif %}
+					<nobr><span class="btn btn-light popover-hover" data-bs-placement="bottom" data-bs-toggle="popover" title="Setup info" data-bs-content="<b>URI</b><br/><span class='copy-to-clipboard'>{{ calendar.davuri }}<i class='fa fa-copy'></i></span><br><br><b>User name</b><br/><span class='copy-to-clipboard'>{{ user.username|escape }}<i class='fa fa-copy'></i></span><br><br><b>Password</b><br/><em>(hidden)</em>"><i class="fa fa-circle-info"></i></span></nobr>
 					<nobr><a class="btn btn-primary" href="{{ calendar.linkedit }}"><i class="fa fa-edit"></i> Edit</a></nobr>
 					<nobr><a class="btn btn-danger" href="{{ calendar.linkdelete }}"><i class="fa fa-remove"></i> Delete</a></nobr>
 			</td>
