@@ -27,6 +27,8 @@
 
 namespace BaikalAdmin\Controller\User;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Calendars extends \Flake\Core\Controller {
     protected $aMessages = [];
     protected $oModel;    # \Baikal\Model\Calendar
@@ -46,6 +48,8 @@ class Calendars extends \Flake\Core\Controller {
             $this->actionEdit();
         } elseif ($this->actionDeleteRequested()) {
             $this->actionDelete();
+        } elseif ($this->actionBirthdaysRequested()) {
+            $this->actionBirthdays();
         }
     }
 
@@ -59,7 +63,12 @@ class Calendars extends \Flake\Core\Controller {
         $oCalendars = $this->oUser->getCalendarsBaseRequester()->execute();
         $aCalendars = [];
 
+        $bHasBirthdayCalendar = false;
+
         foreach ($oCalendars as $calendar) {
+            $bBirthdays = $calendar->isBirthdayCalendar();
+            $bHasBirthdayCalendar = $bHasBirthdayCalendar || $bBirthdays;
+
             $aCalendars[] = [
                 "linkedit"    => $this->linkEdit($calendar),
                 "linkdelete"  => $this->linkDelete($calendar),
@@ -69,10 +78,16 @@ class Calendars extends \Flake\Core\Controller {
                 "instanced"   => $calendar->hasInstances(),
                 "events"      => $calendar->getEventsBaseRequester()->count(),
                 "description" => $calendar->get("description"),
+                "birthdays"   => $bBirthdays,
+                "linkrebuild" => $bBirthdays ? $this->linkBirthdays("rebuild") : "",
             ];
         }
 
         $oView->setData("calendars", $aCalendars);
+        $oView->setData(
+            "linknewbirthdays",
+            (!$bHasBirthdayCalendar && $this->birthdayCalendarsAvailable()) ? $this->linkBirthdays("create") : ""
+        );
 
         # Messages
         $sMessages = implode("\n", $this->aMessages);
@@ -272,6 +287,64 @@ class Calendars extends \Flake\Core\Controller {
                 $this->linkHome()
             );
         }
+    }
+
+    # Action birthdays (create or rebuild the birthday calendar)
+
+    function linkBirthdays($sAction) {
+        return self::buildRoute([
+            "user"      => $this->currentUserId(),
+            "birthdays" => $sAction,
+        ]) . "#message";
+    }
+
+    protected function actionBirthdaysRequested() {
+        $aParams = $this->getParams();
+
+        return array_key_exists("birthdays", $aParams)
+            && in_array($aParams["birthdays"], ["create", "rebuild"], true);
+    }
+
+    protected function actionBirthdays() {
+        $aParams = $this->getParams();
+        $sPrincipalUri = $this->oUser->get("uri");
+
+        if (!$this->birthdayCalendarsAvailable()) {
+            $this->aMessages[] = \Formal\Core\Message::error(
+                "Birthday calendars require both CalDAV and CardDAV to be enabled."
+            );
+
+            return;
+        }
+
+        try {
+            $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
+            if ($aParams["birthdays"] === "create") {
+                $oBirthdayService->ensureCalendarExists($sPrincipalUri);
+            }
+            $oBirthdayService->syncPrincipal($sPrincipalUri);
+        } catch (\Exception $e) {
+            $this->aMessages[] = \Formal\Core\Message::error(htmlspecialchars($e->getMessage()));
+
+            return;
+        }
+
+        # Redirecting to admin home
+        \Flake\Util\Tools::redirectUsingMeta($this->linkHome());
+    }
+
+    # Birthday calendars are only kept up to date if CalDAV and CardDAV are enabled
+    protected function birthdayCalendarsAvailable() {
+        try {
+            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+        } catch (\Exception $e) {
+            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+
+            return false;
+        }
+
+        return ($config['system']["cal_enabled"] ?? false) === true
+            && ($config['system']["card_enabled"] ?? false) === true;
     }
 
     # Link to home
