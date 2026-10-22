@@ -177,6 +177,13 @@ class BirthdayService {
             return;
         }
 
+        # All existing events are loaded at once instead of one query per card
+        $aExistingEvents = [];
+        $aObjectUris = array_column($this->calendarBackend->getCalendarObjects($calendarId), "uri");
+        foreach ($this->calendarBackend->getMultipleCalendarObjects($calendarId, $aObjectUris) as $aObject) {
+            $aExistingEvents[$aObject["uri"]] = $aObject["calendardata"];
+        }
+
         $aExpectedUris = [];
         foreach ($this->cardBackend->getAddressBooksForUser($principalUri) as $aAddressBook) {
             $aCardUris = array_column($this->cardBackend->getCards($aAddressBook["id"]), "uri");
@@ -185,16 +192,16 @@ class BirthdayService {
             # parameters of the database (999 on older SQLite versions)
             foreach (array_chunk($aCardUris, self::CARD_CHUNK_SIZE) as $aChunk) {
                 foreach ($this->cardBackend->getMultipleCards($aAddressBook["id"], $aChunk) as $aCard) {
-                    if ($this->writeEvent($calendarId, $aAddressBook["id"], $aCard["uri"], $aCard["carddata"])) {
-                        $aExpectedUris[] = $this->getEventUri($aAddressBook["id"], $aCard["uri"]);
+                    if ($this->writeEvent($calendarId, $aAddressBook["id"], $aCard["uri"], $aCard["carddata"], $aExistingEvents)) {
+                        $aExpectedUris[$this->getEventUri($aAddressBook["id"], $aCard["uri"])] = true;
                     }
                 }
             }
         }
 
-        foreach ($this->calendarBackend->getCalendarObjects($calendarId) as $aObject) {
-            if (!in_array($aObject["uri"], $aExpectedUris, true)) {
-                $this->calendarBackend->deleteCalendarObject($calendarId, $aObject["uri"]);
+        foreach (array_keys($aExistingEvents) as $sEventUri) {
+            if (!isset($aExpectedUris[$sEventUri])) {
+                $this->calendarBackend->deleteCalendarObject($calendarId, (string) $sEventUri);
             }
         }
 
@@ -301,23 +308,33 @@ class BirthdayService {
      * @param int $addressBookId
      * @param string $cardUri
      * @param string $cardData
+     * @param array|null $aExistingEvents data of all events in the calendar by URI, if already
+     *                                    loaded; otherwise the event is looked up
      *
      * @return bool true if the card has an event
      */
-    protected function writeEvent($calendarId, $addressBookId, $cardUri, $cardData) {
+    protected function writeEvent($calendarId, $addressBookId, $cardUri, $cardData, ?array $aExistingEvents = null) {
         $sEventUri = $this->getEventUri($addressBookId, $cardUri);
         $sEventData = $this->eventBuilder->build($cardData, "baikal-birthday-" . basename($sEventUri, ".ics"));
 
+        if ($aExistingEvents === null) {
+            $aExisting = $this->calendarBackend->getCalendarObject($calendarId, $sEventUri);
+            $sExistingData = $aExisting === null ? null : $aExisting["calendardata"];
+        } else {
+            $sExistingData = $aExistingEvents[$sEventUri] ?? null;
+        }
+
         if ($sEventData === null) {
-            $this->deleteEvent($calendarId, $sEventUri);
+            if ($sExistingData !== null) {
+                $this->calendarBackend->deleteCalendarObject($calendarId, $sEventUri);
+            }
 
             return false;
         }
 
-        $aExisting = $this->calendarBackend->getCalendarObject($calendarId, $sEventUri);
-        if ($aExisting === null) {
+        if ($sExistingData === null) {
             $this->calendarBackend->createCalendarObject($calendarId, $sEventUri, $sEventData);
-        } elseif ($this->withoutTimestamps($aExisting["calendardata"]) !== $this->withoutTimestamps($sEventData)) {
+        } elseif ($this->withoutTimestamps($sExistingData) !== $this->withoutTimestamps($sEventData)) {
             $this->calendarBackend->updateCalendarObject($calendarId, $sEventUri, $sEventData);
         }
 
