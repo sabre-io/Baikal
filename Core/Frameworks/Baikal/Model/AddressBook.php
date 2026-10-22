@@ -121,6 +121,7 @@ class AddressBook extends \Flake\Core\Model\Db {
             $oBirthdayService = new \Baikal\Core\BirthdayCalendar\BirthdayService($GLOBALS["DB"]->getPDO());
             $oBirthdayService->onAddressBookDeleted($sPrincipalUri, $iAddressBookId);
         } catch (\Throwable $e) {
+            # Also catches PHP errors, as the address book is already deleted
             error_log("Error updating birthday calendar: " . $e);
         }
     }

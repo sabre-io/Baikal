@@ -97,6 +97,8 @@ class CardDAVBackend extends \Sabre\CardDAV\Backend\PDO {
         try {
             $update();
         } catch (\Throwable $e) {
+            # Also catches PHP errors, as the card is already stored and
+            # the request must not fail because of the birthday calendar
             error_log("Error updating birthday calendar: " . $e);
         }
     }

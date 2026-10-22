@@ -69,6 +69,7 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
         try {
             $this->birthdayService->refreshIfOutdated($this->principalInfo["uri"]);
         } catch (\Throwable $e) {
+            # Also catches PHP errors, so the other calendars are still served
             error_log("Error refreshing birthday calendar: " . $e);
         }
     }
@@ -91,6 +92,7 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
                 return ReadOnlyCalendar::fromCalendar($node);
             }
         } catch (\Throwable $e) {
+            # Also catches PHP errors, so the calendar home can still be listed
             error_log("Error checking birthday calendar: " . $e);
         }
 
