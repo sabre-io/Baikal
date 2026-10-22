@@ -31,6 +31,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class Calendars extends \Flake\Core\Controller {
     protected $aMessages = [];
+    protected $bBirthdayCalendarsAvailable;  # read from baikal.yaml once per request
     protected $oModel;    # \Baikal\Model\Calendar
     protected $oUser;    # \Baikal\Model\User
     protected $oForm;    # \Formal\Form
@@ -337,18 +338,21 @@ class Calendars extends \Flake\Core\Controller {
         \Flake\Util\Tools::redirectUsingMeta($this->linkHome());
     }
 
-    # Birthday calendars are only kept up to date if CalDAV and CardDAV are enabled
+    # Birthday calendars can only be created and rebuilt if CalDAV and CardDAV are enabled.
+    # Like cal.php and card.php, only the value true counts as enabled.
     protected function birthdayCalendarsAvailable() {
-        try {
-            $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-        } catch (\Exception $e) {
-            error_log('Error reading baikal.yaml file : ' . $e->getMessage());
-
-            return false;
+        if ($this->bBirthdayCalendarsAvailable === null) {
+            try {
+                $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
+                $this->bBirthdayCalendarsAvailable = ($config['system']["cal_enabled"] ?? false) === true
+                    && ($config['system']["card_enabled"] ?? false) === true;
+            } catch (\Exception $e) {
+                error_log('Error reading baikal.yaml file : ' . $e->getMessage());
+                $this->bBirthdayCalendarsAvailable = false;
+            }
         }
 
-        return ($config['system']["cal_enabled"] ?? false) === true
-            && ($config['system']["card_enabled"] ?? false) === true;
+        return $this->bBirthdayCalendarsAvailable;
     }
 
     # Link to home
