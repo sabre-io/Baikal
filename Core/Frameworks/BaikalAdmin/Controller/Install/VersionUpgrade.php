@@ -590,6 +590,34 @@ SQL
             }
         }
 
+        if (version_compare($sVersionFrom, '0.14.0', '<')) {
+            # Versions before 0.14.0 stored the bare timezone identifier of the
+            # configuration in calendar-timezone. RFC 4791 requires a VCALENDAR
+            # with a VTIMEZONE there, otherwise clients asking for an expanded
+            # calendar-query get an error back (issue #1241).
+            $statement = $pdo->query("SELECT id, timezone FROM calendarinstances");
+            $repaired = 0;
+            foreach ($statement->fetchAll(\PDO::FETCH_ASSOC) as $instance) {
+                $timezone = trim((string) $instance['timezone']);
+                if ($timezone === '' || stripos($timezone, 'BEGIN:VCALENDAR') !== false) {
+                    continue;
+                }
+
+                $vtimezone = \Baikal\Core\TimeZone::toVTimezone($timezone);
+                if ($vtimezone === null) {
+                    continue;
+                }
+
+                $update = $pdo->prepare("UPDATE calendarinstances SET timezone = ? WHERE id = ?");
+                $update->execute([$vtimezone, $instance['id']]);
+                ++$repaired;
+            }
+
+            if ($repaired > 0) {
+                $this->aSuccess[] = 'Repaired the timezone of ' . $repaired . ' calendar(s)';
+            }
+        }
+
         $this->updateConfiguredVersion($sVersionTo);
 
         return true;
