@@ -52,7 +52,12 @@ class Calendar extends \Flake\Core\Model\Db {
         parent::__construct($sPrimary);
         try {
             $config = Yaml::parseFile(PROJECT_PATH_CONFIG . "baikal.yaml");
-            $this->set("timezone", $config['system']["timezone"]);
+            # calendar-timezone has to hold a VCALENDAR with a VTIMEZONE,
+            # a bare identifier breaks expansion requests (issue #1241).
+            $vtimezone = \Baikal\Core\TimeZone::toVTimezone((string) $config['system']["timezone"]);
+            if ($vtimezone !== null) {
+                $this->set("timezone", $vtimezone);
+            }
         } catch (\Exception $e) {
             error_log('Error reading baikal.yaml file : ' . $e->getMessage());
         }
