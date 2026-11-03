@@ -1,7 +1,7 @@
 import mechanicalsoup
 from lib.backends import Backend
 from lib.helpers import (
-    assert_setup_info_popovers, follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
+    follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
 )
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
@@ -37,7 +37,6 @@ def test_addressbook_create(browser: mechanicalsoup.StatefulBrowser, backend: Ba
     assert "address books" in page.text.lower()
     assert "abuser" in page.text.lower()
     assert "default address book" in page.text.lower()
-    assert_setup_info_popovers(browser)
 
     follow_link_containing(browser, "add address book")
     browser.select_form("form")

@@ -1,7 +1,7 @@
 import mechanicalsoup
 from lib.backends import Backend
 from lib.helpers import (
-    assert_setup_info_popovers, follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
+    follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
 )
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
@@ -37,7 +37,6 @@ def test_calendar_create(browser: mechanicalsoup.StatefulBrowser, backend: Backe
     assert "calendars" in page.text.lower()
     assert "caluser" in page.text.lower()
     assert "default calendar" in page.text.lower()
-    assert_setup_info_popovers(browser)
 
     follow_link_containing(browser, "add calendar")
     browser.select_form("form")

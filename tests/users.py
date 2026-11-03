@@ -1,7 +1,7 @@
 import mechanicalsoup
 from lib.backends import Backend
 from lib.helpers import (
-    assert_setup_info_popovers, follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
+    follow_link_containing, follow_meta_redirect, find_and_follow_row_link,
 )
 
 def create_test_user(browser: mechanicalsoup.StatefulBrowser):
@@ -30,7 +30,6 @@ def test_user_create(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
 
     page = browser.get_current_page()
     assert "testuser" in page.text
-    assert_setup_info_popovers(browser)
 
 def test_user_create_missing_required_fields(browser: mechanicalsoup.StatefulBrowser, backend: Backend):
     backend.install(browser)

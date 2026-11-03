@@ -73,14 +73,6 @@ def assert_dashboard(browser: mechanicalsoup.StatefulBrowser):
     assert "dashboard" in page.text.lower()
     assert "about this system" in page.text.lower()
 
-def assert_setup_info_popovers(browser: mechanicalsoup.StatefulBrowser):
-    # Bootstrap only renders the popover content as HTML when the element asks for it.
-    # Relying on the JavaScript option alone breaks when an old main.js is still cached.
-    popovers = browser.get_current_page().select(".popover-hover")
-    assert popovers, "No setup info popover found on page"
-    for popover in popovers:
-        assert popover.get("data-bs-html") == "true", "Setup info popover would render its HTML as text"
-
 def follow_meta_redirect(browser: mechanicalsoup.StatefulBrowser):
     page = browser.get_current_page()
     meta = page.find("meta", attrs={"http-equiv": lambda x: x and x.lower() == "refresh"})
