@@ -72,7 +72,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
       - name: Setup Python
         run: |
-          pip install mechanicalsoup mysql-connector-python psycopg2 --break-system-packages
+          pip install mechanicalsoup requests mysql-connector-python psycopg2 --break-system-packages
       - name: Start PHP server (checkout)
         run: php -S 0.0.0.0:8000 -t . > php_server.log 2>&1 &
       - name: Run tests (checkout)
